@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+/**
+ * Трейт для работы со строками
+ */
 trait HelperStringTrait
 {
     /**
