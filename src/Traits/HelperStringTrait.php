@@ -4,74 +4,218 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Enums\HelperBreakTypeEnum;
+
 /**
  * Трейт для работы со строками
  */
 trait HelperStringTrait
 {
     /**
-     * Проверяет значение на вхождение в интервал(ы)
+     * Переводит строку в верхний регистр
      *
-     * @param mixed $value
-     * @param mixed ...$intervals
+     * @param int|float|string|null $value
+     * @return string
+     */
+    public static function upper(int|float|string|null $value): string
+    {
+        return mb_strtoupper((string)$value, 'UTF-8');
+    }
+
+
+    /**
+     * Переводит строку в нижний регистр
+     *
+     * @param int|float|string|null $value
+     * @return string
+     */
+    public static function lower(int|float|string|null $value): string
+    {
+        return mb_strtolower((string)$value, 'UTF-8');
+    }
+
+
+    /**
+     * Вырезает подстроку из строки
+     *
+     * @param int|float|string|null $string
+     * @param int $start
+     * @param int|null $length
+     * @param string|null $encoding
+     * @return string
+     */
+    public static function substr(int|float|string|null $value, int $start, ?int $length = null, ?string $encoding = 'UTF-8'): string
+    {
+        return mb_substr((string)$value, $start, $length, $encoding);
+    }
+
+
+    /**
+     * Проверяет начало строки на совпадение
+     *
+     * @param int|float|string|null $value
+     * @param int|float|string|array|null $search
      * @return bool
      */
-    public static function inInterval(mixed $value, mixed ...$intervals): bool
+    public static function startsWith(int|float|string|null $value, int|float|string|array|null $search): bool
     {
-        $items = [];
+        is_iterable($search) ?: $search = [$search];
+        $value = (string)$value;
 
-        foreach ($intervals as $interval) {
-            switch (true) {
-                case is_string($interval):
-                    $subIntervals = explode(',', str_replace(['|', ';'], ',', $interval));
-                    foreach ($subIntervals as $subInterval) {
-                        $subInterval = trim($subInterval);
-
-                        if (str_contains($subInterval, '..')) {
-                            $subInterval = explode(',', str_replace(['...', '..'], ',', trim($subInterval)));
-                            $min = $subInterval[0] ?? null;
-                            $max = $subInterval[1] ?? null;
-                            $items[] = [
-                                ...(is_null($min) ? [] : ['min' => trim($min)]),
-                                ...(is_null($max) ? [] : ['max' => trim($max)]),
-                            ];
-                        } else if ($subInterval !== '' && $subInterval !== 'null') {
-                            $items[] = ['equal' => $subInterval];
-                        }
-                    }
-                    break;
-
-                case is_array($interval):
-                    if (count($interval) === 1) {
-                        if ($interval[0] ?? null) {
-                            $items[] = ['equal' => $interval[0] ?: 0];
-                        }
-                    } else {
-                        $items[] = ['min' => ($interval[0] ?? 0) ?: 0, 'max' => ($interval[1] ?? 0) ?: 0];
-                    }
-                    break;
-
-                default:
-                    if (!is_null($interval)) {
-                        $items[] = ['equal' => $interval ?: 0];
-                    }
-            };
-        }
-
-        foreach ($items as $item) {
-            if (isset($item['equal']) && $value == $item['equal']) {
-                return true;
-            } else if (isset($item['min']) && isset($item['max'])) {
-                if ($value >= $item['min'] && $value <= $item['max']) {
-                    return true;
-                }
-            } else if (isset($item['min']) && $value >= $item['min']) {
-                return true;
-            } else if (isset($item['max']) && $value <= $item['max']) {
+        foreach ($search ?? [] as $item) {
+            $item = (string)$item;
+            if ($item && str_starts_with($value, $item)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+
+    /**
+     * Проверяет конец строки на совпадение
+     *
+     * @param int|float|string|null $value
+     * @param int|float|string|array|null $search
+     * @return bool
+     */
+    public static function endsWith(int|float|string|null $value, int|float|string|array|null $search): bool
+    {
+        is_iterable($search) ?: $search = [$search];
+        $value = (string)$value;
+
+        foreach ($search ?? [] as $item) {
+            $item = (string)$item;
+            if ($item && str_ends_with($value, $item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * [Description for length]
+     *
+     * @param int|float|string|null $value
+     * @param string|null $encoding
+     * @return int
+     */
+    public static function length(int|float|string|null $value, ?string $encoding = null): int
+    {
+        return mb_strlen((string)$value, $encoding);
+    }
+
+
+    /**
+     * Возвращает число с числительным названием
+     *
+     * @param int|float|string $number
+     * @param array $words
+     * @param bool $includeNumber
+     * @return string
+     */
+    public static function plural(int|float|string $value, array $words, bool $includeNumber = true): string
+    {
+        $numberString = (string)abs(floor(floatval($value)));
+        $numberPart = (int)static::substr($numberString, static::length($numberString) - 2, 2);
+        $numberMod = $numberPart % 10;
+
+        return ($includeNumber ? "{$value} " : "")
+            . match (true) {
+                $numberMod == 1 && $numberPart != 11 => $words[1] ?? '',
+                $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15) => $words[2] ?? '',
+
+                default => $words[0] ?? '',
+            };
+    }
+
+
+    /**
+     * Разбивает текст на части указанной длины по словам или строкам и возвращает массив строк
+     *
+     * @param string $message
+     * @param HelperBreakTypeEnum $breakType
+     * @param int $partLengthMax
+     * @param int|null $firstPartIsShort
+     * @return array
+     */
+    public static function breakByLength(
+        string $value,
+        HelperBreakTypeEnum $breakType,
+        int $partLengthMax = 4000,
+        ?int $firstPartLength = null, // 1000
+    ): array {
+        $result = [];
+        $currentText = '';
+        $currentLength = 0;
+
+        if (mb_strlen($value) <= ($firstPartLength ? min(1000, $partLengthMax) : $partLengthMax)) {
+            $result[] = $value;
+        } else {
+            // Разбиваем сообщение на строки
+            foreach (explode(PHP_EOL, $value) as $lineIndex => $line) {
+                $lineLength = mb_strlen($line);
+                // Разбиваем строку на слова
+                $words = preg_split("/[\ ]+/", rtrim($line, CHR(9) . ' '));
+                $break = ($lineIndex > 0) ? PHP_EOL : '';
+                $breakLength = mb_strlen($break);
+                $lineLengthMax = (count($result) === 0)
+                    ? ($firstPartLength ? min($firstPartLength, $partLengthMax) : $partLengthMax)
+                    : $partLengthMax;
+
+                switch ($breakType) {
+                    // Разбитие по словам
+                    case HelperBreakTypeEnum::Word:
+                        foreach ($words as $wordIndex => $word) {
+                            $wordLength = mb_strlen($word);
+                            $space = ($wordIndex > 0) ? ' ' : '';
+                            $spaceLength = mb_strlen($space);
+
+                            if ($currentLength + $breakLength + $spaceLength + $wordLength <= $lineLengthMax) {
+                                $currentText .= "{$break}{$space}{$word}";
+                                $currentLength += $spaceLength + $wordLength;
+                            } else {
+                                if ($breakLength + $currentLength <= $lineLengthMax) {
+                                    $currentText .= $break;
+                                }
+                                if (substr($currentText, -mb_strlen(PHP_EOL)) == PHP_EOL) {
+                                    $currentText = substr($currentText, 0, -1);
+                                }
+                                $result[] = $currentText;
+                                $currentText = $word;
+                                $currentLength = $wordLength;
+                            }
+
+                            $break = '';
+                            $breakLength = 0;
+                        }
+                        break;
+
+                    // Разбитие по строкам
+                    case HelperBreakType::Line:
+                        if ($currentLength + $breakLength + $lineLength <= $lineLengthMax) {
+                            $currentText .= "{$break}{$line}";
+                            $currentLength += $breakLength + $lineLength;
+                        } else {
+                            $result[] = $currentText;
+                            $currentText = $line;
+                            $currentLength = $lineLength;
+                        }
+                        break;
+                }
+            }
+
+            if ($currentText != '') {
+                if (substr($currentText, -mb_strlen(PHP_EOL)) == PHP_EOL) {
+                    $currentText = substr($currentText, 0, -1);
+                }
+                $result[] = $currentText;
+            }
+        }
+
+        return $result;
     }
 }

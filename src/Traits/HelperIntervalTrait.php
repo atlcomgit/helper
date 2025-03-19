@@ -1,0 +1,108 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Atlcom\Traits;
+
+/**
+ * Трейт для работы с интервалами
+ */
+trait HelperIntervalTrait
+{
+    /**
+     * Возвращает число со смещением по кругу в заданном интервале
+     *
+     * @param int $value
+     * @param int $min
+     * @param int $max
+     * @return int
+     */
+    public static function intervalAround(int $value, int $min, int $max): int
+    {
+        $result = $value;
+        if ($min > $max) {
+            $m = $max;
+            $max = $min;
+            $min = $m;
+        }
+
+        if ($value < $min || $value > $max) {
+            $result = ($value > $max)
+                ? (($value - $min) % ($max - $min + 1)) + $min
+                : $max - (
+                    abs($value - $min + 1)
+                    - abs($max - $min + 1)
+                    * floor(abs($value - $min + 1) / ($max - $min + 1))
+                );
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * Проверяет значение на вхождение в интервал(ы)
+     *
+     * @param mixed $value
+     * @param mixed ...$intervals
+     * @return bool
+     */
+    public static function intervalBetween(mixed $value, mixed ...$intervals): bool
+    {
+        $items = [];
+
+        foreach ($intervals as $interval) {
+            switch (true) {
+                case is_string($interval):
+                    $subIntervals = explode(',', str_replace(['|', ';'], ',', $interval));
+                    foreach ($subIntervals as $subInterval) {
+                        $subInterval = trim($subInterval);
+
+                        if (str_contains($subInterval, '..')) {
+                            $subInterval = explode(',', str_replace(['...', '..'], ',', trim($subInterval)));
+                            $min = $subInterval[0] ?? null;
+                            $max = $subInterval[1] ?? null;
+                            $items[] = [
+                                ...(is_null($min) ? [] : ['min' => trim($min)]),
+                                ...(is_null($max) ? [] : ['max' => trim($max)]),
+                            ];
+                        } else if ($subInterval !== '' && $subInterval !== 'null') {
+                            $items[] = ['equal' => $subInterval];
+                        }
+                    }
+                    break;
+
+                case is_array($interval):
+                    if (count($interval) === 1) {
+                        if ($interval[0] ?? null) {
+                            $items[] = ['equal' => $interval[0] ?: 0];
+                        }
+                    } else {
+                        $items[] = ['min' => ($interval[0] ?? 0) ?: 0, 'max' => ($interval[1] ?? 0) ?: 0];
+                    }
+                    break;
+
+                default:
+                    if (!is_null($interval)) {
+                        $items[] = ['equal' => $interval ?: 0];
+                    }
+            };
+        }
+
+        foreach ($items as $item) {
+            if (isset($item['equal']) && $value == $item['equal']) {
+                return true;
+            } else if (isset($item['min']) && isset($item['max'])) {
+                if ($value >= $item['min'] && $value <= $item['max']) {
+                    return true;
+                }
+            } else if (isset($item['min']) && $value >= $item['min']) {
+                return true;
+            } else if (isset($item['max']) && $value <= $item['max']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

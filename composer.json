@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Atlcom Helper library",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-mbstring": "*",
         "nesbot/carbon": ">=2.0"
     },

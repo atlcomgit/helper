@@ -9,4 +9,39 @@ namespace Atlcom\Traits;
  */
 trait HelperArrayTrait
 {
+    /**
+     * Исключает из массива трассировки пакетные ошибки
+     *
+     * @param array $trace
+     * @return array
+     */
+    public static function arrayExcludeVendorTrace(array $value, ?string $basePath = null): array
+    {
+        $basePath ??= static::basePath();
+        $ignoreFiles = [
+            '/vendor/',
+        ];
+        $ignoreClasses = [
+            'Illuminate',
+        ];
+
+        $resultTrace = [];
+        foreach ($value as $item) {
+            if (
+                !static::startsWith($item['file'] ?? '', $ignoreFiles)
+                &&
+                !static::startsWith($item['class'] ?? '', $ignoreClasses)
+            ) {
+                $file = trim(str_replace($basePath, '', $item['file'] ?? ''), '/');
+                $resultTrace[] = [
+                    'file' => $file . ':' . ($item['line'] ?? ''),
+                    'func' => static::baseNameClass($item['class'] ?? '')
+                        . ($item['type'] ?? '')
+                        . $item['function'] . '()',
+                ];
+            }
+        }
+
+        return $resultTrace;
+    }
 }
