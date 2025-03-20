@@ -26,6 +26,18 @@ final class HelperIntervalOverlapTest extends TestCase
         $array = Helper::intervalOverlap([[1, 3], [2, 4]]);
         $this->assertEquals(['1..3', '2..4'], $array);
 
+        $array = Helper::intervalOverlap([1, 3], [null, null]);
+        $this->assertEquals(['1..3', '..'], $array);
+
+        $array = Helper::intervalOverlap([1, 3], [4, 6], [null, null]);
+        $this->assertEquals(['1..3', '..', '4..6'], $array);
+
+        $array = Helper::intervalOverlap([[1, 3], [null, null]]);
+        $this->assertEquals(['1..3', '..'], $array);
+
+        $array = Helper::intervalOverlap([[1, 3], [4, 6], [null, null]]);
+        $this->assertEquals(['1..3', '..', '4..6'], $array);
+
         $array = Helper::intervalOverlap('1..3', '2..4');
         $this->assertEquals(['1..3', '2..4'], $array);
 
@@ -43,6 +55,9 @@ final class HelperIntervalOverlapTest extends TestCase
 
         $array = Helper::intervalOverlap(['1.., ..4']);
         $this->assertEquals(['1..', '..4'], $array);
+
+        $array = Helper::intervalOverlap('1.., ..');
+        $this->assertEquals(['1..', '..'], $array);
 
         $array = Helper::intervalOverlap('.., ..');
         $this->assertEquals(['..'], $array);
@@ -80,6 +95,12 @@ final class HelperIntervalOverlapTest extends TestCase
         $this->assertEquals([], $array);
 
         $array = Helper::intervalOverlap(['..3, 4..']);
+        $this->assertEquals([], $array);
+
+        $array = Helper::intervalOverlap([null, null]);
+        $this->assertEquals([], $array);
+
+        $array = Helper::intervalOverlap('..');
         $this->assertEquals([], $array);
     }
 }

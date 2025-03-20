@@ -96,7 +96,10 @@ trait HelperIntervalTrait
                     } else {
                         $item1 = $interval[0] ?? null;
 
-                        if (str_contains((string)$item1, ',') || str_contains((string)$item1, '..')) {
+                        if (
+                            !is_array($item1)
+                            && (str_contains((string)$item1, ',') || str_contains((string)$item1, '..'))
+                        ) {
                             !($collectionSub = static::intervalCollection(...$interval))
                                 ?: $collection = [...$collection, ...$collectionSub];
                         } else {
@@ -182,7 +185,7 @@ trait HelperIntervalTrait
             }
         }
 
-        return $result;
+        return array_values($result);
     }
 
 
@@ -219,6 +222,6 @@ trait HelperIntervalTrait
             }
         }
 
-        return array_unique($result);
+        return array_values(array_unique($result));
     }
 }

@@ -261,4 +261,10 @@ trait HelperStringTrait
         $s3 = 'a';
         $res = 'a1110';
     }
+
+
+    public static function stringContains(int|float|string|null $value, int|float|string|array|null $search): string
+    {
+        return '';
+    }
 }
