@@ -17,7 +17,7 @@ trait HelperStringTrait
      * @param int|float|string|null $value
      * @return string
      */
-    public static function upper(int|float|string|null $value): string
+    public static function stringUpper(int|float|string|null $value): string
     {
         return mb_strtoupper((string)$value, 'UTF-8');
     }
@@ -29,7 +29,7 @@ trait HelperStringTrait
      * @param int|float|string|null $value
      * @return string
      */
-    public static function lower(int|float|string|null $value): string
+    public static function stringLower(int|float|string|null $value): string
     {
         return mb_strtolower((string)$value, 'UTF-8');
     }
@@ -44,10 +44,14 @@ trait HelperStringTrait
      * @param string|null $encoding
      * @return string
      */
-    public static function substr(int|float|string|null $value, int $start, ?int $length = null, ?string $encoding = 'UTF-8'): string
+    public static function stringCopy(int|float|string|null $value, int $start, ?int $length = null, ?string $encoding = 'UTF-8'): string
     {
         return mb_substr((string)$value, $start, $length, $encoding);
     }
+
+
+    //?!? stringCut
+    //?!? stringPaste
 
 
     /**
@@ -55,17 +59,18 @@ trait HelperStringTrait
      *
      * @param int|float|string|null $value
      * @param int|float|string|array|null $search
-     * @return bool
+     * @return bool|string
      */
-    public static function startsWith(int|float|string|null $value, int|float|string|array|null $search): bool
+    public static function stringStarts(int|float|string|null $value, int|float|string|array|null $search): bool|string
     {
         is_iterable($search) ?: $search = [$search];
+        $search = array_filter($search);
         $value = (string)$value;
 
         foreach ($search ?? [] as $item) {
             $item = (string)$item;
             if ($item && str_starts_with($value, $item)) {
-                return true;
+                return (string)$item;
             }
         }
 
@@ -78,17 +83,18 @@ trait HelperStringTrait
      *
      * @param int|float|string|null $value
      * @param int|float|string|array|null $search
-     * @return bool
+     * @return bool|string
      */
-    public static function endsWith(int|float|string|null $value, int|float|string|array|null $search): bool
+    public static function stringEnds(int|float|string|null $value, int|float|string|array|null $search): bool|string
     {
         is_iterable($search) ?: $search = [$search];
+        $search = array_filter($search);
         $value = (string)$value;
 
         foreach ($search ?? [] as $item) {
             $item = (string)$item;
             if ($item && str_ends_with($value, $item)) {
-                return true;
+                return (string)$item;
             }
         }
 
@@ -120,7 +126,7 @@ trait HelperStringTrait
     public static function plural(int|float|string $value, array $words, bool $includeNumber = true): string
     {
         $numberString = (string)abs(floor(floatval($value)));
-        $numberPart = (int)static::substr($numberString, static::length($numberString) - 2, 2);
+        $numberPart = (int)static::stringCopy($numberString, static::length($numberString) - 2, 2);
         $numberMod = $numberPart % 10;
 
         return ($includeNumber ? "{$value} " : "")
@@ -142,7 +148,7 @@ trait HelperStringTrait
      * @param int|null $firstPartIsShort
      * @return array
      */
-    public static function breakByLength(
+    public static function stringBreakByLength(
         string $value,
         HelperBreakTypeEnum $breakType,
         int $partLengthMax = 4000,
@@ -195,7 +201,7 @@ trait HelperStringTrait
                         break;
 
                     // Разбитие по строкам
-                    case HelperBreakType::Line:
+                    case HelperBreakTypeEnum::Line:
                         if ($currentLength + $breakLength + $lineLength <= $lineLengthMax) {
                             $currentText .= "{$break}{$line}";
                             $currentLength += $breakLength + $lineLength;
@@ -217,5 +223,42 @@ trait HelperStringTrait
         }
 
         return $result;
+    }
+
+
+    public static function stringConcat(int|float|string|null $delimiter, mixed ...$values): string
+    {
+        return implode((string)$delimiter, array_filter($values));
+    }
+
+
+    public static function stringAddPrefix(
+        int|float|string|null $value,
+        int|float|string|null $prefix,
+        mixed $condition = null,
+    ): string {
+        is_callable($condition) ?: $condition = $condition($value, $prefix);
+
+        return (($prefix && $condition) ? $prefix : '') . $value;
+    }
+
+
+    public static function stringAddSuffix(
+        int|float|string|null $value,
+        int|float|string|null $suffix,
+        mixed $condition = null,
+    ): string {
+        is_callable($condition) ?: $condition = $condition($value, $suffix);
+
+        return (($suffix && $condition) ? $suffix : '') . $value;
+    }
+
+
+    public static function stringMerge(): string
+    {
+        $s1 = '0001';
+        $s2 = '11110';
+        $s3 = 'a';
+        $res = 'a1110';
     }
 }

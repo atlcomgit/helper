@@ -66,7 +66,9 @@ trait HelperIntervalTrait
                         if (str_contains($subInterval, '..')) {
                             $subInterval = explode(',', str_replace(['...', '..'], ',', trim($subInterval)));
                             $min = $subInterval[0] ?? null;
+                            !($min === '') ?: $min = null;
                             $max = $subInterval[1] ?? null;
+                            !($max === '') ?: $max = null;
                             $collection[] = [
                                 ...(is_null($min) ? [] : [static::$nameCollectionItemMin => trim($min)]),
                                 ...(is_null($max) ? [] : [static::$nameCollectionItemMax => trim($max)]),
@@ -96,13 +98,15 @@ trait HelperIntervalTrait
 
                         if (str_contains((string)$item1, ',') || str_contains((string)$item1, '..')) {
                             !($collectionSub = static::intervalCollection(...$interval))
-                                    ?: $collection = [...$collection, ...$collectionSub];
+                                ?: $collection = [...$collection, ...$collectionSub];
                         } else {
                             $item2 = $interval[1] ?? null;
-                            if (count($interval) === 2 && !is_array($item1) && !is_array($item2)) {
+                            if (count($interval) === 2 && is_null($item1) && is_null($item2)) {
+                                $collection[] = [];
+                            } else if (count($interval) === 2 && !is_array($item1) && !is_array($item2)) {
                                 $collection[] = [
-                                    static::$nameCollectionItemMin => $interval[0] ?? null,
-                                    static::$nameCollectionItemMax => $interval[1] ?? null,
+                                    static::$nameCollectionItemMin => $item1,
+                                    static::$nameCollectionItemMax => $item2,
                                 ];
                             } else {
                                 !($collectionSub = static::intervalCollection(...$interval))
@@ -166,6 +170,15 @@ trait HelperIntervalTrait
                 && $value <= (string)$item[static::$nameCollectionItemMax]
             ) {
                 $result[] = implode('..', array_values($item));
+            } else if (
+                isset($item[static::$nameCollectionItemMin])
+                && isset($item[static::$nameCollectionItemMax])
+                && is_null($item[static::$nameCollectionItemMin])
+                && is_null($item[static::$nameCollectionItemMax])
+            ) {
+                $result[] = '..';
+            } else if (empty($item)) {
+                $result[] = '..';
             }
         }
 
@@ -179,11 +192,22 @@ trait HelperIntervalTrait
      * @param mixed ...$intervals
      * @return array
      */
-    public static function intervalOverlap(...$intervals): array
+    public static function intervalOverlap(mixed ...$intervals): array
     {
-        $collection = static::intervalCollection(...$intervals);
-        array_walk($collection, fn (&$item) => $item = array_values($item));
         $result = [];
+        $collection = static::intervalCollection(...$intervals);
+
+        array_walk(
+            $collection,
+            fn (&$item) => $item = match (true) {
+                isset($item[static::$nameCollectionItemEqual]) => array_values($item),
+
+                default => [
+                    $item[static::$nameCollectionItemMin] ?? null,
+                    $item[static::$nameCollectionItemMax] ?? null,
+                ],
+            }
+        );
 
         while ($collection) {
             $item = array_shift($collection);

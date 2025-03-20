@@ -28,9 +28,9 @@ trait HelperArrayTrait
         $resultTrace = [];
         foreach ($value as $item) {
             if (
-                !static::startsWith($item['file'] ?? '', $ignoreFiles)
+                !static::stringStarts($item['file'] ?? '', $ignoreFiles)
                 &&
-                !static::startsWith($item['class'] ?? '', $ignoreClasses)
+                !static::stringStarts($item['class'] ?? '', $ignoreClasses)
             ) {
                 $file = trim(str_replace($basePath, '', $item['file'] ?? ''), '/');
                 $resultTrace[] = [

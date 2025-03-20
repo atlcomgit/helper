@@ -35,9 +35,9 @@ trait HelperIpTrait
                 if ($ipLong >= $rangeStart && $ipLong <= $rangeEnd) {
                     return true;
                 }
-            } elseif ($value == trim($maskIpRange[0])) {
+            } else if ($value == trim($maskIpRange[0])) {
                 return true;
-            } elseif (trim($maskIpRange[0]) === '*') {
+            } else if (trim($maskIpRange[0]) === '*') {
                 return true;
             }
         }

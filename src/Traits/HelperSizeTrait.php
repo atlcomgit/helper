@@ -35,7 +35,7 @@ trait HelperSizeTrait
      */
     public static function sizeStringToBytes(string $value): int
     {
-        $exp = match (static::upper(preg_replace('/[^a-zа-яё]/ui', '', $value))) {
+        $exp = match (static::stringUpper(preg_replace('/[^a-zа-яё]/ui', '', $value))) {
             'Б', 'B' => pow(1000, 0),
             'КБ', 'KB', 'KIB' => pow(1000, 1),
             'МБ', 'MB', 'MIB' => pow(1000, 2),

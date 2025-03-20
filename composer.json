@@ -2,6 +2,20 @@
     "name": "atlcom/helper",
     "type": "library",
     "description": "Atlcom Helper library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alek Chertkov",
+            "email": "alek.fiend@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "funding": [
+        {
+            "type": "yoomoney",
+            "url": "https://yoomoney.ru/to/4100110213116546"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "ext-mbstring": "*",

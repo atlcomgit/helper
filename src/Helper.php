@@ -18,7 +18,6 @@ use Atlcom\Traits\HelperTimeTrait;
  * @abstract
  * @version 1.01
  * 
- * @see \Atlcom\Tests\HelperTest
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper
  * 

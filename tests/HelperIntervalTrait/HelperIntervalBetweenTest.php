@@ -17,8 +17,8 @@ final class HelperIntervalBetweenTest extends TestCase
     #[Test]
     public function intervalBetweenTrue(): void
     {
-        // $array = Helper::intervalBetween(2, 2);
-        // $this->assertEquals([2], $array);
+        $array = Helper::intervalBetween(2, 2);
+        $this->assertEquals([2], $array);
 
         $array = Helper::intervalBetween(2, [1, null]);
         $this->assertEquals(['1..'], $array);
@@ -55,6 +55,12 @@ final class HelperIntervalBetweenTest extends TestCase
 
         $array = Helper::intervalBetween(2, [[1, 10], [11, 20]]);
         $this->assertEquals(['1..10'], $array);
+
+        $array = Helper::intervalBetween(2, '..');
+        $this->assertEquals(['..'], $array);
+
+        $array = Helper::intervalBetween(2, [null, null]);
+        $this->assertEquals(['..'], $array);
     }
 
 
