@@ -9,6 +9,11 @@ namespace Atlcom\Traits;
  */
 trait HelperIntervalTrait
 {
+    public static string $nameCollectionItemEqual = 'equal';
+    public static string $nameCollectionItemMin = 'min';
+    public static string $nameCollectionItemMax = 'max';
+
+
     /**
      * Возвращает число со смещением по кругу в заданном интервале
      *
@@ -41,20 +46,20 @@ trait HelperIntervalTrait
 
 
     /**
-     * Проверяет значение на вхождение в интервал(ы)
+     * Возвращает коллекцию интервалов
      *
-     * @param mixed $value
      * @param mixed ...$intervals
-     * @return bool
+     * @return array
      */
-    public static function intervalBetween(mixed $value, mixed ...$intervals): bool
+    public static function intervalCollection(mixed ...$intervals): array
     {
-        $items = [];
+        $collection = [];
 
         foreach ($intervals as $interval) {
             switch (true) {
                 case is_string($interval):
                     $subIntervals = explode(',', str_replace(['|', ';'], ',', $interval));
+
                     foreach ($subIntervals as $subInterval) {
                         $subInterval = trim($subInterval);
 
@@ -62,47 +67,134 @@ trait HelperIntervalTrait
                             $subInterval = explode(',', str_replace(['...', '..'], ',', trim($subInterval)));
                             $min = $subInterval[0] ?? null;
                             $max = $subInterval[1] ?? null;
-                            $items[] = [
-                                ...(is_null($min) ? [] : ['min' => trim($min)]),
-                                ...(is_null($max) ? [] : ['max' => trim($max)]),
+                            $collection[] = [
+                                ...(is_null($min) ? [] : [static::$nameCollectionItemMin => trim($min)]),
+                                ...(is_null($max) ? [] : [static::$nameCollectionItemMax => trim($max)]),
                             ];
                         } else if ($subInterval !== '' && $subInterval !== 'null') {
-                            $items[] = ['equal' => $subInterval];
+                            $collection[] = [static::$nameCollectionItemEqual => $subInterval];
                         }
                     }
                     break;
 
                 case is_array($interval):
                     if (count($interval) === 1) {
-                        if ($interval[0] ?? null) {
-                            $items[] = ['equal' => $interval[0] ?: 0];
+                        $item = $interval[0] ?? null;
+
+                        if (is_array($item)) {
+                            !($collectionSub = static::intervalCollection($item))
+                                ?: $collection = [...$collection, ...$collectionSub];
+                        } else if (str_contains((string)$item, ',') || str_contains((string)$item, '..')) {
+                            !($collectionSub = static::intervalCollection($item))
+                                ?: $collection = [...$collection, ...$collectionSub];
+                        } else if ($item) {
+                            $collection[] = [static::$nameCollectionItemEqual => $item];
                         }
+
                     } else {
-                        $items[] = ['min' => ($interval[0] ?? 0) ?: 0, 'max' => ($interval[1] ?? 0) ?: 0];
+                        $item1 = $interval[0] ?? null;
+
+                        if (str_contains((string)$item1, ',') || str_contains((string)$item1, '..')) {
+                            !($collectionSub = static::intervalCollection(...$interval))
+                                    ?: $collection = [...$collection, ...$collectionSub];
+                        } else {
+                            $item2 = $interval[1] ?? null;
+                            if (count($interval) === 2 && !is_array($item1) && !is_array($item2)) {
+                                $collection[] = [
+                                    static::$nameCollectionItemMin => $interval[0] ?? null,
+                                    static::$nameCollectionItemMax => $interval[1] ?? null,
+                                ];
+                            } else {
+                                !($collectionSub = static::intervalCollection(...$interval))
+                                    ?: $collection = [...$collection, ...$collectionSub];
+                            }
+                        }
+
                     }
                     break;
 
                 default:
                     if (!is_null($interval)) {
-                        $items[] = ['equal' => $interval ?: 0];
+                        $collection[] = [static::$nameCollectionItemEqual => $interval ?: 0];
                     }
             };
         }
 
-        foreach ($items as $item) {
-            if (isset($item['equal']) && $value == $item['equal']) {
-                return true;
-            } else if (isset($item['min']) && isset($item['max'])) {
-                if ($value >= $item['min'] && $value <= $item['max']) {
-                    return true;
+        return $collection;
+    }
+
+
+    /**
+     * Проверяет значение на вхождение в интервал(ы)
+     *
+     * @param mixed $value
+     * @param mixed ...$intervals
+     * @return array
+     */
+    public static function intervalBetween(mixed $value, mixed ...$intervals): array
+    {
+        $collection = static::intervalCollection(...$intervals);
+        $result = [];
+        $value = (string)$value;
+
+        foreach ($collection as $item) {
+            if (
+                isset($item[static::$nameCollectionItemEqual])
+                && $value == (string)$item[static::$nameCollectionItemEqual]
+            ) {
+                $result[] = $item[static::$nameCollectionItemEqual];
+
+            } else if (
+                isset($item[static::$nameCollectionItemMin])
+                && isset($item[static::$nameCollectionItemMax])
+            ) {
+                if (
+                    $value >= (string)$item[static::$nameCollectionItemMin]
+                    && $value <= (string)$item[static::$nameCollectionItemMax]
+                ) {
+                    $result[] = implode('..', array_values($item));
                 }
-            } else if (isset($item['min']) && $value >= $item['min']) {
-                return true;
-            } else if (isset($item['max']) && $value <= $item['max']) {
-                return true;
+
+            } else if (
+                isset($item[static::$nameCollectionItemMin])
+                && $value >= (string)$item[static::$nameCollectionItemMin]
+            ) {
+                $result[] = implode('..', array_values($item));
+
+            } else if (
+                isset($item[static::$nameCollectionItemMax])
+                && $value <= (string)$item[static::$nameCollectionItemMax]
+            ) {
+                $result[] = implode('..', array_values($item));
             }
         }
 
-        return false;
+        return $result;
+    }
+
+
+    /**
+     * Проверяет пересечение интервалов
+     *
+     * @param mixed ...$intervals
+     * @return array
+     */
+    public static function intervalOverlap(...$intervals): array
+    {
+        $collection = static::intervalCollection(...$intervals);
+        array_walk($collection, fn (&$item) => $item = array_values($item));
+        $result = [];
+
+        while ($collection) {
+            $item = array_shift($collection);
+            $itemInterval = [count($item) === 1 ? $item[0] : "{$item[0]}..{$item[1]}"];
+
+            foreach ($item as $itemValue) {
+                $itemBetween = static::intervalBetween($itemValue, $collection);
+                !$itemBetween ?: $result = [...$result, ...$itemInterval, ...$itemBetween];
+            }
+        }
+
+        return array_unique($result);
     }
 }

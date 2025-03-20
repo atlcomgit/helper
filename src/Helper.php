@@ -21,6 +21,9 @@ use Atlcom\Traits\HelperTimeTrait;
  * @see \Atlcom\Tests\HelperTest
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper
+ * 
+ * @method @see static::intervalBetween()
+ * @method @see static::intervalOverlap()
  */
 abstract class Helper
 {
