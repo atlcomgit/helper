@@ -29,30 +29,14 @@ trait HelperTimeTrait
 
 
     /**
-     * Возвращает массив названий периодов
-     *
-     * @return array
-     */
-    public static function timePluralNames(): array
-    {
-        return [
-            static::$nameYears => static::$pluralYears,
-            static::$nameMonths => static::$pluralMonth,
-            static::$nameDays => static::$pluralDays,
-            static::$nameHours => static::$pluralHours,
-            static::$nameMinutes => static::$pluralMinutes,
-            static::$nameSeconds => static::$pluralSeconds,
-        ];
-    }
-
-
-    /**
      * Конвертирует период между датами в массив YDHM
+     * @see ./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToArrayTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
      * @return array
      */
+    //?!? 
     public static function timePeriodBetweenDatesToArray(Carbon|string $dateFrom, Carbon|string $dateTo): array
     {
         $result = [
@@ -115,6 +99,7 @@ trait HelperTimeTrait
 
     /**
      * Конвертирует период между датами в строку YDHM
+     * @see ./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToStringTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
@@ -123,6 +108,7 @@ trait HelperTimeTrait
      * @param mixed 
      * @return string
      */
+    //?!? 
     public static function timePeriodBetweenDatesToString(
         Carbon|string $dateFrom,
         Carbon|string $dateTo,
@@ -133,25 +119,25 @@ trait HelperTimeTrait
 
         return trim(
             ($period->years
-                ? static::plural($period->years, static::$pluralYears) . " "
+                ? static::stringPlural($period->years, static::$pluralYears) . " "
                 : ''
             ) .
             ($period->months
-                ? static::plural($period->months, static::$pluralMonth) . " "
+                ? static::stringPlural($period->months, static::$pluralMonth) . " "
                 : ''
             ) .
-            static::plural($period->days, $time24 ? static::$pluralDays24 : static::$pluralDays)
+            static::stringPlural($period->days, $time24 ? static::$pluralDays24 : static::$pluralDays)
             . " " .
             (($includeTime && $period->hours)
-                ? static::plural($period->hours, static::$pluralHours) . " "
+                ? static::stringPlural($period->hours, static::$pluralHours) . " "
                 : ''
             ) .
             (($includeTime && $period->minutes)
-                ? static::plural($period->minutes, static::$pluralMinutes) . " "
+                ? static::stringPlural($period->minutes, static::$pluralMinutes) . " "
                 : ''
             ) .
             (($includeTime && $period->seconds)
-                ? static::plural($period->seconds, static::$pluralSeconds) . " "
+                ? static::stringPlural($period->seconds, static::$pluralSeconds) . " "
                 : ''
             )
         );
@@ -160,10 +146,12 @@ trait HelperTimeTrait
 
     /**
      * Конвертирует секунды в массив YDHM
+     * @see ./tests/HelperTimeTrait/HelperTimeSecondsToArrayTest.php
      *
      * @param int|float $value
      * @return array
      */
+    //?!? 
     public static function timeSecondsToArray(int|float $value): array
     {
         $result = [];
@@ -181,6 +169,7 @@ trait HelperTimeTrait
                 $result[$periodName] = $periodSeconds;
                 $value -= (int)($periodSeconds * $periodValue);
                 $countZero = true;
+
             } else {
                 $result[$periodName] = 0;
             }
@@ -195,6 +184,7 @@ trait HelperTimeTrait
 
     /**
      * Конвертирует секунды в строку времени YDHM
+     * @see ./tests/HelperTimeTrait/HelperTimeSecondsToStringTest.php
      *
      * @param int|float $value
      * @param bool $withZero
@@ -202,13 +192,21 @@ trait HelperTimeTrait
      * @param mixed 
      * @return string
      */
+    //?!? 
     public static function timeSecondsToString(
         int|float $value,
         bool $withZero = false,
         array $pluralNames = [],
     ): string {
         $result = '';
-        !$pluralNames ?: $pluralNames = static::timePluralNames();
+        !$pluralNames ?: $pluralNames = [
+            static::$nameYears => static::$pluralYears,
+            static::$nameMonths => static::$pluralMonth,
+            static::$nameDays => static::$pluralDays,
+            static::$nameHours => static::$pluralHours,
+            static::$nameMinutes => static::$pluralMinutes,
+            static::$nameSeconds => static::$pluralSeconds,
+        ];
 
         if ($value < 0) {
             return 'Отрицательное число';
@@ -217,7 +215,7 @@ trait HelperTimeTrait
         if ($value < 1) {
             $value = (int)($value * 1000);
 
-            return static::plural($value, static::$pluralMilliseconds);
+            return static::stringPlural($value, static::$pluralMilliseconds);
         }
 
         if ($value < 5) {
@@ -229,7 +227,7 @@ trait HelperTimeTrait
         foreach ($pluralNames as $periodName => $periodPluralNames) {
             $periodValue = $timeArray[$periodName] ?? 0;
             if ($withZero || $periodValue > 0) {
-                $result .= static::plural($periodValue, $periodPluralNames) . " ";
+                $result .= static::stringPlural($periodValue, $periodPluralNames) . " ";
             }
         }
 

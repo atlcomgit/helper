@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atlcom\Enums;
 
-enum HelperBreakTypeEnum: string
+enum HelperStringBreakTypeEnum: string
 {
     case Word = 'word';
     case Line = 'line';

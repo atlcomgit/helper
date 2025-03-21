@@ -11,11 +11,13 @@ trait HelperIpTrait
 {
     /**
      * Проверка ip на вхождение в подсети
+     * @see ./tests/HelperIpTrait/HelperIpInRangeTest.php
      *
      * @param string $value
      * @param array $rangeMaskIp
      * @return bool
      */
+    //?!? 
     public static function ipInRange(string $value, array $rangeMaskIp): bool
     {
         foreach ($rangeMaskIp as $maskIp) {
@@ -35,8 +37,10 @@ trait HelperIpTrait
                 if ($ipLong >= $rangeStart && $ipLong <= $rangeEnd) {
                     return true;
                 }
+
             } else if ($value == trim($maskIpRange[0])) {
                 return true;
+
             } else if (trim($maskIpRange[0]) === '*') {
                 return true;
             }

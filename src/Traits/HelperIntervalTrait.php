@@ -16,6 +16,7 @@ trait HelperIntervalTrait
 
     /**
      * Возвращает число со смещением по кругу в заданном интервале
+     * @see ./tests/HelperIntervalTrait/HelperIntervalAroundTest.php
      *
      * @param int $value
      * @param int $min
@@ -41,16 +42,18 @@ trait HelperIntervalTrait
                 );
         }
 
-        return $result;
+        return (int)$result;
     }
 
 
     /**
      * Возвращает коллекцию интервалов
+     * @see ./tests/HelperIntervalTrait/HelperIntervalCollectionTest.php
      *
      * @param mixed ...$intervals
      * @return array
      */
+    //?!? 
     public static function intervalCollection(mixed ...$intervals): array
     {
         $collection = [];
@@ -73,6 +76,7 @@ trait HelperIntervalTrait
                                 ...(is_null($min) ? [] : [static::$nameCollectionItemMin => trim($min)]),
                                 ...(is_null($max) ? [] : [static::$nameCollectionItemMax => trim($max)]),
                             ];
+
                         } else if ($subInterval !== '' && $subInterval !== 'null') {
                             $collection[] = [static::$nameCollectionItemEqual => $subInterval];
                         }
@@ -86,9 +90,11 @@ trait HelperIntervalTrait
                         if (is_array($item)) {
                             !($collectionSub = static::intervalCollection($item))
                                 ?: $collection = [...$collection, ...$collectionSub];
+
                         } else if (str_contains((string)$item, ',') || str_contains((string)$item, '..')) {
                             !($collectionSub = static::intervalCollection($item))
                                 ?: $collection = [...$collection, ...$collectionSub];
+
                         } else if ($item) {
                             $collection[] = [static::$nameCollectionItemEqual => $item];
                         }
@@ -102,15 +108,18 @@ trait HelperIntervalTrait
                         ) {
                             !($collectionSub = static::intervalCollection(...$interval))
                                 ?: $collection = [...$collection, ...$collectionSub];
+
                         } else {
                             $item2 = $interval[1] ?? null;
                             if (count($interval) === 2 && is_null($item1) && is_null($item2)) {
                                 $collection[] = [];
+
                             } else if (count($interval) === 2 && !is_array($item1) && !is_array($item2)) {
                                 $collection[] = [
                                     static::$nameCollectionItemMin => $item1,
                                     static::$nameCollectionItemMax => $item2,
                                 ];
+
                             } else {
                                 !($collectionSub = static::intervalCollection(...$interval))
                                     ?: $collection = [...$collection, ...$collectionSub];
@@ -133,6 +142,7 @@ trait HelperIntervalTrait
 
     /**
      * Проверяет значение на вхождение в интервал(ы)
+     * @see ./tests/HelperIntervalTrait/HelperIntervalBetweenTest.php
      *
      * @param mixed $value
      * @param mixed ...$intervals
@@ -180,6 +190,7 @@ trait HelperIntervalTrait
                 && is_null($item[static::$nameCollectionItemMax])
             ) {
                 $result[] = '..';
+
             } else if (empty($item)) {
                 $result[] = '..';
             }
@@ -191,6 +202,7 @@ trait HelperIntervalTrait
 
     /**
      * Проверяет пересечение интервалов
+     * @see ./tests/HelperIntervalTrait/HelperIntervalOverlapTest.php
      *
      * @param mixed ...$intervals
      * @return array

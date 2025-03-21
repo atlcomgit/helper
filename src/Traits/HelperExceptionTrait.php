@@ -13,10 +13,12 @@ trait HelperExceptionTrait
 {
     /**
      * Конвертирует исключение в строку json
+     * @see ./tests/HelperExceptionTrait/HelperExceptionToStringTest.php
      *
      * @param Throwable $value
      * @return string
      */
+    //?!? 
     public static function exceptionToString(Throwable $value): string
     {
         $exceptionArray = [
@@ -24,7 +26,7 @@ trait HelperExceptionTrait
             'message' => $value->getMessage(),
             'exception' => basename(str_replace('\\', '/', $value::class)),
             'file' => trim(str_replace(static::basePath(), '', $value->getFile()), '/') . ':' . $value->getLine(),
-            'trace' => static::arrayExcludeVendorTrace($value->getTrace()),
+            'trace' => static::arrayExcludeTraceVendor($value->getTrace()),
         ];
 
         return json_encode(

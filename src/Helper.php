@@ -5,33 +5,68 @@ declare(strict_types=1);
 namespace Atlcom;
 
 use Atlcom\Traits\HelperArrayTrait;
+use Atlcom\Traits\HelperCacheTrait;
 use Atlcom\Traits\HelperCryptTrait;
 use Atlcom\Traits\HelperExceptionTrait;
+use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperIntervalTrait;
 use Atlcom\Traits\HelperIpTrait;
+use Atlcom\Traits\HelperPathTrait;
 use Atlcom\Traits\HelperSizeTrait;
 use Atlcom\Traits\HelperStringTrait;
+use Atlcom\Traits\HelperTelegramTrait;
 use Atlcom\Traits\HelperTimeTrait;
 
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.01
+ * @version 1.02
  * 
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper
  * 
+ * //?!? sort
+ * 
+ * @method @see static::intervalAround()
  * @method @see static::intervalBetween()
  * @method @see static::intervalOverlap()
+ * 
+ * @method @see static::stringLength()
+ * @method @see static::stringUpper()
+ * @method @see static::stringLower()
+ * @method @see static::stringCopy()
+ * @method @see static::stringDelete()
+ * @method @see static::stringCut()
+ * @method @see static::stringPaste()
+ * @method @see static::stringChange()
+ * @method @see static::stringReplace()
+ * @method @see static::stringConcat()
+ * @method @see static::stringAddPrefix()
+ * @method @see static::stringAddSuffix()
+ * @method @see static::stringMerge()
+ * @method @see static::stringSearchAny()
+ * @method @see static::stringSearchAll()
+ * 
+ * @method @see static::arrayExcludeTraceVendor()
+ * 
+ * @method @see static::cacheRuntimeSet()
+ * @method @see static::cacheRuntimeGet()
+ * 
+ * @method @see static::cryptEncode()
+ * @method @see static::cryptDecode()
  */
 abstract class Helper
 {
     use HelperArrayTrait;
+    use HelperCacheTrait;
     use HelperCryptTrait;
     use HelperExceptionTrait;
+    use HelperHashTrait;
     use HelperIntervalTrait;
     use HelperIpTrait;
+    use HelperPathTrait;
     use HelperSizeTrait;
     use HelperStringTrait;
+    use HelperTelegramTrait;
     use HelperTimeTrait;
 }

@@ -15,37 +15,46 @@ trait HelperCryptTrait
 
 
     /**
-     * Шифрует строку
+     * Шифрует строку с паролем
+     * @see ./tests/HelperCryptTrait/HelperCryptEncodeTest.php
      *
-     * @param int|float|string|null $value
-     * @param bool $shrink
+     * @param mixed $value
+     * @param string|null $password
+     * @param bool|null $random
      * @return string
      */
-    public static function cryptEncode(
-        int|float|string|null $value,
-        ?string $password = null,
-        ?bool $random = null,
-    ): string {
+    public static function cryptEncode(mixed $value, ?string $password = null, ?bool $random = null): string
+    {
         $result = '';
-        if (!$value) {
+        if (!$value || is_callable($value)) {
             return $result;
         }
-        $string = (string)$value;
+
+        $string = match (true) {
+            is_array($value) => json_encode($value),
+            is_object($value) => match (true) {
+                    method_exists($value, 'toArray') => json_encode((array)$value->toArray()),
+
+                    default => json_encode((array)$value)
+                },
+
+            default => (string)$value,
+        };
 
         $str = static::$cryptPrefix . $string;
-        $password = static::hash($password ?? '');
+        $password = static::cryptHash($password ?? '');
         mt_srand((int)static::cryptMakeRandom());
         $rnd = ($random ?? static::$cryptRandom) ? mt_rand(100, 255) : 100;
-        for ($aa = 0; $aa < strlen($str); $aa++) {
-            $result .= (string)str_pad((string)ord($str[$aa]), static::$cryptLength, '0', STR_PAD_LEFT); //sprintf("%03d", ord($str[$aa]));
+        for ($aa = 0; $aa < mb_strlen($str); $aa++) {
+            $result .= (string)str_pad((string)mb_ord($str[$aa]), static::$cryptLength, '0', STR_PAD_LEFT); //sprintf("%03d", ord($str[$aa]));
         }
-        $cc = strlen($result);
+        $cc = mb_strlen($result);
         $bb = 0;
 
         for ($aa = 0; $aa < $cc; $aa++) {
-            $lb = ord($result[$aa]);
-            $sc = $password ? ord($password[static::intervalAround(0, strlen($password) - 1, $aa)]) : 0;
-            $result[$aa] = chr(static::intervalAround(48, 57, $lb + $aa + $bb + $cc + $rnd + $sc));
+            $lb = mb_ord($result[$aa]);
+            $sc = $password ? mb_ord($password[static::intervalAround($aa, 0, mb_strlen($password) - 1)]) : 0;
+            $result[$aa] = mb_chr(static::intervalAround($lb + $aa + $bb + $cc + $rnd + $sc, 48, 57));
             $bb = $lb;
         }
 
@@ -58,7 +67,8 @@ trait HelperCryptTrait
 
 
     /**
-     * Дешифрует строку
+     * Дешифрует строку с паролем
+     * @see ./tests/HelperCryptTrait/HelperCryptDecodeTest.php
      *
      * @param string $string
      * @return string|false
@@ -71,32 +81,32 @@ trait HelperCryptTrait
         }
 
         $str = $value;
-        $password = static::hash($password ?? '');
+        $password = static::cryptHash($password ?? '');
         $str = static::cryptUnHash($str);
         if (!$str) {
             return false;
         }
 
         $str = static::cryptUnShrink($str);
-        $rnd = (int)substr($str, 0, static::$cryptLength);
-        $str = substr($str, static::$cryptLength);
-        $cc = strlen($str);
+        $rnd = (int)mb_substr($str, 0, static::$cryptLength);
+        $str = mb_substr($str, static::$cryptLength);
+        $cc = mb_strlen($str);
         $bb = 0;
 
         for ($aa = 0; $aa < $cc; $aa++) {
-            $lb = ord($str[$aa]);
-            $sc = $password ? ord($password[static::intervalAround(0, strlen($password) - 1, $aa)]) : 0;
-            $str[$aa] = chr(static::intervalAround(48, 57, $lb - $aa - $bb - $cc - $rnd - $sc));
-            $bb = ord($str[$aa]);
+            $lb = mb_ord($str[$aa]);
+            $sc = $password ? mb_ord($password[static::intervalAround($aa, 0, mb_strlen($password) - 1)]) : 0;
+            $str[$aa] = mb_chr(static::intervalAround($lb - $aa - $bb - $cc - $rnd - $sc, 48, 57));
+            $bb = mb_ord($str[$aa]);
         }
 
         while ($str != '') {
-            $result .= chr((int)substr($str, 0, static::$cryptLength));
-            $str = substr($str, static::$cryptLength);
+            $result .= mb_chr((int)mb_substr($str, 0, static::$cryptLength));
+            $str = mb_substr($str, static::$cryptLength);
         }
 
-        $result = (substr($result, 0, strlen(static::$cryptPrefix)) === static::$cryptPrefix)
-            ? substr($result, strlen(static::$cryptPrefix))
+        $result = (mb_substr($result, 0, mb_strlen(static::$cryptPrefix)) === static::$cryptPrefix)
+            ? mb_substr($result, mb_strlen(static::$cryptPrefix))
             : false;
 
         return $result;
@@ -105,10 +115,11 @@ trait HelperCryptTrait
 
     /**
      * Задает случайный генератор
+     * @see ./tests/HelperCryptTrait/HelperCryptMakeRandomTest.php
      *
      * @return float
      */
-    public static function cryptMakeRandom(): float
+    private static function cryptMakeRandom(): float
     {
         [$usec, $sec] = explode(' ', microtime());
 
@@ -118,27 +129,31 @@ trait HelperCryptTrait
 
     /**
      * Упаковывает строку из чисел
+     * @see ./tests/HelperCryptTrait/HelperCryptShrinkTest.php
      *
      * @param mixed $value
      * @return string
      */
-    public static function cryptShrink(string $value): string
+    private static function cryptShrink(string $value): string
     {
         $result = '';
         if ($value == '') {
             return $result;
         }
 
-        for ($aa = 0; $aa < strlen($value); $aa++) {
-            $code = substr($value, $aa, 2);
-            if (strlen($code) < 2) {
+        for ($aa = 0; $aa < mb_strlen($value); $aa++) {
+            $code = mb_substr($value, $aa, 2);
+            if (mb_strlen($code) < 2) {
                 $result .= $value[$aa];
+
             } else if (($code >= '65' && $code <= '90') || ($code >= '97' && $code <= '99')) {
-                $result .= chr((int)$code);
+                $result .= mb_chr((int)$code);
                 $aa++;
+
             } else if ($code >= '00' && $code <= '22') {
-                $result .= chr((int)$code + 100);
+                $result .= mb_chr((int)$code + 100);
                 $aa++;
+
             } else {
                 $result .= $value[$aa];
             }
@@ -149,23 +164,26 @@ trait HelperCryptTrait
 
     /**
      * Распаковывает строку из чисел
+     * @see ./tests/HelperCryptTrait/HelperCryptUnShrinkTest.php
      *
      * @param string $value
      * @return string
      */
-    public static function cryptUnShrink(string $value): string
+    private static function cryptUnShrink(string $value): string
     {
         $result = '';
         if ($value == '') {
             return $result;
         }
 
-        for ($aa = 0; $aa < strlen($value); $aa++) {
-            $code = ord($value[$aa]);
+        for ($aa = 0; $aa < mb_strlen($value); $aa++) {
+            $code = mb_ord($value[$aa]);
             if (($code >= 65 && $code <= 90) || ($code >= 97 && $code <= 99)) {
                 $result .= $code;
+
             } else if ($code >= 100 && $code <= 122) {
                 $result .= str_pad((string)($code - 100), 2, "0", STR_PAD_LEFT);
+
             } else {
                 $result .= $value[$aa];
             }
@@ -176,18 +194,19 @@ trait HelperCryptTrait
 
     /**
      * Добавляет хеш в строку
+     * @see ./tests/HelperCryptTrait/HelperCryptHashTest.php
      * 
      * @param string $value
      * @return string
      */
-    public static function cryptHash(string $value): string
+    private static function cryptHash(string $value): string
     {
-        $chunkLength = (int)floor(strlen($value) / 32);
+        $chunkLength = (int)floor(mb_strlen($value) / 32);
         if ($chunkLength === 0) {
             return $value;
         }
 
-        $hash = static::hash($value);
+        $hash = static::hashXxh128($value);
         $chunks = array_chunk(str_split($value), $chunkLength, false);
         $chunkIndex = 0;
 
@@ -206,13 +225,14 @@ trait HelperCryptTrait
 
     /**
      * Удаляет хеш из строки
+     * @see ./tests/HelperCryptTrait/HelperCryptUnHashTest.php
      * 
      * @param string $str
      * @return string
      */
-    public static function cryptUnHash(string $str): string
+    private static function cryptUnHash(string $str): string
     {
-        $chunkLength = (int)floor(strlen($str) / 32);
+        $chunkLength = (int)floor(mb_strlen($str) / 32);
         if ($chunkLength === 0) {
             return $str;
         }
@@ -232,6 +252,6 @@ trait HelperCryptTrait
         $chunks = array_map(static fn ($chunk) => implode('', $chunk), $chunks);
         $result = implode('', $chunks);
 
-        return static::hash($result) === $hash ? $result : '';
+        return static::hashXxh128($result) === $hash ? $result : '';
     }
 }

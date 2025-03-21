@@ -11,10 +11,12 @@ trait HelperSizeTrait
 {
     /**
      * Конвертирует размер файла в строку
+     * @see ./tests/HelperSizeTrait/HelperSizeBytesToStringTest.php
      *
      * @param int $bytes
      * @return string
      */
+    //?!? 
     public static function sizeBytesToString(int $value): string
     {
         $units = ['байт', 'Кб', 'Мб', 'Гб', 'Тб', 'Пб'];
@@ -29,10 +31,12 @@ trait HelperSizeTrait
 
     /**
      * Конвертирует строку в размер файла
+     * @see ./tests/HelperSizeTrait/HelperSizeStringToBytesTest.php
      *
      * @param string $size
      * @return int
      */
+    //?!? 
     public static function sizeStringToBytes(string $value): int
     {
         $exp = match (static::stringUpper(preg_replace('/[^a-zа-яё]/ui', '', $value))) {

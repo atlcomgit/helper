@@ -9,35 +9,36 @@ namespace Atlcom\Traits;
  */
 trait HelperArrayTrait
 {
+    public static array $ignoreFiles = ['/vendor/'];
+    public static array $ignoreClasses = ['Illuminate'];
+
+
     /**
      * Исключает из массива трассировки пакетные ошибки
+     * @see ./tests/HelperArrayTrait/HelperArrayExcludeTraceVendorTest.php
      *
      * @param array $trace
      * @return array
      */
-    public static function arrayExcludeVendorTrace(array $value, ?string $basePath = null): array
+    public static function arrayExcludeTraceVendor(array $value, ?string $basePath = null): array
     {
-        $basePath ??= static::basePath();
-        $ignoreFiles = [
-            '/vendor/',
-        ];
-        $ignoreClasses = [
-            'Illuminate',
-        ];
+        $basePath ??= static::pathRoot();
 
         $resultTrace = [];
         foreach ($value as $item) {
             if (
-                !static::stringStarts($item['file'] ?? '', $ignoreFiles)
+                !static::stringSearchAny($item['file'] ?? '', static::$ignoreFiles)
                 &&
-                !static::stringStarts($item['class'] ?? '', $ignoreClasses)
+                !static::stringSearchAny($item['class'] ?? '', static::$ignoreClasses)
             ) {
-                $file = trim(str_replace($basePath, '', $item['file'] ?? ''), '/');
+                $file = trim(static::stringReplace($item['file'] ?? '', $basePath, ''), '/');
                 $resultTrace[] = [
-                    'file' => $file . ':' . ($item['line'] ?? ''),
-                    'func' => static::baseNameClass($item['class'] ?? '')
-                        . ($item['type'] ?? '')
-                        . $item['function'] . '()',
+                    'file' => static::stringConcat(':', $file, $item['line'] ?? ''),
+                    'func' => static::stringConcat(
+                        $item['type'] ?? '',
+                        static::pathClassName($item['class'] ?? ''),
+                        $item['function'] . '()',
+                    ),
                 ];
             }
         }
