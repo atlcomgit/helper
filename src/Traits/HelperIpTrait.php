@@ -10,42 +10,50 @@ namespace Atlcom\Traits;
 trait HelperIpTrait
 {
     /**
-     * Проверка ip на вхождение в подсети
+     * Возвращает массив найденных масок подсетей, в которые входит ip адрес
      * @see ./tests/HelperIpTrait/HelperIpInRangeTest.php
      *
      * @param string $value
-     * @param array $rangeMaskIp
-     * @return bool
+     * @param mixed ...$masks
+     * @return array
      */
-    //?!? 
-    public static function ipInRange(string $value, array $rangeMaskIp): bool
+    public static function ipInRange(string $value, mixed ...$masks): array
     {
-        foreach ($rangeMaskIp as $maskIp) {
-            // Получаем массив, состоящий из IP и номера маски
-            $maskIpRange = explode('/', trim($maskIp, ' '));
+        $result = [];
 
-            if (isset($maskIpRange[1])) {
-                // Элемент массива [0] является начальным IP (сеть)
-                // Конвертируем строку, содержащую IPv4-адрес в целое число
-                $rangeStart = ip2long(trim($maskIpRange[0]));
+        foreach ($masks as $mask) {
 
-                // Выделяем число адресов в диапазоне как 2^(32-номер_маски)
-                // Делаем -1, иначе захватываем широковещательный канал
-                $rangeEnd = $rangeStart + pow(2, 32 - intval($maskIpRange[1])) - 1;
-                $ipLong = ip2long($value);
+            if (is_array($mask) || is_object($mask)) {
+                $result = [...$result, ...static::ipInRange($value, ...(array)$mask)];
+            } else {
+                $mask = (string)$mask;
 
-                if ($ipLong >= $rangeStart && $ipLong <= $rangeEnd) {
-                    return true;
+                // Получаем массив, состоящий из IP и номера маски
+                $maskExplode = explode('/', trim($mask, ' '));
+
+                if (isset($maskExplode[1])) {
+                    // Элемент массива [0] является начальным IP (сеть)
+                    // Конвертируем строку, содержащую IPv4-адрес в целое число
+                    $rangeStart = ip2long(trim($maskExplode[0]));
+
+                    // Выделяем число адресов в диапазоне как 2^(32-номер_маски)
+                    // Делаем -1, иначе захватываем широковещательный канал
+                    $rangeEnd = $rangeStart + pow(2, 32 - intval($maskExplode[1])) - 1;
+                    $ipLong = ip2long($value);
+
+                    if ($ipLong >= $rangeStart && $ipLong <= $rangeEnd) {
+                        $result[] = $mask;
+                    }
+
+                } else if ($value == trim($maskExplode[0])) {
+                    $result[] = $mask;
+
+                } else if (trim($maskExplode[0]) === '*') {
+                    $result[] = $mask;
                 }
-
-            } else if ($value == trim($maskIpRange[0])) {
-                return true;
-
-            } else if (trim($maskIpRange[0]) === '*') {
-                return true;
             }
         }
 
-        return false;
+        return $result;
     }
 }

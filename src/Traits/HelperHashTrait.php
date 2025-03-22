@@ -10,7 +10,7 @@ namespace Atlcom\Traits;
 trait HelperHashTrait
 {
     /**
-     * Возвращает хеш значения
+     * Возвращает xxh128 хеш значения
      * @see ./tests/HelperHashTrait/HelperHashXxh128Test.php
      *
      * @param mixed $value
@@ -18,7 +18,6 @@ trait HelperHashTrait
      * @param string|null $suffix
      * @return string
      */
-    //?!? 
     public static function hashXxh128(mixed $value, ?string $prefix = null, ?string $suffix = null): string
     {
         is_scalar($value) ?: $value = json_encode($value);

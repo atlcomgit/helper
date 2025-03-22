@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * Тесты трейта
+ * Тест метода трейта
  * @see \Atlcom\Traits\HelperCryptTrait
  */
 final class HelperCryptEncodeTest extends TestCase

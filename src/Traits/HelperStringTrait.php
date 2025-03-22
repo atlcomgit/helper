@@ -509,4 +509,18 @@ trait HelperStringTrait
 
         return $value;
     }
+
+
+    /**
+     * Возвращает количество найденных вхождений подстрок в строке
+     *
+     * @param int|float|string|null $value
+     * @param int|float|string|array $searches
+     * @return int
+     */
+    //?!? 
+    public static function stringCount(int|float|string|null $value, int|float|string|array $searches): int
+    {
+        return 0;
+    }
 }

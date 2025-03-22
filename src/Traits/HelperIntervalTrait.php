@@ -53,7 +53,6 @@ trait HelperIntervalTrait
      * @param mixed ...$intervals
      * @return array
      */
-    //?!? 
     public static function intervalCollection(mixed ...$intervals): array
     {
         $collection = [];

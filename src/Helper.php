@@ -30,7 +30,7 @@ use Atlcom\Traits\HelperTimeTrait;
  * @method @see static::intervalAround()
  * @method @see static::intervalBetween()
  * @method @see static::intervalOverlap()
- * 
+ * @method @see static::intervalCollection()
  * @method @see static::stringLength()
  * @method @see static::stringUpper()
  * @method @see static::stringLower()
@@ -46,14 +46,16 @@ use Atlcom\Traits\HelperTimeTrait;
  * @method @see static::stringMerge()
  * @method @see static::stringSearchAny()
  * @method @see static::stringSearchAll()
- * 
  * @method @see static::arrayExcludeTraceVendor()
- * 
  * @method @see static::cacheRuntimeSet()
  * @method @see static::cacheRuntimeGet()
- * 
  * @method @see static::cryptEncode()
  * @method @see static::cryptDecode()
+ * @method @see static::exceptionToString()
+ * @method @see static::hashXxh128()
+ * @method @see static::ipInRange()
+ * @method @see static::pathRoot()
+ * @method @see static::pathClassName()
  */
 abstract class Helper
 {

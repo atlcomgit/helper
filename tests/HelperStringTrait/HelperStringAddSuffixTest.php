@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Тесты трейта
+ * Тест метода трейта
  * @see \Atlcom\Traits\HelperStringTrait
  */
 final class HelperStringAddSuffixTest extends TestCase

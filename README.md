@@ -3,7 +3,9 @@
 Класс помощник работы со строками, числами, массивами.
 
 Версия 1.02
+//?!? sort
 - Добавлен метод Helper::intervalAround
+- Добавлен метод Helper::intervalCollection
 - Добавлен метод Helper::stringLength
 - Добавлен метод Helper::stringUpper
 - Добавлен метод Helper::stringLower
@@ -24,6 +26,11 @@
 - Добавлен метод Helper::cacheRuntimeGet
 - Добавлен метод Helper::cryptEncode
 - Добавлен метод Helper::cryptDecode
+- Добавлен метод Helper::exceptionToString
+- Добавлен метод Helper::hashXxh128
+- Добавлен метод Helper::ipInRange
+- Добавлен метод Helper::pathRoot
+- Добавлен метод Helper::pathClassName
 
 Версия 1.01
 - Добавлен метод Helper::intervalBetween
@@ -40,6 +47,8 @@
 ```
 composer require atlcom/helper
 ```
+
+//?!? sort
 
 ## Описание методов
 
@@ -65,6 +74,14 @@ $bool = (bool)Helper::intervalOverlap('1..3', '2..4'); // $bool = false
 ```php
 $integer = Helper::intervalAround(3 + 1, 1, 3); // $integer = 1
 $integer = Helper::intervalAround(1 - 1, 1, 3); // $integer = 3
+```
+---
+**[Helper::intervalCollection](./tests/HelperIntervalTrait/HelperIntervalCollectionTest.php)**(...\$intervals): array\
+Возвращает число со смещением по кругу в заданном интервале
+```php
+$array = Helper::intervalCollection(1, 3); // $array = [['equal' => 1], ['equal' => 3]]
+$array = Helper::intervalCollection('1..3'); // $array = [['min' => '1', 'max' => '3']]
+$array = Helper::intervalCollection([1, 3], 5); // $array = [['min' => 1, 'max' => 3], ['equal' => 5]]
 ```
 ---
 **[Helper::stringLength](./tests/HelperStringTrait/HelperStringLengthTest.php)**(\$value): int\
@@ -197,5 +214,35 @@ $string = Helper::cryptEncode('abc', 'password'); // $string = 'nh93432NibR3td26
 Дешифрует строку с паролем
 ```php
 $string = Helper::cryptDecode('nh93432NibR3td26', 'password'); // $string = 'abc'
+```
+---
+**[Helper::exceptionToString](./tests/HelperExceptionTrait/HelperExceptionToStringTest.php)**(\$value): string\
+Возвращает исключение в виде строки json
+```php
+$string = Helper::exceptionToString(new Exception('message', 400)); // $string = '{"code": 400, ...}}'
+```
+---
+**[Helper::hashXxh128](./tests/HelperHashTrait/HelperHashXxh128Test.php)**(\$value): string\
+Возвращает xxh128 хеш значения
+```php
+$string = Helper::hashXxh128('abc'); // $string = '06b05ab6733a618578af5f94892f3950'
+```
+---
+**[Helper::ipInRange](./tests/HelperIpTrait/HelperIpInRangeTest.php)**(\$value, ...\$masks): array\
+Возвращает xxh128 хеш значения
+```php
+$array = Helper::ipInRange('192.168.1.1', '192.168.1.0/24'); // $array = ['192.168.1.0/24']
+```
+---
+**[Helper::pathRoot](./tests/HelperPathTrait/HelperPathRootTest.php)**(\$value = null): string\
+Возвращает путь домашней папки
+```php
+$string = Helper::pathRoot(); // $string = '/home/path'
+```
+---
+**[Helper::pathClassName](./tests/HelperPathTrait/HelperPathClassNameTest.php)**(\$value = null): string\
+Возвращает имя класса без namespace
+```php
+$string = Helper::pathClassName('/test/Test.php'); // $string = 'Test'
 ```
 ---

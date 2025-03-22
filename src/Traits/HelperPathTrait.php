@@ -13,12 +13,12 @@ trait HelperPathTrait
      * Возвращает путь домашней папки
      * @see ./tests/HelperPathTrait/HelperPathRootTest.php
      *
+     * @param string|null $value
      * @return string
      */
-    //?!? 
-    public static function pathRoot(): string
+    public static function pathRoot(?string $value = null): string
     {
-        return str_replace('/public', '', $_SERVER['DOCUMENT_ROOT'] ?? '');
+        return $value ?? static::stringReplace($_SERVER['DOCUMENT_ROOT'] ?: realpath('') ?: '', '/public', '');
     }
 
 
@@ -29,9 +29,10 @@ trait HelperPathTrait
      * @param string $value
      * @return string
      */
-    //?!? 
     public static function pathClassName(string $value): string
     {
-        return basename(str_replace('\\', '/', $value));
+        !static::stringEnds($value, '.php') ?: $value = static::stringDelete($value, -4);
+
+        return basename(static::stringReplace($value, '\\', '/'));
     }
 }

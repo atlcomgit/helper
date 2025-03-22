@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Тесты трейта
+ * Тест метода трейта
  * @see \Atlcom\Traits\HelperStringTrait
  */
 final class HelperStringConcatTest extends TestCase
@@ -19,7 +19,7 @@ final class HelperStringConcatTest extends TestCase
     {
         $string = Helper::stringConcat(' ', 'Иванов', 'Иван', 'Иванович');
         $this->assertTrue($string === 'Иванов Иван Иванович');
-        
+
         $string = Helper::stringConcat(' ', ['Иванов', 'Иван', 'Иванович']);
         $this->assertTrue($string === 'Иванов Иван Иванович');
 
