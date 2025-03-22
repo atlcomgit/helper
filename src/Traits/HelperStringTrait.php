@@ -159,54 +159,56 @@ trait HelperStringTrait
 
 
     /**
-     * Проверяет начало строки на совпадение
+     * Проверяет начало строки на совпадение подстрок и возвращает найденную подстроку или null
      * @see ./tests/HelperStringTrait/HelperStringStartsTest.php
      *
      * @param int|float|string|null $value
-     * @param int|float|string|array|null $search
-     * @return bool|string
+     * @param mixed ...$searches
+     * @return string|null
      */
-    //?!? 
-    public static function stringStarts(int|float|string|null $value, int|float|string|array|null $search): bool|string
+    public static function stringStarts(int|float|string|null $value, mixed ...$searches): ?string
     {
-        is_iterable($search) ?: $search = [$search];
-        $search = array_filter($search);
         $value = (string)$value;
 
-        foreach ($search ?? [] as $item) {
-            $item = (string)$item;
-            if ($item && str_starts_with($value, $item)) {
-                return (string)$item;
+        foreach ($searches as $search) {
+            if (is_array($search) || is_object($search)) {
+                if ($result = static::stringStarts($value, ...(array)$search)) {
+                    return $result;
+                }
+
+            } else if (!is_null($search) && $search !== '' && str_starts_with($value, (string)$search)) {
+                return $search;
             }
         }
 
-        return false;
+        return null;
     }
 
 
     /**
-     * Проверяет конец строки на совпадение
+     * Проверяет конец строки на совпадение подстрок и возвращает найденную подстроку или null
      * @see ./tests/HelperStringTrait/HelperStringEndsTest.php
      *
      * @param int|float|string|null $value
-     * @param int|float|string|array|null $search
-     * @return bool|string
+     * @param mixed ...$searches
+     * @return string|null
      */
-    //?!? 
-    public static function stringEnds(int|float|string|null $value, int|float|string|array|null $search): bool|string
+    public static function stringEnds(int|float|string|null $value, mixed ...$searches): ?string
     {
-        is_iterable($search) ?: $search = [$search];
-        $search = array_filter($search);
         $value = (string)$value;
 
-        foreach ($search ?? [] as $item) {
-            $item = (string)$item;
-            if ($item && str_ends_with($value, $item)) {
-                return (string)$item;
+        foreach ($searches as $search) {
+            if (is_array($search) || is_object($search)) {
+                if ($result = static::stringEnds($value, ...(array)$search)) {
+                    return $result;
+                }
+
+            } else if (!is_null($search) && $search !== '' && str_ends_with($value, (string)$search)) {
+                return $search;
             }
         }
 
-        return false;
+        return null;
     }
 
 
@@ -246,7 +248,6 @@ trait HelperStringTrait
      * @param int|null $firstPartIsShort
      * @return array
      */
-    //?!? 
     public static function stringBreakByLength(
         string $value,
         HelperStringBreakTypeEnum $breakType,
@@ -257,17 +258,17 @@ trait HelperStringTrait
         $currentText = '';
         $currentLength = 0;
 
-        if (mb_strlen($value) <= ($firstPartLength ? min(1000, $partLengthMax) : $partLengthMax)) {
+        if (static::stringLength($value) <= ($firstPartLength ? min(1000, $partLengthMax) : $partLengthMax)) {
             $result[] = $value;
 
         } else {
             // Разбиваем сообщение на строки
             foreach (explode(PHP_EOL, $value) as $lineIndex => $line) {
-                $lineLength = mb_strlen($line);
+                $lineLength = static::stringLength($line);
                 // Разбиваем строку на слова
                 $words = preg_split("/[\ ]+/", rtrim($line, CHR(9) . ' '));
                 $break = ($lineIndex > 0) ? PHP_EOL : '';
-                $breakLength = mb_strlen($break);
+                $breakLength = static::stringLength($break);
                 $lineLengthMax = (count($result) === 0)
                     ? ($firstPartLength ? min($firstPartLength, $partLengthMax) : $partLengthMax)
                     : $partLengthMax;
@@ -276,9 +277,9 @@ trait HelperStringTrait
                     // Разбитие по словам
                     case HelperStringBreakTypeEnum::Word:
                         foreach ($words as $wordIndex => $word) {
-                            $wordLength = mb_strlen($word);
+                            $wordLength = static::stringLength($word);
                             $space = ($wordIndex > 0) ? ' ' : '';
-                            $spaceLength = mb_strlen($space);
+                            $spaceLength = static::stringLength($space);
 
                             if ($currentLength + $breakLength + $spaceLength + $wordLength <= $lineLengthMax) {
                                 $currentText .= "{$break}{$space}{$word}";
@@ -288,10 +289,10 @@ trait HelperStringTrait
                                 if ($breakLength + $currentLength <= $lineLengthMax) {
                                     $currentText .= $break;
                                 }
-                                if (substr($currentText, -mb_strlen(PHP_EOL)) == PHP_EOL) {
-                                    $currentText = substr($currentText, 0, -1);
+                                if (static::stringCopy($currentText, -static::stringLength(PHP_EOL)) == PHP_EOL) {
+                                    $currentText = static::stringCopy($currentText, 0, -1);
                                 }
-                                $result[] = $currentText;
+                                (!$currentText && !$currentLength) ?: $result[] = $currentText;
                                 $currentText = $word;
                                 $currentLength = $wordLength;
                             }
@@ -308,7 +309,7 @@ trait HelperStringTrait
                             $currentLength += $breakLength + $lineLength;
 
                         } else {
-                            $result[] = $currentText;
+                            (!$currentText && !$currentLength) ?: $result[] = $currentText;
                             $currentText = $line;
                             $currentLength = $lineLength;
                         }
@@ -317,8 +318,8 @@ trait HelperStringTrait
             }
 
             if ($currentText != '') {
-                if (substr($currentText, -mb_strlen(PHP_EOL)) == PHP_EOL) {
-                    $currentText = substr($currentText, 0, -1);
+                if (static::stringCopy($currentText, -static::stringLength(PHP_EOL)) == PHP_EOL) {
+                    $currentText = static::stringCopy($currentText, 0, -1);
                 }
                 $result[] = $currentText;
             }
@@ -416,14 +417,14 @@ trait HelperStringTrait
 
 
     /**
-     * Проверяет вхождение подстрок в строке и возвращает первое найденное искомое значение
+     * Проверяет вхождение подстрок в строке и возвращает первое найденное искомое значение или null
      * @see ./tests/HelperStringTrait/HelperStringSearchAnyTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
-     * @return array
+     * @return string|null
      */
-    public static function stringSearchAny(int|float|string|null $value, mixed ...$searches): array
+    public static function stringSearchAny(int|float|string|null $value, mixed ...$searches): ?string
     {
         $value = (string)$value;
 
@@ -434,11 +435,11 @@ trait HelperStringTrait
                 }
 
             } else if (!is_null($search) && $search !== '' && str_contains($value, (string)$search)) {
-                return [$search];
+                return $search;
             }
         }
 
-        return [];
+        return null;
     }
 
 
@@ -504,7 +505,6 @@ trait HelperStringTrait
                     }
                 }
             }
-
         }
 
         return $value;
@@ -518,7 +518,7 @@ trait HelperStringTrait
      * @param int|float|string|array $searches
      * @return int
      */
-    //?!? 
+    //?!? stringCount
     public static function stringCount(int|float|string|null $value, int|float|string|array $searches): int
     {
         return 0;

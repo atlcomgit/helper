@@ -26,17 +26,17 @@ trait HelperTimeTrait
     public static string $nameHours = 'hours';
     public static string $nameMinutes = 'minutes';
     public static string $nameSeconds = 'seconds';
+    public static string $nameMilliSeconds = 'milliseconds';
 
 
     /**
-     * Конвертирует период между датами в массив YDHM
+     * Возвращает массив периодов между датами
      * @see ./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToArrayTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
      * @return array
      */
-    //?!? 
     public static function timePeriodBetweenDatesToArray(Carbon|string $dateFrom, Carbon|string $dateTo): array
     {
         $result = [
@@ -98,21 +98,20 @@ trait HelperTimeTrait
 
 
     /**
-     * Конвертирует период между датами в строку YDHM
+     * Возвращает период между датами в виде строки YDHM
      * @see ./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToStringTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
-     * @param bool $includeTime
+     * @param bool $withTime
      * @param bool $time24
      * @param mixed 
      * @return string
      */
-    //?!? 
     public static function timePeriodBetweenDatesToString(
         Carbon|string $dateFrom,
         Carbon|string $dateTo,
-        bool $includeTime = false,
+        bool $withTime = false,
         bool $time24 = false,
     ): string {
         $period = (object)static::timePeriodBetweenDatesToArray($dateFrom, $dateTo);
@@ -128,15 +127,15 @@ trait HelperTimeTrait
             ) .
             static::stringPlural($period->days, $time24 ? static::$pluralDays24 : static::$pluralDays)
             . " " .
-            (($includeTime && $period->hours)
+            (($withTime && $period->hours)
                 ? static::stringPlural($period->hours, static::$pluralHours) . " "
                 : ''
             ) .
-            (($includeTime && $period->minutes)
+            (($withTime && $period->minutes)
                 ? static::stringPlural($period->minutes, static::$pluralMinutes) . " "
                 : ''
             ) .
-            (($includeTime && $period->seconds)
+            (($withTime && $period->seconds)
                 ? static::stringPlural($period->seconds, static::$pluralSeconds) . " "
                 : ''
             )
@@ -145,15 +144,15 @@ trait HelperTimeTrait
 
 
     /**
-     * Конвертирует секунды в массив YDHM
+     * Возвращает массив периодов из количества секунд
      * @see ./tests/HelperTimeTrait/HelperTimeSecondsToArrayTest.php
      *
-     * @param int|float $value
+     * @param int|float|string|null $value
      * @return array
      */
-    //?!? 
-    public static function timeSecondsToArray(int|float $value): array
+    public static function timeSecondsToArray(int|float|string|null $value): array
     {
+        $value = filter_var($value, FILTER_VALIDATE_FLOAT);
         $result = [];
         $countZero = false;
         $periods = [
@@ -176,30 +175,33 @@ trait HelperTimeTrait
 
         }
 
-        $result[static::$nameSeconds] = $value;
+        $result[static::$nameSeconds] = (int)$value;
+        $result[static::$nameMilliSeconds] = (int)(($value - (int)$value) * 1000);
 
         return $result;
     }
 
 
     /**
-     * Конвертирует секунды в строку времени YDHM
+     * Возвращает период из количества секунд в виде строки YDHM
      * @see ./tests/HelperTimeTrait/HelperTimeSecondsToStringTest.php
      *
-     * @param int|float $value
+     * @param int|float|string|null $value
      * @param bool $withZero
+     * @param bool $withMilliseconds
      * @param array $pluralNames
      * @param mixed 
      * @return string
      */
-    //?!? 
     public static function timeSecondsToString(
-        int|float $value,
+        int|float|string|null $value,
         bool $withZero = false,
+        bool $withMilliseconds = false,
         array $pluralNames = [],
     ): string {
+        $value = filter_var($value, FILTER_VALIDATE_FLOAT);
         $result = '';
-        !$pluralNames ?: $pluralNames = [
+        $pluralNames ?: $pluralNames = [
             static::$nameYears => static::$pluralYears,
             static::$nameMonths => static::$pluralMonth,
             static::$nameDays => static::$pluralDays,
@@ -212,23 +214,43 @@ trait HelperTimeTrait
             return 'Отрицательное число';
         }
 
-        if ($value < 1) {
+        if ($withMilliseconds && $value < 1) {
             $value = (int)($value * 1000);
 
             return static::stringPlural($value, static::$pluralMilliseconds);
         }
 
         if ($value < 5) {
-            return round($value, 1) . ' секунды';
+            $milliseconds = (int)(($value - (int)$value) * 1000);
+
+            return $withMilliseconds
+                ? static::stringPlural((int)$value, static::$pluralSeconds) . (
+                    $withZero
+                    ? ' ' . static::stringPlural($milliseconds, static::$pluralMilliseconds)
+                    : ($milliseconds ? ' ' . static::stringPlural($milliseconds, static::$pluralMilliseconds) : '')
+                )
+                : static::stringPlural(round($value, 1), static::$pluralSeconds);
         }
 
         $timeArray = static::timeSecondsToArray((int)$value);
+        $canZero = false;
 
         foreach ($pluralNames as $periodName => $periodPluralNames) {
             $periodValue = $timeArray[$periodName] ?? 0;
-            if ($withZero || $periodValue > 0) {
+            if (
+                $withZero && ($canZero || $periodValue === static::$nameSeconds)
+                || $periodValue > 0
+            ) {
                 $result .= static::stringPlural($periodValue, $periodPluralNames) . " ";
+                $canZero = true;
             }
+        }
+
+        if ($withMilliseconds) {
+            $milliseconds = (int)(($value - (int)$value) * 1000);
+            $result .= $withZero
+                ? static::stringPlural($milliseconds, static::$pluralMilliseconds)
+                : ($milliseconds ? static::stringPlural($milliseconds, static::$pluralMilliseconds) : '');
         }
 
         return trim($result);

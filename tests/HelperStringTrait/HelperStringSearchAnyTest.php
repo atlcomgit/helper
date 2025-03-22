@@ -17,16 +17,16 @@ final class HelperStringSearchAnyTest extends TestCase
     #[Test]
     public function stringSearchAny(): void
     {
-        $array = Helper::stringSearchAny('abcd', 'bc');
-        $this->assertTrue($array === ['bc']);
+        $string = Helper::stringSearchAny('abcd', 'bc');
+        $this->assertTrue($string === 'bc');
 
-        $array = Helper::stringSearchAny('abcd', 'f');
-        $this->assertTrue($array === []);
+        $string = Helper::stringSearchAny('abcd', 'f');
+        $this->assertTrue($string === null);
 
-        $array = Helper::stringSearchAny('abcd', ['f', 'b']);
-        $this->assertTrue($array === ['b']);
+        $string = Helper::stringSearchAny('abcd', ['f', 'b']);
+        $this->assertTrue($string === 'b');
 
-        $array = Helper::stringSearchAny('Иванов Иван Иванович', ['name1' => 'Петр', 'name2' => 'Иван']);
-        $this->assertTrue($array === ['Иван']);
+        $string = Helper::stringSearchAny('Иванов Иван Иванович', ['name1' => 'Петр', 'name2' => 'Иван']);
+        $this->assertTrue($string === 'Иван');
     }
 }
