@@ -35,6 +35,9 @@ use Atlcom\Traits\HelperTimeTrait;
  * @method @see static::cacheRuntimeGet()
  * @method @see static::cacheRuntimeSet()
  * 
+ * @method @see static::colorHexToRgb()
+ * @method @see static::colorRgbToHex()
+ * 
  * @method @see static::cryptDecode()
  * @method @see static::cryptEncode()
  * 
@@ -49,8 +52,16 @@ use Atlcom\Traits\HelperTimeTrait;
  * 
  * @method @see static::ipInRange()
  * 
+ * @method @see static::jwtDecode()
+ * @method @see static::jwtEncode()
+ * 
  * @method @see static::pathClassName()
  * @method @see static::pathRoot()
+ * 
+ * @method @see static::regexpValidateEmail()
+ * @method @see static::regexpValidatePattern()
+ * @method @see static::regexpValidatePhone()
+ * @method @see static::regexpValidateUuid()
  * 
  * @method @see static::sizeBytesToString()
  * @method @see static::sizeStringToBytes()

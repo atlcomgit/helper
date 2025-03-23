@@ -42,7 +42,7 @@ trait HelperCryptTrait
         };
 
         $str = static::$cryptPrefix . $string;
-        $password = static::cryptHash($password ?? '');
+        $password = static::cryptHash($password ?? getenv('APP_KEY') ?: '');
         mt_srand((int)static::cryptMakeRandom());
         $rnd = ($random ?? static::$cryptRandom) ? mt_rand(100, 255) : 100;
         for ($aa = 0; $aa < mb_strlen($str); $aa++) {
@@ -81,7 +81,7 @@ trait HelperCryptTrait
         }
 
         $str = $value;
-        $password = static::cryptHash($password ?? '');
+        $password = static::cryptHash($password ?? getenv('APP_KEY') ?: '');
         $str = static::cryptUnHash($str);
         if (!$str) {
             return false;

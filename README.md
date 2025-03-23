@@ -2,56 +2,11 @@
 
 Класс помощник работы со строками, числами, массивами.
 
-Версия 1.02
-- Добавлен метод Helper::arrayExcludeTraceVendor
-- Добавлен метод Helper::cacheRuntimeGet
-- Добавлен метод Helper::cacheRuntimeSet
-- Добавлен метод Helper::cryptDecode
-- Добавлен метод Helper::cryptEncode
-- Добавлен метод Helper::exceptionToString
-- Добавлен метод Helper::hashXxh128
-- Добавлен метод Helper::intervalAround
-- Добавлен метод Helper::intervalCollection
-- Добавлен метод Helper::ipInRange
-- Добавлен метод Helper::pathClassName
-- Добавлен метод Helper::pathRoot
-- Добавлен метод Helper::sizeBytesToString
-- Добавлен метод Helper::sizeStringToBytes
-- Добавлен метод Helper::stringAddPrefix
-- Добавлен метод Helper::stringAddSuffix
-- Добавлен метод Helper::stringBreakByLength
-- Добавлен метод Helper::stringChange
-- Добавлен метод Helper::stringConcat
-- Добавлен метод Helper::stringCopy
-- Добавлен метод Helper::stringCount
-- Добавлен метод Helper::stringCut
-- Добавлен метод Helper::stringDelete
-- Добавлен метод Helper::stringEnds
-- Добавлен метод Helper::stringLength
-- Добавлен метод Helper::stringLower
-- Добавлен метод Helper::stringMerge
-- Добавлен метод Helper::stringPaste
-- Добавлен метод Helper::stringReplace
-- Добавлен метод Helper::stringSearchAll
-- Добавлен метод Helper::stringSearchAny
-- Добавлен метод Helper::stringStarts
-- Добавлен метод Helper::stringUpper
-- Добавлен метод Helper::telegramBreakMessage
-- Добавлен метод Helper::timePeriodBetweenDatesToArray
-- Добавлен метод Helper::timePeriodBetweenDatesToString
-- Добавлен метод Helper::timeSecondsToArray
-- Добавлен метод Helper::timeSecondsToString
-- Добавлен метод Helper::arrayMappingKeys
-
-Версия 1.01
-- Добавлен метод Helper::intervalBetween
-- Добавлен метод Helper::intervalOverlap
-- Метод Helper::inInterval переименован в Helper::intervalBetween
-
-Версия 1.00
-- Добавлен метод Helper::inInterval
-
 <hr style="border:1px solid black">
+
+## История изменений
+
+[Открыть историю](CHANGELOG.md)
 
 ## Установка
 
@@ -85,6 +40,21 @@ $mixed = Helper::cacheRuntimeGet('key', 'value'); // $mixed = 'value'
 Сохраняет значение value в кеше по ключу key
 ```php
 $array = Helper::cacheRuntimeSet('key', 'value'); // 
+```
+---
+**[Helper::colorHexToRgb](./tests/HelperColorTrait/HelperColorHexToRgbTest.php)**(\$value): array\
+Возвращает массив с RGB цветом из цвета HEX строки
+```php
+$array = Helper::colorHexToRgb('#000'); // $array = ['r' => 0, 'g' => 0, 'b' => 0, 'a' => null]
+$array = Helper::colorHexToRgb('#000000'); // $array = ['r' => 0, 'g' => 0, 'b' => 0, 'a' => null]
+$array = Helper::colorHexToRgb('#00000000'); // $array = ['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]
+```
+---
+**[Helper::colorRgbToHex](./tests/HelperColorTrait/HelperColorRgbToHexTest.php)**(\$red, \$green, \$blue, \$alpha): string\
+Возвращает HEX строку из RGB цвета
+```php
+$string = Helper::colorRgbToHex(0, 0, 0); // $string = '#000000'
+$string = Helper::colorRgbToHex(0, 0, 0, 0); // $string = '#00000000'
 ```
 ---
 **[Helper::cryptDecode](./tests/HelperCryptTrait/HelperCryptDecodeTest.php)**(\$value, \$password): string\
@@ -148,6 +118,18 @@ $bool = (bool)Helper::intervalOverlap('1..3', '2..4'); // $bool = false
 $array = Helper::ipInRange('192.168.1.1', '192.168.1.0/24'); // $array = ['192.168.1.0/24']
 ```
 ---
+**[Helper::jwtDecode](./tests/HelperJwtTrait/HelperJwtDecodeTest.php)**(\$value, ...\$masks): array\
+Возвращает массив с данными из декодированного jwt токена
+```php
+$array = Helper::jwtDecode('eyJhbGciOiJTSEE1MTIiLCJ0eXAiOiJKV1QifQ.eyJpZCI6MX0.l8fbKNjJWSsZLjVfE5aUOpEhIqbMAxIcon8nZ8NYyPikf_AtjrrN0Y3cPTy1A0U3etLMCbZ6RE00FqFYLZBc7A'); // $array = ['header' => ['alg' => 'SHA512', 'typ' => 'JWT'], 'body' => ['id' => 1]]
+```
+---
+**[Helper::jwtEncode](./tests/HelperJwtTrait/HelperJwtEncodeTest.php)**(\$value, ...\$masks): array\
+Возвращает строку с jwt токеном из закодированных данных
+```php
+$string = Helper::jwtEncode(['id' => 1]); // $string = 'eyJhbGciOiJTSEE1MTIiLCJ0eXAiOiJKV1QifQ.eyJpZCI6MX0.l8fbKNjJWSsZLjVfE5aUOpEhIqbMAxIcon8nZ8NYyPikf_AtjrrN0Y3cPTy1A0U3etLMCbZ6RE00FqFYLZBc7A'
+```
+---
 **[Helper::pathClassName](./tests/HelperPathTrait/HelperPathClassNameTest.php)**(\$value): string\
 Возвращает имя класса без namespace
 ```php
@@ -158,6 +140,30 @@ $string = Helper::pathClassName('/test/Test.php'); // $string = 'Test'
 Возвращает путь домашней папки
 ```php
 $string = Helper::pathRoot(); // $string = '/home/path'
+```
+---
+**[Helper::regexpValidateEmail](./tests/HelperRegexpTrait/HelperRegexpValidateEmailTest.php)**(\$value): bool\
+Проверяет значение на формат электронной почты
+```php
+$boolean = Helper::regexpValidateEmail('Test.example_1@domain.com'); // $boolean = true
+```
+---
+**[Helper::regexpValidatePattern](./tests/HelperRegexpTrait/HelperRegexpValidatePatternTest.php)**(\$value): bool\
+Проверяет значение на формат регулярного выражения
+```php
+$boolean = Helper::regexpValidatePattern('/test/'); // $boolean = true
+```
+---
+**[Helper::regexpValidatePhone](./tests/HelperRegexpTrait/HelperRegexpValidatePhoneTest.php)**(\$value): bool\
+Проверяет значение на формат номера телефона
+```php
+$boolean = Helper::regexpValidatePhone('+79001234567'); // $boolean = true
+```
+---
+**[Helper::regexpValidateUuid](./tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php)**(\$value): bool\
+Проверяет значение на формат идентификатора uuid
+```php
+$boolean = Helper::regexpValidateUuid('04d19f50-2fab-417a-815d-306b6a6f67ec'); // $boolean = true
 ```
 ---
 **[Helper::sizeBytesToString](./tests/HelperSizeTrait/HelperSizeBytesToStringTest.php)**(\$value): string\

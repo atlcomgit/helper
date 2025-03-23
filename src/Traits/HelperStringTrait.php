@@ -531,6 +531,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает количество найденных вхождений подстрок в строке
+     * @see ./tests/HelperStringTrait/HelperStringCountTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string|array $searches
