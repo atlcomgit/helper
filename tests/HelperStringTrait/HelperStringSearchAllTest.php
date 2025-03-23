@@ -28,5 +28,17 @@ final class HelperStringSearchAllTest extends TestCase
 
         $array = Helper::stringSearchAll('Иванов Иван Иванович', ['a' => 'Петр', 'b' => 'Иван', 'c' => 'Иванов']);
         $this->assertTrue($array === ['Иван', 'Иванов']);
+
+        $string = Helper::stringSearchAll('Иванов Иван Иванович', '*Иван*');
+        $this->assertTrue($string === ['*Иван*']);
+
+        $string = Helper::stringSearchAll('Иванов Иван Иванович', '/Иван/');
+        $this->assertTrue($string === ['/Иван/']);
+
+        $string = Helper::stringSearchAll('Иванов Иван Иванович', ['*Петр*', '*Иван*']);
+        $this->assertTrue($string === ['*Иван*']);
+
+        $string = Helper::stringSearchAll('abc', 'd');
+        $this->assertTrue($string === []);
     }
 }

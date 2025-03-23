@@ -28,5 +28,17 @@ final class HelperStringSearchAnyTest extends TestCase
 
         $string = Helper::stringSearchAny('Иванов Иван Иванович', ['name1' => 'Петр', 'name2' => 'Иван']);
         $this->assertTrue($string === 'Иван');
+
+        $string = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*');
+        $this->assertTrue($string === '*Иван*');
+
+        $string = Helper::stringSearchAny('Иванов Иван Иванович', '/Иван/');
+        $this->assertTrue($string === '/Иван/');
+
+        $string = Helper::stringSearchAny('Иванов Иван Иванович', ['*Петр*', '*Иван*']);
+        $this->assertTrue($string === '*Иван*');
+
+        $string = Helper::stringSearchAny('abc', 'd');
+        $this->assertTrue($string === null);
     }
 }

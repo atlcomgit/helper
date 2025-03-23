@@ -23,6 +23,7 @@
 - Добавлен метод Helper::stringChange
 - Добавлен метод Helper::stringConcat
 - Добавлен метод Helper::stringCopy
+- Добавлен метод Helper::stringCount
 - Добавлен метод Helper::stringCut
 - Добавлен метод Helper::stringDelete
 - Добавлен метод Helper::stringEnds
@@ -40,6 +41,7 @@
 - Добавлен метод Helper::timePeriodBetweenDatesToString
 - Добавлен метод Helper::timeSecondsToArray
 - Добавлен метод Helper::timeSecondsToString
+- Добавлен метод Helper::arrayMappingKeys
 
 Версия 1.01
 - Добавлен метод Helper::intervalBetween
@@ -64,6 +66,13 @@ composer require atlcom/helper
 Исключает из массива трассировки пакетные ошибки
 ```php
 $array = Helper::arrayExcludeTraceVendor(debug_backtrace()); // $array = []
+```
+---
+**[Helper::arrayMappingKeys](./tests/HelperArrayTrait/HelperArrayMappingKeysTest.php)**(\$value, \$from, \$to): array\
+Возвращает массив с маппингом ключей
+```php
+$array = Helper::arrayMappingKeys(['a' => 1, 'b' => 2], 'a', 'c'); // $array = ['c' => 1, 'b' => 2]
+$array = Helper::arrayMappingKeys([['a' => 1], ['a' => 2]], ['a' => 'c']); // $array = [['c' => 1], ['c' => 2]]
 ```
 ---
 **[Helper::cacheRuntimeGet](./tests/HelperCacheTrait/HelperCacheRuntimeGetTest.php)**(\$key, \$default): mixed\
@@ -202,6 +211,13 @@ $string = Helper::stringCopy('abc', 1, 1); // $string = 'b'
 $string = Helper::stringCopy('abc', -2); // $string = 'bc'
 ```
 ---
+**[Helper::stringCount](./tests/HelperStringTrait/HelperStringCountTest.php)**(\$value, ...\$searches): string\
+Возвращает количество найденных вхождений подстрок в строке
+```php
+$integer = Helper::stringCount('abc', 'a'); // $integer = 1
+$integer = Helper::stringCount('abc', ['a', 'b']); // $integer = 2
+```
+---
 **[Helper::stringCut](./tests/HelperStringTrait/HelperStringCutTest.php)**(\&\$value, \$start, \$length): string\
 Вырезает подстроку из строки с позиции start длиной length
 ```php
@@ -263,6 +279,7 @@ $string = Helper::stringReplace('abcd', ['d' => 'x']); // $string = 'abcx'
 Проверяет вхождение подстрок в строке и возвращает все найденные искомые значения
 ```php
 $array = Helper::stringSearchAll('abcd', 'bc', 'd'); // $array = ['bc', 'd']
+$string = Helper::stringSearchAll('Иванов Иван Иванович', ['*Иван*']); // $string = ['*Иван*']
 ```
 ---
 **[Helper::stringSearchAny](./tests/HelperStringTrait/HelperStringSearchAnyTest.php)**(\$value, ...\$searches): ?string\
@@ -270,6 +287,7 @@ $array = Helper::stringSearchAll('abcd', 'bc', 'd'); // $array = ['bc', 'd']
 ```php
 $string = Helper::stringSearchAny('abcd', 'bc'); // $string = 'bc'
 $string = Helper::stringSearchAny('abcd', ['ab', 'bc']); // $string = 'ab'
+$string = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*'); // $string = '*Иван*'
 ```
 ---
 **[Helper::stringStarts](./tests/HelperStringTrait/HelperStringStartsTest.php)**(\$value, ...\$searches): string\

@@ -9,5 +9,6 @@ namespace Atlcom\Traits;
  */
 trait HelperJwtTrait
 {
-    //?!? jwt
+    //?!? jwtEncode
+    //?!? jwtDecode
 }

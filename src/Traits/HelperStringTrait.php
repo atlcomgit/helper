@@ -434,7 +434,16 @@ trait HelperStringTrait
                     return $result;
                 }
 
-            } else if (!is_null($search) && $search !== '' && str_contains($value, (string)$search)) {
+            } else if (
+                !is_null($search)
+                && $search !== ''
+                && ($searchString = (string)$search)
+                && (
+                    mb_strpos($value, $searchString) !== false
+                    || (static::regexpValidatePattern($searchString) && preg_match($searchString, $value))
+                    || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $value))
+                )
+            ) {
                 return $search;
             }
         }
@@ -460,12 +469,21 @@ trait HelperStringTrait
             if (is_array($search) || is_object($search)) {
                 $result = [...$result, ...(static::stringSearchAll($value, ...(array)$search) ?: [])];
 
-            } else if (!is_null($search) && $search !== '' && str_contains($value, (string)$search)) {
+            } else if (
+                !is_null($search)
+                && $search !== ''
+                && ($searchString = (string)$search)
+                && (
+                    mb_strpos($value, $searchString) !== false
+                    || (static::regexpValidatePattern($searchString) && preg_match($searchString, $value))
+                    || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $value))
+                )
+            ) {
                 $result[] = $search;
             }
         }
 
-        return $result;
+        return array_values(array_unique($result));
     }
 
 
@@ -518,9 +536,20 @@ trait HelperStringTrait
      * @param int|float|string|array $searches
      * @return int
      */
-    //?!? stringCount
-    public static function stringCount(int|float|string|null $value, int|float|string|array $searches): int
+    public static function stringCount(int|float|string|null $value, int|float|string|array ...$searches): int
     {
-        return 0;
+        $value = (string)$value;
+        $result = 0;
+
+        foreach ($searches as $search) {
+            if (is_array($search) || is_object($search)) {
+                $result += static::stringCount($value, ...(array)$search);
+
+            } else if (!is_null($search) && $search !== '') {
+                $result += mb_substr_count($value, (string)$search, static::$encoding);
+            }
+        }
+
+        return $result;
     }
 }
