@@ -17,7 +17,10 @@ final class HelperCryptDecodeTest extends TestCase
     #[Test]
     public function cryptDecode(): void
     {
-        $string = Helper::cryptDecode('nh93432NibR3td26', 'password');
+        $string = Helper::cryptDecode('njsA4Z2GeKzvWLh29u9452', 'password');
         $this->assertTrue($string === 'abc');
+
+        $string = Helper::cryptDecode('nh93432NibR3td26', 'password');
+        $this->assertTrue($string === null);
     }
 }

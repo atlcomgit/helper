@@ -31,14 +31,19 @@ trait HelperCryptTrait
         }
 
         $string = match (true) {
-            is_array($value) => json_encode($value),
+            is_null($value) => 'n|' . json_encode($value),
+            is_integer($value) => 'i|' . json_encode($value),
+            is_float($value) => 'f|' . json_encode($value),
+            is_string($value) => 's|' . json_encode($value),
+            is_bool($value) => 'b|' . json_encode($value),
+            is_array($value) => 'a|' . json_encode($value),
             is_object($value) => match (true) {
-                    method_exists($value, 'toArray') => json_encode((array)$value->toArray()),
+                    method_exists($value, 'toArray') => 'o|' . json_encode((array)$value->toArray()),
 
-                    default => json_encode((array)$value)
+                    default => 'o|' . json_encode((array)$value)
                 },
 
-            default => (string)$value,
+            default => '?|' . json_encode($value),
         };
 
         $str = static::$cryptPrefix . $string;
@@ -71,9 +76,9 @@ trait HelperCryptTrait
      * @see ./tests/HelperCryptTrait/HelperCryptDecodeTest.php
      *
      * @param string $string
-     * @return string|false
+     * @return mixed
      */
-    public static function cryptDecode(string $value, ?string $password = null): string|false
+    public static function cryptDecode(string $value, ?string $password = null): mixed
     {
         $result = '';
         if ($value == '') {
@@ -108,6 +113,21 @@ trait HelperCryptTrait
         $result = (mb_substr($result, 0, mb_strlen(static::$cryptPrefix)) === static::$cryptPrefix)
             ? mb_substr($result, mb_strlen(static::$cryptPrefix))
             : false;
+
+        $type = explode('|', $result)[0];
+        $result = static::stringDelete($result, 0, 2);
+        $result = match ($type) {
+            'n' => null,
+            'i' => (int)json_decode($result),
+            'f' => (float)json_decode($result),
+            's' => (string)json_decode($result),
+            'b' => (boolean)json_decode($result),
+            'a' => json_decode($result, true),
+            'o' => json_decode($result),
+            '?' => trim(json_decode($result),'"'),
+
+            default => null,
+        };
 
         return $result;
     }
