@@ -49,8 +49,22 @@ trait HelperArrayTrait
     }
 
 
+    //?!? +
+    public static function arrayValueToArray(mixed $value): array
+    {
+        return $value = match (true) {
+            is_null($value) => [],
+            is_object($value) && method_exists($value, 'toArray') => $value->toArray(),
+            is_array($value) => $value,
+
+            default => (array)$value,
+        };
+    }
+
+
     /**
      * Возвращает массив с маппингом ключей
+     * @see ./tests/HelperArrayTrait/HelperArrayMappingKeysTest.php
      *
      * @param array|object $value
      * @param int|float|string|array|object $from
@@ -64,31 +78,14 @@ trait HelperArrayTrait
         int|float|string|array|object|null $to = null,
         ?string $rootKey = null,
     ): array {
-        $value = match (true) {
-            is_object($value) && method_exists($value, 'toArray') => $value->toArray(),
-            is_array($value) => $value,
-            default => (array)$value,
-
-        };
-        $from = match (true) {
-            is_null($from) => [],
-            is_object($from) && method_exists($from, 'toArray') => $from->toArray(),
-            is_array($from) => $from,
-            default => (array)$from,
-
-        };
+        $value = static::arrayValueToArray($value);
+        $from = static::arrayValueToArray($from);
 
         if (!$from) {
             return $value;
         }
 
-        $to = match (true) {
-            is_null($to) => [],
-            is_object($to) && method_exists($to, 'toArray') => $to->toArray(),
-            is_array($to) => $to,
-            default => (array)$to,
-        };
-
+        $to = static::arrayValueToArray($to);
 
         $result = [];
         $mappings = [];
@@ -118,5 +115,156 @@ trait HelperArrayTrait
         }
 
         return $result;
+    }
+
+
+    /**
+     * Возвращает массив найденных ключей в искомом массиве
+     * @see ./tests/HelperArrayTrait/HelperArraySearchKeysTest.php
+     *
+     * @param array|object $value
+     * @param mixed ...$searches
+     * @return array
+     */
+    public static function arraySearchKeys(array|object $value, mixed ...$searches): array
+    {
+        $result = [];
+        $value = static::arrayValueToArray($value);
+        $searches = static::arrayValueToArray($searches);
+
+        foreach ($value as $key => $v) {
+            if (is_array($v) || is_object($v)) {
+
+                $subValue = [];
+                foreach ($v as $key2 => $v2) {
+                    $subValue["{$key}.{$key2}"] = $v2;
+                }
+
+                $result = [...$result, ...static::arraySearchKeys($subValue, ...$searches)];
+
+            } else {
+                foreach ($searches as $search) {
+                    if (is_array($search) || is_object($search)) {
+                        $result = [...$result, ...static::arraySearchKeys([$key => $v], ...$search)];
+
+                    } else if (
+                        !is_null($search)
+                        && (($searchString = (string)$search) || $searchString === '0')
+                        && (
+                            $key === $search
+                            || (static::regexpValidatePattern($searchString) && preg_match($searchString, $key))
+                            || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $key))
+                        )
+                    ) {
+                        $result[$key] = $v;
+                    }
+                }
+            }
+
+        }
+
+        return $result;
+    }
+
+
+    //?!? +
+    public static function arraySearchValues(array|object $value, mixed ...$searches): array
+    {
+        $result = [];
+        $value = static::arrayValueToArray($value);
+        $searches = static::arrayValueToArray($searches);
+
+        foreach ($value as $key => $v) {
+            if (is_array($v) || is_object($v)) {
+                $subResult = static::arraySearchValues($v, ...$searches);
+                !$subResult ?: $result[$key] = $subResult;
+
+            } else {
+                foreach ($searches as $search) {
+                    if (is_array($search) || is_object($search)) {
+                        $subValues = (is_array($v) || is_object($v))
+                            ? static::arraySearchValues($v, ...$search)
+                            : static::arraySearchValues([$key => $v], ...$search);
+                        !$subValues ?: $result = [...$result, ...$subValues];
+
+                    } else if (
+                        !is_null($search)
+                        && (($searchString = (string)$search) || $searchString === '0')
+                        && (
+                            $v === $search
+                            || (static::regexpValidatePattern($searchString) && preg_match($searchString, $v))
+                            || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $v))
+                        )
+                    ) {
+                        $result[$key] = $v;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+
+    //?!? +
+    public static function arraySearchKeysAndValues(
+        array|object $value,
+        int|float|bool|string|array|object $keys,
+        int|float|bool|string|array|object $values,
+    ): array {
+        return static::arraySearchValues(static::arraySearchKeys($value, $keys), $values);
+    }
+
+
+    /**
+     * Возвращает значение из массива по имению ключа
+     * @see ./tests/HelperArrayTrait/HelperArrayGetTest.php
+     *
+     * @param array|object $value
+     * @param int|float|string|bool|null $key
+     * @return mixed
+     */
+    public static function arrayGet(array|object $value, int|float|string|bool|null $key, mixed $default = null): mixed
+    {
+        if (is_null($key)) {
+            return null;
+        }
+
+        $value = static::arrayValueToArray($value);
+
+        if (!isset($value[$key]) && mb_strpos((string)$key, '.') !== false) {
+            foreach (explode('.', $key) as $partKey) {
+                $value = is_array($value)
+                    ? (array_key_exists($partKey, $value) ? $value[$partKey] : $default)
+                    : $default;
+            }
+
+        } else {
+            $value = array_key_exists($key, $value) ? $value[$key] : $default;
+        }
+
+        return $value;
+    }
+
+
+    //?!? +
+    // arrayFirst(['a', 'b']) == 'a'
+    // arrayFirst(['a' => 1, 'b' => 2]) == 1
+    public static function arrayFirst(array|object $value)
+    {
+        $value = static::arrayValueToArray($value);
+
+        return !is_null($key = array_key_first($value)) ? ($value[$key] ?? null) : null;
+    }
+
+
+    //?!? +
+    // arrayLast(['a', 'b']) == 'b'
+    // arrayLast(['a' => 1, 'b' => 2]) == 2
+    public static function arrayLast(array|object $value)
+    {
+        $value = static::arrayValueToArray($value);
+
+        return !is_null($key = array_key_last($value)) ? ($value[$key] ?? null) : null;
     }
 }

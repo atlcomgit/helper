@@ -172,7 +172,7 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                if ($result = static::stringStarts($value, ...(array)$search)) {
+                if ($result = static::stringStarts($value, ...static::arrayValueToArray($search))) {
                     return $result;
                 }
 
@@ -199,7 +199,7 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                if ($result = static::stringEnds($value, ...(array)$search)) {
+                if ($result = static::stringEnds($value, ...static::arrayValueToArray($search))) {
                     return $result;
                 }
 
@@ -346,7 +346,7 @@ trait HelperStringTrait
             array_filter(
                 array_map(
                     fn (mixed $value): string => (is_array($value) || is_object($value))
-                    ? static::stringConcat($delimiter, ...(array)$value)
+                    ? static::stringConcat($delimiter, ...static::arrayValueToArray($value))
                     : (string)$value,
                     $values,
                 ),
@@ -408,7 +408,7 @@ trait HelperStringTrait
 
         foreach ($values as $value) {
             $result = (is_array($value) || is_object($value))
-                ? static::stringMerge(...(array)$value)
+                ? static::stringMerge(...static::arrayValueToArray($value))
                 : static::stringChange($result, $value, 0);
         }
 
@@ -430,7 +430,7 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                if ($result = static::stringSearchAny($value, ...(array)$search)) {
+                if ($result = static::stringSearchAny($value, ...static::arrayValueToArray($search))) {
                     return $result;
                 }
 
@@ -467,7 +467,10 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                $result = [...$result, ...(static::stringSearchAll($value, ...(array)$search) ?: [])];
+                $result = [
+                    ...$result,
+                    ...(static::stringSearchAll($value, ...static::arrayValueToArray($search)) ?: []),
+                ];
 
             } else if (
                 !is_null($search)
@@ -544,7 +547,7 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                $result += static::stringCount($value, ...(array)$search);
+                $result += static::stringCount($value, ...static::arrayValueToArray($search));
 
             } else if (!is_null($search) && $search !== '') {
                 $result += mb_substr_count($value, (string)$search, static::$encoding);

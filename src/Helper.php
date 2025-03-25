@@ -23,14 +23,17 @@ use Atlcom\Traits\HelperTimeTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.02
+ * @version 1.03
  * 
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper
  * 
  * 
  * @method @see static::arrayExcludeTraceVendor()
+ * @method @see static::arrayGet()
  * @method @see static::arrayMappingKeys()
+ * @method @see static::arraySearchKeys()
+ * //?!? 
  * 
  * @method @see static::cacheRuntimeGet()
  * @method @see static::cacheRuntimeSet()

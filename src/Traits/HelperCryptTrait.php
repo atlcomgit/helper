@@ -26,6 +26,7 @@ trait HelperCryptTrait
     public static function cryptEncode(mixed $value, ?string $password = null, ?bool $random = null): string
     {
         $result = '';
+
         if (!$value || is_callable($value)) {
             return $result;
         }
@@ -81,6 +82,7 @@ trait HelperCryptTrait
     public static function cryptDecode(string $value, ?string $password = null): mixed
     {
         $result = '';
+
         if ($value == '') {
             return $result;
         }
@@ -112,7 +114,7 @@ trait HelperCryptTrait
 
         $result = (mb_substr($result, 0, mb_strlen(static::$cryptPrefix)) === static::$cryptPrefix)
             ? mb_substr($result, mb_strlen(static::$cryptPrefix))
-            : false;
+            : '';
 
         $type = explode('|', $result)[0];
         $result = static::stringDelete($result, 0, 2);

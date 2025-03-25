@@ -1,5 +1,10 @@
 # Changelog
 
+## Версия 1.03
+- Добавлен метод Helper::arrayGet
+- Добавлен метод Helper::arraySearchKeys
+//?!? 
+
 ## Версия 1.02
 - Добавлен метод Helper::arrayExcludeTraceVendor
 - Добавлен метод Helper::arrayMappingKeys

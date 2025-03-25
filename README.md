@@ -23,11 +23,26 @@ composer require atlcom/helper
 $array = Helper::arrayExcludeTraceVendor(debug_backtrace()); // $array = []
 ```
 ---
+**[Helper::arrayGet](./tests/HelperArrayTrait/HelperArrayGetTest.php)**(\$value, \$key): mixed\
+Возвращает значение из массива по имению ключа
+```php
+$mixed = Helper::arrayGet(['a', 'b'], 0); // $mixed === 'a'
+$mixed = Helper::arrayGet(['a' => ['b' => 2, 'c' => 3], 'b' => 4], 'a.b'); // $mixed === 2
+$mixed = Helper::arrayGet(['a.b' => 1, 'b' => 2], 'a.b'); // $mixed === 1
+```
+---
 **[Helper::arrayMappingKeys](./tests/HelperArrayTrait/HelperArrayMappingKeysTest.php)**(\$value, \$from, \$to): array\
 Возвращает массив с маппингом ключей
 ```php
 $array = Helper::arrayMappingKeys(['a' => 1, 'b' => 2], 'a', 'c'); // $array = ['c' => 1, 'b' => 2]
 $array = Helper::arrayMappingKeys([['a' => 1], ['a' => 2]], ['a' => 'c']); // $array = [['c' => 1], ['c' => 2]]
+```
+---
+**[Helper::arraySearchKeys](./tests/HelperArrayTrait/HelperArraySearchKeysTest.php)**(\$value, ...\$searches): array\
+Возвращает массив найденных ключей в искомом массиве
+```php
+$array = Helper::arraySearchKeys(['a' => 1, 'b' => 2], 'a'); // $array = ['a' => 1]
+$array = Helper::arraySearchKeys(['a' => ['b' => 2, 'c' => 3]], '*.b'); // $array = ['a.b' => 2]
 ```
 ---
 **[Helper::cacheRuntimeGet](./tests/HelperCacheTrait/HelperCacheRuntimeGetTest.php)**(\$key, \$default): mixed\
