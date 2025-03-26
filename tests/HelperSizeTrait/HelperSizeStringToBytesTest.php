@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atlcom\Tests\HelperIntervalTrait;
+namespace Atlcom\Tests\HelperSizeTrait;
 
 use Atlcom\Helper;
 use PHPUnit\Framework\Attributes\Test;

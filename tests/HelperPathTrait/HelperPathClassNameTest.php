@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atlcom\Tests\HelperIntervalTrait;
+namespace Atlcom\Tests\HelperPathTrait;
 
 use Atlcom\Helper;
 use Exception;

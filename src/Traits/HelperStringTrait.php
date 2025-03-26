@@ -357,14 +357,14 @@ trait HelperStringTrait
 
     /**
      * Добавляет в начало строки префикс при выполнении условия condition
-     * @see ./tests/HelperStringTrait/HelperStringAddPrefixTest.php
+     * @see ./tests/HelperStringTrait/HelperstringPadPrefixTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string|null $prefix
      * @param mixed $condition
      * @return string
      */
-    public static function stringAddPrefix(
+    public static function stringPadPrefix(
         int|float|string|null $value,
         int|float|string|null $prefix,
         mixed $condition = true,
@@ -377,14 +377,14 @@ trait HelperStringTrait
 
     /**
      * Добавляет в конец строки суффикс при выполнении условия condition
-     * @see ./tests/HelperStringTrait/HelperStringAddSuffixTest.php
+     * @see ./tests/HelperStringTrait/HelperstringPadSuffixTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string|null $suffix
      * @param mixed $condition
      * @return string
      */
-    public static function stringAddSuffix(
+    public static function stringPadSuffix(
         int|float|string|null $value,
         int|float|string|null $suffix,
         mixed $condition = true,
@@ -555,5 +555,32 @@ trait HelperStringTrait
         }
 
         return $result;
+    }
+
+
+    /**
+     * Возвращает повторяющуюся строку значения указанное количество раз
+     * @see ./tests/HelperStringTrait/HelperStringRepeatTest.php
+     *
+     * @param int|float|string $value
+     * @param int $count
+     * @return string
+     */
+    public static function stringRepeat(int|float|string $value, int $count): string
+    {
+        return str_repeat((string)$value, $count);
+    }
+
+
+    /**
+     * Возвращает реверсивную строку значения
+     * @see ./tests/HelperStringTrait/HelperStringReverseTest.php
+     *
+     * @param int|float|string $value
+     * @return string
+     */
+    public static function stringReverse(int|float|string $value): string
+    {
+        return implode(array_reverse(mb_str_split((string)$value)));
     }
 }

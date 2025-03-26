@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atlcom\Tests\HelperIntervalTrait;
+namespace Atlcom\Tests\HelperStringTrait;
 
 use Atlcom\Helper;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,12 +12,12 @@ use PHPUnit\Framework\TestCase;
  * Тест метода трейта
  * @see \Atlcom\Traits\HelperStringTrait
  */
-final class HelperStringAddSuffixTest extends TestCase
+final class HelperStringPadSuffixTest extends TestCase
 {
     #[Test]
-    public function stringAddSuffix(): void
+    public function stringPadSuffix(): void
     {
-        $string = Helper::stringAddSuffix('abc', 'def', true);
+        $string = Helper::stringPadSuffix('abc', 'def', true);
         $this->assertTrue($string === 'abcdef');
     }
 }

@@ -41,6 +41,9 @@ final class HelperArraySearchKeysTest extends TestCase
         $array = Helper::arraySearchKeys(['a' => ['b' => 2, 'c' => 3]], ['a.b', 'a.c']);
         $this->assertEquals(['a.b' => 2, 'a.c' => 3], $array);
 
+        $array = Helper::arraySearchKeys(['abc' => 1, 'def' => 2], ['a*', '*f']);
+        $this->assertEquals(['abc' => 1, 'def' => 2], $array);
+
         $array = Helper::arraySearchKeys(['a' => ['b' => 2, 'c' => 3]], ['b', 'c']);
         $this->assertEquals([], $array);
 

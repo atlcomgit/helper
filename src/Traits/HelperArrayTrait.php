@@ -49,13 +49,20 @@ trait HelperArrayTrait
     }
 
 
-    //?!? +
+    /**
+     * Возвращает массив из значения
+     * @see ./tests/HelperArrayTrait/HelperArrayValueToArrayTest.php
+     *
+     * @param mixed $value
+     * @return array
+     */
     public static function arrayValueToArray(mixed $value): array
     {
         return $value = match (true) {
             is_null($value) => [],
             is_object($value) && method_exists($value, 'toArray') => $value->toArray(),
             is_array($value) => $value,
+            is_callable($value) => static::arrayValueToArray($value()),
 
             default => (array)$value,
         };
@@ -167,7 +174,14 @@ trait HelperArrayTrait
     }
 
 
-    //?!? +
+    /**
+     * Возвращает массив найденных значений в искомом массиве
+     * @see ./tests/HelperArrayTrait/HelperArraySearchValuesTest.php
+     *
+     * @param array|object $value
+     * @param mixed ...$searches
+     * @return array
+     */
     public static function arraySearchValues(array|object $value, mixed ...$searches): array
     {
         $result = [];
@@ -206,7 +220,15 @@ trait HelperArrayTrait
     }
 
 
-    //?!? +
+    /**
+     * Возвращает массив найденных ключей и значений в искомом массиве
+     * @see ./tests/HelperArrayTrait/HelperArraySearchKeysAndValuesTest.php
+     *
+     * @param array|object $value
+     * @param int|float|bool|string|array|object $keys
+     * @param int|float|bool|string|array|object $values
+     * @return array
+     */
     public static function arraySearchKeysAndValues(
         array|object $value,
         int|float|bool|string|array|object $keys,
@@ -222,6 +244,7 @@ trait HelperArrayTrait
      *
      * @param array|object $value
      * @param int|float|string|bool|null $key
+     * @param mixed|null $default
      * @return mixed
      */
     public static function arrayGet(array|object $value, int|float|string|bool|null $key, mixed $default = null): mixed
@@ -247,10 +270,14 @@ trait HelperArrayTrait
     }
 
 
-    //?!? +
-    // arrayFirst(['a', 'b']) == 'a'
-    // arrayFirst(['a' => 1, 'b' => 2]) == 1
-    public static function arrayFirst(array|object $value)
+    /**
+     * Возвращает значение первого элемента массива
+     * @see ./tests/HelperArrayTrait/HelperArrayFirstTest.php
+     *
+     * @param array|object $value
+     * @return mixed
+     */
+    public static function arrayFirst(array|object $value): mixed
     {
         $value = static::arrayValueToArray($value);
 
@@ -258,10 +285,14 @@ trait HelperArrayTrait
     }
 
 
-    //?!? +
-    // arrayLast(['a', 'b']) == 'b'
-    // arrayLast(['a' => 1, 'b' => 2]) == 2
-    public static function arrayLast(array|object $value)
+    /**
+     * Возвращает значение последнего элемента массива
+     * @see ./tests/HelperArrayTrait/HelperArrayLastTest.php
+     *
+     * @param array|object $value
+     * @return mixed
+     */
+    public static function arrayLast(array|object $value): mixed
     {
         $value = static::arrayValueToArray($value);
 

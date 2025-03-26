@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atlcom\Tests\HelperIntervalTrait;
+namespace Atlcom\Tests\HelperStringTrait;
 
 use Atlcom\Helper;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,12 +12,12 @@ use PHPUnit\Framework\TestCase;
  * Тест метода трейта
  * @see \Atlcom\Traits\HelperStringTrait
  */
-final class HelperStringAddPrefixTest extends TestCase
+final class HelperStringPadPrefixTest extends TestCase
 {
     #[Test]
-    public function stringAddPrefix(): void
+    public function stringPadPrefix(): void
     {
-        $string = Helper::stringAddPrefix('def', 'abc', true);
+        $string = Helper::stringPadPrefix('def', 'abc', true);
         $this->assertTrue($string === 'abcdef');
     }
 }

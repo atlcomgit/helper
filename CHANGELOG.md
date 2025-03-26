@@ -1,9 +1,18 @@
 # Changelog
 
 ## Версия 1.03
+- Добавлен метод Helper::arrayFirst
 - Добавлен метод Helper::arrayGet
+- Добавлен метод Helper::arrayLast
 - Добавлен метод Helper::arraySearchKeys
-//?!? 
+- Добавлен метод Helper::arraySearchKeysAndValues
+- Добавлен метод Helper::arraySearchValues
+- Добавлен метод Helper::arrayValueToArray
+- Добавлен метод Helper::regexpValidateAscii
+- Добавлен метод Helper::regexpValidateJson
+- Добавлен метод Helper::regexpValidateUnicode
+- Добавлен метод Helper::stringRepeat
+- Добавлен метод Helper::stringReverse
 
 ## Версия 1.02
 - Добавлен метод Helper::arrayExcludeTraceVendor
@@ -29,8 +38,6 @@
 - Добавлен метод Helper::regexpValidateUuid
 - Добавлен метод Helper::sizeBytesToString
 - Добавлен метод Helper::sizeStringToBytes
-- Добавлен метод Helper::stringAddPrefix
-- Добавлен метод Helper::stringAddSuffix
 - Добавлен метод Helper::stringBreakByLength
 - Добавлен метод Helper::stringChange
 - Добавлен метод Helper::stringConcat
@@ -42,6 +49,8 @@
 - Добавлен метод Helper::stringLength
 - Добавлен метод Helper::stringLower
 - Добавлен метод Helper::stringMerge
+- Добавлен метод Helper::stringPadPrefix
+- Добавлен метод Helper::stringPadSuffix
 - Добавлен метод Helper::stringPaste
 - Добавлен метод Helper::stringReplace
 - Добавлен метод Helper::stringSearchAll

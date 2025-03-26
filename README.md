@@ -23,12 +23,26 @@ composer require atlcom/helper
 $array = Helper::arrayExcludeTraceVendor(debug_backtrace()); // $array = []
 ```
 ---
+**[Helper::arrayFirst](./tests/HelperArrayTrait/HelperArrayFirstTest.php)**(\$value, \$key): mixed\
+Возвращает значение первого элемента массива
+```php
+$mixed$ = Helper::arrayFirst(['a', 'b']); // $mixed === 'a'
+$mixed = Helper::arrayFirst(['a' => 1, 'b' => 2]); // $mixed === 1
+```
+---
 **[Helper::arrayGet](./tests/HelperArrayTrait/HelperArrayGetTest.php)**(\$value, \$key): mixed\
 Возвращает значение из массива по имению ключа
 ```php
 $mixed = Helper::arrayGet(['a', 'b'], 0); // $mixed === 'a'
 $mixed = Helper::arrayGet(['a' => ['b' => 2, 'c' => 3], 'b' => 4], 'a.b'); // $mixed === 2
 $mixed = Helper::arrayGet(['a.b' => 1, 'b' => 2], 'a.b'); // $mixed === 1
+```
+---
+**[Helper::arrayLast](./tests/HelperArrayTrait/HelperArrayLastTest.php)**(\$value, \$key): mixed\
+Возвращает значение последнего элемента массива
+```php
+$mixed$ = Helper::arrayLast(['a', 'b']); // $mixed === 'b'
+$mixed = Helper::arrayLast(['a' => 1, 'b' => 2]); // $mixed === 2
 ```
 ---
 **[Helper::arrayMappingKeys](./tests/HelperArrayTrait/HelperArrayMappingKeysTest.php)**(\$value, \$from, \$to): array\
@@ -43,6 +57,27 @@ $array = Helper::arrayMappingKeys([['a' => 1], ['a' => 2]], ['a' => 'c']); // $a
 ```php
 $array = Helper::arraySearchKeys(['a' => 1, 'b' => 2], 'a'); // $array = ['a' => 1]
 $array = Helper::arraySearchKeys(['a' => ['b' => 2, 'c' => 3]], '*.b'); // $array = ['a.b' => 2]
+```
+---
+**[Helper::arraySearchKeysAndValues](./tests/HelperArrayTrait/HelperArraySearchKeysAndValuesTest.php)**(\$value, ...\$keys, ...\$values): array\
+Возвращает массив найденных ключей в искомом массиве
+```php
+$array = Helper::arraySearchKeys(['a' => 1, 'b' => 2], 'a'); // $array = ['a' => 1]
+$array = Helper::arraySearchKeys(['a' => ['b' => 2, 'c' => 3]], '*.b'); // $array = ['a.b' => 2]
+```
+---
+**[Helper::arraySearchValues](./tests/HelperArrayTrait/HelperArraySearchValuesTest.php)**(\$value, ...\$searches): array\
+Возвращает массив найденных ключей в искомом массиве
+```php
+$array = Helper::arraySearchValues(['a', 'b'], 'a'); // $array = ['a']
+$array = Helper::arraySearchValues(['abc', 'def'], ['a*', '*f']); // $array = ['abc', 'def']
+```
+---
+**[Helper::arrayValueToArray](./tests/HelperArrayTrait/HelperArrayValueToArrayTest.php)**(\$value): array\
+Возвращает массив из значения
+```php
+$array = Helper::arrayValueToArray(['a', 'b']); // $array = ['a', 'b']
+$array = Helper::arrayValueToArray('a'); // $array = ['a']
 ```
 ---
 **[Helper::cacheRuntimeGet](./tests/HelperCacheTrait/HelperCacheRuntimeGetTest.php)**(\$key, \$default): mixed\
@@ -157,26 +192,44 @@ $string = Helper::pathClassName('/test/Test.php'); // $string = 'Test'
 $string = Helper::pathRoot(); // $string = '/home/path'
 ```
 ---
+**[Helper::regexpValidateAscii](./tests/HelperRegexpTrait/HelperRegexpValidateAsciiTest.php)**(\$value): bool\
+Проверяет значение строки на формат ascii (латинский алфавита и цифры)
+```php
+$boolean = Helper::regexpValidateAscii('0-9 AZ az'); // $boolean = true
+```
+---
 **[Helper::regexpValidateEmail](./tests/HelperRegexpTrait/HelperRegexpValidateEmailTest.php)**(\$value): bool\
-Проверяет значение на формат электронной почты
+Проверяет значение строки на формат электронной почты
 ```php
 $boolean = Helper::regexpValidateEmail('Test.example_1@domain.com'); // $boolean = true
 ```
 ---
+**[Helper::regexpValidateJson](./tests/HelperRegexpTrait/HelperRegexpValidateJsonTest.php)**(\$value): bool\
+Проверяет значение строки на формат json
+```php
+Helper::regexpValidateJson('{"a":1}'); // $boolean = true
+```
+---
 **[Helper::regexpValidatePattern](./tests/HelperRegexpTrait/HelperRegexpValidatePatternTest.php)**(\$value): bool\
-Проверяет значение на формат регулярного выражения
+Проверяет значение строки на формат регулярного выражения
 ```php
 $boolean = Helper::regexpValidatePattern('/test/'); // $boolean = true
 ```
 ---
 **[Helper::regexpValidatePhone](./tests/HelperRegexpTrait/HelperRegexpValidatePhoneTest.php)**(\$value): bool\
-Проверяет значение на формат номера телефона
+Проверяет значение строки на формат номера телефона
 ```php
 $boolean = Helper::regexpValidatePhone('+79001234567'); // $boolean = true
 ```
 ---
+**[Helper::regexpValidateUnicode](./tests/HelperRegexpTrait/HelperRegexpValidateUnicodeTest.php)**(\$value): bool\
+Проверяет значение строки на формат юникода
+```php
+$boolean = Helper::regexpValidateUnicode('01 AZ az АЯ ая 😀'); // $boolean = true
+```
+---
 **[Helper::regexpValidateUuid](./tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php)**(\$value): bool\
-Проверяет значение на формат идентификатора uuid
+Проверяет значение строки на формат идентификатора uuid
 ```php
 $boolean = Helper::regexpValidateUuid('04d19f50-2fab-417a-815d-306b6a6f67ec'); // $boolean = true
 ```
@@ -191,18 +244,6 @@ $string = Helper::sizeBytesToString(1000); // $string = '1 Кб'
 Возвращает размер в байтах из строки размера
 ```php
 $integer = Helper::sizeStringToBytes('1 Килобайт'); // $integer = 1000
-```
----
-**[Helper::stringAddPrefix](./tests/HelperStringTrait/HelperStringAddPrefixTest.php)**(\$value, \$prefix, \$condition): string\
-Добавляет в начало строки префикс при выполнении условия condition
-```php
-$string = Helper::stringAddPrefix('def', 'abc', true); // $string = 'abcdef'
-```
----
-**[Helper::stringAddSuffix](./tests/HelperStringTrait/HelperStringAddSuffixTest.php)**(\$value, \$suffix, \$condition): string\
-Добавляет в конец строки суффикс при выполнении условия condition
-```php
-$string = Helper::stringAddSuffix('abc', 'def', true); // $string = 'abcdef'
 ```
 ---
 **[Helper::stringBreakByLength](./tests/HelperStringTrait/HelperStringBreakByLengthTest.php)**(\$value, \$breakType, \$partLengthMax, \$firstPartLength): array\
@@ -277,6 +318,18 @@ $string = Helper::stringLower('ABC'); // $string = 'abc'
 $string = Helper::stringMerge('abc', 'de'); // $string = 'dec'
 ```
 ---
+**[Helper::stringPadPrefix](./tests/HelperStringTrait/HelperstringPadPrefixTest.php)**(\$value, \$prefix, \$condition): string\
+Добавляет в начало строки префикс при выполнении условия condition
+```php
+$string = Helper::stringPadPrefix('def', 'abc', true); // $string = 'abcdef'
+```
+---
+**[Helper::stringPadSuffix](./tests/HelperStringTrait/HelperstringPadSuffixTest.php)**(\$value, \$suffix, \$condition): string\
+Добавляет в конец строки суффикс при выполнении условия condition
+```php
+$string = Helper::stringPadSuffix('abc', 'def', true); // $string = 'abcdef'
+```
+---
 **[Helper::stringPaste](./tests/HelperStringTrait/HelperStringPasteTest.php)**(\&\$value, \$paste, \$start): string\
 Вставляет подстроку в строку с позиции start
 ```php
@@ -289,11 +342,25 @@ $string = Helper::stringPaste('abc', 'd', 2); // $string = 'abdc'
 $string = Helper::stringPlural(1, ['штук', 'штука', 'штуки']); // $string = '1 штука'
 ```
 ---
+**[Helper::stringRepeat](./tests/HelperStringTrait/HelperStringRepeatTest.php)**(\$value, \$count): string\
+Возвращает повторяющуюся строку значения указанное количество раз
+```php
+$string = Helper::stringRepeat('a', 3); // $string = 'aaa'
+$string = Helper::stringRepeat(1, 3); // $string = '111'
+```
+---
 **[Helper::stringReplace](./tests/HelperStringTrait/HelperStringReplaceTest.php)**(\$value, \$searches, \$replaces): string\
 Заменяет подстроки в строке
 ```php
 $string = Helper::stringReplace('abcd', 'd', 'x'); // $string = 'abcx'
 $string = Helper::stringReplace('abcd', ['d' => 'x']); // $string = 'abcx'
+```
+---
+**[Helper::stringReverse](./tests/HelperStringTrait/HelperStringReverseTest.php)**(\$value): string\
+Возвращает реверсивную строку значения
+```php
+$string = Helper::stringReverse('abc'); // $string = 'cba'
+$string = Helper::stringReverse(123); // $string = '321'
 ```
 ---
 **[Helper::stringSearchAll](./tests/HelperStringTrait/HelperStringSearchAllTest.php)**(\$value, ...\$searches): array\
