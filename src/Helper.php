@@ -6,6 +6,7 @@ namespace Atlcom;
 
 use Atlcom\Traits\HelperArrayTrait;
 use Atlcom\Traits\HelperCacheTrait;
+use Atlcom\Traits\HelperCaseTrait;
 use Atlcom\Traits\HelperColorTrait;
 use Atlcom\Traits\HelperCryptTrait;
 use Atlcom\Traits\HelperExceptionTrait;
@@ -124,6 +125,7 @@ abstract class Helper
 {
     use HelperArrayTrait;
     use HelperCacheTrait;
+    use HelperCaseTrait;
     use HelperColorTrait;
     use HelperCryptTrait;
     use HelperExceptionTrait;

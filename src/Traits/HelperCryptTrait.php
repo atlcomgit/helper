@@ -11,7 +11,9 @@ trait HelperCryptTrait
 {
     public static int $cryptLength = 3;
     public static string $cryptPrefix = 'tkn:';
+    public static string $cryptSuffix = ':tkn';
     public static bool $cryptRandom = false;
+    public static int $cryptJsonFlags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
 
     /**
@@ -27,27 +29,30 @@ trait HelperCryptTrait
     {
         $result = '';
 
-        if (!$value || is_callable($value)) {
+        if ($value === null || $value === '' || is_callable($value)) {
             return $result;
         }
 
         $string = match (true) {
-            is_null($value) => 'n|' . json_encode($value),
-            is_integer($value) => 'i|' . json_encode($value),
-            is_float($value) => 'f|' . json_encode($value),
-            is_string($value) => 's|' . json_encode($value),
-            is_bool($value) => 'b|' . json_encode($value),
-            is_array($value) => 'a|' . json_encode($value),
+            is_null($value) => 'n|',
+            is_integer($value) => 'i|' . (string)$value,
+            is_float($value) => 'f|' . (string)$value,
+            is_string($value) => 's|' . (string)$value,
+            is_bool($value) => 'b|' . (string)$value,
+            is_array($value) => 'a|' . json_encode($value, static::$cryptJsonFlags),
             is_object($value) => match (true) {
-                    method_exists($value, 'toArray') => 'o|' . json_encode((array)$value->toArray()),
+                    method_exists($value, 'toArray')
+                    => 'o|' . json_encode((array)$value->toArray(), static::$cryptJsonFlags),
 
-                    default => 'o|' . json_encode((array)$value)
+                    default => 'o|' . json_encode((array)$value, static::$cryptJsonFlags)
                 },
 
-            default => '?|' . json_encode($value),
+            default => '?|' . (string)$value,
         };
 
-        $str = static::$cryptPrefix . $string;
+        $string = gzdeflate($string, 9);
+        $string = base64_encode($string);
+        $str = static::$cryptPrefix . $string . static::$cryptSuffix;
         $password = static::cryptHash($password ?? getenv('APP_KEY') ?: '');
         mt_srand((int)static::cryptMakeRandom());
         $rnd = ($random ?? static::$cryptRandom) ? mt_rand(100, 255) : 100;
@@ -66,6 +71,7 @@ trait HelperCryptTrait
 
         $result = (string)$rnd . $result;
         $result = static::cryptShrink($result);
+        $result = static::stringReverse($result);
         $result = static::cryptHash($result);
 
         return $result;
@@ -83,17 +89,19 @@ trait HelperCryptTrait
     {
         $result = '';
 
-        if ($value == '') {
+        if ($value === null || $value == '') {
             return $result;
         }
 
         $str = $value;
         $password = static::cryptHash($password ?? getenv('APP_KEY') ?: '');
         $str = static::cryptUnHash($str);
+
         if (!$str) {
             return false;
         }
 
+        $str = static::stringReverse($str);
         $str = static::cryptUnShrink($str);
         $rnd = (int)mb_substr($str, 0, static::$cryptLength);
         $str = mb_substr($str, static::$cryptLength);
@@ -116,17 +124,24 @@ trait HelperCryptTrait
             ? mb_substr($result, mb_strlen(static::$cryptPrefix))
             : '';
 
+        $result = (mb_substr($result, -mb_strlen(static::$cryptSuffix)) === static::$cryptSuffix)
+            ? mb_substr($result, 0, -mb_strlen(static::$cryptSuffix))
+            : '';
+
+        $result = base64_decode($result);
+        $result = gzinflate($result) ?: '';
+
         $type = explode('|', $result)[0];
         $result = static::stringDelete($result, 0, 2);
         $result = match ($type) {
             'n' => null,
-            'i' => (int)json_decode($result),
-            'f' => (float)json_decode($result),
-            's' => (string)json_decode($result),
-            'b' => (boolean)json_decode($result),
+            'i' => (int)$result,
+            'f' => (float)$result,
+            's' => (string)$result,
+            'b' => (boolean)$result,
             'a' => json_decode($result, true),
             'o' => json_decode($result),
-            '?' => trim(json_decode($result),'"'),
+            '?' => trim($result, '"'),
 
             default => null,
         };

@@ -26,7 +26,7 @@ $array = Helper::arrayExcludeTraceVendor(debug_backtrace()); // $array = []
 **[Helper::arrayFirst](./tests/HelperArrayTrait/HelperArrayFirstTest.php)**(\$value, \$key): mixed\
 Возвращает значение первого элемента массива
 ```php
-$mixed$ = Helper::arrayFirst(['a', 'b']); // $mixed === 'a'
+$mixed = Helper::arrayFirst(['a', 'b']); // $mixed === 'a'
 $mixed = Helper::arrayFirst(['a' => 1, 'b' => 2]); // $mixed === 1
 ```
 ---
@@ -41,7 +41,7 @@ $mixed = Helper::arrayGet(['a.b' => 1, 'b' => 2], 'a.b'); // $mixed === 1
 **[Helper::arrayLast](./tests/HelperArrayTrait/HelperArrayLastTest.php)**(\$value, \$key): mixed\
 Возвращает значение последнего элемента массива
 ```php
-$mixed$ = Helper::arrayLast(['a', 'b']); // $mixed === 'b'
+$mixed = Helper::arrayLast(['a', 'b']); // $mixed === 'b'
 $mixed = Helper::arrayLast(['a' => 1, 'b' => 2]); // $mixed === 2
 ```
 ---

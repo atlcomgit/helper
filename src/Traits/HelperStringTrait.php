@@ -53,6 +53,83 @@ trait HelperStringTrait
     }
 
 
+    //?!? test
+    public static function stringUpperFirst(int|float|string|null $value): string
+    {
+        $value = (string)$value;
+
+        return static::stringChange($value, static::stringUpper(static::stringCopy($value, 0, 1)), 0);
+    }
+
+
+    //?!? test
+    public static function stringLowerFirst(int|float|string|null $value): string
+    {
+        $value = (string)$value;
+
+        return static::stringChange($value, static::stringLower(static::stringCopy($value, 0, 1)), 0);
+    }
+
+
+    //?!? test
+    public static function stringUpperFirstAll(int|float|string|null $value): string
+    {
+        $value = (string)$value;
+
+        $words = [];
+        foreach ([' ', '_', '-', chr(9), chr(13)] as $delimiter) {
+            foreach (static::stringSplit($value, $delimiter) as $words) {
+                for ($index = 0; $index < count($words); $index++) {
+                    $words[$index] = static::stringUpperFirst($words[$index]);
+                }
+
+                $value = implode($delimiter, $words);
+            }
+        }
+
+        return $value;
+    }
+
+
+    //?!? test
+    public static function stringLowerFirstAll(int|float|string|null $value): string
+    {
+        $value = (string)$value;
+
+        $words = [];
+        foreach ([' ', '_', '-', chr(9), chr(13)] as $delimiter) {
+            foreach (static::stringSplit($value, $delimiter) as $words) {
+                for ($index = 0; $index < count($words); $index++) {
+                    $words[$index] = static::stringLowerFirst($words[$index]);
+                }
+
+                $value = implode($delimiter, $words);
+            }
+        }
+
+        return $value;
+    }
+
+
+    //?!? test
+    public static function stringSplit(int|float|string $value, int|float|string|array|null $delimiter): array
+    {
+        $result = [];
+        $delimiters = static::arrayValueToArray($delimiter);
+        $delimiters = array_values(static::arraySearchKeys($delimiters, ['*']));
+
+        while ($value) {
+            $delimiter = static::stringSearchAny($value, $delimiters);
+
+            $delimiter
+                ? $result[] = static::stringCut($value, 0, mb_strpos($value, $delimiter))
+                : $result[] = static::stringCut($value, 0);
+        }
+
+        return $result;
+    }
+
+
     /**
      * Копирует подстроку из строки с позиции start длиной length
      * @see ./tests/HelperStringTrait/HelperStringCopyTest.php
@@ -229,12 +306,12 @@ trait HelperStringTrait
 
         return ($includeValue ? "{$value} " : "")
             . match (true) {
-                $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
-                $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
-                => (string)($plurals[2] ?? ''),
+            $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
+            $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
+            => (string)($plurals[2] ?? ''),
 
-                default => (string)($plurals[0] ?? ''),
-            };
+            default => (string)($plurals[0] ?? ''),
+        };
     }
 
 
@@ -582,5 +659,12 @@ trait HelperStringTrait
     public static function stringReverse(int|float|string $value): string
     {
         return implode(array_reverse(mb_str_split((string)$value)));
+    }
+
+
+    //?!? 
+    public static function stringRandom(string $pattern): string
+    {
+        return '';
     }
 }
