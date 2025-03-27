@@ -7,12 +7,12 @@
 - Добавлен метод Helper::arraySearchKeys
 - Добавлен метод Helper::arraySearchKeysAndValues
 - Добавлен метод Helper::arraySearchValues
-- Добавлен метод Helper::arrayValueToArray
 - Добавлен метод Helper::regexpValidateAscii
 - Добавлен метод Helper::regexpValidateJson
 - Добавлен метод Helper::regexpValidateUnicode
 - Добавлен метод Helper::stringRepeat
 - Добавлен метод Helper::stringReverse
+- Добавлен метод Helper::transformToArray
 
 ## Версия 1.02
 - Добавлен метод Helper::arrayExcludeTraceVendor

@@ -9,9 +9,6 @@ namespace Atlcom\Traits;
  */
 trait HelperCaseTrait
 {
-    public static string $encoding = 'UTF-8';
-
-
     //?!? test
     /**
      * Возвращает строку в стиле camelCase
@@ -23,18 +20,17 @@ trait HelperCaseTrait
     public static function caseCamel(string $value): string
     {
         return (phpversion() >= '8.4')
-            ? mb_lcfirst(
+            ? static::stringLowerFirst(
                 static::stringReplace(
                     // ucwords(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    mb_convert_case(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' ']), MB_CASE_TITLE, static::$encoding),
+                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
                     [' ' => ''],
                 ),
-                static::$encoding,
             )
-            : lcfirst(
+            : static::stringLowerFirst(
                 static::stringReplace(
                     // ucwords(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    mb_convert_case(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' ']), MB_CASE_TITLE, static::$encoding),
+                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
                     [' ' => ''],
                 ),
             );
@@ -68,16 +64,15 @@ trait HelperCaseTrait
     public static function casePascal(string $value): string
     {
         return (phpversion() >= '8.4')
-            ? mb_ucfirst(
+            ? static::stringUpperFirst(
                 static::stringReplace(
-                    ucwords(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
+                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
                     [' ' => ''],
                 ),
-                static::$encoding,
             )
-            : ucfirst(
+            : static::stringUpperFirst(
                 static::stringReplace(
-                    ucwords(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
+                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
                     [' ' => ''],
                 ),
             );

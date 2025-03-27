@@ -50,26 +50,6 @@ trait HelperArrayTrait
 
 
     /**
-     * Возвращает массив из значения
-     * @see ./tests/HelperArrayTrait/HelperArrayValueToArrayTest.php
-     *
-     * @param mixed $value
-     * @return array
-     */
-    public static function arrayValueToArray(mixed $value): array
-    {
-        return $value = match (true) {
-            is_null($value) => [],
-            is_object($value) && method_exists($value, 'toArray') => $value->toArray(),
-            is_array($value) => $value,
-            is_callable($value) => static::arrayValueToArray($value()),
-
-            default => (array)$value,
-        };
-    }
-
-
-    /**
      * Возвращает массив с маппингом ключей
      * @see ./tests/HelperArrayTrait/HelperArrayMappingKeysTest.php
      *
@@ -85,14 +65,14 @@ trait HelperArrayTrait
         int|float|string|array|object|null $to = null,
         ?string $rootKey = null,
     ): array {
-        $value = static::arrayValueToArray($value);
-        $from = static::arrayValueToArray($from);
+        $value = static::transformToArray($value);
+        $from = static::transformToArray($from);
 
         if (!$from) {
             return $value;
         }
 
-        $to = static::arrayValueToArray($to);
+        $to = static::transformToArray($to);
 
         $result = [];
         $mappings = [];
@@ -136,8 +116,8 @@ trait HelperArrayTrait
     public static function arraySearchKeys(array|object $value, mixed ...$searches): array
     {
         $result = [];
-        $value = static::arrayValueToArray($value);
-        $searches = static::arrayValueToArray($searches);
+        $value = static::transformToArray($value);
+        $searches = static::transformToArray($searches);
 
         foreach ($value as $key => $v) {
             if (is_array($v) || is_object($v)) {
@@ -158,7 +138,8 @@ trait HelperArrayTrait
                         !is_null($search)
                         && (($searchString = (string)$search) || $searchString === '0')
                         && (
-                            $key === $search
+                            $searchString === '*'
+                            || $key === $search
                             || (static::regexpValidatePattern($searchString) && preg_match($searchString, $key))
                             || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $key))
                         )
@@ -185,8 +166,8 @@ trait HelperArrayTrait
     public static function arraySearchValues(array|object $value, mixed ...$searches): array
     {
         $result = [];
-        $value = static::arrayValueToArray($value);
-        $searches = static::arrayValueToArray($searches);
+        $value = static::transformToArray($value);
+        $searches = static::transformToArray($searches);
 
         foreach ($value as $key => $v) {
             if (is_array($v) || is_object($v)) {
@@ -205,7 +186,8 @@ trait HelperArrayTrait
                         !is_null($search)
                         && (($searchString = (string)$search) || $searchString === '0')
                         && (
-                            $v === $search
+                            $searchString === '*'
+                            || $v === $search
                             || (static::regexpValidatePattern($searchString) && preg_match($searchString, $v))
                             || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $v))
                         )
@@ -253,7 +235,7 @@ trait HelperArrayTrait
             return null;
         }
 
-        $value = static::arrayValueToArray($value);
+        $value = static::transformToArray($value);
 
         if (!isset($value[$key]) && mb_strpos((string)$key, '.') !== false) {
             foreach (explode('.', $key) as $partKey) {
@@ -279,7 +261,7 @@ trait HelperArrayTrait
      */
     public static function arrayFirst(array|object $value): mixed
     {
-        $value = static::arrayValueToArray($value);
+        $value = static::transformToArray($value);
 
         return !is_null($key = array_key_first($value)) ? ($value[$key] ?? null) : null;
     }
@@ -294,8 +276,42 @@ trait HelperArrayTrait
      */
     public static function arrayLast(array|object $value): mixed
     {
-        $value = static::arrayValueToArray($value);
+        $value = static::transformToArray($value);
 
         return !is_null($key = array_key_last($value)) ? ($value[$key] ?? null) : null;
+    }
+
+
+    //?!? 
+    public static function arrayCrypt(array $value): array
+    {
+        return [
+            [
+                'name' => 'keyName',
+                'type' => 'string',
+                'hash' => '...',
+                'value' => 'cryptEncode',
+            ],
+        ];
+    }
+
+
+    //?!? 
+    public static function arrayDecrypt(array $value): array
+    {
+        return [];
+    }
+
+
+    //?!? test
+    public static function arrayFlatten(array|object $value): array
+    {
+        return static::arraySearchKeys(static::transformToArray($value), ['*']);
+    }
+
+
+    public static function arrayExpand(array $value): array
+    {
+        return [];
     }
 }

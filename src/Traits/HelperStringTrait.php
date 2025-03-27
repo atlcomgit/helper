@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Atlcom\Traits;
 
 use Atlcom\Enums\HelperStringBreakTypeEnum;
+use Atlcom\Enums\HelperStringEncodingEnum;
 
 /**
  * Трейт для работы со строками
  */
 trait HelperStringTrait
 {
-    public static string $encoding = 'UTF-8';
-
-
     /**
      * Возвращает длину строки
      * @see ./tests/HelperStringTrait/HelperStringLengthTest.php
@@ -23,7 +21,7 @@ trait HelperStringTrait
      */
     public static function stringLength(int|float|string|null $value): int
     {
-        return mb_strlen((string)$value, static::$encoding);
+        return mb_strlen((string)$value, HelperStringEncodingEnum::Utf8->value);
     }
 
 
@@ -36,7 +34,7 @@ trait HelperStringTrait
      */
     public static function stringUpper(int|float|string|null $value): string
     {
-        return mb_strtoupper((string)$value, static::$encoding);
+        return mb_strtoupper((string)$value, HelperStringEncodingEnum::Utf8->value);
     }
 
 
@@ -49,7 +47,7 @@ trait HelperStringTrait
      */
     public static function stringLower(int|float|string|null $value): string
     {
-        return mb_strtolower((string)$value, static::$encoding);
+        return mb_strtolower((string)$value, HelperStringEncodingEnum::Utf8->value);
     }
 
 
@@ -115,7 +113,7 @@ trait HelperStringTrait
     public static function stringSplit(int|float|string $value, int|float|string|array|null $delimiter): array
     {
         $result = [];
-        $delimiters = static::arrayValueToArray($delimiter);
+        $delimiters = static::transformToArray($delimiter);
         $delimiters = array_values(static::arraySearchKeys($delimiters, ['*']));
 
         while ($value) {
@@ -141,7 +139,7 @@ trait HelperStringTrait
      */
     public static function stringCopy(int|float|string|null $value, int $start, ?int $length = null): string
     {
-        return mb_substr((string)$value, $start, $length, static::$encoding);
+        return mb_substr((string)$value, $start, $length, HelperStringEncodingEnum::Utf8->value);
     }
 
 
@@ -249,7 +247,7 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                if ($result = static::stringStarts($value, ...static::arrayValueToArray($search))) {
+                if ($result = static::stringStarts($value, ...static::transformToArray($search))) {
                     return $result;
                 }
 
@@ -276,7 +274,7 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                if ($result = static::stringEnds($value, ...static::arrayValueToArray($search))) {
+                if ($result = static::stringEnds($value, ...static::transformToArray($search))) {
                     return $result;
                 }
 
@@ -423,7 +421,7 @@ trait HelperStringTrait
             array_filter(
                 array_map(
                     fn (mixed $value): string => (is_array($value) || is_object($value))
-                    ? static::stringConcat($delimiter, ...static::arrayValueToArray($value))
+                    ? static::stringConcat($delimiter, ...static::transformToArray($value))
                     : (string)$value,
                     $values,
                 ),
@@ -485,7 +483,7 @@ trait HelperStringTrait
 
         foreach ($values as $value) {
             $result = (is_array($value) || is_object($value))
-                ? static::stringMerge(...static::arrayValueToArray($value))
+                ? static::stringMerge(...static::transformToArray($value))
                 : static::stringChange($result, $value, 0);
         }
 
@@ -507,7 +505,7 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                if ($result = static::stringSearchAny($value, ...static::arrayValueToArray($search))) {
+                if ($result = static::stringSearchAny($value, ...static::transformToArray($search))) {
                     return $result;
                 }
 
@@ -516,7 +514,8 @@ trait HelperStringTrait
                 && $search !== ''
                 && ($searchString = (string)$search)
                 && (
-                    mb_strpos($value, $searchString) !== false
+                    $searchString === '*'
+                    || mb_strpos($value, $searchString) !== false
                     || (static::regexpValidatePattern($searchString) && preg_match($searchString, $value))
                     || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $value))
                 )
@@ -546,7 +545,7 @@ trait HelperStringTrait
             if (is_array($search) || is_object($search)) {
                 $result = [
                     ...$result,
-                    ...(static::stringSearchAll($value, ...static::arrayValueToArray($search)) ?: []),
+                    ...(static::stringSearchAll($value, ...static::transformToArray($search)) ?: []),
                 ];
 
             } else if (
@@ -554,7 +553,8 @@ trait HelperStringTrait
                 && $search !== ''
                 && ($searchString = (string)$search)
                 && (
-                    mb_strpos($value, $searchString) !== false
+                    $searchString === '*'
+                    || mb_strpos($value, $searchString) !== false
                     || (static::regexpValidatePattern($searchString) && preg_match($searchString, $value))
                     || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $value))
                 )
@@ -624,10 +624,10 @@ trait HelperStringTrait
 
         foreach ($searches as $search) {
             if (is_array($search) || is_object($search)) {
-                $result += static::stringCount($value, ...static::arrayValueToArray($search));
+                $result += static::stringCount($value, ...static::transformToArray($search));
 
             } else if (!is_null($search) && $search !== '') {
-                $result += mb_substr_count($value, (string)$search, static::$encoding);
+                $result += mb_substr_count($value, (string)$search, HelperStringEncodingEnum::Utf8->value);
             }
         }
 
@@ -663,7 +663,7 @@ trait HelperStringTrait
 
 
     //?!? 
-    public static function stringRandom(string $pattern): string
+    public static function stringRandom(int $length, string $pattern): string
     {
         return '';
     }

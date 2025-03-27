@@ -20,6 +20,7 @@ use Atlcom\Traits\HelperSizeTrait;
 use Atlcom\Traits\HelperStringTrait;
 use Atlcom\Traits\HelperTelegramTrait;
 use Atlcom\Traits\HelperTimeTrait;
+use Atlcom\Traits\HelperTransformTrait;
 
 /**
  * Абстрактный класс Helper
@@ -38,7 +39,6 @@ use Atlcom\Traits\HelperTimeTrait;
  * @method @see static::arraySearchKeys()
  * @method @see static::arraySearchKeysAndValues()
  * @method @see static::arraySearchValues()
- * @method @see static::arrayValueToArray()
  * 
  * @group Работа с кешем
  * @method @see static::cacheRuntimeGet()
@@ -120,6 +120,9 @@ use Atlcom\Traits\HelperTimeTrait;
  * @method @see static::timePeriodBetweenDatesToString()
  * @method @see static::timeSecondsToArray()
  * @method @see static::timeSecondsToString()
+ * 
+ * @group Работа с трансформацией
+ * @method @see static::transformToArray()
  */
 abstract class Helper
 {
@@ -139,4 +142,5 @@ abstract class Helper
     use HelperStringTrait;
     use HelperTelegramTrait;
     use HelperTimeTrait;
+    use HelperTransformTrait;
 }

@@ -73,13 +73,6 @@ $array = Helper::arraySearchValues(['a', 'b'], 'a'); // $array = ['a']
 $array = Helper::arraySearchValues(['abc', 'def'], ['a*', '*f']); // $array = ['abc', 'def']
 ```
 ---
-**[Helper::arrayValueToArray](./tests/HelperArrayTrait/HelperArrayValueToArrayTest.php)**(\$value): array\
-Возвращает массив из значения
-```php
-$array = Helper::arrayValueToArray(['a', 'b']); // $array = ['a', 'b']
-$array = Helper::arrayValueToArray('a'); // $array = ['a']
-```
----
 **[Helper::cacheRuntimeGet](./tests/HelperCacheTrait/HelperCacheRuntimeGetTest.php)**(\$key, \$default): mixed\
 Возвращает значение из кеша по ключу key или возвращает значение по умолчанию default
 ```php
@@ -418,5 +411,12 @@ $array = Helper::timeSecondsToArray(1); // $array = ['years' => 0, 'days' => 0, 
 Возвращает период из количества секунд в виде строки YDHM
 ```php
 $string = Helper::timeSecondsToString(123); // $string = '2 минуты 3 секунды'
+```
+---
+**[Helper::transformToArray](./tests/HelperTransformTrait/HelperTransformToArrayTest.php)**(\$value): array\
+Возвращает массив из значения
+```php
+$array = Helper::arrayVatransformToArraylueToArray(['a', 'b']); // $array = ['a', 'b']
+$array = Helper::transformToArray('a'); // $array = ['a']
 ```
 ---

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atlcom\Tests\HelperArrayTrait;
+namespace Atlcom\Tests\HelperTransformTrait;
 
 use Atlcom\Helper;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,40 +24,40 @@ class ArrayableObject
 
 /**
  * Тест метода трейта
- * @see \Atlcom\Traits\HelperArrayTrait
+ * @see \Atlcom\Traits\HelperTransformTrait
  */
-final class HelperArrayValueToArrayTest extends TestCase
+final class HelperTransformToArrayTest extends TestCase
 {
     #[Test]
-    public function arrayValueToArray(): void
+    public function transformToArray(): void
     {
-        $array = Helper::arrayValueToArray(['a', 'b']);
+        $array = Helper::transformToArray(['a', 'b']);
         $this->assertTrue($array === ['a', 'b']);
 
-        $array = Helper::arrayValueToArray('a');
+        $array = Helper::transformToArray('a');
         $this->assertTrue($array === ['a']);
 
-        $array = Helper::arrayValueToArray([]);
+        $array = Helper::transformToArray([]);
         $this->assertTrue($array === []);
 
         $object = new stdClass();
         $object->a = 1;
-        $array = Helper::arrayValueToArray($object);
+        $array = Helper::transformToArray($object);
         $this->assertTrue($array === ['a' => 1]);
 
-        $array = Helper::arrayValueToArray(new TestObject());
+        $array = Helper::transformToArray(new TestObject());
         $this->assertTrue($array === ['a' => 1]);
 
-        $array = Helper::arrayValueToArray(new ArrayableObject());
+        $array = Helper::transformToArray(new ArrayableObject());
         $this->assertTrue($array === ['a' => 1]);
 
-        $array = Helper::arrayValueToArray(static fn () => ['a' => 1]);
+        $array = Helper::transformToArray(static fn () => ['a' => 1]);
         $this->assertTrue($array === ['a' => 1]);
 
-        $array = Helper::arrayValueToArray(static fn () => 'a');
+        $array = Helper::transformToArray(static fn () => 'a');
         $this->assertTrue($array === ['a']);
 
-        $array = Helper::arrayValueToArray(static fn () => new ArrayableObject());
+        $array = Helper::transformToArray(static fn () => new ArrayableObject());
         $this->assertTrue($array === ['a' => 1]);
     }
 }

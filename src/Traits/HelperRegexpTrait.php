@@ -4,19 +4,13 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Enums\HelperRegexpEnum;
+
 /**
  * Трейт для работы с regexp
  */
 trait HelperRegexpTrait
 {
-    public static string $regexpEmail = '/^([A-Za-z0-9_\.-]+)@([\dA-Za-z\.-]+)\.([A-Za-z\.]{2,6})$/';
-    public static string $regexpPattern = '/^\/.+\/[a-z]*$/i';
-    public static string $regexpPhone = '/^[\+0-9\-\(\)\s]*$/';
-    public static string $regexpUuid = '/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/iD';
-    public static string $regexpAscii = '/[^\x09\x10\x13\x0A\x0D\x20-\x7E]/';
-    public static string $regexpUnicode = '/[^\w$\x{0080}-\x{FFFF}]+/u';
-
-
     /**
      * Проверяет значение строки на формат электронной почты
      * @see ./tests/HelperRegexpTrait/HelperRegexpValidateEmailTest.php
@@ -26,7 +20,7 @@ trait HelperRegexpTrait
      */
     public static function regexpValidateEmail(string $value): bool
     {
-        return (bool)preg_match(static::$regexpEmail, $value);
+        return (bool)preg_match(HelperRegexpEnum::Email->value, $value);
     }
 
 
@@ -39,7 +33,7 @@ trait HelperRegexpTrait
      */
     public static function regexpValidatePattern(string $value): bool
     {
-        return (bool)preg_match(static::$regexpPattern, $value);
+        return (bool)preg_match(HelperRegexpEnum::Pattern->value, $value);
     }
 
 
@@ -53,7 +47,7 @@ trait HelperRegexpTrait
     public static function regexpValidatePhone(string $value): bool
     {
         return (bool)(
-            preg_match(static::$regexpPhone, $value)
+            preg_match(HelperRegexpEnum::Phone->value, $value)
             && static::stringLength(preg_replace('/[^0-9]/', '', $value)) >= 10
         );
     }
@@ -68,7 +62,7 @@ trait HelperRegexpTrait
      */
     public static function regexpValidateUuid(string $value): bool
     {
-        return (bool)preg_match(static::$regexpUuid, $value);
+        return (bool)preg_match(HelperRegexpEnum::Uuid->value, $value);
     }
 
 
@@ -94,7 +88,7 @@ trait HelperRegexpTrait
      */
     public static function regexpValidateAscii(string $value): bool
     {
-        return !preg_match(static::$regexpAscii, $value);
+        return !preg_match(HelperRegexpEnum::Ascii->value, $value);
     }
 
 
@@ -107,6 +101,6 @@ trait HelperRegexpTrait
      */
     public static function regexpValidateUnicode(string $value): bool
     {
-        return (bool)preg_match(static::$regexpUnicode, $value);
+        return (bool)preg_match(HelperRegexpEnum::Unicode->value, $value);
     }
 }
