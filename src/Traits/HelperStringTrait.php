@@ -6,6 +6,11 @@ namespace Atlcom\Traits;
 
 use Atlcom\Enums\HelperStringBreakTypeEnum;
 use Atlcom\Enums\HelperStringEncodingEnum;
+use ReverseRegex\Generator\Scope;
+use ReverseRegex\Lexer;
+use ReverseRegex\Parser;
+use ReverseRegex\Random\MersenneRandom;
+use ReverseRegex\Random\SimpleRandom;
 
 /**
  * Трейт для работы со строками
@@ -76,13 +81,13 @@ trait HelperStringTrait
 
         $words = [];
         foreach ([' ', '_', '-', chr(9), chr(13)] as $delimiter) {
-            foreach (static::stringSplit($value, $delimiter) as $words) {
-                for ($index = 0; $index < count($words); $index++) {
-                    $words[$index] = static::stringUpperFirst($words[$index]);
-                }
+            $words = static::stringSplit($value, $delimiter);
 
-                $value = implode($delimiter, $words);
+            foreach ($words as &$word) {
+                $word = static::stringUpperFirst($word);
             }
+
+            $value = implode($delimiter, $words);
         }
 
         return $value;
@@ -109,18 +114,29 @@ trait HelperStringTrait
     }
 
 
-    //?!? test
+    //?!? readme
+    /**
+     * Возвращает массив подстрок разбитых на части между разделителем в строке
+     * @see ./tests/HelperStringTrait/HelperStringSplitTest.php
+     *
+     * @param int|float|string $value
+     * @param int|float|string|array|null $delimiter
+     * @return array
+     */
     public static function stringSplit(int|float|string $value, int|float|string|array|null $delimiter): array
     {
         $result = [];
         $delimiters = static::transformToArray($delimiter);
-        $delimiters = array_values(static::arraySearchKeys($delimiters, ['*']));
+        $delimiters = array_values(static::arrayFlatten($delimiters));
 
-        while ($value) {
+        while ($value || $delimiter) {
             $delimiter = static::stringSearchAny($value, $delimiters);
 
             $delimiter
-                ? $result[] = static::stringCut($value, 0, mb_strpos($value, $delimiter))
+                ? $result[] = static::stringDelete(
+                    static::stringCut($value, 0, mb_strpos($value, $delimiter) + static::stringLength($delimiter)),
+                    -static::stringLength($delimiter)
+                )
                 : $result[] = static::stringCut($value, 0);
         }
 
@@ -176,6 +192,11 @@ trait HelperStringTrait
     public static function stringCut(int|float|string|null &$value, int $start, ?int $length = null): string
     {
         $value = (string)$value;
+
+        if ($length === 0) {
+            return '';
+        }
+
         $result = static::stringCopy($value, $start, $length);
         $value = static::stringDelete($value, $start, $length);
 
@@ -304,12 +325,12 @@ trait HelperStringTrait
 
         return ($includeValue ? "{$value} " : "")
             . match (true) {
-            $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
-            $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
-            => (string)($plurals[2] ?? ''),
+                $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
+                $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
+                => (string)($plurals[2] ?? ''),
 
-            default => (string)($plurals[0] ?? ''),
-        };
+                default => (string)($plurals[0] ?? ''),
+            };
     }
 
 
@@ -662,9 +683,47 @@ trait HelperStringTrait
     }
 
 
-    //?!? 
-    public static function stringRandom(int $length, string $pattern): string
+    //?!? readme
+    /**
+     * Возвращает случайную строку по шаблону регулярного выражения
+     * @see ./tests/HelperStringTrait/HelperStringRandomTest.php
+     *
+     * @param string $pattern
+     * @return string
+     */
+    public static function stringRandom(string $pattern): string
     {
-        return '';
+        $result = '';
+
+        if (static::regexpValidatePattern($pattern)) {
+            $patterns = static::stringSplit($pattern, '/');
+            $patterns = array_slice($patterns, 1, -1);
+            $pattern = implode('/', $patterns);
+        } else {
+            $pattern = trim($pattern, '/%$^');
+        }
+
+        $pattern = static::stringReplace($pattern, [
+            '\+' => '%PLUS%',
+            '\*' => '%STAR%',
+            '\.' => '%DOT%',
+            '+' => '{1,10}',
+            '*' => '{0,10}',
+            '\d' => '0-9',
+            '\w' => 'A-Za-z',
+            '\u' => 'А-ЯЁа-яё',
+            '\s' => '\ ',
+            '.+' => '[A-Za-zА-ЯЁа-яё0-9\ ]+',
+            '.' => 'A-Za-zА-ЯЁа-яё0-9\ ',
+            '%PLUS%' => '\+',
+            '%STAR%' => '\*',
+            '%DOT%' => '\.',
+            '^' => '',
+        ]);
+        $random = new MersenneRandom(); // $random = new SimpleRandom(10007);
+        $parser = new Parser(new Lexer($pattern), new Scope(), new Scope());
+        $parser->parse()->getResult()->generate($result, $random);
+
+        return $result;
     }
 }

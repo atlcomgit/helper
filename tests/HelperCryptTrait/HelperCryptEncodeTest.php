@@ -48,6 +48,16 @@ final class HelperCryptEncodeTest extends TestCase
         $array = Helper::cryptDecode($string, 'Пароль');
         $this->assertTrue($array === ['name' => 'Иванов Иван Иванович']);
 
+        $string = Helper::cryptEncode(null, 'password', true);
+        $this->assertTrue($string !== '');
+        $array = Helper::cryptDecode($string, 'password');
+        $this->assertTrue($array === null);
+
+        $string = Helper::cryptEncode('', 'password', true);
+        $this->assertTrue($string !== '');
+        $array = Helper::cryptDecode($string, 'password');
+        $this->assertTrue($array === '');
+
         $object = new stdClass();
         $object->name = 'Иванов Иван Иванович';
         $string = Helper::cryptEncode($object, 'Пароль', true);
@@ -66,7 +76,14 @@ final class HelperCryptEncodeTest extends TestCase
             $string = Helper::cryptDecode($string, (string)$a);
             $this->assertEquals($string, $a);
             $this->assertTrue($string === $a);
-            // $string = Helper::cryptEncode(static::stringRandom(), static::stringRandom());
+
+            $string = Helper::cryptEncode(
+                $source = Helper::stringRandom("/[\w\d\s\u]/{$a}"),
+                $password = Helper::stringRandom("/[\w\d\s\u]/{$a}"),
+            );
+            $string = Helper::cryptDecode($string, $password);
+            $this->assertEquals($string, $source);
+            $this->assertTrue($string === $source);
         }
     }
 }

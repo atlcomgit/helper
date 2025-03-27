@@ -29,7 +29,7 @@ trait HelperCryptTrait
     {
         $result = '';
 
-        if ($value === null || $value === '' || is_callable($value)) {
+        if (is_callable($value)) {
             return $result;
         }
 
@@ -90,7 +90,7 @@ trait HelperCryptTrait
         $result = '';
 
         if ($value === null || $value == '') {
-            return $result;
+            return null;
         }
 
         $str = $value;
@@ -98,7 +98,7 @@ trait HelperCryptTrait
         $str = static::cryptUnHash($str);
 
         if (!$str) {
-            return false;
+            return null;
         }
 
         $str = static::stringReverse($str);

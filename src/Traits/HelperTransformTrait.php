@@ -22,6 +22,7 @@ trait HelperTransformTrait
             is_null($value) => [],
             is_object($value) && method_exists($value, 'toArray') => $value->toArray(),
             is_array($value) => $value,
+            is_scalar($value) => [$value],
             is_callable($value) => static::transformToArray($value()),
 
             default => (array)$value,

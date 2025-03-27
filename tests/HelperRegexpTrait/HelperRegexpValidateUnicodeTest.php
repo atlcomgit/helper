@@ -21,6 +21,9 @@ final class HelperRegexpValidateUnicodeTest extends TestCase
         $this->assertTrue($boolean === false);
 
         $boolean = Helper::regexpValidateUnicode('0-9 AZ az');
+        $this->assertTrue($boolean === false);
+
+        $boolean = Helper::regexpValidateUnicode('АЯ ая');
         $this->assertTrue($boolean === true);
 
         $boolean = Helper::regexpValidateUnicode('0-9 AZ az АЯ ая');

@@ -21,7 +21,6 @@ final class HelperCaseCamelTest extends TestCase
         $this->assertTrue($string === 'abcDef');
 
         $string = Helper::caseCamel('AbcDef');
-        $this->assertEquals($string, 'aaaaaaa');
         $this->assertTrue($string === 'abcDef');
 
         $string = Helper::caseCamel('abc_def');

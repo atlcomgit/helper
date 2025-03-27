@@ -310,8 +310,9 @@ trait HelperArrayTrait
     }
 
 
+    //?!? 
     public static function arrayExpand(array $value): array
     {
-        return [];
+        return []; // Unflatten
     }
 }
