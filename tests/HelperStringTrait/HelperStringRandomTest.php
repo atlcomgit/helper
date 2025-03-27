@@ -38,7 +38,6 @@ final class HelperStringRandomTest extends TestCase
         $string = Helper::stringRandom($pattern = HelperRegexpEnum::Email->value);
         $this->assertMatchesRegularExpression($pattern, $string);
 
-        //?!? 
         $string = Helper::stringRandom($pattern = HelperRegexpEnum::Pattern->value);
         $this->assertMatchesRegularExpression($pattern, $string);
 

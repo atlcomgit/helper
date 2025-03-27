@@ -357,18 +357,18 @@ $string = Helper::stringReverse(123); // $string = '321'
 ```
 ---
 **[Helper::stringSearchAll](./tests/HelperStringTrait/HelperStringSearchAllTest.php)**(\$value, ...\$searches): array\
-Проверяет вхождение подстрок в строке и возвращает все найденные искомые значения
+Возвращает массив всех искомых подстрок найденных в строке
 ```php
 $array = Helper::stringSearchAll('abcd', 'bc', 'd'); // $array = ['bc', 'd']
 $string = Helper::stringSearchAll('Иванов Иван Иванович', ['*Иван*']); // $string = ['*Иван*']
 ```
 ---
-**[Helper::stringSearchAny](./tests/HelperStringTrait/HelperStringSearchAnyTest.php)**(\$value, ...\$searches): ?string\
-Проверяет вхождение подстрок в строке и возвращает первое найденное искомое значение или null
+**[Helper::stringSearchAny](./tests/HelperStringTrait/HelperStringSearchAnyTest.php)**(\$value, ...\$searches): array\
+Возвращает массив первой искомой подстроки найденной в строке
 ```php
-$string = Helper::stringSearchAny('abcd', 'bc'); // $string = 'bc'
-$string = Helper::stringSearchAny('abcd', ['ab', 'bc']); // $string = 'ab'
-$string = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*'); // $string = '*Иван*'
+$string = Helper::stringSearchAny('abcd', 'bc'); // $string = ['bc']
+$string = Helper::stringSearchAny('abcd', ['ab', 'bc']); // $string = ['ab']
+$string = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*'); // $string = ['*Иван*']
 ```
 ---
 **[Helper::stringStarts](./tests/HelperStringTrait/HelperStringStartsTest.php)**(\$value, ...\$searches): string\

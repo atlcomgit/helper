@@ -93,7 +93,7 @@ trait HelperArrayTrait
             if (isset($mappings[$keyCurrent])) {
                 $result[$mappings[$keyCurrent]] = $v;
             } else if ($keySearch = static::stringSearchAny($keyCurrent, $mappingKeys)) {
-                $result[$mappings[$keySearch]] = $v;
+                $result[$mappings[static::arrayFirst($keySearch)]] = $v;
             } else {
                 $result[$key] = $v;
             }
@@ -282,37 +282,56 @@ trait HelperArrayTrait
     }
 
 
-    //?!? 
-    public static function arrayCrypt(array $value): array
-    {
-        return [
-            [
-                'name' => 'keyName',
-                'type' => 'string',
-                'hash' => '...',
-                'value' => 'cryptEncode',
-            ],
-        ];
-    }
-
-
-    //?!? 
-    public static function arrayDecrypt(array $value): array
-    {
-        return [];
-    }
-
-
-    //?!? test
-    public static function arrayFlatten(array|object $value): array
+    //?!? readme
+    /**
+     * Возвращает одномерный массив из многомерного
+     * @see ./tests/HelperArrayTrait/HelperArrayDottedTest.php
+     *
+     * @param array|object $value
+     * @return array
+     */
+    public static function arrayDotted(array|object $value): array
     {
         return static::arraySearchKeys(static::transformToArray($value), ['*']);
     }
 
 
-    //?!? 
-    public static function arrayExpand(array $value): array
+    //?!? readme
+    /**
+     * Возвращает многомерный массив из одномерного
+     * @see ./tests/HelperArrayTrait/HelperArrayNestedTest.php
+     *
+     * @param array $value
+     * @return array
+     */
+    public static function arrayNested(array $value): array
     {
-        return []; // Unflatten
+        $result = [];
+
+        foreach ($value as $key => $v) {
+            if (is_string($key) && mb_strpos($key, '.') !== false) {
+                $keys = static::stringSplit($key, '.');
+                $current = &$result;
+
+                foreach (array_slice($keys, 0, -1) as $subKey) {
+                    if (!isset($current[$subKey]) || !is_array($current[$subKey])) {
+                        $current[$subKey] = [];
+                    }
+
+                    $current = &$current[$subKey];
+                }
+
+                $lastKey = end($keys);
+                $current[$lastKey] = $v;
+
+                unset($current);
+            } else {
+                $result[$key] = $v;
+            }
+
+            unset($value[$key]);
+        }
+
+        return $result;
     }
 }

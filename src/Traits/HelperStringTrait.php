@@ -56,7 +56,14 @@ trait HelperStringTrait
     }
 
 
-    //?!? test
+    //?!? readme
+    /**
+     * Возвращает строку с первый символом в верхнем регистре
+     * @see ./tests/HelperStringTrait/HelperStringUpperFirstTest.php
+     *
+     * @param int|float|string|null $value
+     * @return string
+     */
     public static function stringUpperFirst(int|float|string|null $value): string
     {
         $value = (string)$value;
@@ -66,6 +73,13 @@ trait HelperStringTrait
 
 
     //?!? test
+    /**
+     * Возвращает строку с первый символом в нижнем регистре
+     * @see ./tests/HelperStringTrait/HelperStringLowerFirstTest.php
+     *
+     * @param int|float|string|null $value
+     * @return string
+     */
     public static function stringLowerFirst(int|float|string|null $value): string
     {
         $value = (string)$value;
@@ -75,6 +89,13 @@ trait HelperStringTrait
 
 
     //?!? test
+    /**
+     * Возвращает строку со всеми словами в верхнем регистре
+     * @see ./tests/HelperStringTrait/HelperStringUpperFirstAllTest.php
+     *
+     * @param int|float|string|null $value
+     * @return string
+     */
     public static function stringUpperFirstAll(int|float|string|null $value): string
     {
         $value = (string)$value;
@@ -95,6 +116,13 @@ trait HelperStringTrait
 
 
     //?!? test
+    /**
+     * Возвращает строку со всеми словами в нижнем регистре
+     * @see ./tests/HelperStringTrait/HelperStringLowerFirstAllTest.php
+     *
+     * @param int|float|string|null $value
+     * @return string
+     */
     public static function stringLowerFirstAll(int|float|string|null $value): string
     {
         $value = (string)$value;
@@ -127,10 +155,10 @@ trait HelperStringTrait
     {
         $result = [];
         $delimiters = static::transformToArray($delimiter);
-        $delimiters = array_values(static::arrayFlatten($delimiters));
+        $delimiters = array_values(static::arrayDotted($delimiters));
 
         while ($value || $delimiter) {
-            $delimiter = static::stringSearchAny($value, $delimiters);
+            $delimiter = static::arrayFirst(static::stringSearchAny($value, $delimiters));
 
             $delimiter
                 ? $result[] = static::stringDelete(
@@ -513,14 +541,14 @@ trait HelperStringTrait
 
 
     /**
-     * Проверяет вхождение подстрок в строке и возвращает первое найденное искомое значение или null
+     * Возвращает массив первой искомой подстроки найденной в строке
      * @see ./tests/HelperStringTrait/HelperStringSearchAnyTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
-     * @return string|null
+     * @return array
      */
-    public static function stringSearchAny(int|float|string|null $value, mixed ...$searches): ?string
+    public static function stringSearchAny(int|float|string|null $value, mixed ...$searches): array
     {
         $value = (string)$value;
 
@@ -533,7 +561,7 @@ trait HelperStringTrait
             } else if (
                 !is_null($search)
                 && $search !== ''
-                && ($searchString = (string)$search)
+                && (($searchString = (string)$search) || $searchString === '0')
                 && (
                     $searchString === '*'
                     || mb_strpos($value, $searchString) !== false
@@ -541,16 +569,16 @@ trait HelperStringTrait
                     || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $value))
                 )
             ) {
-                return $search;
+                return [$search];
             }
         }
 
-        return null;
+        return [];
     }
 
 
     /**
-     * Проверяет вхождение подстрок в строке и возвращает все найденные искомые значения
+     * Возвращает массив всех искомых подстрок найденных в строке
      * @see ./tests/HelperStringTrait/HelperStringSearchAllTest.php
      *
      * @param int|float|string|null $value
@@ -572,7 +600,7 @@ trait HelperStringTrait
             } else if (
                 !is_null($search)
                 && $search !== ''
-                && ($searchString = (string)$search)
+                && (($searchString = (string)$search) || $searchString === '0')
                 && (
                     $searchString === '*'
                     || mb_strpos($value, $searchString) !== false
@@ -725,5 +753,75 @@ trait HelperStringTrait
         $parser->parse()->getResult()->generate($result, $random);
 
         return $result;
+    }
+
+
+    //?!? test
+    /**
+     * Возвращает массив позиции первой искомой подстроки найденной в строке
+     * @see ./tests/HelperStringTrait/HelperStringPosAnyTest.php
+     *
+     * @param int|float|string|null $value
+     * @param mixed ...$searches
+     * @return array
+     */
+    public static function stringPosAny(int|float|string|null $value, mixed ...$searches): array
+    {
+        $value = (string)$value;
+
+        foreach ($searches as $search) {
+            if (is_array($search) || is_object($search)) {
+                if ($result = static::stringPosAny($value, ...static::transformToArray($search))) {
+                    return $result;
+                }
+
+            } else if (
+                !is_null($search)
+                && $search !== ''
+                && (($searchString = (string)$search) || $searchString === '0')
+                && ($pos = mb_strpos($value, $searchString)) !== false
+            ) {
+                return [$pos];
+            }
+        }
+
+        return [];
+    }
+
+
+    //?!? test
+    /**
+     * Возвращает массив всех позиций искомых подстрок найденных в строке
+     * @see ./tests/HelperStringTrait/HelperStringPosAllTest.php
+     *
+     * @param int|float|string|null $value
+     * @param mixed ...$searches
+     * @return array
+     */
+    public static function stringPosAll(int|float|string|null $value, mixed ...$searches): array
+    {
+        $result = [];
+        $value = (string)$value;
+
+        foreach ($searches as $search) {
+            if (is_array($search) || is_object($search)) {
+                $result = [
+                    ...$result,
+                    ...(static::stringPosAll($value, ...static::transformToArray($search)) ?: []),
+                ];
+
+            } else if (
+                !is_null($search)
+                && $search !== ''
+                && (($searchString = (string)$search) || $searchString === '0')
+                && ($pos = mb_strpos($value, $searchString)) !== false
+            ) {
+                $result[] = $pos;
+            }
+        }
+
+        sort($result);
+
+        return array_unique($result);
     }
 }

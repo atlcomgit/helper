@@ -25,7 +25,7 @@ use Atlcom\Traits\HelperTransformTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.03
+ * @version 1.04
  * 
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper

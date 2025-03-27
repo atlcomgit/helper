@@ -291,4 +291,62 @@ trait HelperCryptTrait
 
         return static::hashXxh128($result) === $hash ? $result : '';
     }
+
+
+    //?!? test
+    /**
+     * Шифрует значение элементов массива с добавлением хеша значения и его типа
+     * @see ./tests/HelperArrayTrait/HelperArrayCryptTest.php
+     *
+     * @param array|object $value
+     * @return array
+     */
+    public static function cryptArrayEncode(array|object $value): array
+    {
+        $value = static::transformToArray($value);
+
+        foreach ($value as &$v) {
+            if (is_array($v) || is_object($v)) {
+                $v = static::cryptArrayEncode(static::transformToArray($v));
+            } else {
+                !is_object($v) ?: $v = static::transformToArray($v);
+                $v = [
+                    'hash' => static::hashXxh128((string)$v),
+                    'value' => static::cryptEncode($v),
+                ];
+            }
+        }
+
+        return $value;
+    }
+
+
+    //?!? test
+    /**
+     * Дешифрует значение элементов массива
+     *
+     * @param array $value
+     * @return array
+     */
+    public static function arrayDecrypt(array $value): array
+    {
+        $result = [];
+
+        foreach ($value as $key => $v) {
+            if (
+                is_array($v)
+                && array_key_exists('hash', $v)
+                && array_key_exists('value', $v)
+            ) {
+                $vDecrypted = static::cryptDecode($v);
+                !(static::hashXxh128((string)$vDecrypted) === $v['hash']) ?: $v = $vDecrypted;
+            }
+
+            $result[$key] = $v;
+
+            unset($value[$key]);
+        }
+
+        return $result;
+    }
 }

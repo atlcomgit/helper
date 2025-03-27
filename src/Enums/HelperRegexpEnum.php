@@ -7,7 +7,7 @@ namespace Atlcom\Enums;
 enum HelperRegexpEnum: string
 {
     case Email = '/^([A-Za-z0-9\_\.\-]+)@([0-9A-Za-z\_\.\-]+)\.([A-Za-z\.]{2,6})$/';
-    case Pattern = '/^\/.+\/[a-z]*$/i'; //?!? 
+    case Pattern = '/^\/.+\/[a-z]*$/i';
     case Phone = '/^[\+0-9\-\(\)\s]*$/';
     case Uuid = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iD';
     case Ascii = '/[^\x09\x10\x13\x0A\x0D\x20-\x7E]/';

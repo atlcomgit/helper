@@ -1,5 +1,8 @@
 # Changelog
 
+## Версия 1.04
+- Добавлен метод Helper::
+
 ## Версия 1.03
 - Добавлен метод Helper::arrayFirst
 - Добавлен метод Helper::arrayGet
