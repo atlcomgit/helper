@@ -26,6 +26,9 @@ final class HelperCasePascalTest extends TestCase
         $string = Helper::casePascal('AbcDef');
         $this->assertTrue($string === 'AbcDef');
 
+        $string = Helper::casePascal('abcDef');
+        $this->assertTrue($string === 'AbcDef');
+
         $string = Helper::casePascal('abc_def');
         $this->assertTrue($string === 'AbcDef');
 

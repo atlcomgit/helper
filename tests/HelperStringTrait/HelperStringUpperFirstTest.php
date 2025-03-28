@@ -17,6 +17,9 @@ final class HelperStringUpperFirstTest extends TestCase
     #[Test]
     public function stringUpperFirst(): void
     {
+        $string = Helper::stringUpperFirst('abc');
+        $this->assertTrue($string === 'Abc');
+
         $string = Helper::stringUpperFirst('abc Def ghi');
         $this->assertTrue($string === 'Abc Def ghi');
 

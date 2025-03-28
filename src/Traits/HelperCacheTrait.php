@@ -14,7 +14,6 @@ trait HelperCacheTrait
     public static array $cache = [];
 
 
-    //?!? readme
     /**
      * Проверяет существование ключа в кеше и возвращает true/false
      * @see ./tests/HelperCacheTrait/HelperCacheRuntimeExistsTest.php
@@ -56,7 +55,6 @@ trait HelperCacheTrait
     }
 
 
-    //?!? readme
     /**
      * Сохраняет значение value в кеше по ключу key или возвращает значение при его наличии
      * @see ./tests/HelperCacheTrait/HelperCacheRuntimeTest.php

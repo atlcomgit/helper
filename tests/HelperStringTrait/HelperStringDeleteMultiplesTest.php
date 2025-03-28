@@ -21,8 +21,10 @@ final class HelperStringDeleteMultiplesTest extends TestCase
         $this->assertTrue($string === 'abc-abc');
 
         $string = Helper::stringDeleteMultiples('abcabc', 'abc');
-        // $this->assertEquals($string, '');
         $this->assertTrue($string === 'abc');
+
+        $string = Helper::stringDeleteMultiples('a--bb', ['-', 'b']);
+        $this->assertTrue($string === 'a-b');
 
         $string = Helper::stringDeleteMultiples('абвабв', 'абв');
         $this->assertTrue($string === 'абв');

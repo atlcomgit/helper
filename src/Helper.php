@@ -30,7 +30,8 @@ use Atlcom\Traits\HelperTransformTrait;
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper
  * 
- * @group Работа с массивами
+ * @group array - Работа с массивами
+ * @method @see static::arrayDot()
  * @method @see static::arrayExcludeTraceVendor()
  * @method @see static::arrayFirst()
  * @method @see static::arrayGet()
@@ -39,43 +40,54 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::arraySearchKeys()
  * @method @see static::arraySearchKeysAndValues()
  * @method @see static::arraySearchValues()
+ * @method @see static::arrayUnDot()
  * 
- * @group Работа с кешем
+ * @group cache - Работа с кешем
+ * @method @see static::cacheRuntime()
+ * @method @see static::cacheRuntimeExists()
  * @method @see static::cacheRuntimeGet()
  * @method @see static::cacheRuntimeSet()
  * 
- * @group Работа с цветами
+ * @group case - Работа со стилем
+ * @method @see static::caseCamel()
+ * @method @see static::caseKebab()
+ * @method @see static::casePascal()
+ * @method @see static::caseSnake()
+ * 
+ * @group color - Работа с цветами
  * @method @see static::colorHexToRgb()
  * @method @see static::colorRgbToHex()
  * 
- * @group Работа с шифрацией
+ * @group crypt - Работа с шифрацией
+ * @method @see static::cryptArrayDecode()
+ * @method @see static::cryptArrayEncode()
  * @method @see static::cryptDecode()
  * @method @see static::cryptEncode()
  * 
- * @group Работа с исключениями
+ * @group exception - Работа с исключениями
  * @method @see static::exceptionToString()
  * 
- * @group Работа с хешами
+ * @group hash - Работа с хешами
  * @method @see static::hashXxh128()
  * 
- * @group Работа с интервалами
+ * @group interval - Работа с интервалами
  * @method @see static::intervalAround()
  * @method @see static::intervalBetween()
  * @method @see static::intervalCollection()
  * @method @see static::intervalOverlap()
  * 
- * @group Работа с ip адресами
+ * @group ip - Работа с ip адресами
  * @method @see static::ipInRange()
  * 
- * @group Работа с jwt токенами
+ * @group jwt - Работа с jwt токенами
  * @method @see static::jwtDecode()
  * @method @see static::jwtEncode()
  * 
- * @group Работа с путями
+ * @group path - Работа с путями
  * @method @see static::pathClassName()
  * @method @see static::pathRoot()
  * 
- * @group Работа с валидацией
+ * @group regexp - Работа с валидацией
  * @method @see static::regexpValidateAscii()
  * @method @see static::regexpValidateEmail()
  * @method @see static::regexpValidateJson()
@@ -84,11 +96,11 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::regexpValidateUnicode()
  * @method @see static::regexpValidateUuid()
  * 
- * @group Работа с размерами
+ * @group size - Работа с размерами
  * @method @see static::sizeBytesToString()
  * @method @see static::sizeStringToBytes()
  * 
- * @group Работа со строками
+ * @group string - Работа со строками
  * @method @see static::stringPadPrefix()
  * @method @see static::stringPadSuffix()
  * @method @see static::stringBreakByLength()
@@ -98,30 +110,38 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::stringCount()
  * @method @see static::stringCut()
  * @method @see static::stringDelete()
+ * @method @see static::stringDeleteMultiples()
  * @method @see static::stringEnds()
  * @method @see static::stringLength()
  * @method @see static::stringLower()
+ * @method @see static::stringLowerFirst()
  * @method @see static::stringMerge()
  * @method @see static::stringPaste()
  * @method @see static::stringPlural()
+ * @method @see static::stringPosAll()
+ * @method @see static::stringPosAny()
+ * @method @see static::stringRandom()
  * @method @see static::stringRepeat()
  * @method @see static::stringReplace()
  * @method @see static::stringReverse()
  * @method @see static::stringSearchAll()
  * @method @see static::stringSearchAny()
+ * @method @see static::stringSplit()
  * @method @see static::stringStarts()
  * @method @see static::stringUpper()
+ * @method @see static::stringUpperFirst()
+ * @method @see static::stringUpperFirstAll()
  * 
- * @group Работа с сообщениями телеграм
+ * @group telegram - Работа с сообщениями телеграм
  * @method @see static::telegramBreakMessage()
  * 
- * @group Работа со временем
+ * @group time - Работа со временем
  * @method @see static::timePeriodBetweenDatesToArray()
  * @method @see static::timePeriodBetweenDatesToString()
  * @method @see static::timeSecondsToArray()
  * @method @see static::timeSecondsToString()
  * 
- * @group Работа с трансформацией
+ * @group transform - Работа с трансформацией
  * @method @see static::transformToArray()
  */
 abstract class Helper

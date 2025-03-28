@@ -1,7 +1,25 @@
 # Changelog
 
 ## Версия 1.04
-- Добавлен метод Helper::
+- Добавлен метод Helper::arrayDot
+- Добавлен метод Helper::arrayUnDot
+- Добавлен метод Helper::cacheRuntime
+- Добавлен метод Helper::cacheRuntimeExists
+- Добавлен метод Helper::caseCamel
+- Добавлен метод Helper::caseKebab
+- Добавлен метод Helper::casePascal
+- Добавлен метод Helper::caseSnake
+- Добавлен метод Helper::cryptArrayDecode
+- Добавлен метод Helper::cryptArrayEncode
+- Добавлен метод Helper::stringDeleteMultiples
+- Добавлен метод Helper::stringLowerFirst
+- Добавлен метод Helper::stringLowerFirstAll
+- Добавлен метод Helper::stringPosAll
+- Добавлен метод Helper::stringPosAny
+- Добавлен метод Helper::stringRandom
+- Добавлен метод Helper::stringSplit
+- Добавлен метод Helper::stringUpperFirst
+- Добавлен метод Helper::stringUpperFirstAll
 
 ## Версия 1.03
 - Добавлен метод Helper::arrayFirst

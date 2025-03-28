@@ -282,7 +282,6 @@ trait HelperArrayTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает одномерный массив из многомерного
      * @see ./tests/HelperArrayTrait/HelperArrayDotTest.php
@@ -296,7 +295,6 @@ trait HelperArrayTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает многомерный массив из одномерного
      * @see ./tests/HelperArrayTrait/HelperArrayUnDotTest.php

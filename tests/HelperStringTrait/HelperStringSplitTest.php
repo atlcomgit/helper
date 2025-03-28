@@ -17,22 +17,22 @@ final class HelperStringSplitTest extends TestCase
     #[Test]
     public function stringSplit(): void
     {
-        $string = Helper::stringSplit('abc,def', ',');
-        $this->assertTrue($string === ['abc', 'def']);
+        $array = Helper::stringSplit('abc,def', ',');
+        $this->assertTrue($array === ['abc', 'def']);
 
-        $string = Helper::stringSplit(',abc,def,', ',');
-        $this->assertTrue($string === ['', 'abc', 'def', '']);
+        $array = Helper::stringSplit(',abc,def,', ',');
+        $this->assertTrue($array === ['', 'abc', 'def', '']);
 
-        $string = Helper::stringSplit('abc,def', [',']);
-        $this->assertTrue($string === ['abc', 'def']);
+        $array = Helper::stringSplit('abc,def', [',']);
+        $this->assertTrue($array === ['abc', 'def']);
 
-        $string = Helper::stringSplit('abc,,def/xyz', [',', '/']);
-        $this->assertTrue($string === ['abc', '', 'def', 'xyz']);
+        $array = Helper::stringSplit('abc,,def/xyz', [',', '/']);
+        $this->assertTrue($array === ['abc', '', 'def', 'xyz']);
 
-        $string = Helper::stringSplit('abc def', ',');
-        $this->assertTrue($string === ['abc def']);
+        $array = Helper::stringSplit('abc def', ',');
+        $this->assertTrue($array === ['abc def']);
 
-        $string = Helper::stringSplit('abc def', [',', '/']);
-        $this->assertTrue($string === ['abc def']);
+        $array = Helper::stringSplit('abc def', [',', '/']);
+        $this->assertTrue($array === ['abc def']);
     }
 }

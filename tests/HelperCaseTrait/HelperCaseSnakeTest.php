@@ -26,6 +26,9 @@ final class HelperCaseSnakeTest extends TestCase
         $string = Helper::caseSnake('AbcDef');
         $this->assertTrue($string === 'Abc_Def');
 
+        $string = Helper::caseSnake('abcDef');
+        $this->assertTrue($string === 'abc_Def');
+
         $string = Helper::caseSnake('-abc-def-');
         $this->assertTrue($string === '_abc_def_');
         

@@ -56,7 +56,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку с первый символом в верхнем регистре
      * @see ./tests/HelperStringTrait/HelperStringUpperFirstTest.php
@@ -72,7 +71,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку с первый символом в нижнем регистре
      * @see ./tests/HelperStringTrait/HelperStringLowerFirstTest.php
@@ -88,7 +86,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку со всеми словами в верхнем регистре
      * @see ./tests/HelperStringTrait/HelperStringUpperFirstAllTest.php
@@ -115,7 +112,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку со всеми словами в нижнем регистре
      * @see ./tests/HelperStringTrait/HelperStringLowerFirstAllTest.php
@@ -142,7 +138,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает массив подстрок разбитых на части между разделителем в строке
      * @see ./tests/HelperStringTrait/HelperStringSplitTest.php
@@ -711,7 +706,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает случайную строку по шаблону регулярного выражения
      * @see ./tests/HelperStringTrait/HelperStringRandomTest.php
@@ -756,7 +750,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает массив позиции первой искомой подстроки найденной в строке
      * @see ./tests/HelperStringTrait/HelperStringPosAnyTest.php
@@ -789,7 +782,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает массив всех позиций искомых подстрок найденных в строке
      * @see ./tests/HelperStringTrait/HelperStringPosAllTest.php
@@ -838,7 +830,6 @@ trait HelperStringTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку значения удаляя последовательные повторы подстрок
      * @see ./tests/HelperStringTrait/HelperStringDeleteMultiplesTest.php

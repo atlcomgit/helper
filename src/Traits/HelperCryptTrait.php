@@ -293,53 +293,49 @@ trait HelperCryptTrait
     }
 
 
-    //?!? test
     /**
-     * Шифрует значение элементов массива с добавлением хеша значения и его типа
-     * @see ./tests/HelperArrayTrait/HelperArrayCryptTest.php
+     * Шифрует все значения элементов массива с добавлением хеша значения 'hash:crypt'
+     * @see ./tests/HelperCryptTrait/HelperCryptArrayEncodeTest.php
      *
      * @param array|object $value
+     * @param string|null $password
+     * @param bool|null $random
      * @return array
      */
-    public static function cryptArrayEncode(array|object $value): array
+    public static function cryptArrayEncode(array|object $value, ?string $password = null, ?bool $random = null): array
     {
         $value = static::transformToArray($value);
 
         foreach ($value as &$v) {
-            if (is_array($v) || is_object($v)) {
-                $v = static::cryptArrayEncode(static::transformToArray($v));
-            } else {
-                !is_object($v) ?: $v = static::transformToArray($v);
-                $v = [
-                    'hash' => static::hashXxh128((string)$v),
-                    'value' => static::cryptEncode($v),
-                ];
-            }
+            $v = (is_array($v) || is_object($v))
+                ? static::cryptArrayEncode(static::transformToArray($v), $password, $random)
+                : static::hashXxh128((string)$v) . ':' . static::cryptEncode($v, $password, $random);
         }
 
         return $value;
     }
 
 
-    //?!? test
     /**
-     * Дешифрует значение элементов массива
+     * Дешифрует все значения элементов массива вида 'hash:crypt'
+     * @see ./tests/HelperCryptTrait/HelperCryptArrayDecodeTest.php
      *
      * @param array $value
+     * @param string|null $password
      * @return array
      */
-    public static function arrayDecrypt(array $value): array
+    public static function cryptArrayDecode(array $value, ?string $password = null): array
     {
         $result = [];
 
         foreach ($value as $key => $v) {
-            if (
-                is_array($v)
-                && array_key_exists('hash', $v)
-                && array_key_exists('value', $v)
-            ) {
-                $vDecrypted = static::cryptDecode($v);
-                !(static::hashXxh128((string)$vDecrypted) === $v['hash']) ?: $v = $vDecrypted;
+            if (is_array($v) || is_object($v)) {
+                $v = static::cryptArrayDecode($v, $password);
+            } else if (is_string($v) && static::stringSearchAny($v, ':')) {
+                $vParts = static::stringSplit($v, ':');
+                $vHash = $vParts[0] ?? null;
+                $vDecrypted = static::cryptDecode($vParts[1] ?? null, $password);
+                !(static::hashXxh128((string)$vDecrypted) === $vHash) ?: $v = $vDecrypted;
             }
 
             $result[$key] = $v;

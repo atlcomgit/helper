@@ -9,7 +9,6 @@ namespace Atlcom\Traits;
  */
 trait HelperCaseTrait
 {
-    //?!? readme
     /**
      * Возвращает строку в стиле camelCase
      * @see ./tests/HelperCaseTrait/HelperCaseCamelTest.php
@@ -28,7 +27,6 @@ trait HelperCaseTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку в стиле kebab-case
      * @see ./tests/HelperCaseTrait/HelperCaseKebabTest.php
@@ -46,7 +44,6 @@ trait HelperCaseTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку в стиле PascalCase
      * @see ./tests/HelperCaseTrait/HelperCasePascalTest.php
@@ -65,7 +62,6 @@ trait HelperCaseTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку в стиле snake_case
      * @see ./tests/HelperCaseTrait/HelperCaseSnakeTest.php

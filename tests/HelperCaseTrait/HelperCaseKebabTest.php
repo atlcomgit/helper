@@ -26,6 +26,9 @@ final class HelperCaseKebabTest extends TestCase
         $string = Helper::caseKebab('AbcDef');
         $this->assertTrue($string === 'Abc-Def');
 
+        $string = Helper::caseKebab('abcDef');
+        $this->assertTrue($string === 'abc-Def');
+
         $string = Helper::caseKebab('_abc_def_');
         $this->assertTrue($string === 'abc-def-');
 
