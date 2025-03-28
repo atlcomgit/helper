@@ -12,21 +12,21 @@ use PHPUnit\Framework\TestCase;
  * Тест метода трейта
  * @see \Atlcom\Traits\HelperArrayTrait
  */
-final class HelperArrayDottedTest extends TestCase
+final class HelperArrayDotTest extends TestCase
 {
     #[Test]
-    public function arrayDotted(): void
+    public function arrayDot(): void
     {
-        $array = Helper::arrayDotted(['a', 'b']);
+        $array = Helper::arrayDot(['a', 'b']);
         $this->assertEquals(['a', 'b'], $array);
 
-        $array = Helper::arrayDotted(['a' => 1, 'b' => 2]);
+        $array = Helper::arrayDot(['a' => 1, 'b' => 2]);
         $this->assertEquals(['a' => 1, 'b' => 2], $array);
 
-        $array = Helper::arrayDotted(['a' => ['b' => 2, 'c' => 3]]);
+        $array = Helper::arrayDot(['a' => ['b' => 2, 'c' => 3]]);
         $this->assertEquals(['a.b' => 2, 'a.c' => 3], $array);
 
-        $array = Helper::arrayDotted(['a' => ['b' => ['c' => 3, 'd' => 4]]]);
+        $array = Helper::arrayDot(['a' => ['b' => ['c' => 3, 'd' => 4]]]);
         $this->assertEquals(['a.b.c' => 3, 'a.b.d' => 4], $array);
     }
 }

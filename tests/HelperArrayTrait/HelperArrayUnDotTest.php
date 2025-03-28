@@ -12,21 +12,21 @@ use PHPUnit\Framework\TestCase;
  * Тест метода трейта
  * @see \Atlcom\Traits\HelperArrayTrait
  */
-final class HelperArrayNestedTest extends TestCase
+final class HelperArrayUnDotTest extends TestCase
 {
     #[Test]
-    public function arrayNested(): void
+    public function arrayUnDot(): void
     {
-        $array = Helper::arrayNested(['a', 'b']);
+        $array = Helper::arrayUnDot(['a', 'b']);
         $this->assertEquals(['a', 'b'], $array);
 
-        $array = Helper::arrayNested(['a' => 1, 'b' => 2]);
+        $array = Helper::arrayUnDot(['a' => 1, 'b' => 2]);
         $this->assertEquals(['a' => 1, 'b' => 2], $array);
 
-        $array = Helper::arrayNested(['a.b' => 2, 'a.c' => 3]);
+        $array = Helper::arrayUnDot(['a.b' => 2, 'a.c' => 3]);
         $this->assertEquals(['a' => ['b' => 2, 'c' => 3]], $array);
 
-        $array = Helper::arrayNested(['a.b.c' => 3, 'a.b.d' => 4]);
+        $array = Helper::arrayUnDot(['a.b.c' => 3, 'a.b.d' => 4]);
         $this->assertEquals(['a' => ['b' => ['c' => 3, 'd' => 4]]], $array);
     }
 }

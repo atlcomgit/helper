@@ -17,10 +17,10 @@ final class HelperStringUpperFirstTest extends TestCase
     #[Test]
     public function stringUpperFirst(): void
     {
-        $string = Helper::stringUpperFirst('abc def');
-        $this->assertTrue($string === 'Abc def');
+        $string = Helper::stringUpperFirst('abc Def ghi');
+        $this->assertTrue($string === 'Abc Def ghi');
 
-        $string = Helper::stringUpperFirst('абв где');
-        $this->assertTrue($string === 'Абв где');
+        $string = Helper::stringUpperFirst('абв Где еёж');
+        $this->assertTrue($string === 'Абв Где еёж');
     }
 }

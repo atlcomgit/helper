@@ -285,12 +285,12 @@ trait HelperArrayTrait
     //?!? readme
     /**
      * Возвращает одномерный массив из многомерного
-     * @see ./tests/HelperArrayTrait/HelperArrayDottedTest.php
+     * @see ./tests/HelperArrayTrait/HelperArrayDotTest.php
      *
      * @param array|object $value
      * @return array
      */
-    public static function arrayDotted(array|object $value): array
+    public static function arrayDot(array|object $value): array
     {
         return static::arraySearchKeys(static::transformToArray($value), ['*']);
     }
@@ -299,12 +299,12 @@ trait HelperArrayTrait
     //?!? readme
     /**
      * Возвращает многомерный массив из одномерного
-     * @see ./tests/HelperArrayTrait/HelperArrayNestedTest.php
+     * @see ./tests/HelperArrayTrait/HelperArrayUnDotTest.php
      *
      * @param array $value
      * @return array
      */
-    public static function arrayNested(array $value): array
+    public static function arrayUnDot(array $value): array
     {
         $result = [];
 

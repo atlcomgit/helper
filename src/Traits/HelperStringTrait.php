@@ -72,7 +72,7 @@ trait HelperStringTrait
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает строку с первый символом в нижнем регистре
      * @see ./tests/HelperStringTrait/HelperStringLowerFirstTest.php
@@ -88,7 +88,7 @@ trait HelperStringTrait
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает строку со всеми словами в верхнем регистре
      * @see ./tests/HelperStringTrait/HelperStringUpperFirstAllTest.php
@@ -115,7 +115,7 @@ trait HelperStringTrait
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает строку со всеми словами в нижнем регистре
      * @see ./tests/HelperStringTrait/HelperStringLowerFirstAllTest.php
@@ -129,13 +129,13 @@ trait HelperStringTrait
 
         $words = [];
         foreach ([' ', '_', '-', chr(9), chr(13)] as $delimiter) {
-            foreach (static::stringSplit($value, $delimiter) as $words) {
-                for ($index = 0; $index < count($words); $index++) {
-                    $words[$index] = static::stringLowerFirst($words[$index]);
-                }
+            $words = static::stringSplit($value, $delimiter);
 
-                $value = implode($delimiter, $words);
+            foreach ($words as &$word) {
+                $word = static::stringLowerFirst($word);
             }
+
+            $value = implode($delimiter, $words);
         }
 
         return $value;
@@ -155,7 +155,7 @@ trait HelperStringTrait
     {
         $result = [];
         $delimiters = static::transformToArray($delimiter);
-        $delimiters = array_values(static::arrayDotted($delimiters));
+        $delimiters = array_values(static::arrayDot($delimiters));
 
         while ($value || $delimiter) {
             $delimiter = static::arrayFirst(static::stringSearchAny($value, $delimiters));
@@ -756,7 +756,7 @@ trait HelperStringTrait
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает массив позиции первой искомой подстроки найденной в строке
      * @see ./tests/HelperStringTrait/HelperStringPosAnyTest.php
@@ -781,7 +781,7 @@ trait HelperStringTrait
                 && (($searchString = (string)$search) || $searchString === '0')
                 && ($pos = mb_strpos($value, $searchString)) !== false
             ) {
-                return [$pos];
+                return [$search => $pos];
             }
         }
 
@@ -789,7 +789,7 @@ trait HelperStringTrait
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает массив всех позиций искомых подстрок найденных в строке
      * @see ./tests/HelperStringTrait/HelperStringPosAllTest.php
@@ -810,18 +810,53 @@ trait HelperStringTrait
                     ...(static::stringPosAll($value, ...static::transformToArray($search)) ?: []),
                 ];
 
-            } else if (
-                !is_null($search)
-                && $search !== ''
-                && (($searchString = (string)$search) || $searchString === '0')
-                && ($pos = mb_strpos($value, $searchString)) !== false
-            ) {
-                $result[] = $pos;
+            } {
+                $searchString = (string)$search;
+                $currentValue = $value;
+                $offsetValue = 0;
+
+                while (
+                    !is_null($search)
+                    && $search !== ''
+                    && ($pos = mb_strpos($currentValue, $searchString)) !== false
+                ) {
+                    array_key_exists($search, $result)
+                        ? (is_array($result[$search])
+                            ? $result[$search][] = $offsetValue + $pos
+                            : $result[$search] = [$result[$search], $offsetValue + $pos]
+                        )
+                        : $result[$search] = $offsetValue + $pos;
+
+                    $searchLength = static::stringLength($search);
+                    $currentValue = static::stringDelete($currentValue, $pos, $searchLength);
+                    $offsetValue += $searchLength;
+                }
             }
         }
 
-        sort($result);
+        return $result;
+    }
 
-        return array_unique($result);
+
+    //?!? readme
+    /**
+     * Возвращает строку значения удаляя последовательные повторы подстрок
+     * @see ./tests/HelperStringTrait/HelperStringDeleteMultiplesTest.php
+     *
+     * @param int|float|string|null $value
+     * @param mixed ...$multiples
+     * @return string
+     */
+    public static function stringDeleteMultiples(int|float|string|null $value, mixed ...$multiples): string
+    {
+        $value = (string)$value;
+
+        foreach ($multiples as $multiple) {
+            $value = (is_array($multiple) || is_object($multiple))
+                ? static::stringDeleteMultiples($value, ...static::transformToArray($multiple))
+                : preg_replace("/({$multiple})+/", (string)$multiple, $value);
+        }
+
+        return $value;
     }
 }

@@ -19,25 +19,16 @@ trait HelperCaseTrait
      */
     public static function caseCamel(string $value): string
     {
-        return (phpversion() >= '8.4')
-            ? static::stringLowerFirst(
-                static::stringReplace(
-                    // ucwords(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    [' ' => ''],
-                ),
-            )
-            : static::stringLowerFirst(
-                static::stringReplace(
-                    // ucwords(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    [' ' => ''],
-                ),
-            );
+        return static::stringLowerFirst(
+            static::stringReplace(
+                static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
+                [' ' => ''],
+            ),
+        );
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает строку в стиле kebab-case
      * @see ./tests/HelperCaseTrait/HelperCaseKebabTest.php
@@ -47,13 +38,15 @@ trait HelperCaseTrait
      */
     public static function caseKebab(string $value): string
     {
-        return static::stringLower(
-            ltrim(preg_replace('/(?<!^)[A-ZА-ЯЁ]/', '-$0', $value), '-'),
+        return ltrim(
+            preg_replace('/(?<=\w)(?=[A-ZА-ЯЁ])/u', '-', static::stringReplace($value, [' ' => '-', '_' => '-'])),
+            '-',
         );
+        ;
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает строку в стиле PascalCase
      * @see ./tests/HelperCaseTrait/HelperCasePascalTest.php
@@ -63,23 +56,16 @@ trait HelperCaseTrait
      */
     public static function casePascal(string $value): string
     {
-        return (phpversion() >= '8.4')
-            ? static::stringUpperFirst(
-                static::stringReplace(
-                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    [' ' => ''],
-                ),
-            )
-            : static::stringUpperFirst(
-                static::stringReplace(
-                    static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
-                    [' ' => ''],
-                ),
-            );
+        return static::stringUpperFirst(
+            static::stringReplace(
+                static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
+                [' ' => ''],
+            ),
+        );
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает строку в стиле snake_case
      * @see ./tests/HelperCaseTrait/HelperCaseSnakeTest.php
@@ -89,8 +75,9 @@ trait HelperCaseTrait
      */
     public static function caseSnake(string $value): string
     {
-        return static::stringLower(
-            ltrim(preg_replace('/(?<!^)[A-ZА-ЯЁ]/', '_$0', $value), '_'),
+        return static::stringReplace(
+            preg_replace('/(?<=\w)(?=[A-ZА-ЯЁ])/u', '-', static::stringReplace($value, [' ' => '-', '_' => '-'])),
+            ['-' => '_'],
         );
     }
 }

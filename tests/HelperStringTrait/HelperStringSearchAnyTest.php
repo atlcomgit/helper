@@ -17,28 +17,28 @@ final class HelperStringSearchAnyTest extends TestCase
     #[Test]
     public function stringSearchAny(): void
     {
-        $string = Helper::stringSearchAny('abcd', 'bc');
-        $this->assertTrue($string === ['bc']);
+        $array = Helper::stringSearchAny('abcd', 'bc');
+        $this->assertTrue($array === ['bc']);
 
-        $string = Helper::stringSearchAny('abcd', 'f');
-        $this->assertTrue($string === []);
+        $array = Helper::stringSearchAny('abcd', 'f');
+        $this->assertTrue($array === []);
 
-        $string = Helper::stringSearchAny('abcd', ['f', 'b']);
-        $this->assertTrue($string === ['b']);
+        $array = Helper::stringSearchAny('abcd', ['f', 'b', 'c']);
+        $this->assertTrue($array === ['b']);
 
-        $string = Helper::stringSearchAny('Иванов Иван Иванович', ['name1' => 'Петр', 'name2' => 'Иван']);
-        $this->assertTrue($string === ['Иван']);
+        $array = Helper::stringSearchAny('Иванов Иван Иванович', ['name1' => 'Петр', 'name2' => 'Иван']);
+        $this->assertTrue($array === ['Иван']);
 
-        $string = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*');
-        $this->assertTrue($string === ['*Иван*']);
+        $array = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*');
+        $this->assertTrue($array === ['*Иван*']);
 
-        $string = Helper::stringSearchAny('Иванов Иван Иванович', '/Иван/');
-        $this->assertTrue($string === ['/Иван/']);
+        $array = Helper::stringSearchAny('Иванов Иван Иванович', '/Иван/');
+        $this->assertTrue($array === ['/Иван/']);
 
-        $string = Helper::stringSearchAny('Иванов Иван Иванович', ['*Петр*', '*Иван*']);
-        $this->assertTrue($string === ['*Иван*']);
+        $array = Helper::stringSearchAny('Иванов Иван Иванович', ['*Петр*', '*Иван*']);
+        $this->assertTrue($array === ['*Иван*']);
 
-        $string = Helper::stringSearchAny('abc', 'd');
-        $this->assertTrue($string === []);
+        $array = Helper::stringSearchAny('abc', 'd');
+        $this->assertTrue($array === []);
     }
 }
