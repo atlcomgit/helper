@@ -199,6 +199,53 @@ $string = Helper::cryptEncode('abc', 'password'); // $string = 'nh93432NibR3td26
 ```
 ---
 
+#### Env
+Работа с окружением
+
+---
+##### [envDev(): bool](./tests/HelperEnvTrait/HelperEnvDevTest.php)
+Проверяет окружение приложения на разработку и возвращает true/false
+```php
+putenv('APP_ENV=Dev');
+$boolean = Helper::envDev(); // $boolean = true
+```
+---
+##### [envLocal(): bool](./tests/HelperEnvTrait/HelperEnvLocalTest.php)
+Проверяет окружение приложения на локальное и возвращает true/false
+```php
+putenv('APP_ENV=Local');
+$boolean = Helper::envLocal(); // $boolean = true
+```
+---
+##### [envProd(): bool](./tests/HelperEnvTrait/HelperEnvProdTest.php)
+Проверяет окружение приложения на боевое и возвращает true/false
+```php
+putenv('APP_ENV=Prod');
+$boolean = Helper::envProd(); // $boolean = true
+```
+---
+##### [envStage(): bool](./tests/HelperEnvTrait/HelperEnvStageTest.php)
+Проверяет окружение приложения на пред боевое и возвращает true/false
+```php
+putenv('APP_ENV=Stage');
+$boolean = Helper::envStage(); // $boolean = true
+```
+---
+##### [envTest(): bool](./tests/HelperEnvTrait/HelperEnvTestTest.php)
+Проверяет окружение приложения на тестовое и возвращает true/false
+```php
+putenv('APP_ENV=Test');
+$boolean = Helper::envTest(); // $boolean = true
+```
+---
+##### [envTesting(): bool](./tests/HelperEnvTrait/HelperEnvTestingTest.php)
+Проверяет окружение приложения на авто-тестирование и возвращает true/false
+```php
+putenv('APP_ENV=Testing');
+$boolean = Helper::envTesting(); // $boolean = true
+```
+---
+
 #### Exception
 Работа с исключениями
 
@@ -480,7 +527,7 @@ $string = Helper::stringPaste('abc', 'd', 2); // $string = 'abdc'
 ```
 ---
 ##### [stringPlural(\$value, \$plurals, \$includeValue): string](./tests/HelperStringTrait/HelperStringPluralTest.php)
-Возвращает число с числительным названием
+Возвращает число с числительным названием из массива с тремя вариантами для [0|5..9, 1, 2..4]
 ```php
 $string = Helper::stringPlural(1, ['штук', 'штука', 'штуки']); // $string = '1 штука'
 ```
@@ -488,7 +535,7 @@ $string = Helper::stringPlural(1, ['штук', 'штука', 'штуки']); // 
 ##### [stringPosAll(\$value, ...\$searches): array](./tests/HelperStringTrait/HelperStringPosAllTest.php)
 Возвращает массив всех позиций искомых подстрок найденных в строке
 ```php
-$array = Helper::stringPosAll('abcd', 'bc', 'd'); // $array = ['bc' => 1, 'd' => 3]
+$array = Helper::stringPosAll('abcd', 'bc', 'd'); // $array = ['bc' => [1], 'd' => [3]]
 ```
 ---
 ##### [stringPosAny(\$value, ...\$searches): array](./tests/HelperStringTrait/HelperStringPosAnyTest.php)
@@ -617,7 +664,7 @@ $string = Helper::timeSecondsToString(123); // $string = '2 минуты 3 се�
 ##### [transformToArray(\$value): array](./tests/HelperTransformTrait/HelperTransformToArrayTest.php)
 Возвращает массив из значения
 ```php
-$array = Helper::arrayVatransformToArraylueToArray(['a', 'b']); // $array = ['a', 'b']
+$array = Helper::transformToArray(['a', 'b']); // $array = ['a', 'b']
 $array = Helper::transformToArray('a'); // $array = ['a']
 ```
 ---

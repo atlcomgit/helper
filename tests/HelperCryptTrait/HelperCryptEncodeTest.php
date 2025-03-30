@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace Atlcom\Tests\HelperCryptTrait;
 
+use Atlcom\Enums\HelperRegexpEnum;
 use Atlcom\Helper;
+use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+
+class CustomObjectCryptEncode
+{
+    public string $name;
+    public Carbon $date;
+}
 
 /**
  * Тест метода трейта
@@ -50,13 +58,24 @@ final class HelperCryptEncodeTest extends TestCase
 
         $string = Helper::cryptEncode(null, 'password', true);
         $this->assertTrue($string !== '');
-        $array = Helper::cryptDecode($string, 'password');
-        $this->assertTrue($array === null);
+        $null = Helper::cryptDecode($string, 'password');
+        $this->assertTrue($null === null);
 
         $string = Helper::cryptEncode('', 'password', true);
         $this->assertTrue($string !== '');
-        $array = Helper::cryptDecode($string, 'password');
-        $this->assertTrue($array === '');
+        $string = Helper::cryptDecode($string, 'password');
+        $this->assertTrue($string === '');
+
+        $value = Helper::stringConcat(
+            ',',
+            '1000',
+            Helper::stringRandom(HelperRegexpEnum::Uuid),
+            Carbon::now()->toDateTimeString(),
+        );
+        $string = Helper::cryptEncode($value, 'password', true);
+        $this->assertTrue($string !== '');
+        $string = Helper::cryptDecode($string, 'password');
+        $this->assertTrue($string === $value);
 
         $object = new stdClass();
         $object->name = 'Иванов Иван Иванович';
@@ -65,6 +84,17 @@ final class HelperCryptEncodeTest extends TestCase
         $object = Helper::cryptDecode($string, 'Пароль');
         $this->assertInstanceOf(stdClass::class, $object);
         $this->assertTrue($object->name === 'Иванов Иван Иванович');
+
+        $object = new CustomObjectCryptEncode();
+        $object->name = 'Иванов Иван Иванович';
+        $object->date = Carbon::parse('2025-01-02 01:02:03');
+        $string = Helper::cryptEncode($object, 'Пароль', true);
+        $this->assertTrue($string !== '');
+        $object = Helper::cryptDecode($string, 'Пароль');
+        $this->assertInstanceOf(CustomObjectCryptEncode::class, $object);
+        $this->assertTrue($object->name === 'Иванов Иван Иванович');
+        $this->assertTrue($object->date instanceof Carbon);
+        $this->assertTrue($object->date->format('Y-m-d H:i:s') === '2025-01-02 01:02:03');
 
         $string = Helper::cryptEncode('Иванов Иван Иванович', 'password');
         $this->assertEquals($string, 'MJ1N385kdIPeL4aHDbwW6Nld36dt52YJbT394622d042d5593K5s61iu84FfDPeS2bJVdsDa234SSe4wfmo332fi34352x9436495coVO3gn9mtY345hin');

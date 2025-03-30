@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Enums\HelperRegexpEnum;
 use Atlcom\Enums\HelperStringBreakTypeEnum;
 use Atlcom\Enums\HelperStringEncodingEnum;
+use BackedEnum;
 use ReverseRegex\Generator\Scope;
 use ReverseRegex\Lexer;
 use ReverseRegex\Parser;
@@ -332,7 +334,7 @@ trait HelperStringTrait
 
 
     /**
-     * Возвращает число с числительным названием
+     * Возвращает число с числительным названием из массива с тремя вариантами для [0|5..9, 1, 2..4]
      * @see ./tests/HelperStringTrait/HelperStringPluralTest.php
      *
      * @param int|float|string $number
@@ -710,13 +712,14 @@ trait HelperStringTrait
      * Возвращает случайную строку по шаблону регулярного выражения
      * @see ./tests/HelperStringTrait/HelperStringRandomTest.php
      *
-     * @param string $pattern
+     * @param string|BackedEnum $pattern
      * @return string
      */
-    public static function stringRandom(string $pattern): string
+    public static function stringRandom(string|BackedEnum $pattern): string
     {
         $result = '';
 
+        !($pattern instanceof BackedEnum) ?: $pattern = (string)$pattern->value;
         if (static::regexpValidatePattern($pattern)) {
             $patterns = static::stringSplit($pattern, '/');
             $patterns = array_slice($patterns, 1, -1);
@@ -817,7 +820,7 @@ trait HelperStringTrait
                             ? $result[$search][] = $offsetValue + $pos
                             : $result[$search] = [$result[$search], $offsetValue + $pos]
                         )
-                        : $result[$search] = $offsetValue + $pos;
+                        : $result[$search] = [$offsetValue + $pos];
 
                     $searchLength = static::stringLength($search);
                     $currentValue = static::stringDelete($currentValue, $pos, $searchLength);

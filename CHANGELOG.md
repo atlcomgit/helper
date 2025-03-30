@@ -1,5 +1,16 @@
 # Changelog
 
+## Версия 1.05
+- Обновлен метод Helper::cryptDecode
+- Обновлен метод Helper::cryptEncode
+- Обновлен метод Helper::envDev
+- Обновлен метод Helper::envLocal
+- Обновлен метод Helper::envProd
+- Обновлен метод Helper::envStage
+- Обновлен метод Helper::envTest
+- Обновлен метод Helper::envTesting
+- Обновлен метод Helper::stringPosAll
+
 ## Версия 1.04
 - Добавлен метод Helper::arrayDot
 - Добавлен метод Helper::arrayUnDot

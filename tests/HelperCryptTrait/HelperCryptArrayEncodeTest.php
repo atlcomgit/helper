@@ -8,6 +8,11 @@ use Atlcom\Helper;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+class CustomObjectArrayEncode
+{
+    public string $name;
+}
+
 /**
  * Тест метода трейта
  * @see \Atlcom\Traits\HelperCryptTrait
@@ -42,6 +47,15 @@ final class HelperCryptArrayEncodeTest extends TestCase
                 'f' => 'df3ce784d856334d65cd25028f98f158:48l564i8ecrd9126q0o43d58ac4c984fp754F82343c749Uc52A8Hd594dm7ea6aen',
                 'g' => 'dd8307607436e2c77045c205f5ef6a66:41ld6ai8efr99a20qco93c5fa3S14763Z53a54533a9aEbLd53A2Hd5541m0eb62en',
                 'i' => '99aa06d3014798d86001c324468d497f:4flf61iae9r3902aq4M63858a1S5TfQ436y64cccHb3e66AaH45d43m8e961e1n6',
+            ],
+        ]);
+
+        $object = new CustomObjectArrayEncode();
+        $object->name = 'abc';
+        $array = Helper::cryptArrayEncode(['a' => $object], 'password');
+        $this->assertEquals($array, [
+            'a' => [
+                'name' => '06b05ab6733a618578af5f94892f3950:3eg3374c37wb3f6dcb244aUff2Cf2eya466047934cybq0rfX0pd31K85do3XcO3W49Cy3Rgn',
             ],
         ]);
     }

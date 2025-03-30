@@ -9,6 +9,7 @@ use Atlcom\Traits\HelperCacheTrait;
 use Atlcom\Traits\HelperCaseTrait;
 use Atlcom\Traits\HelperColorTrait;
 use Atlcom\Traits\HelperCryptTrait;
+use Atlcom\Traits\HelperEnvTrait;
 use Atlcom\Traits\HelperExceptionTrait;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperIntervalTrait;
@@ -25,7 +26,7 @@ use Atlcom\Traits\HelperTransformTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.04
+ * @version 1.05
  * 
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper
@@ -63,6 +64,14 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::cryptArrayEncode()
  * @method @see static::cryptDecode()
  * @method @see static::cryptEncode()
+ * 
+ * @group env - Работа с окружением
+ * @method @see static::envDev()
+ * @method @see static::envLocal()
+ * @method @see static::envProd()
+ * @method @see static::envStage()
+ * @method @see static::envTest()
+ * @method @see static::envTesting()
  * 
  * @group exception - Работа с исключениями
  * @method @see static::exceptionToString()
@@ -151,6 +160,7 @@ abstract class Helper
     use HelperCaseTrait;
     use HelperColorTrait;
     use HelperCryptTrait;
+    use HelperEnvTrait;
     use HelperExceptionTrait;
     use HelperHashTrait;
     use HelperIntervalTrait;

@@ -40,12 +40,7 @@ trait HelperCryptTrait
             is_string($value) => 's|' . (string)$value,
             is_bool($value) => 'b|' . (string)$value,
             is_array($value) => 'a|' . json_encode($value, static::$cryptJsonFlags),
-            is_object($value) => match (true) {
-                    method_exists($value, 'toArray')
-                    => 'o|' . json_encode((array)$value->toArray(), static::$cryptJsonFlags),
-
-                    default => 'o|' . json_encode((array)$value, static::$cryptJsonFlags)
-                },
+            is_object($value) => 'o|' . serialize($value),
 
             default => '?|' . (string)$value,
         };
@@ -140,8 +135,8 @@ trait HelperCryptTrait
             's' => (string)$result,
             'b' => (boolean)$result,
             'a' => json_decode($result, true),
-            'o' => json_decode($result),
-            '?' => trim($result, '"'),
+            'o' => unserialize($result),
+            '?' => $result,
 
             default => null,
         };
