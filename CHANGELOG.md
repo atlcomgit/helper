@@ -1,14 +1,14 @@
 # Changelog
 
 ## Версия 1.05
+- Добавлен метод Helper::envDev
+- Добавлен метод Helper::envLocal
+- Добавлен метод Helper::envProd
+- Добавлен метод Helper::envStage
+- Добавлен метод Helper::envTest
+- Добавлен метод Helper::envTesting
 - Обновлен метод Helper::cryptDecode
 - Обновлен метод Helper::cryptEncode
-- Обновлен метод Helper::envDev
-- Обновлен метод Helper::envLocal
-- Обновлен метод Helper::envProd
-- Обновлен метод Helper::envStage
-- Обновлен метод Helper::envTest
-- Обновлен метод Helper::envTesting
 - Обновлен метод Helper::stringPosAll
 
 ## Версия 1.04
