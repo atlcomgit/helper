@@ -379,7 +379,9 @@ trait HelperStringTrait
         $currentText = '';
         $currentLength = 0;
 
-        if (static::stringLength($value) <= ($firstPartLength ? min(1000, $partLengthMax) : $partLengthMax)) {
+        if (
+            static::stringLength($value) <= ($firstPartLength ? min($firstPartLength, $partLengthMax) : $partLengthMax)
+        ) {
             $result[] = $value;
 
         } else {
@@ -411,7 +413,7 @@ trait HelperStringTrait
                                     $currentText .= $break;
                                 }
                                 if (static::stringCopy($currentText, -static::stringLength(PHP_EOL)) == PHP_EOL) {
-                                    $currentText = static::stringCopy($currentText, 0, -1);
+                                    $currentText = static::stringCopy($currentText, 0, -static::stringLength(PHP_EOL));
                                 }
                                 (!$currentText && !$currentLength) ?: $result[] = $currentText;
                                 $currentText = $word;
@@ -440,7 +442,7 @@ trait HelperStringTrait
 
             if ($currentText != '') {
                 if (static::stringCopy($currentText, -static::stringLength(PHP_EOL)) == PHP_EOL) {
-                    $currentText = static::stringCopy($currentText, 0, -1);
+                    $currentText = static::stringCopy($currentText, 0, -static::stringLength(PHP_EOL));
                 }
                 $result[] = $currentText;
             }

@@ -20,6 +20,9 @@ final class HelperRegexpValidatePatternTest extends TestCase
         $boolean = Helper::regexpValidatePattern('/test/');
         $this->assertTrue($boolean);
 
+        $boolean = Helper::regexpValidatePattern('/test/ui');
+        $this->assertTrue($boolean);
+
         $boolean = Helper::regexpValidatePattern('test');
         $this->assertFalse($boolean);
     }

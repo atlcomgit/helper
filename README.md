@@ -199,6 +199,83 @@ $string = Helper::cryptEncode('abc', 'password'); // $string = 'nh93432NibR3td26
 ```
 ---
 
+#### Date
+Работа с датами
+
+---
+##### [dateFromString(\$value): ?Carbon](./tests/HelperDateTrait/HelperDateFromStringTest.php)
+Возвращает объект Carbon с распознанной датой или null
+```php
+$date = Helper::dateFromString('в следующий понедельник'); // $date->format('d.m.Y') = 'XX.XX.XXXX'
+$date = Helper::dateFromString('через 2 месяца'); // $date->format('d.m.Y') = 'XX.XX.XXXX'
+```
+---
+
+#### Enum
+Работа с перечислениями
+
+---
+##### [enumExists(\$value): bool](./tests/HelperEnumTrait/HelperEnumExistsTest.php)
+Проверяет на существование перечисления по значению и возвращает true/false
+```php
+$boolean = MyEnum::enumExists('Name1'); // $boolean = true/false
+```
+---
+##### [enumFrom(\$value): ?BackedEnum](./tests/HelperEnumTrait/HelperEnumFromTest.php)
+Возвращает найденное перечисление по имени, по значению или по перечислению
+```php
+$enum = MyEnum::enumFrom('Name1'); // $enum = MyEnum::Name1
+```
+---
+##### [enumLabel(\$value): ?string](./tests/HelperEnumTrait/HelperEnumLabelTest.php)
+Возвращает описание перечисления (необходимо реализовать метод enumLabel)
+```php
+$string = MyEnum::enumLabel(MyEnum::Name1); // $string = 'Name1 (value1)'
+```
+---
+##### [enumLabels(\$value, \$label): array](./tests/HelperEnumTrait/HelperEnumLabelsTest.php)
+Возвращает список перечислений для ресурса
+```php
+$array = MyEnum::enumLabels(); // $array = [['value' => 'value1', 'label' => 'Описание 1']]
+```
+---
+##### [enumName(\$value): ?string](./tests/HelperEnumTrait/HelperEnumNameTest.php)
+Возвращает ключ перечисления
+```php
+$string = Helper::enumName(MyEnum::Name1); // $string = 'Name1'
+```
+---
+##### [enumNames(\$value): array](./tests/HelperEnumTrait/HelperEnumNamesTest.php)
+Возвращает имена ключей перечисления enum
+```php
+$array = MyEnum::enumNames(); // $array = ['Name1']
+```
+---
+##### [enumRandom(\$value = null): ?BackedEnum](./tests/HelperEnumTrait/HelperEnumRandomTest.php)
+Возвращает случайное перечисление
+```php
+$enum = Helper::enumRandom(MyEnum::class); // $enum = MyEnum::Name1
+```
+---
+##### [enumToArray(\$value): array](./tests/HelperEnumTrait/HelperEnumToArrayTest.php)
+Возвращает массив ключей и значений enum
+```php
+$array = MyEnum::enumToArray(); // $array = ['Name1' => 'value1']
+```
+---
+##### [enumValue(\$value): mixed](./tests/HelperEnumTrait/HelperEnumValueTest.php)
+Возвращает значение перечисления
+```php
+$mixed = Helper::enumValue(HelperEnumValueEnum::Name1); // $mixed = 'value1'
+```
+---
+##### [enumValues(\$value = null): array](./tests/HelperEnumTrait/HelperEnumValuesTest.php)
+Возвращает значения ключей перечисления enum
+```php
+$array = MyEnum::enumValues(); // $array = ['value1']
+```
+---
+
 #### Env
 Работа с окружением
 

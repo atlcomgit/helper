@@ -19,13 +19,26 @@ trait HelperTelegramTrait
      * @param bool $hasAttach
      * @return array
      */
-    public static function telegramBreakMessage(int|float|string $value, bool $hasAttach = false): array
-    {
-        return static::stringBreakByLength(
-            value: htmlspecialchars(trim(static::stringReplace($value, '\n', PHP_EOL), '"')),
-            breakType: HelperStringBreakTypeEnum::Line,
-            partLengthMax: 4000,
-            firstPartLength: $hasAttach ? 1000 : null,
+    public static function telegramBreakMessage(
+        int|float|string $value,
+        int $firstPartLength,
+        ?int $partLengthMax = null,
+        ?int $partCountMax = null,
+    ): array {
+        return array_slice(
+            static::stringBreakByLength(
+                value: static::stringReplace(
+                    htmlspecialchars(
+                        trim(static::stringReplace($value, ['\n' => PHP_EOL]), '"'),
+                    ),
+                    ['&quot;' => '"'],
+                ),
+                breakType: HelperStringBreakTypeEnum::Line,
+                partLengthMax: $partLengthMax,
+                firstPartLength: $firstPartLength,
+            ),
+            0,
+            $partCountMax ?? 10,
         );
     }
 }

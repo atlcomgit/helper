@@ -9,6 +9,8 @@ use Atlcom\Traits\HelperCacheTrait;
 use Atlcom\Traits\HelperCaseTrait;
 use Atlcom\Traits\HelperColorTrait;
 use Atlcom\Traits\HelperCryptTrait;
+use Atlcom\Traits\HelperDateTrait;
+use Atlcom\Traits\HelperEnumTrait;
 use Atlcom\Traits\HelperEnvTrait;
 use Atlcom\Traits\HelperExceptionTrait;
 use Atlcom\Traits\HelperHashTrait;
@@ -26,7 +28,7 @@ use Atlcom\Traits\HelperTransformTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.05
+ * @version 1.06
  * 
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper
@@ -64,6 +66,21 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::cryptArrayEncode()
  * @method @see static::cryptDecode()
  * @method @see static::cryptEncode()
+ * 
+ * @group date - Работа с датами
+ * @method @see static::dateFromString
+ * 
+ * @group enum - Работа с перечислениями
+ * @method @see static::enumExists
+ * @method @see static::enumFrom
+ * @method @see static::enumLabel
+ * @method @see static::enumLabels
+ * @method @see static::enumName
+ * @method @see static::enumNames
+ * @method @see static::enumRandom
+ * @method @see static::enumToArray
+ * @method @see static::enumValue
+ * @method @see static::enumValues
  * 
  * @group env - Работа с окружением
  * @method @see static::envDev()
@@ -160,6 +177,8 @@ abstract class Helper
     use HelperCaseTrait;
     use HelperColorTrait;
     use HelperCryptTrait;
+    use HelperDateTrait;
+    use HelperEnumTrait;
     use HelperEnvTrait;
     use HelperExceptionTrait;
     use HelperHashTrait;

@@ -1,5 +1,21 @@
 # Changelog
 
+## Версия 1.06
+- Добавлен метод Helper::dateFromString
+- Добавлен метод Helper::enumExists
+- Добавлен метод Helper::enumFrom
+- Добавлен метод Helper::enumLabel
+- Добавлен метод Helper::enumLabels
+- Добавлен метод Helper::enumName
+- Добавлен метод Helper::enumNames
+- Добавлен метод Helper::enumRandom
+- Добавлен метод Helper::enumToArray
+- Добавлен метод Helper::enumValue
+- Добавлен метод Helper::enumValues
+- Добавлен метод HelperEnumTrait::label
+- Добавлен метод HelperEnumTrait::toArray
+- Обновлен метод Helper::telegramBreakMessage
+
 ## Версия 1.05
 - Добавлен метод Helper::envDev
 - Добавлен метод Helper::envLocal
