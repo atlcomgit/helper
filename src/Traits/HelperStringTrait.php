@@ -142,30 +142,46 @@ trait HelperStringTrait
 
     /**
      * Возвращает массив подстрок разбитых на части между разделителем в строке
+     * Если передан параметр index, то возвращает значение элемента из этого массива
+     * Если cacheEnabled выключен, то кеш не используется
      * @see ./tests/HelperStringTrait/HelperStringSplitTest.php
      *
      * @param int|float|string $value
      * @param int|float|string|array|null $delimiter
-     * @return array
+     * @param int|null $index
+     * @param bool $cacheEnabled
+     * @return array|string|null
      */
-    public static function stringSplit(int|float|string $value, int|float|string|array|null $delimiter): array
-    {
-        $result = [];
+    public static function stringSplit(
+        int|float|string $value,
+        int|float|string|array|null $delimiter,
+        ?int $index = null,
+        bool $cacheEnabled = true,
+    ): array|string|null {
+        $value = (string)$value;
         $delimiters = static::transformToArray($delimiter);
         $delimiters = array_values(static::arrayDot($delimiters));
+        $cacheKey = static::hashXxh128($value . implode($delimiters) . $index);
 
-        while ($value || $delimiter) {
-            $delimiter = static::arrayFirst(static::stringSearchAny($value, $delimiters));
+        $result = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
+            $result = [];
+            while ($value || $delimiter) {
+                $delimiter = static::arrayFirst(static::stringSearchAny($value, $delimiters));
 
-            $delimiter
-                ? $result[] = static::stringDelete(
-                    static::stringCut($value, 0, mb_strpos($value, $delimiter) + static::stringLength($delimiter)),
-                    -static::stringLength($delimiter)
-                )
-                : $result[] = static::stringCut($value, 0);
-        }
+                $delimiter
+                    ? $result[] = static::stringDelete(
+                        static::stringCut($value, 0, mb_strpos($value, $delimiter) + static::stringLength($delimiter)),
+                        -static::stringLength($delimiter)
+                    )
+                    : $result[] = static::stringCut($value, 0);
+            }
 
-        return $result;
+            return $result;
+        }, $cacheEnabled);
+
+        return is_null($index)
+            ? $result
+            : ($result[$index < 0 ? count($result) + $index : $index] ?? null);
     }
 
 
@@ -634,20 +650,35 @@ trait HelperStringTrait
         if (!is_null($searches) && $searches !== '') {
 
             if (is_scalar($searches) && is_scalar($replaces)) {
-                $value = str_replace($searches, $replaces, $value);
+                $searches = (string)$searches;
+                $replaces = (string)$replaces;
+                $value = static::regexpValidatePattern($searches)
+                    ? preg_replace($searches, $replaces, $value)
+                    : str_replace($searches, $replaces, $value);
 
             } else if (is_scalar($searches) && is_array($replaces)) {
-                $value = str_replace($searches, array_values($replaces)[0] ?? '', $value);
+                $searches = (string)$searches;
+                $value = static::regexpValidatePattern($searches)
+                    ? preg_replace($searches, (string)array_values($replaces)[0] ?? '', $value)
+                    : str_replace($searches, (string)array_values($replaces)[0] ?? '', $value);
 
             } else if (is_array($searches)) {
                 foreach ($searches as $key => $search) {
                     if (is_integer($key)) {
                         (is_null($search) || $search === '')
-                            ?: $value = str_replace($search, $replaces[$key] ?? '', $value);
+                            ?: (
+                                $value = static::regexpValidatePattern($search)
+                                ? preg_replace($search, $replaces[$key] ?? '', $value)
+                                : str_replace($search, $replaces[$key] ?? '', $value)
+                            );
 
                     } else {
                         (is_null($key) || $key === '')
-                            ?: $value = str_replace($key, $search ?? '', $value);
+                            ?: (
+                                $value = static::regexpValidatePattern($key)
+                                ? preg_replace($key, $search ?? '', $value)
+                                : str_replace($key, $search ?? '', $value)
+                            );
                     }
                 }
             }

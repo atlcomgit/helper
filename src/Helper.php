@@ -17,6 +17,7 @@ use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperIntervalTrait;
 use Atlcom\Traits\HelperIpTrait;
 use Atlcom\Traits\HelperJwtTrait;
+use Atlcom\Traits\HelperNumberTrait;
 use Atlcom\Traits\HelperPathTrait;
 use Atlcom\Traits\HelperRegexpTrait;
 use Atlcom\Traits\HelperSizeTrait;
@@ -109,6 +110,9 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::jwtDecode()
  * @method @see static::jwtEncode()
  * 
+ * @group number - Работа с числами
+ * @method @see static::numberToString()
+ * 
  * @group path - Работа с путями
  * @method @see static::pathClassName()
  * @method @see static::pathRoot()
@@ -162,8 +166,8 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::telegramBreakMessage()
  * 
  * @group time - Работа со временем
- * @method @see static::timePeriodBetweenDatesToArray()
- * @method @see static::timePeriodBetweenDatesToString()
+ * @method @see static::timeBetweenDatesToArray()
+ * @method @see static::timeBetweenDatesToString()
  * @method @see static::timeSecondsToArray()
  * @method @see static::timeSecondsToString()
  * 
@@ -185,6 +189,7 @@ abstract class Helper
     use HelperIntervalTrait;
     use HelperIpTrait;
     use HelperJwtTrait;
+    use HelperNumberTrait;
     use HelperPathTrait;
     use HelperRegexpTrait;
     use HelperSizeTrait;

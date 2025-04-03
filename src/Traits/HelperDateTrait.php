@@ -21,7 +21,7 @@ trait HelperDateTrait
     public static function dateFromString(string $value): ?Carbon
     {
         $value = ' ' . static::stringReplace(static::stringLower($value), [',' => ' , ']) . ' ';
-        $date = Carbon::today();
+        $date = Carbon::today()->setTime(0, 0, 0, 0);
 
         $keywords = [
             $today = 'сегодня',

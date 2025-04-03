@@ -31,13 +31,13 @@ trait HelperTimeTrait
 
     /**
      * Возвращает массив периодов между датами
-     * @see ./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToArrayTest.php
+     * @see ./tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
      * @return array
      */
-    public static function timePeriodBetweenDatesToArray(Carbon|string $dateFrom, Carbon|string $dateTo): array
+    public static function timeBetweenDatesToArray(Carbon|string $dateFrom, Carbon|string $dateTo): array
     {
         $result = [
             static::$nameYears => $years = 0,
@@ -99,7 +99,7 @@ trait HelperTimeTrait
 
     /**
      * Возвращает период между датами в виде строки YDHM
-     * @see ./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToStringTest.php
+     * @see ./tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
@@ -108,13 +108,13 @@ trait HelperTimeTrait
      * @param mixed 
      * @return string
      */
-    public static function timePeriodBetweenDatesToString(
+    public static function timeBetweenDatesToString(
         Carbon|string $dateFrom,
         Carbon|string $dateTo,
         bool $withTime = false,
         bool $time24 = false,
     ): string {
-        $period = (object)static::timePeriodBetweenDatesToArray($dateFrom, $dateTo);
+        $period = (object)static::timeBetweenDatesToArray($dateFrom, $dateTo);
 
         return trim(
             ($period->years

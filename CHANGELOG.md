@@ -1,5 +1,14 @@
 # Changelog
 
+## Версия 1.07
+- Добавлен метод Helper::numberToString
+- Обновлен метод Helper::cacheRuntime
+- Обновлен метод Helper::stringSplit
+- Обновлен метод Helper::timeBetweenDatesToArray
+- Обновлен метод Helper::timeBetweenDatesToString
+- Обновлен метод Helper::timeSecondsToArray
+- Обновлен метод Helper::timeSecondsToString
+
 ## Версия 1.06
 - Добавлен метод Helper::dateFromString
 - Добавлен метод Helper::enumExists

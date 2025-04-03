@@ -57,14 +57,20 @@ trait HelperCacheTrait
 
     /**
      * Сохраняет значение value в кеше по ключу key или возвращает значение при его наличии
+     * Если cacheEnabled выключен, то кеш не используется
      * @see ./tests/HelperCacheTrait/HelperCacheRuntimeTest.php
      *
      * @param int|float|string $key
      * @param Closure $callback
+     * @param bool $cacheEnabled
      * @return mixed
      */
-    public static function cacheRuntime(int|float|string $key, Closure $callback): mixed
+    public static function cacheRuntime(int|float|string $key, Closure $callback, bool $cacheEnabled = true): mixed
     {
+        if (!$cacheEnabled) {
+            return $callback();
+        }
+
         if (static::cacheRuntimeExists($key)) {
             return static::cacheRuntimeGet($key);
         }

@@ -95,8 +95,9 @@ $array = Helper::arrayUnDot(['a.b' => 2, 'a.c' => 3]); // $array = ['a' => ['b' 
 Работа с кешем
 
 ---
-[cacheRuntime(\$key, \$callback): mixed](./tests/HelperCacheTrait/HelperCacheRuntimeTest.php)
-Сохраняет значение value в кеше по ключу key или возвращает значение при его наличии
+[cacheRuntime(\$key, \$callback, \$cacheEnabled): mixed](./tests/HelperCacheTrait/HelperCacheRuntimeTest.php)
+Сохраняет значение value в кеше по ключу key или возвращает значение при его наличии\
+Если cacheEnabled выключен, то кеш не используется
 ```php
 $mixed = Helper::cacheRuntime('key', fn () => 1); // $mixed = 1
 $mixed = Helper::cacheRuntimeGet('key'); // $mixed = 1
@@ -409,6 +410,17 @@ $string = Helper::jwtEncode(['id' => 1]); // $string = 'eyJhbGciOiJTSEE1MTIiLCJ0
 ```
 ---
 
+#### Number
+Работа с числами
+
+---
+##### [numberToString(\$value, \$declension, \$gender, \$enumeration): string](./tests/HelperNumberTrait/HelperNumberToStringTest.php)
+Возвращает число прописью на русском языке с учетом склонения по падежу, роду и числительному перечислению
+```php
+$string = Helper::numberToString(123.456); // $string = 'сто двадцать три'
+```
+---
+
 #### Path
 Работа с путями
 
@@ -663,7 +675,7 @@ $string = Helper::stringSearchAny('abcd', ['ab', 'bc']); // $string = ['ab']
 $string = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*'); // $string = ['*Иван*']
 ```
 ---
-##### [stringSplit(\$value, \$delimiter): array](./tests/HelperStringTrait/HelperStringSplitTest.php)
+##### [stringSplit(\$value, \$delimiter, \$index, \$cacheEnabled): array](./tests/HelperStringTrait/HelperStringSplitTest.php)
 Возвращает массив подстрок разбитых на части между разделителем в строке
 ```php
 $array = Helper::stringSplit('abc,,def/xyz', [',', '/']); // $array = ['abc', '', 'def', 'xyz']
@@ -709,16 +721,16 @@ $array = Helper::telegramBreakMessage('Иванов Иван Иванович', 
 Работа со временем
 
 ---
-##### [timePeriodBetweenDatesToArray(\$dateFrom, \$dateTo): array](./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToArrayTest.php)
+##### [timeBetweenDatesToArray(\$dateFrom, \$dateTo): array](./tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php)
 Возвращает массив периодов между датами
 ```php
-$array = Helper::timePeriodBetweenDatesToArray('01.01.2025 00:00:00', '02.02.2026 01:02:03'); // $array = ['years' => 1, 'months' => 1, 'days' => 1, 'hours' => 1, 'minutes' => 2, 'seconds' => 3]
+$array = Helper::timeBetweenDatesToArray('01.01.2025 00:00:00', '02.02.2026 01:02:03'); // $array = ['years' => 1, 'months' => 1, 'days' => 1, 'hours' => 1, 'minutes' => 2, 'seconds' => 3]
 ```
 ---
-##### [timePeriodBetweenDatesToString(\$dateFrom, \$dateTo, \$withTime, \$time24): array](./tests/HelperTimeTrait/HelperTimePeriodBetweenDatesToStringTest.php)
+##### [timeBetweenDatesToString(\$dateFrom, \$dateTo, \$withTime, \$time24): array](./tests/HelperTimeTrait/HelperTimeBetweenDatesToStringTest.php)
 Возвращает массив периодов между датами
 ```php
-$string = Helper::timePeriodBetweenDatesToString('01.01.2025 00:00:00', '02.02.2026 01:02:03', true); // $string = '1 год 1 месяц 1 день 1 час 2 минуты 3 секунды'
+$string = Helper::timeBetweenDatesToString('01.01.2025 00:00:00', '02.02.2026 01:02:03', true); // $string = '1 год 1 месяц 1 день 1 час 2 минуты 3 секунды'
 ```
 ---
 ##### [timeSecondsToArray(\$value): array](./tests/HelperTimeTrait/HelperTimeSecondsToArrayTest.php)
