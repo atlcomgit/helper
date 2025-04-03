@@ -8,7 +8,7 @@ use Atlcom\Consts\HelperConsts as Consts;
 use Atlcom\Enums\HelperNumberDeclensionEnum as Declension;
 use Atlcom\Enums\HelperNumberEnumerationEnum as Enumeration;
 use Atlcom\Enums\HelperNumberGenderEnum as Gender;
-use Atlcom\Internal\HelperInternals;
+use Atlcom\Internal\HelperInternal;
 
 /**
  * Трейт для работы с числами
@@ -86,8 +86,8 @@ trait HelperNumberTrait
             || (!$useFrac && $value === '000')
         ) {
             $numOrder[9] = match ($enum) {
-                Enumeration::Numerical->value => Consts::NUMERIC_NAMES[0][$enum] . Consts::NUMBER_CASE_10[$decl][$gend][0],
-                Enumeration::Ordinal->value => Consts::NUMERIC_NAMES[0][$enum] . Consts::NUMBER_ORD[$decl][$gend][0],
+                Enumeration::Numerical->value => Consts::NUMBER_NAMES[0][$enum] . Consts::NUMBER_CASE_10[$decl][$gend][0],
+                Enumeration::Ordinal->value => Consts::NUMBER_NAMES[0][$enum] . Consts::NUMBER_ORD[$decl][$gend][0],
             };
 
             !$useFrac ?: $usePrev = true;
@@ -95,7 +95,7 @@ trait HelperNumberTrait
         } else {
             while ($value[0] === '0') {
                 $zero .= ($zero !== '' ? ' ' : '')
-                    . Consts::NUMERIC_NAMES[0][$enum]
+                    . Consts::NUMBER_NAMES[0][$enum]
                     . Consts::NUMBER_CASE_10[$decl][$gend][0];
                 $value = static::stringDelete($value, 0, 1);
             }
@@ -105,7 +105,7 @@ trait HelperNumberTrait
             $bb = static::stringCount($value, ' ') + 1;
 
             for ($aa = $bb - 1; $aa >= 0; $aa--) {
-                $numOrder[11 - ($bb - $aa)] = HelperInternals::internalNumberToString(
+                $numOrder[11 - ($bb - $aa)] = HelperInternal::internalNumberToString(
                     static::stringSplit($value, ' ', $aa),
                     (int)($bb - $aa),
                     $declension,
@@ -132,8 +132,8 @@ trait HelperNumberTrait
 
             if ($getFrac === '0' || (int)$getFrac === 0) {
                 $numOrder[9] = match ($enum) {
-                    Enumeration::Numerical->value => Consts::NUMERIC_NAMES[0][$enum] . Consts::NUMBER_CASE_10[$decl][Gender::Female->value][0],
-                    Enumeration::Ordinal->value => Consts::NUMERIC_NAMES[0][$enum] . Consts::NUMBER_ORD[$decl][Gender::Female->value][0],
+                    Enumeration::Numerical->value => Consts::NUMBER_NAMES[0][$enum] . Consts::NUMBER_CASE_10[$decl][Gender::Female->value][0],
+                    Enumeration::Ordinal->value => Consts::NUMBER_NAMES[0][$enum] . Consts::NUMBER_ORD[$decl][Gender::Female->value][0],
                 };
             } else {
                 $usePrev = false;
@@ -141,7 +141,7 @@ trait HelperNumberTrait
                 $bb = static::stringCount($getFrac, ' ') + 1;
 
                 for ($aa = $bb - 1; $aa >= 0; $aa--) {
-                    $numOrder[11 - ($bb - $aa)] = HelperInternals::internalNumberToString(
+                    $numOrder[11 - ($bb - $aa)] = HelperInternal::internalNumberToString(
                         static::stringSplit($getFrac, ' ', $aa),
                         (int)($bb - $aa),
                         $declension,
@@ -171,7 +171,7 @@ trait HelperNumberTrait
             }
 
             $getFrac = match (static::stringLength(static::stringReplace($getFrac, ' ', ''))) {
-                0, 1 => Consts::NUMERIC_NAMES[10][1]
+                0, 1 => Consts::NUMBER_NAMES[10][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -182,7 +182,7 @@ trait HelperNumberTrait
                     false,
                 ),
 
-                2 => Consts::NUMERIC_NAMES[28][1]
+                2 => Consts::NUMBER_NAMES[28][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -193,7 +193,7 @@ trait HelperNumberTrait
                     false,
                 ),
 
-                3 => '' . Consts::NUMERIC_NAMES[37][1]
+                3 => '' . Consts::NUMBER_NAMES[37][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -203,7 +203,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                4 => 'десяти ' . Consts::NUMERIC_NAMES[37][1]
+                4 => 'десяти ' . Consts::NUMBER_NAMES[37][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -213,7 +213,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                5 => 'ста ' . Consts::NUMERIC_NAMES[37][1]
+                5 => 'ста ' . Consts::NUMBER_NAMES[37][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -223,7 +223,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                6 => '' . Consts::NUMERIC_NAMES[38][1]
+                6 => '' . Consts::NUMBER_NAMES[38][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -233,7 +233,7 @@ trait HelperNumberTrait
                     ],
                 ),
                 false,
-                7 => 'десяти ' . Consts::NUMERIC_NAMES[38][1]
+                7 => 'десяти ' . Consts::NUMBER_NAMES[38][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -243,7 +243,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                8 => 'ста ' . Consts::NUMERIC_NAMES[38][1]
+                8 => 'ста ' . Consts::NUMBER_NAMES[38][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -254,7 +254,7 @@ trait HelperNumberTrait
                     false,
                 ),
 
-                9 => '' . Consts::NUMERIC_NAMES[39][1]
+                9 => '' . Consts::NUMBER_NAMES[39][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -264,7 +264,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                10 => 'десяти ' . Consts::NUMERIC_NAMES[39][1]
+                10 => 'десяти ' . Consts::NUMBER_NAMES[39][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -274,7 +274,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                11 => 'ста ' . Consts::NUMERIC_NAMES[39][1]
+                11 => 'ста ' . Consts::NUMBER_NAMES[39][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -284,7 +284,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                12 => '' . Consts::NUMERIC_NAMES[40][1]
+                12 => '' . Consts::NUMBER_NAMES[40][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -294,7 +294,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                13 => 'десяти ' . Consts::NUMERIC_NAMES[40][1]
+                13 => 'десяти ' . Consts::NUMBER_NAMES[40][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -304,7 +304,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                14 => 'ста ' . Consts::NUMERIC_NAMES[40][1]
+                14 => 'ста ' . Consts::NUMBER_NAMES[40][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -314,7 +314,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                15 => '' . Consts::NUMERIC_NAMES[41][1]
+                15 => '' . Consts::NUMBER_NAMES[41][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -324,7 +324,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                16 => 'десяти ' . Consts::NUMERIC_NAMES[41][1]
+                16 => 'десяти ' . Consts::NUMBER_NAMES[41][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -334,7 +334,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                17 => 'ста ' . Consts::NUMERIC_NAMES[41][1]
+                17 => 'ста ' . Consts::NUMBER_NAMES[41][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -344,7 +344,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                18 => '' . Consts::NUMERIC_NAMES[42][1]
+                18 => '' . Consts::NUMBER_NAMES[42][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -354,7 +354,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                19 => 'десяти ' . Consts::NUMERIC_NAMES[42][1]
+                19 => 'десяти ' . Consts::NUMBER_NAMES[42][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -364,7 +364,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                20 => 'ста ' . Consts::NUMERIC_NAMES[42][1]
+                20 => 'ста ' . Consts::NUMBER_NAMES[42][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -374,7 +374,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                21 => '' . Consts::NUMERIC_NAMES[43][1]
+                21 => '' . Consts::NUMBER_NAMES[43][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -384,7 +384,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                22 => 'десяти ' . Consts::NUMERIC_NAMES[43][1]
+                22 => 'десяти ' . Consts::NUMBER_NAMES[43][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -394,7 +394,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                23 => 'ста ' . Consts::NUMERIC_NAMES[43][1]
+                23 => 'ста ' . Consts::NUMBER_NAMES[43][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -404,7 +404,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                24 => '' . Consts::NUMERIC_NAMES[44][1]
+                24 => '' . Consts::NUMBER_NAMES[44][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -414,7 +414,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                25 => 'десяти ' . Consts::NUMERIC_NAMES[44][1]
+                25 => 'десяти ' . Consts::NUMBER_NAMES[44][1]
                 . static::stringPlural(
                     $getFrac,
                     [
@@ -424,7 +424,7 @@ trait HelperNumberTrait
                     ],
                     false,
                 ),
-                26 => 'ста ' . Consts::NUMERIC_NAMES[44][1]
+                26 => 'ста ' . Consts::NUMBER_NAMES[44][1]
                 . static::stringPlural(
                     $getFrac,
                     [

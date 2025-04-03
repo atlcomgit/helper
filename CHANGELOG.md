@@ -1,8 +1,10 @@
 # Changelog
 
 ## Версия 1.07
+- Добавлен метод Helper::dateToString
 - Добавлен метод Helper::numberToString
 - Обновлен метод Helper::cacheRuntime
+- Обновлен метод Helper::stringReplace
 - Обновлен метод Helper::stringSplit
 - Обновлен метод Helper::timeBetweenDatesToArray
 - Обновлен метод Helper::timeBetweenDatesToString

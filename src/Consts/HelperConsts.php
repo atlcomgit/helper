@@ -6,7 +6,7 @@ namespace Atlcom\Consts;
 
 class HelperConsts
 {
-    public const NUMERIC_NAMES = [ // ciphStr
+    public const NUMBER_NAMES = [
         ['нол', 'нулев'],
         ['од', 'перв'],
         ['дв', 'втор'],
@@ -54,7 +54,7 @@ class HelperConsts
         ['септиллион', 'септиллионн'],
     ];
 
-    public const NUMBER_CASE_X1M = [ // numCaseX1M
+    public const NUMBER_CASE_X1M = [
         ['ов', '', 'а'],
         ['ов', 'а', 'ов'],
         ['ам', 'у', 'ам'],
@@ -63,7 +63,7 @@ class HelperConsts
         ['ах', 'е', 'ах'],
     ];
 
-    public const NUMBER_CASE_X1K = [ // numCaseX1K
+    public const NUMBER_CASE_X1K = [
         ['', 'а', 'и'],
         ['', 'и', ''],
         ['', 'е', 'ам'],
@@ -72,10 +72,9 @@ class HelperConsts
         ['ах', 'е', 'ах'],
     ];
 
-    // public const NUMBER_CASE_X100 = [1, 2, 3, 4, 5, 5, 5, 6, 5]; // numCaseX100 (original)
-    public const NUMBER_CASE_X100 = [0, 1, 2, 3, 4, 4, 4, 5, 4]; // numCaseX100
+    public const NUMBER_CASE_X100 = [0, 1, 2, 3, 4, 4, 4, 5, 4];
 
-    public const NUMBER_CASE_100 = [ // numCase100
+    public const NUMBER_CASE_100 = [
         // 100 | 200 | 300 | 400 | 500-700,900 | 800
         ['то', 'ести', 'иста', 'еста', 'ьсот', 'емьсот'],
         ['та', 'ухста', 'ёхста', 'ёхста', 'иста', 'ьмиста'],
@@ -85,12 +84,11 @@ class HelperConsts
         ['та', 'ухста', 'ёхста', 'ёхста', 'иста', 'ьмиста'],
     ];
 
-    public const NUMBER_CASE_X1 = [0, 1, 2, 3, 4, 5, 5, 5, 6, 5]; // numCaseX1
+    public const NUMBER_CASE_X1 = [0, 1, 2, 3, 4, 5, 5, 5, 6, 5];
 
-    public const NUMBER_CASE_X10 = [5, 5, 5, 7, 8, 8, 8, 9, 10]; // numCaseX10 (original)
-    // public const NUMBER_CASE_X10 = [0, 4, 4, 4, 6, 7, 7, 7, 8, 9]; // numCaseX10 (original)
+    public const NUMBER_CASE_X10 = [5, 5, 5, 7, 8, 8, 8, 9, 10];
 
-    public const NUMBER_CASE_10 = [ // numCase10
+    public const NUMBER_CASE_10 = [
         [
             // 0 | 1 | 2 | 3 | 4 | 5-7,9,10-20,30.. | 8 | 40 | 50,60,70 | 80 | 90
             ['ь', 'ин', 'а', 'и', 'е', 'ь', 'емь', '', 'ьдесят', 'емьдесят', 'о'],
@@ -130,14 +128,13 @@ class HelperConsts
         ],
     ];
 
-    public const NUMBER_ORD_X1 = [0, 1, 0, 2, 1, 1, 0, 0, 0, 1]; // ordCaseX1
+    public const NUMBER_ORD_X1 = [0, 1, 0, 2, 1, 1, 0, 0, 0, 1];
 
-    public const NUMBER_ORD_X10 = [1, 1, 1, 0, 1, 1, 1, 1, 1]; // ordCaseX10
+    public const NUMBER_ORD_X10 = [1, 1, 1, 0, 1, 1, 1, 1, 1];
 
-    public const NUMBER_ORD_X100 = [1, 1, 1, 1, 1, 1, 1, 1, 1]; // ordCaseX100 (original)
-    // public const NUMBER_ORD_X100 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // ordCaseX100
+    public const NUMBER_ORD_X100 = [1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-    public const NUMBER_ORD = [ // ordCase
+    public const NUMBER_ORD = [
         [
             // 0,2,6-8,40 | 1,4,5,9..20,30,50,60,70,80,90 | 3
             ['ой', 'ый', 'ий'],
@@ -177,12 +174,36 @@ class HelperConsts
         ],
     ];
 
-    public const NUMBER_INT_CASE = [ // intCase
+    public const NUMBER_INT_CASE = [
         ['ых', 'ая', 'ых'],
         ['ых', 'ой', 'ых'],
         ['ых', 'ой', 'ым'],
         ['ых', 'ая', 'ых'],
         ['ыми', 'ой', 'ыми'],
         ['ых', 'ой', 'ых'],
+    ];
+
+    //?!? 
+    public const DATE_MONTH_CASE = ['я', 'я', 'ю', 'я', 'ем', 'е', 'ь']; // monthCase 1..7
+
+    public const DATE_MONTH_CASE_3 = ['а', 'а', 'у', 'а', 'ом', 'е', '']; // monthCase3 1..7
+
+    public const DATE_MONTH_CASE_8 = ['а', 'а', 'у', 'а', 'ом', 'е', '']; // monthCase8 1..7
+
+    public const DATE_MONTH_CASE_YEAR = ['а', 'а', 'у', '', 'ом', 'у']; // 1..6
+
+    public const DATE_MONTH_NAMES = [ // monthStr 1..12
+        'январ',
+        'феврал',
+        'март',
+        'апрел',
+        'ма',
+        'июн',
+        'июл',
+        'август',
+        'сентябр',
+        'октябр',
+        'ноябр',
+        'декабр',
     ];
 }

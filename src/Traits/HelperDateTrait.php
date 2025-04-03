@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Consts\HelperConsts as Consts;
+use Atlcom\Enums\HelperNumberDeclensionEnum as Declension;
+use Atlcom\Enums\HelperNumberEnumerationEnum as Enumeration;
+use Atlcom\Enums\HelperNumberGenderEnum as Gender;
 use Carbon\Carbon;
 
 /**
@@ -443,5 +447,82 @@ trait HelperDateTrait
         ($changes['number_date'] === '') ?: $date = $date->parse($changes['number_date']);
 
         return $searched ? $date : null;
+    }
+
+
+    /**
+     * Возвращает дату прописью на русском языке с учетом склонения по падежу
+     * @see ./tests/HelperDateTrait/HelperDateToStringTest.php
+     *
+     * @param Carbon|string|int|null $value
+     * @param Declension $declension
+     * @return string
+     */
+    public static function dateToString(
+        Carbon|string|int|null $value,
+        Declension $declension = Declension::Nominative,
+    ): string {
+        $value = match (true) {
+            $value instanceof Carbon => $value->format('d.m.Y'),
+            is_string($value) => static::dateFromString($value)?->format('d.m.Y'),
+            is_integer($value) => Carbon::parse($value)?->format('d.m.Y'),
+        };
+        $value = static::stringReplace($value, '/[^0-9.]/u', '');
+        $result = '';
+
+        if (!$value) {
+            return $result;
+        }
+
+        $dd = (int)static::stringSplit($value, '.', 0);
+        !(static::intervalBetween($dd, [1, 31])) ?:
+            $result = static::numberToString($dd, $declension, Gender::Neuter, Enumeration::Ordinal);
+
+        $mm = (int)static::stringSplit($value, '.', 1);
+        if (static::intervalBetween($mm, [1, 12])) {
+            $result .= ($result !== '' ? ' ' : '')
+                . Consts::DATE_MONTH_NAMES[$mm - 1]
+                . ($result === ''
+                    ? ($declension->value === 0
+                        ? (
+                            $mm === 3
+                            ? Consts::DATE_MONTH_CASE_3[6]
+                            : ($mm === 8 ? Consts::DATE_MONTH_CASE_8[6] : Consts::DATE_MONTH_CASE[6]))
+                        : (
+                            $mm === 3
+                            ? Consts::DATE_MONTH_CASE_3[$declension->value]
+                            : (
+                                $mm === 8
+                                ? Consts::DATE_MONTH_CASE_8[$declension->value]
+                                : Consts::DATE_MONTH_CASE[$declension->value]
+                            )
+                        )
+                    )
+
+                    : (
+                        $mm === 3
+                        ? Consts::DATE_MONTH_CASE_3[$declension->value]
+                        : (
+                            $mm === 8
+                            ? Consts::DATE_MONTH_CASE_8[$declension->value]
+                            : Consts::DATE_MONTH_CASE[$declension->value]
+                        )
+                    )
+                );
+        }
+
+        $yyyy = (int)static::stringSplit($value, '.', 2);
+        !$yyyy ?: $result .= ($result !== '' ? ' ' : '')
+            . ($result === ''
+                ? static::numberToString($yyyy, $declension, Gender::Male, Enumeration::Ordinal)
+                . ' год'
+                . ($declension->value === 0 ? '' : Consts::DATE_MONTH_CASE_YEAR[$declension->value])
+
+                : static::numberToString($yyyy, $declension, Gender::Male, Enumeration::Ordinal)
+                . ' год'
+                . ($declension->value === 0 ? '' : Consts::DATE_MONTH_CASE_YEAR[$declension->value])
+            );
+
+        return $result;
     }
 }

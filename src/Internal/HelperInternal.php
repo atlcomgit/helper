@@ -10,7 +10,7 @@ use Atlcom\Enums\HelperNumberEnumerationEnum as Enumeration;
 use Atlcom\Enums\HelperNumberGenderEnum as Gender;
 use Atlcom\Traits\HelperStringTrait;
 
-class HelperInternals
+class HelperInternal
 {
     use HelperStringTrait;
 
@@ -50,7 +50,7 @@ class HelperInternals
 
             case 1:
                 if (($digitC !== 0) && ($digitB !== 1)) {
-                    $result = Consts::NUMERIC_NAMES[$digitC][$enum]
+                    $result = Consts::NUMBER_NAMES[$digitC][$enum]
                         . (
                             $enum === 0
                             ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X1[$digitC]]
@@ -61,14 +61,14 @@ class HelperInternals
                     switch ($digitB) {
                         case '1':
                             $result = ($digitC !== 0)
-                                ? Consts::NUMERIC_NAMES[(int)"{$digitB}{$digitC}"][$enum]
+                                ? Consts::NUMBER_NAMES[(int)"{$digitB}{$digitC}"][$enum]
                                 . (
                                     $enum === 0
                                     ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                     : Consts::NUMBER_ORD[$decl][$gend][Consts::NUMBER_ORD_X10[$digitB - 1]]
                                 )
 
-                                : Consts::NUMERIC_NAMES[(int)"{$digitB}{$digitC}"][$enum]
+                                : Consts::NUMBER_NAMES[(int)"{$digitB}{$digitC}"][$enum]
                                 . (
                                     $enum === 0
                                     ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -85,7 +85,7 @@ class HelperInternals
                         case 8:
                         case 9:
                             $result = ($digitC !== 0)
-                                ? Consts::NUMERIC_NAMES[18 + $digitB][0]
+                                ? Consts::NUMBER_NAMES[18 + $digitB][0]
                                 . (
                                     $enum === 0
                                     ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -94,7 +94,7 @@ class HelperInternals
                                 . ($result !== '' ? ' ' : '')
                                 . $result
 
-                                : Consts::NUMERIC_NAMES[18 + $digitB][$enum]
+                                : Consts::NUMBER_NAMES[18 + $digitB][$enum]
                                 . (
                                     $enum === 0
                                     ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -107,7 +107,7 @@ class HelperInternals
 
                 if ($digitA !== 0) {
                     $result = ($result !== '')
-                        ? Consts::NUMERIC_NAMES[27 + $digitA][0]
+                        ? Consts::NUMBER_NAMES[27 + $digitA][0]
                         . (
                             $enum === 0
                             ? Consts::NUMBER_CASE_100[$decl][Consts::NUMBER_CASE_X100[$digitA - 1]]
@@ -116,7 +116,7 @@ class HelperInternals
                         . ($result !== '' ? ' ' : '')
                         . $result
 
-                        : Consts::NUMERIC_NAMES[27 + $digitA][$enum]
+                        : Consts::NUMBER_NAMES[27 + $digitA][$enum]
                         . (
                             $enum === 0
                             ? Consts::NUMBER_CASE_100[$decl][Consts::NUMBER_CASE_X100[$digitA - 1]]
@@ -136,7 +136,7 @@ class HelperInternals
             case 9:
                 if (($digitC !== 0) && ($digitB !== 1)) {
                     $result = $usePrev
-                        ? Consts::NUMERIC_NAMES[$digitC][Enumeration::Numerical->value]
+                        ? Consts::NUMBER_NAMES[$digitC][Enumeration::Numerical->value]
                         . (
                             $enum === 0
                             ? Consts::NUMBER_CASE_10[$decl][$gendFM][Consts::NUMBER_CASE_X1[$digitC]]
@@ -145,8 +145,8 @@ class HelperInternals
 
                         : (
                             $enum === 0
-                            ? Consts::NUMERIC_NAMES[$digitC][$enum]
-                            : Consts::NUMERIC_NAMES[$digitC][Enumeration::Numerical->value]
+                            ? Consts::NUMBER_NAMES[$digitC][$enum]
+                            : Consts::NUMBER_NAMES[$digitC][Enumeration::Numerical->value]
                         )
                         . (
                             $enum === 0
@@ -160,14 +160,14 @@ class HelperInternals
                         case '1':
                             if ($digitC !== 0) {
                                 $result = $usePrev
-                                    ? Consts::NUMERIC_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
+                                    ? Consts::NUMBER_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                         : Consts::NUMBER_CASE_10[$declN][$gendFM][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                     )
 
-                                    : Consts::NUMERIC_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
+                                    : Consts::NUMBER_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -175,14 +175,14 @@ class HelperInternals
                                     );
                             } else {
                                 $result = $usePrev
-                                    ? Consts::NUMERIC_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
+                                    ? Consts::NUMBER_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                         : Consts::NUMBER_CASE_10[$declN][$gendFM][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                     )
 
-                                    : Consts::NUMERIC_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
+                                    : Consts::NUMBER_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -201,7 +201,7 @@ class HelperInternals
                         case '9':
                             if ($digitC !== 0) {
                                 $result = $usePrev
-                                    ? Consts::NUMERIC_NAMES[18 + $digitB][0]
+                                    ? Consts::NUMBER_NAMES[18 + $digitB][0]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -210,7 +210,7 @@ class HelperInternals
                                     . ($result !== '' ? ' ' : '')
                                     . $result
 
-                                    : Consts::NUMERIC_NAMES[18 + $digitB][0]
+                                    : Consts::NUMBER_NAMES[18 + $digitB][0]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -220,14 +220,14 @@ class HelperInternals
                                     . $result;
                             } else {
                                 $result = $usePrev
-                                    ? Consts::NUMERIC_NAMES[18 + $digitB][0]
+                                    ? Consts::NUMBER_NAMES[18 + $digitB][0]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                         : Consts::NUMBER_CASE_10[$declN][$gendFM][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                     )
 
-                                    : Consts::NUMERIC_NAMES[18 + $digitB][0]
+                                    : Consts::NUMBER_NAMES[18 + $digitB][0]
                                     . (
                                         $enum === 0
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
@@ -241,7 +241,7 @@ class HelperInternals
                 if ($digitA !== 0) {
                     if ($result !== '') {
                         $result = $usePrev
-                            ? Consts::NUMERIC_NAMES[27 + $digitA][0]
+                            ? Consts::NUMBER_NAMES[27 + $digitA][0]
                             . (
                                 $enum === 0
                                 ? Consts::NUMBER_CASE_100[$decl][Consts::NUMBER_CASE_X100[$digitA - 1]]
@@ -252,8 +252,8 @@ class HelperInternals
 
                             : (
                                 $enum === 0
-                                ? Consts::NUMERIC_NAMES[27 + $digitA][0]
-                                : Consts::NUMERIC_NAMES[27 + $digitA][$digitA === 1 ? 0 : 1]
+                                ? Consts::NUMBER_NAMES[27 + $digitA][0]
+                                : Consts::NUMBER_NAMES[27 + $digitA][$digitA === 1 ? 0 : 1]
                             )
                             . (
                                 $enum === 0
@@ -269,7 +269,7 @@ class HelperInternals
                     } else {
                         $result = $usePrev
 
-                            ? Consts::NUMERIC_NAMES[27 + $digitA][0]
+                            ? Consts::NUMBER_NAMES[27 + $digitA][0]
                             . (
                                 $enum === 0
                                 ? Consts::NUMBER_CASE_100[$decl][Consts::NUMBER_CASE_X100[$digitA - 1]]
@@ -278,8 +278,8 @@ class HelperInternals
 
                             : (
                                 $enum === 0
-                                ? Consts::NUMERIC_NAMES[27 + $digitA][0]
-                                : Consts::NUMERIC_NAMES[27 + $digitA][$digitA === 1 ? 0 : 1]
+                                ? Consts::NUMBER_NAMES[27 + $digitA][0]
+                                : Consts::NUMBER_NAMES[27 + $digitA][$digitA === 1 ? 0 : 1]
                             )
                             . (
                                 $enum === 0
@@ -300,8 +300,8 @@ class HelperInternals
                         . (($result !== '' && $part > 1) ? ' ' : '')
                         . (
                             $usePrev
-                            ? Consts::NUMERIC_NAMES[35 + $part][Enumeration::Numerical->value]
-                            : Consts::NUMERIC_NAMES[35 + $part][$enum]
+                            ? Consts::NUMBER_NAMES[35 + $part][Enumeration::Numerical->value]
+                            : Consts::NUMBER_NAMES[35 + $part][$enum]
                         )
                         . (
                             $enum === 0

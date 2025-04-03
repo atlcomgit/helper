@@ -151,6 +151,7 @@ trait HelperCryptTrait
      *
      * @return float
      */
+    //?!? перенести в HelperInternal
     private static function cryptMakeRandom(): float
     {
         [$usec, $sec] = explode(' ', microtime());
@@ -166,6 +167,7 @@ trait HelperCryptTrait
      * @param mixed $value
      * @return string
      */
+    //?!? перенести в HelperInternal
     private static function cryptShrink(string $value): string
     {
         $result = '';
@@ -201,6 +203,7 @@ trait HelperCryptTrait
      * @param string $value
      * @return string
      */
+    //?!? перенести в HelperInternal
     private static function cryptUnShrink(string $value): string
     {
         $result = '';
@@ -231,6 +234,7 @@ trait HelperCryptTrait
      * @param string $value
      * @return string
      */
+    //?!? перенести в HelperInternal
     private static function cryptHash(string $value): string
     {
         $chunkLength = (int)floor(mb_strlen($value) / 32);
@@ -262,6 +266,7 @@ trait HelperCryptTrait
      * @param string $str
      * @return string
      */
+    //?!? перенести в HelperInternal
     private static function cryptUnHash(string $str): string
     {
         $chunkLength = (int)floor(mb_strlen($str) / 32);

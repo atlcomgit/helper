@@ -211,6 +211,12 @@ $date = Helper::dateFromString('в следующий понедельник'); 
 $date = Helper::dateFromString('через 2 месяца'); // $date->format('d.m.Y') = 'XX.XX.XXXX'
 ```
 ---
+##### [dateToString(\$value, \$declension): ?Carbon](./tests/HelperDateTrait/HelperDateToStringTest.php)
+Возвращает дату прописью на русском языке с учетом склонения по падежу
+```php
+$string = Helper::dateToString(Carbon::parse('01.02.2025')); // $string = 'первое февраля две тысячи двадцать пятый год'
+```
+---
 
 #### Enum
 Работа с перечислениями

@@ -70,6 +70,7 @@ use Atlcom\Traits\HelperTransformTrait;
  * 
  * @group date - Работа с датами
  * @method @see static::dateFromString
+ * @method @see static::dateToString
  * 
  * @group enum - Работа с перечислениями
  * @method @see static::enumExists
