@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
-use Atlcom\Enums\HelperRegexpEnum;
 use Atlcom\Enums\HelperStringBreakTypeEnum;
 use Atlcom\Enums\HelperStringEncodingEnum;
 use BackedEnum;
@@ -12,7 +11,6 @@ use ReverseRegex\Generator\Scope;
 use ReverseRegex\Lexer;
 use ReverseRegex\Parser;
 use ReverseRegex\Random\MersenneRandom;
-use ReverseRegex\Random\SimpleRandom;
 
 /**
  * Трейт для работы со строками
@@ -638,12 +636,14 @@ trait HelperStringTrait
      * @param int|float|string|null $value
      * @param int|float|string|array $searches
      * @param int|float|string|array|null $replaces
+     * @param bool $useRegexp
      * @return string
      */
     public static function stringReplace(
         int|float|string|null $value,
         int|float|string|array $searches,
         int|float|string|array|null $replaces = null,
+        bool $useRegexp = true,
     ): string {
         $value = (string)$value;
 
@@ -652,14 +652,14 @@ trait HelperStringTrait
             if (is_scalar($searches) && is_scalar($replaces)) {
                 $searches = (string)$searches;
                 $replaces = (string)$replaces;
-                $value = static::regexpValidatePattern($searches)
-                    ? preg_replace($searches, $replaces, $value)
+                $value = ($useRegexp && static::regexpValidatePattern($searches))
+                    ? (preg_replace($searches, $replaces, $value) ?? $value)
                     : str_replace($searches, $replaces, $value);
 
             } else if (is_scalar($searches) && is_array($replaces)) {
                 $searches = (string)$searches;
-                $value = static::regexpValidatePattern($searches)
-                    ? preg_replace($searches, (string)array_values($replaces)[0] ?? '', $value)
+                $value = ($useRegexp && static::regexpValidatePattern($searches))
+                    ? (preg_replace($searches, (string)array_values($replaces)[0] ?? '', $value) ?? $value)
                     : str_replace($searches, (string)array_values($replaces)[0] ?? '', $value);
 
             } else if (is_array($searches)) {
@@ -667,16 +667,16 @@ trait HelperStringTrait
                     if (is_integer($key)) {
                         (is_null($search) || $search === '')
                             ?: (
-                                $value = static::regexpValidatePattern($search)
-                                ? preg_replace($search, $replaces[$key] ?? '', $value)
+                                $value = ($useRegexp && static::regexpValidatePattern($search))
+                                ? (preg_replace($search, $replaces[$key] ?? '', $value) ?? $value)
                                 : str_replace($search, $replaces[$key] ?? '', $value)
                             );
 
                     } else {
                         (is_null($key) || $key === '')
                             ?: (
-                                $value = static::regexpValidatePattern($key)
-                                ? preg_replace($key, $search ?? '', $value)
+                                $value = ($useRegexp && static::regexpValidatePattern($key))
+                                ? (preg_replace($key, $search ?? '', $value) ?? $value)
                                 : str_replace($key, $search ?? '', $value)
                             );
                     }

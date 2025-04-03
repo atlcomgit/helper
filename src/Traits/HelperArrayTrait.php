@@ -33,7 +33,7 @@ trait HelperArrayTrait
                 &&
                 !static::stringSearchAny($item['class'] ?? '', static::$ignoreClasses)
             ) {
-                $file = trim(static::stringReplace($item['file'] ?? '', $basePath, ''), '/');
+                $file = trim(static::stringReplace($item['file'] ?? '', $basePath, '', false), '/');
                 $resultTrace[] = [
                     'file' => static::stringConcat(':', $file, $item['line'] ?? ''),
                     'func' => static::stringConcat(
