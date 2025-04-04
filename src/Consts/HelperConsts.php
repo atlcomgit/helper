@@ -183,7 +183,6 @@ class HelperConsts
         ['ых', 'ой', 'ых'],
     ];
 
-    //?!? 
     public const DATE_MONTH_CASE = ['я', 'я', 'ю', 'я', 'ем', 'е', 'ь']; // monthCase 1..7
 
     public const DATE_MONTH_CASE_3 = ['а', 'а', 'у', 'а', 'ом', 'е', '']; // monthCase3 1..7
@@ -205,5 +204,15 @@ class HelperConsts
         'октябр',
         'ноябр',
         'декабр',
+    ];
+
+    public const DATE_DAY_NAME = [
+        'понедельник',
+        'вторник',
+        'среда',
+        'четверг',
+        'пятница',
+        'суббота',
+        'воскресенье',
     ];
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Internal\HelperInternal;
+
 /**
  * Трейт для работы с кодированием
  */
@@ -48,8 +50,8 @@ trait HelperCryptTrait
         $string = gzdeflate($string, 9);
         $string = base64_encode($string);
         $str = static::$cryptPrefix . $string . static::$cryptSuffix;
-        $password = static::cryptHash($password ?? getenv('APP_KEY') ?: '');
-        mt_srand((int)static::cryptMakeRandom());
+        $password = HelperInternal::internalHash($password ?? getenv('APP_KEY') ?: '');
+        mt_srand((int)HelperInternal::internalMakeRandom());
         $rnd = ($random ?? static::$cryptRandom) ? mt_rand(100, 255) : 100;
         for ($aa = 0; $aa < mb_strlen($str); $aa++) {
             $result .= (string)str_pad((string)mb_ord($str[$aa]), static::$cryptLength, '0', STR_PAD_LEFT); //sprintf("%03d", ord($str[$aa]));
@@ -65,9 +67,9 @@ trait HelperCryptTrait
         }
 
         $result = (string)$rnd . $result;
-        $result = static::cryptShrink($result);
+        $result = HelperInternal::internalShrink($result);
         $result = static::stringReverse($result);
-        $result = static::cryptHash($result);
+        $result = HelperInternal::internalHash($result);
 
         return $result;
     }
@@ -89,15 +91,15 @@ trait HelperCryptTrait
         }
 
         $str = $value;
-        $password = static::cryptHash($password ?? getenv('APP_KEY') ?: '');
-        $str = static::cryptUnHash($str);
+        $password = HelperInternal::internalHash($password ?? getenv('APP_KEY') ?: '');
+        $str = HelperInternal::internalUnHash($str);
 
         if (!$str) {
             return null;
         }
 
         $str = static::stringReverse($str);
-        $str = static::cryptUnShrink($str);
+        $str = HelperInternal::internalUnShrink($str);
         $rnd = (int)mb_substr($str, 0, static::$cryptLength);
         $str = mb_substr($str, static::$cryptLength);
         $cc = mb_strlen($str);
@@ -142,154 +144,6 @@ trait HelperCryptTrait
         };
 
         return $result;
-    }
-
-
-    /**
-     * Задает случайный генератор
-     * @see ./tests/HelperCryptTrait/HelperCryptMakeRandomTest.php
-     *
-     * @return float
-     */
-    //?!? перенести в HelperInternal
-    private static function cryptMakeRandom(): float
-    {
-        [$usec, $sec] = explode(' ', microtime());
-
-        return (float)$sec + (float)$usec * 100000;
-    }
-
-
-    /**
-     * Упаковывает строку из чисел
-     * @see ./tests/HelperCryptTrait/HelperCryptShrinkTest.php
-     *
-     * @param mixed $value
-     * @return string
-     */
-    //?!? перенести в HelperInternal
-    private static function cryptShrink(string $value): string
-    {
-        $result = '';
-        if ($value == '') {
-            return $result;
-        }
-
-        for ($aa = 0; $aa < mb_strlen($value); $aa++) {
-            $code = mb_substr($value, $aa, 2);
-            if (mb_strlen($code) < 2) {
-                $result .= $value[$aa];
-
-            } else if (($code >= '65' && $code <= '90') || ($code >= '97' && $code <= '99')) {
-                $result .= mb_chr((int)$code);
-                $aa++;
-
-            } else if ($code >= '00' && $code <= '22') {
-                $result .= mb_chr((int)$code + 100);
-                $aa++;
-
-            } else {
-                $result .= $value[$aa];
-            }
-        }
-        return $result;
-    }
-
-
-    /**
-     * Распаковывает строку из чисел
-     * @see ./tests/HelperCryptTrait/HelperCryptUnShrinkTest.php
-     *
-     * @param string $value
-     * @return string
-     */
-    //?!? перенести в HelperInternal
-    private static function cryptUnShrink(string $value): string
-    {
-        $result = '';
-        if ($value == '') {
-            return $result;
-        }
-
-        for ($aa = 0; $aa < mb_strlen($value); $aa++) {
-            $code = mb_ord($value[$aa]);
-            if (($code >= 65 && $code <= 90) || ($code >= 97 && $code <= 99)) {
-                $result .= $code;
-
-            } else if ($code >= 100 && $code <= 122) {
-                $result .= str_pad((string)($code - 100), 2, "0", STR_PAD_LEFT);
-
-            } else {
-                $result .= $value[$aa];
-            }
-        }
-        return $result;
-    }
-
-
-    /**
-     * Добавляет хеш в строку
-     * @see ./tests/HelperCryptTrait/HelperCryptHashTest.php
-     * 
-     * @param string $value
-     * @return string
-     */
-    //?!? перенести в HelperInternal
-    private static function cryptHash(string $value): string
-    {
-        $chunkLength = (int)floor(mb_strlen($value) / 32);
-        if ($chunkLength === 0) {
-            return $value;
-        }
-
-        $hash = static::hashXxh128($value);
-        $chunks = array_chunk(str_split($value), $chunkLength, false);
-        $chunkIndex = 0;
-
-        foreach ($chunks as &$chunk) {
-            $chunk[] = $hash[$chunkIndex++] ?? '';
-            if ($chunkIndex >= 32) {
-                break;
-            }
-        }
-
-        $chunks = array_map(static fn ($chunk) => implode('', $chunk), $chunks);
-
-        return implode('', $chunks);
-    }
-
-
-    /**
-     * Удаляет хеш из строки
-     * @see ./tests/HelperCryptTrait/HelperCryptUnHashTest.php
-     * 
-     * @param string $str
-     * @return string
-     */
-    //?!? перенести в HelperInternal
-    private static function cryptUnHash(string $str): string
-    {
-        $chunkLength = (int)floor(mb_strlen($str) / 32);
-        if ($chunkLength === 0) {
-            return $str;
-        }
-
-        $hash = '';
-        $chunks = array_chunk(str_split($str), $chunkLength, false);
-        $chunkIndex = 0;
-
-        foreach ($chunks as &$chunk) {
-            $hash .= array_pop($chunk);
-            $chunkIndex++;
-            if ($chunkIndex >= 32) {
-                break;
-            }
-        }
-
-        $chunks = array_map(static fn ($chunk) => implode('', $chunk), $chunks);
-        $result = implode('', $chunks);
-
-        return static::hashXxh128($result) === $hash ? $result : '';
     }
 
 

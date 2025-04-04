@@ -30,5 +30,8 @@ final class HelperDateToStringTest extends TestCase
 
         $string = Helper::dateToString('31.12.2025', HelperNumberDeclensionEnum::Dative);
         $this->assertEquals('тридцать первому декабрю две тысячи двадцать пятому году', $string);
+
+        $string = Helper::dateToString('31122025');
+        $this->assertTrue($string === '');
     }
 }

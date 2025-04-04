@@ -204,6 +204,12 @@ $string = Helper::cryptEncode('abc', 'password'); // $string = 'nh93432NibR3td26
 Работа с датами
 
 ---
+##### [dateDayName(\$value): string](./tests/HelperDateTrait/HelperDateDayNameTest.php)
+Возвращает название дня недели переданного значения
+```php
+$string = Helper::dateDayName('31.12.2025'); // $string = 'среда'
+```
+---
 ##### [dateFromString(\$value): ?Carbon](./tests/HelperDateTrait/HelperDateFromStringTest.php)
 Возвращает объект Carbon с распознанной датой или null
 ```php
@@ -454,6 +460,12 @@ $string = Helper::pathRoot(); // $string = '/home/path'
 $boolean = Helper::regexpValidateAscii('0-9 AZ az'); // $boolean = true
 ```
 ---
+##### [regexpValidateDate(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateDateTest.php)
+Проверяет значение строки на формат даты
+```php
+$boolean = Helper::regexpValidateDate('01.01.2025'); // $boolean = true
+```
+---
 ##### [regexpValidateEmail(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateEmailTest.php)
 Проверяет значение строки на формат электронной почты
 ```php
@@ -679,6 +691,12 @@ $array = Helper::stringSearchAll('Иванов Иван Иванович', ['*И
 $string = Helper::stringSearchAny('abcd', 'bc'); // $string = ['bc']
 $string = Helper::stringSearchAny('abcd', ['ab', 'bc']); // $string = ['ab']
 $string = Helper::stringSearchAny('Иванов Иван Иванович', '*Иван*'); // $string = ['*Иван*']
+```
+---
+##### [stringSegment(\$value): string](./tests/HelperStringTrait/HelperStringSegmentTest.php)
+Возвращает строку с разбиением слитных слов и цифр
+```php
+$string = Helper::stringSegment('abc2defXyz'); // $string = 'abc 2 def Xyz'
 ```
 ---
 ##### [stringSplit(\$value, \$delimiter, \$index, \$cacheEnabled): array](./tests/HelperStringTrait/HelperStringSplitTest.php)

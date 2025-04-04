@@ -8,10 +8,12 @@ use Atlcom\Consts\HelperConsts as Consts;
 use Atlcom\Enums\HelperNumberDeclensionEnum as Declension;
 use Atlcom\Enums\HelperNumberEnumerationEnum as Enumeration;
 use Atlcom\Enums\HelperNumberGenderEnum as Gender;
+use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperStringTrait;
 
 class HelperInternal
 {
+    use HelperHashTrait;
     use HelperStringTrait;
 
 
@@ -404,5 +406,148 @@ class HelperInternal
         }
 
         return $result;
+    }
+
+
+    /**
+     * Задает случайный генератор
+     * @see ./tests/HelperCryptTrait/HelperCryptMakeRandomTest.php
+     *
+     * @return float
+     */
+    public static function internalMakeRandom(): float
+    {
+        [$usec, $sec] = explode(' ', microtime());
+
+        return (float)$sec + (float)$usec * 100000;
+    }
+
+
+    /**
+     * Упаковывает строку из чисел
+     * @see ./tests/HelperCryptTrait/HelperCryptShrinkTest.php
+     *
+     * @param mixed $value
+     * @return string
+     */
+    public static function internalShrink(string $value): string
+    {
+        $result = '';
+        if ($value == '') {
+            return $result;
+        }
+
+        for ($aa = 0; $aa < mb_strlen($value); $aa++) {
+            $code = mb_substr($value, $aa, 2);
+            if (mb_strlen($code) < 2) {
+                $result .= $value[$aa];
+
+            } else if (($code >= '65' && $code <= '90') || ($code >= '97' && $code <= '99')) {
+                $result .= mb_chr((int)$code);
+                $aa++;
+
+            } else if ($code >= '00' && $code <= '22') {
+                $result .= mb_chr((int)$code + 100);
+                $aa++;
+
+            } else {
+                $result .= $value[$aa];
+            }
+        }
+        return $result;
+    }
+
+
+    /**
+     * Распаковывает строку из чисел
+     * @see ./tests/HelperCryptTrait/HelperCryptUnShrinkTest.php
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function internalUnShrink(string $value): string
+    {
+        $result = '';
+        if ($value == '') {
+            return $result;
+        }
+
+        for ($aa = 0; $aa < mb_strlen($value); $aa++) {
+            $code = mb_ord($value[$aa]);
+            if (($code >= 65 && $code <= 90) || ($code >= 97 && $code <= 99)) {
+                $result .= $code;
+
+            } else if ($code >= 100 && $code <= 122) {
+                $result .= str_pad((string)($code - 100), 2, "0", STR_PAD_LEFT);
+
+            } else {
+                $result .= $value[$aa];
+            }
+        }
+        return $result;
+    }
+
+
+    /**
+     * Добавляет хеш в строку
+     * @see ./tests/HelperCryptTrait/HelperCryptHashTest.php
+     * 
+     * @param string $value
+     * @return string
+     */
+    public static function internalHash(string $value): string
+    {
+        $chunkLength = (int)floor(mb_strlen($value) / 32);
+        if ($chunkLength === 0) {
+            return $value;
+        }
+
+        $hash = static::hashXxh128($value);
+        $chunks = array_chunk(str_split($value), $chunkLength, false);
+        $chunkIndex = 0;
+
+        foreach ($chunks as &$chunk) {
+            $chunk[] = $hash[$chunkIndex++] ?? '';
+            if ($chunkIndex >= 32) {
+                break;
+            }
+        }
+
+        $chunks = array_map(static fn ($chunk) => implode('', $chunk), $chunks);
+
+        return implode('', $chunks);
+    }
+
+
+    /**
+     * Удаляет хеш из строки
+     * @see ./tests/HelperCryptTrait/HelperCryptUnHashTest.php
+     * 
+     * @param string $str
+     * @return string
+     */
+    public static function internalUnHash(string $str): string
+    {
+        $chunkLength = (int)floor(mb_strlen($str) / 32);
+        if ($chunkLength === 0) {
+            return $str;
+        }
+
+        $hash = '';
+        $chunks = array_chunk(str_split($str), $chunkLength, false);
+        $chunkIndex = 0;
+
+        foreach ($chunks as &$chunk) {
+            $hash .= array_pop($chunk);
+            $chunkIndex++;
+            if ($chunkIndex >= 32) {
+                break;
+            }
+        }
+
+        $chunks = array_map(static fn ($chunk) => implode('', $chunk), $chunks);
+        $result = implode('', $chunks);
+
+        return static::hashXxh128($result) === $hash ? $result : '';
     }
 }

@@ -104,4 +104,17 @@ trait HelperRegexpTrait
     {
         return (bool)preg_match(HelperRegexpEnum::Unicode->value, $value);
     }
+
+
+    /**
+     * Проверяет значение строки на формат даты
+     * @see ./tests/HelperRegexpTrait/HelperRegexpValidateDateTest.php
+     *
+     * @param string $value
+     * @return bool
+     */
+    public static function regexpValidateDate(string $value): bool
+    {
+        return (bool)preg_match(HelperRegexpEnum::Date->value, $value);
+    }
 }

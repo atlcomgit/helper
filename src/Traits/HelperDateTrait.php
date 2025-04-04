@@ -127,36 +127,14 @@ trait HelperDateTrait
             $numberDate = '/\d{2}[-.\/]\d{2}[-.\/]\d{4}|\d{4}[-.\/]\d{2}[-.]\d{2}/u',
         ];
 
-        $changes = [
-            'add_days' => 0,
-            'add_weeks' => 0,
-            'add_months' => 0,
-            'add_years' => 0,
-            'start_week' => 0,
-            'middle_week' => 0,
-            'end_week' => 0,
-            'start_month' => 0,
-            'middle_month' => 0,
-            'end_month' => 0,
-            'start_year' => 0,
-            'middle_year' => 0,
-            'end_year' => 0,
-            'day_week' => 0,
-            'day_month' => '',
-            'day_year' => '',
-            'number_day' => 0,
-            'number_date' => '',
-            'number_month' => 0,
-            'number_year' => 0,
-        ];
-
         $searched = static::stringSearchAll($value, $keywords);
 
         match (true) {
-            in_array($beforeYesterday, $searched) => $date->subDays(2),
-            in_array($afterTomorrow, $searched) => $date->addDays(2),
-            in_array($tomorrow, $searched) => $date->addDay(),
-            in_array($yesterday, $searched) => $date->subDay(),
+            in_array($beforeYesterday, $searched) => $changes['add_days'] = -2,
+            in_array($afterTomorrow, $searched) => $changes['add_days'] = 2,
+            in_array($tomorrow, $searched) => $changes['add_days'] = 1,
+            in_array($yesterday, $searched) => $changes['add_days'] = -1,
+            in_array($today, $searched) => $changes['today'] = 1,
 
             default => null,
         };
@@ -423,30 +401,30 @@ trait HelperDateTrait
 
         // Вычисление даты
 
-        ($changes['add_days'] === 0) ?: $date->addDays($changes['add_days']);
-        ($changes['add_weeks'] === 0) ?: $date->addWeeks($changes['add_weeks']);
-        ($changes['add_months'] === 0) ?: $date->addMonths($changes['add_months']);
-        ($changes['add_years'] === 0) ?: $date->addYears($changes['add_years']);
-        ($changes['day_week'] === 0) ?: $date->weekday($changes['day_week']);
+        empty($changes['add_days']) ?: $date->addDays($changes['add_days']);
+        empty($changes['add_weeks']) ?: $date->addWeeks($changes['add_weeks']);
+        empty($changes['add_months']) ?: $date->addMonths($changes['add_months']);
+        empty($changes['add_years']) ?: $date->addYears($changes['add_years']);
+        empty($changes['day_week']) ?: $date->weekday($changes['day_week']);
 
-        ($changes['day_month'] === '') ?: match ($changes['day_month']) {
+        empty($changes['day_month']) ?: match ($changes['day_month']) {
             'first' => $date->day(1),
             'middle' => $date->day((int)($date->daysInMonth() / 2)),
             'last' => $date->daysInMonth(),
         };
 
-        ($changes['day_year'] === '') ?: match ($changes['day_year']) {
+        empty($changes['day_year']) ?: match ($changes['day_year']) {
             'first' => $date->month(1)->day(1),
             'middle' => $date->month(6)->day((int)($date->daysInMonth() / 2)),
             'last' => $date->month(12)->day($date->daysInMonth()),
         };
 
-        ($changes['number_year'] === 0) ?: $date->year($changes['number_year']);
-        ($changes['number_month'] === 0) ?: $date->month($changes['number_month']);
-        ($changes['number_day'] === 0) ?: $date->day($changes['number_day']);
-        ($changes['number_date'] === '') ?: $date = $date->parse($changes['number_date']);
+        empty($changes['number_year']) ?: $date->year($changes['number_year']);
+        empty($changes['number_month']) ?: $date->month($changes['number_month']);
+        empty($changes['number_day']) ?: $date->day($changes['number_day']);
+        empty($changes['number_date']) ?: $date = $date->parse($changes['number_date']);
 
-        return $searched ? $date : null;
+        return ($searched && array_filter($changes)) ? $date : null;
     }
 
 
@@ -524,5 +502,28 @@ trait HelperDateTrait
             );
 
         return $result;
+    }
+
+
+    /**
+     * Возвращает название дня недели переданного значения
+     * @see ./tests/HelperDateTrait/HelperDateDayNameTest.php
+     *
+     * @param Carbon|int|string $value
+     * @return string
+     */
+    public static function dateDayName(Carbon|int|string $value): string
+    {
+        $value = match (true) {
+            $value instanceof Carbon => $value,
+            is_string($value) => static::dateFromString($value),
+            is_integer($value) => Carbon::parse($value),
+        };
+
+        if (!$value instanceof Carbon) {
+            return '';
+        }
+
+        return Consts::DATE_DAY_NAME[$value->dayOfWeek() - 1] ?? '';
     }
 }

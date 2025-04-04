@@ -886,4 +886,23 @@ trait HelperStringTrait
 
         return $value;
     }
+
+
+    /**
+     * Возвращает строку с разбиением слитных слов и цифр
+     * @see ./tests/HelperStringTrait/HelperStringSegmentTest.php
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function stringSegment(string $value): string
+    {
+        // Разделяем при переходе строчная -> заглавная, заглавная -> заглавная+строчная
+        $value = preg_replace('/([a-zа-я])([A-ZА-Я])/u', '$1 $2', $value);
+        // Разделяем цифры и буквы
+        $value = preg_replace('/([a-zа-я])(\d)/ui', '$1 $2', $value);
+        $value = preg_replace('/(\d)([a-zа-я])/ui', '$1 $2', $value);
+
+        return $value;
+    }
 }

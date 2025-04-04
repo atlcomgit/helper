@@ -1,8 +1,12 @@
 # Changelog
 
 ## Версия 1.07
+- Добавлен метод Helper::dateDayName
 - Добавлен метод Helper::dateToString
 - Добавлен метод Helper::numberToString
+- Добавлен метод Helper::regexpValidateDate
+- Добавлен метод Helper::stringSegment
+
 - Обновлен метод Helper::cacheRuntime
 - Обновлен метод Helper::stringReplace
 - Обновлен метод Helper::stringSplit
@@ -25,6 +29,7 @@
 - Добавлен метод Helper::enumValues
 - Добавлен метод HelperEnumTrait::label
 - Добавлен метод HelperEnumTrait::toArray
+
 - Обновлен метод Helper::telegramBreakMessage
 
 ## Версия 1.05
@@ -34,6 +39,7 @@
 - Добавлен метод Helper::envStage
 - Добавлен метод Helper::envTest
 - Добавлен метод Helper::envTesting
+
 - Обновлен метод Helper::cryptDecode
 - Обновлен метод Helper::cryptEncode
 - Обновлен метод Helper::stringPosAll
@@ -125,6 +131,7 @@
 ## Версия 1.01
 - Добавлен метод Helper::intervalBetween
 - Добавлен метод Helper::intervalOverlap
+
 - Метод Helper::inInterval переименован в Helper::intervalBetween
 
 ## Версия 1.00

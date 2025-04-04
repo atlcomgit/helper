@@ -69,20 +69,21 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::cryptEncode()
  * 
  * @group date - Работа с датами
- * @method @see static::dateFromString
- * @method @see static::dateToString
+ * @method @see static::dateDayName()
+ * @method @see static::dateFromString()
+ * @method @see static::dateToString()
  * 
  * @group enum - Работа с перечислениями
- * @method @see static::enumExists
- * @method @see static::enumFrom
- * @method @see static::enumLabel
- * @method @see static::enumLabels
- * @method @see static::enumName
- * @method @see static::enumNames
- * @method @see static::enumRandom
- * @method @see static::enumToArray
- * @method @see static::enumValue
- * @method @see static::enumValues
+ * @method @see static::enumExists()
+ * @method @see static::enumFrom()
+ * @method @see static::enumLabel()
+ * @method @see static::enumLabels()
+ * @method @see static::enumName()
+ * @method @see static::enumNames()
+ * @method @see static::enumRandom()
+ * @method @see static::enumToArray()
+ * @method @see static::enumValue()
+ * @method @see static::enumValues()
  * 
  * @group env - Работа с окружением
  * @method @see static::envDev()
@@ -120,6 +121,7 @@ use Atlcom\Traits\HelperTransformTrait;
  * 
  * @group regexp - Работа с валидацией
  * @method @see static::regexpValidateAscii()
+ * @method @see static::regexpValidateDate()
  * @method @see static::regexpValidateEmail()
  * @method @see static::regexpValidateJson()
  * @method @see static::regexpValidatePattern()
@@ -157,6 +159,7 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::stringReverse()
  * @method @see static::stringSearchAll()
  * @method @see static::stringSearchAny()
+ * @method @see static::stringSegment()
  * @method @see static::stringSplit()
  * @method @see static::stringStarts()
  * @method @see static::stringUpper()
