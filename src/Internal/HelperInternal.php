@@ -11,6 +11,9 @@ use Atlcom\Enums\HelperNumberGenderEnum as Gender;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperStringTrait;
 
+/**
+ * Класс вспомогательных внутренних методов
+ */
 class HelperInternal
 {
     use HelperHashTrait;
@@ -523,18 +526,18 @@ class HelperInternal
      * Удаляет хеш из строки
      * @see ./tests/HelperCryptTrait/HelperCryptUnHashTest.php
      * 
-     * @param string $str
+     * @param string $value
      * @return string
      */
-    public static function internalUnHash(string $str): string
+    public static function internalUnHash(string $value): string
     {
-        $chunkLength = (int)floor(mb_strlen($str) / 32);
+        $chunkLength = (int)floor(mb_strlen($value) / 32);
         if ($chunkLength === 0) {
-            return $str;
+            return $value;
         }
 
         $hash = '';
-        $chunks = array_chunk(str_split($str), $chunkLength, false);
+        $chunks = array_chunk(str_split($value), $chunkLength, false);
         $chunkIndex = 0;
 
         foreach ($chunks as &$chunk) {
@@ -549,5 +552,66 @@ class HelperInternal
         $result = implode('', $chunks);
 
         return static::hashXxh128($result) === $hash ? $result : '';
+    }
+
+
+    /**
+     * Обработка символьного класса
+     *
+     * @param string $value
+     * @return array
+     */
+    public static function parseCharacterClass(string $value): array
+    {
+        $chars = [];
+        $i = 0;
+        $len = mb_strlen($value);
+
+        while ($i < $len) {
+            if (mb_substr($value, $i, 1) === '\\') {
+                // Экранированный символ
+                $chars[] = mb_substr($value, $i + 1, 1);
+                $i += 2;
+            } elseif ($i + 2 < $len && mb_substr($value, $i + 1, 1) === '-') {
+                // Диапазон символов
+                $start = mb_substr($value, $i, 1);
+                $end = mb_substr($value, $i + 2, 1);
+                $chars = array_merge($chars, static::mbRange($start, $end));
+                $i += 3;
+            } else {
+                // Одиночный символ
+                $chars[] = mb_substr($value, $i, 1);
+                $i++;
+            }
+        }
+
+        return array_unique($chars);
+    }
+
+
+    /**
+     * Возвращает массив символов между start и end
+     *
+     * @param mixed $start
+     * @param mixed $end
+     * @return array
+     */
+    public static function mbRange($start, $end): array
+    {
+        if ($start === $end) {
+            return [$start];
+        }
+
+        $result = [];
+        [, $_start, $_end] = unpack("N*", mb_convert_encoding("{$start}{$end}", "UTF-32BE", "UTF-8"));
+        $_offset = $_start < $_end ? 1 : -1;
+        $_current = $_start;
+        while ($_current != $_end) {
+            $result[] = mb_convert_encoding(pack("N*", $_current), "UTF-8", "UTF-32BE");
+            $_current += $_offset;
+        }
+        $result[] = $end;
+
+        return $result;
     }
 }

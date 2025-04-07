@@ -1,5 +1,9 @@
 # Changelog
 
+## Версия 1.08
+- Обновлен метод Helper::stringRandom
+- Обновлен метод Helper::stringSegment
+
 ## Версия 1.07
 - Добавлен метод Helper::dateDayName
 - Добавлен метод Helper::dateToString

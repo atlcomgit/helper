@@ -29,7 +29,7 @@ use Atlcom\Traits\HelperTransformTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.06
+ * @version 1.08
  * 
  * @see ../../README.md
  * @link https://github.com/atlcomgit/helper

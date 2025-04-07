@@ -18,6 +18,81 @@ final class HelperStringSegmentTest extends TestCase
     public function stringSegment(): void
     {
         $string = Helper::stringSegment('abc2defXyz');
-        $this->assertTrue($string === 'abc 2 def Xyz');
+        $this->assertEquals($string, 'abc 2 def Xyz');
+
+        $string = Helper::stringSegment('abc:defXyz:123:456::');
+        $this->assertEquals($string, 'abc: def Xyz: 123: 456::');
+
+        $string = Helper::stringSegment('abc;defXyz;123;456;;');
+        $this->assertEquals($string, 'abc; def Xyz; 123; 456;;');
+
+        $string = Helper::stringSegment('abc!defXyz!123!456!!');
+        $this->assertEquals($string, 'abc! def Xyz! 123! 456!!');
+
+        $string = Helper::stringSegment('abc?defXyz?123?456??');
+        $this->assertEquals($string, 'abc? def Xyz? 123? 456??');
+
+        $string = Helper::stringSegment('abc@defXyz@123@456@@');
+        $this->assertEquals($string, 'abc @def Xyz @ 123 @ 456 @@');
+
+        $string = Helper::stringSegment('abc%defXyz%123%456%%');
+        $this->assertEquals($string, 'abc% def Xyz% 123% 456%%');
+
+        $string = Helper::stringSegment('abc.defXyz.123.456..');
+        $this->assertEquals($string, 'abc. def Xyz. 123.456..');
+
+        $string = Helper::stringSegment('abc,defXyz,123,456,,');
+        $this->assertEquals($string, 'abc, def Xyz, 123, 456,,');
+
+        $string = Helper::stringSegment('abc#defXyz#123#456##');
+        $this->assertEquals($string, 'abc #def Xyz #123 #456 ##');
+
+        $string = Helper::stringSegment('abc$defXyz123$456$$');
+        $this->assertEquals($string, 'abc $def Xyz 123 $456 $$');
+
+        $string = Helper::stringSegment('abc/defXyz/123/456//');
+        $this->assertEquals($string, 'abc / def Xyz / 123 / 456 //');
+
+        $string = Helper::stringSegment('abc\\defXyz\\123\\456\\\\');
+        $this->assertEquals($string, 'abc \\ def Xyz \\ 123 \\ 456 \\\\');
+
+        $string = Helper::stringSegment('abc-defXyz-123-456--');
+        $this->assertEquals($string, 'abc-def Xyz -123 -456 --');
+
+        $string = Helper::stringSegment('abc+defXyz+123+456++');
+        $this->assertEquals($string, 'abc + def Xyz + 123 + 456 ++');
+
+        $string = Helper::stringSegment('abc*defXyz*123*456**');
+        $this->assertEquals($string, 'abc * def Xyz * 123 * 456 **');
+
+        $string = Helper::stringSegment('abc=defXyz=123=456==');
+        $this->assertEquals($string, 'abc = def Xyz = 123 = 456 ==');
+
+        $string = Helper::stringSegment('abc_defXyz_123_456__');
+        $this->assertEquals($string, 'abc_def Xyz_123_456__');
+
+        $string = Helper::stringSegment('abc  defXyz  123  456  ');
+        $this->assertEquals($string, 'abc def Xyz 123 456');
+
+        $string = Helper::stringSegment('abc(defXyz)123(456)()()');
+        $this->assertEquals($string, 'abc (def Xyz) 123 (456) () ()');
+
+        $string = Helper::stringSegment('abc[defXyz]123[456][][]');
+        $this->assertEquals($string, 'abc [def Xyz] 123 [456] [] []');
+
+        $string = Helper::stringSegment('abc<defXyz>123<456><><>');
+        $this->assertEquals($string, 'abc <def Xyz> 123 <456> <> <>');
+
+        $string = Helper::stringSegment('abc{defXyz}123{456}{}{}');
+        $this->assertEquals($string, 'abc {def Xyz} 123 {456} {} {}');
+
+        $string = Helper::stringSegment('abc!=defXyz!=123!=456!=!=');
+        $this->assertEquals($string, 'abc != def Xyz != 123 != 456 != !=');
+
+        $string = Helper::stringSegment('abcабвГде123опр-сту@клм');
+        $this->assertEquals($string, 'abc абв Где 123 опр-сту @ клм');
+
+        $string = Helper::stringSegment('abc"defXyz"123"456"');
+        $this->assertEquals($string, 'abc"def Xyz"123"456"');
     }
 }

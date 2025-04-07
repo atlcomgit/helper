@@ -6,11 +6,8 @@ namespace Atlcom\Traits;
 
 use Atlcom\Enums\HelperStringBreakTypeEnum;
 use Atlcom\Enums\HelperStringEncodingEnum;
+use Atlcom\Internal\HelperInternal;
 use BackedEnum;
-use ReverseRegex\Generator\Scope;
-use ReverseRegex\Lexer;
-use ReverseRegex\Parser;
-use ReverseRegex\Random\MersenneRandom;
 
 /**
  * Трейт для работы со строками
@@ -765,6 +762,7 @@ trait HelperStringTrait
             '\+' => '%PLUS%',
             '\*' => '%STAR%',
             '\.' => '%DOT%',
+            '\_' => '%UND%',
             '+' => '{1,10}',
             '*' => '{0,10}',
             '\d' => '0-9',
@@ -772,15 +770,74 @@ trait HelperStringTrait
             '\u' => 'А-ЯЁа-яё',
             '\s' => '\ ',
             '.+' => '[A-Za-zА-ЯЁа-яё0-9\ ]+',
-            '.' => 'A-Za-zА-ЯЁа-яё0-9\ ',
+            '.' => '[A-Za-zА-ЯЁа-яё0-9\ ]',
             '%PLUS%' => '\+',
             '%STAR%' => '\*',
             '%DOT%' => '\.',
+            '%UND%' => '\_',
+            '\/' => '/',
             '^' => '',
+            '$' => '',
+            '(' => '',
+            ')' => '',
         ]);
-        $random = new MersenneRandom(); // $random = new SimpleRandom(10007);
-        $parser = new Parser(new Lexer($pattern), new Scope(), new Scope());
-        $parser->parse()->getResult()->generate($result, $random);
+        $pattern = stripslashes($pattern);
+
+        // Удаляем ограничители и якоря, упрощаем анализ
+        // $pattern = preg_replace(['/^\^/', '/\$/', '/^\/|\/$/'], '', $pattern);
+
+        // Разбиваем шаблон на токены
+        preg_match_all('/(\\\[dws]|\[.*?\]|\\.|.)([*?+]|\{\d+,?\d*}|\{\d+})?/', $pattern, $matches, PREG_SET_ORDER);
+
+        $result = '';
+        foreach ($matches as $m) {
+            $char = $m[1] ?? '';
+            $quantifier = $m[2] ?? '';
+
+            // Определяем допустимые символы
+            $chars = [];
+            if (preg_match('/^\[(.*)\]$/', $char, $charMatch)) {
+                // Обработка символьного класса
+                $chars = HelperInternal::parseCharacterClass($charMatch[1]);
+            } elseif (preg_match('/^\\\\([dws])$/', $char, $escapeMatch)) {
+                // Обработка специальных классов
+                $chars = match ($escapeMatch[1]) {
+                    'd' => range('0', '9'),
+                    'w' => array_merge(
+                        range('a', 'z'),
+                        range('A', 'Z'),
+                        HelperInternal::mbRange('А', 'Я'),
+                        HelperInternal::mbRange('а', 'я'),
+                        range('0', '9'),
+                        ['Ё', 'ё'],
+                        ['_'],
+                    ),
+                    's' => ["\t", "\n", "\r", "\f", " "],
+                };
+            } else {
+                // Литерал
+                $chars = [$char];
+            }
+
+            // Определяем количество повторений
+            $min = 1;
+            $max = 1;
+            if ($quantifier) {
+                preg_match('/(\d+)(,(\d+))?/', $quantifier, $qMatch);
+                if (mb_strpos($quantifier, ',') !== false) {
+                    $min = isset($qMatch[1]) ? (int)$qMatch[1] : 0;
+                    $max = isset($qMatch[3]) ? (int)$qMatch[3] : PHP_INT_MAX;
+                } else {
+                    $min = $max = (int)mb_substr($quantifier, 1, -1);
+                }
+            }
+            $count = ($min === $max) ? $min : rand($min, $max);
+
+            // Генерируем часть строки
+            for ($i = 0; $i < $count; $i++) {
+                $result .= $chars[array_rand($chars)];
+            }
+        }
 
         return $result;
     }
@@ -897,12 +954,58 @@ trait HelperStringTrait
      */
     public static function stringSegment(string $value): string
     {
-        // Разделяем при переходе строчная -> заглавная, заглавная -> заглавная+строчная
-        $value = preg_replace('/([a-zа-я])([A-ZА-Я])/u', '$1 $2', $value);
-        // Разделяем цифры и буквы
-        $value = preg_replace('/([a-zа-я])(\d)/ui', '$1 $2', $value);
-        $value = preg_replace('/(\d)([a-zа-я])/ui', '$1 $2', $value);
+        $result = '';
 
-        return $value;
+        $d = range('0', '9');
+        $EN = range('A', 'Z');
+        $en = range('a', 'z');
+        $En = array_merge($EN, $en);
+        $dEn = array_merge($d, $EN, $en);
+        $RU = [...HelperInternal::mbRange('А', 'Я'), 'Ё'];
+        $ru = [...HelperInternal::mbRange('а', 'я'), 'ё'];
+        $closeChars = [')', '}', '>', ']', '"', '_', '.', ',', ':', ';', '!', '?', '%'];
+        $prevChar = '';
+
+        while ($value) {
+            $currChar = static::stringCut($value, 0, 1);
+            $nextChar = static::stringCopy($value, 0, 1);
+            $nextNextChar = static::stringCopy($value, 1, 1);
+
+            $suffixChar = match (true) {
+                // Не добавляем пробел после символа
+                $currChar === '!' => ($nextChar === $currChar) || in_array($nextChar, ['=']),
+
+                in_array($currChar, $EN) => in_array($nextChar, $en) || !in_array($nextChar, $closeChars),
+                in_array($currChar, $RU) => in_array($nextChar, $ru) || in_array($nextChar, $closeChars),
+
+                in_array($currChar, $dEn) && $nextChar === '!' && $nextNextChar === '=' => false,
+
+                in_array($currChar, $en) => in_array($nextChar, $en) || in_array($nextChar, $closeChars)
+                || (in_array($nextChar, ['-', '_']) && in_array($nextNextChar, $en)),
+
+                in_array($currChar, $ru) => in_array($nextChar, $ru) || in_array($nextChar, $closeChars)
+                || (in_array($nextChar, ['-']) && in_array($nextNextChar, $ru)),
+
+                in_array($currChar, $d) => in_array($nextChar, $d) || in_array($nextChar, $closeChars),
+
+                $currChar === '@' => ($nextChar === $currChar) || in_array($nextChar, $En),
+                $currChar === '.' => ($nextChar === $currChar) || in_array($nextChar, $d) && in_array($prevChar, $d),
+                $currChar === '#' => ($nextChar === $currChar) || in_array($nextChar, $dEn),
+                $currChar === '$' => ($nextChar === $currChar) || in_array($nextChar, $dEn),
+
+                in_array($currChar, ['+', '*', '=', '/', '\\']) => ($nextChar === $currChar),
+                in_array($currChar, ['-', ' ', '_', '(', '[', '{', '<', '"', "'"]) => true,
+                in_array($currChar, $closeChars) => in_array($nextChar, $closeChars),
+
+                // Добавляем пробел после символа
+                default => false,
+
+            } ? '' : ' ';
+
+            $result .= "{$currChar}{$suffixChar}";
+            $prevChar = $currChar;
+        }
+
+        return trim(static::stringDeleteMultiples($result, ' '));
     }
 }
