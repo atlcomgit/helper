@@ -52,5 +52,14 @@ final class HelperTimeSecondsToStringTest extends TestCase
 
         $string = Helper::timeSecondsToString(1234567890.1234567890, withMilliseconds: true);
         $this->assertEquals('39 лет 53 дня 23 часа 31 минута 30 секунд 123 миллисекунды', $string);
+
+        $string = Helper::timeSecondsToString(0.5);
+        $this->assertEquals('0.5 секунды', $string);
+
+        $string = Helper::timeSecondsToString(1.5);
+        $this->assertEquals('1.5 секунды', $string);
+
+        $string = Helper::timeSecondsToString(5.5);
+        $this->assertEquals('5 секунд', $string);
     }
 }

@@ -20,8 +20,20 @@ final class HelperStringConcatTest extends TestCase
         $string = Helper::stringConcat(' ', 'Иванов', 'Иван', 'Иванович');
         $this->assertTrue($string === 'Иванов Иван Иванович');
 
+        $string = Helper::stringConcat(' ', 'Иванов', null, 'Иванович');
+        $this->assertTrue($string === 'Иванов Иванович');
+
+        $string = Helper::stringConcat(' ', 'Иванов', '', 'Иванович');
+        $this->assertTrue($string === 'Иванов Иванович');
+
         $string = Helper::stringConcat(' ', ['Иванов', 'Иван', 'Иванович']);
         $this->assertTrue($string === 'Иванов Иван Иванович');
+
+        $string = Helper::stringConcat(' ', ['Иванов', null, 'Иванович']);
+        $this->assertTrue($string === 'Иванов Иванович');
+
+        $string = Helper::stringConcat(' ', ['Иванов', '', 'Иванович']);
+        $this->assertTrue($string === 'Иванов Иванович');
 
         $string = Helper::stringConcat(' ', ['Иванов', ['Иван', '', 'Иванович']]);
         $this->assertTrue($string === 'Иванов Иван Иванович');

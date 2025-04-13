@@ -16,7 +16,7 @@ trait HelperIntervalTrait
 
     /**
      * Возвращает число со смещением по кругу в заданном интервале
-     * @see ./tests/HelperIntervalTrait/HelperIntervalAroundTest.php
+     * @see ../../tests/HelperIntervalTrait/HelperIntervalAroundTest.php
      *
      * @param int $value
      * @param int $min
@@ -48,7 +48,7 @@ trait HelperIntervalTrait
 
     /**
      * Возвращает коллекцию интервалов
-     * @see ./tests/HelperIntervalTrait/HelperIntervalCollectionTest.php
+     * @see ../../tests/HelperIntervalTrait/HelperIntervalCollectionTest.php
      *
      * @param mixed ...$intervals
      * @return array
@@ -141,7 +141,7 @@ trait HelperIntervalTrait
 
     /**
      * Проверяет значение на вхождение в интервал(ы)
-     * @see ./tests/HelperIntervalTrait/HelperIntervalBetweenTest.php
+     * @see ../../tests/HelperIntervalTrait/HelperIntervalBetweenTest.php
      *
      * @param mixed $value
      * @param mixed ...$intervals
@@ -201,7 +201,7 @@ trait HelperIntervalTrait
 
     /**
      * Проверяет пересечение интервалов
-     * @see ./tests/HelperIntervalTrait/HelperIntervalOverlapTest.php
+     * @see ../../tests/HelperIntervalTrait/HelperIntervalOverlapTest.php
      *
      * @param mixed ...$intervals
      * @return array

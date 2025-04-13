@@ -11,7 +11,7 @@ trait HelperEnvTrait
 {
     /**
      * Проверяет окружение приложения на локальное и возвращает true/false
-     * @see ./tests/HelperColorTrait/HelperColorHexToRgbTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *
      * @return bool
      */
@@ -23,7 +23,7 @@ trait HelperEnvTrait
 
     /**
      * Проверяет окружение приложения на разработку и возвращает true/false
-     * @see ./tests/HelperColorTrait/HelperColorHexToRgbTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *
      * @return bool
      */
@@ -35,7 +35,7 @@ trait HelperEnvTrait
 
     /**
      * Проверяет окружение приложения на тестовое и возвращает true/false
-     * @see ./tests/HelperColorTrait/HelperColorHexToRgbTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *
      * @return bool
      */
@@ -47,7 +47,7 @@ trait HelperEnvTrait
 
     /**
      * Проверяет окружение приложения на авто-тестирование и возвращает true/false
-     * @see ./tests/HelperColorTrait/HelperColorHexToRgbTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *
      * @return bool
      */
@@ -59,7 +59,7 @@ trait HelperEnvTrait
 
     /**
      * Проверяет окружение приложения на пред боевое и возвращает true/false
-     * @see ./tests/HelperColorTrait/HelperColorHexToRgbTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *
      * @return bool
      */
@@ -71,7 +71,7 @@ trait HelperEnvTrait
 
     /**
      * Проверяет окружение приложения на боевое и возвращает true/false
-     * @see ./tests/HelperColorTrait/HelperColorHexToRgbTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *
      * @return bool
      */

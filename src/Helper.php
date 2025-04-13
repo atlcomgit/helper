@@ -19,22 +19,25 @@ use Atlcom\Traits\HelperIpTrait;
 use Atlcom\Traits\HelperJwtTrait;
 use Atlcom\Traits\HelperNumberTrait;
 use Atlcom\Traits\HelperPathTrait;
+use Atlcom\Traits\HelperPhoneTrait;
 use Atlcom\Traits\HelperRegexpTrait;
 use Atlcom\Traits\HelperSizeTrait;
 use Atlcom\Traits\HelperStringTrait;
 use Atlcom\Traits\HelperTelegramTrait;
 use Atlcom\Traits\HelperTimeTrait;
 use Atlcom\Traits\HelperTransformTrait;
+use Atlcom\Traits\HelperTranslitTrait;
 
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.08
+ * @version 1.09
  * 
- * @see ../../README.md
+ * @see ../README.md
  * @link https://github.com/atlcomgit/helper
  * 
  * @group array - Работа с массивами
+ * @method @see static::arrayDeleteKeys()
  * @method @see static::arrayDot()
  * @method @see static::arrayExcludeTraceVendor()
  * @method @see static::arrayFirst()
@@ -119,6 +122,10 @@ use Atlcom\Traits\HelperTransformTrait;
  * @method @see static::pathClassName()
  * @method @see static::pathRoot()
  * 
+ * @group phone - Работа с телефонами
+ * @method @see static::phoneFormat()
+ * @method @see static::phoneNumber()
+ * 
  * @group regexp - Работа с валидацией
  * @method @see static::regexpValidateAscii()
  * @method @see static::regexpValidateDate()
@@ -177,6 +184,11 @@ use Atlcom\Traits\HelperTransformTrait;
  * 
  * @group transform - Работа с трансформацией
  * @method @see static::transformToArray()
+ * 
+ * @group translit - Работа с транслитерацией
+ * @method @see static::translitFromSlug()
+ * @method @see static::translitString()
+ * @method @see static::translitToSlug()
  */
 abstract class Helper
 {
@@ -195,10 +207,12 @@ abstract class Helper
     use HelperJwtTrait;
     use HelperNumberTrait;
     use HelperPathTrait;
+    use HelperPhoneTrait;
     use HelperRegexpTrait;
     use HelperSizeTrait;
     use HelperStringTrait;
     use HelperTelegramTrait;
     use HelperTimeTrait;
     use HelperTransformTrait;
+    use HelperTranslitTrait;
 }

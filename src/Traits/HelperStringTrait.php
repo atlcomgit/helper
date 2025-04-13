@@ -16,7 +16,7 @@ trait HelperStringTrait
 {
     /**
      * Возвращает длину строки
-     * @see ./tests/HelperStringTrait/HelperStringLengthTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringLengthTest.php
      *
      * @param int|float|string|null $value
      * @return int
@@ -29,7 +29,7 @@ trait HelperStringTrait
 
     /**
      * Переводит строку в верхний регистр
-     * @see ./tests/HelperStringTrait/HelperStringUpperTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringUpperTest.php
      *
      * @param int|float|string|null $value
      * @return string
@@ -42,7 +42,7 @@ trait HelperStringTrait
 
     /**
      * Переводит строку в нижний регистр
-     * @see ./tests/HelperStringTrait/HelperStringLowerTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringLowerTest.php
      *
      * @param int|float|string|null $value
      * @return string
@@ -55,7 +55,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает строку с первый символом в верхнем регистре
-     * @see ./tests/HelperStringTrait/HelperStringUpperFirstTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringUpperFirstTest.php
      *
      * @param int|float|string|null $value
      * @return string
@@ -70,7 +70,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает строку с первый символом в нижнем регистре
-     * @see ./tests/HelperStringTrait/HelperStringLowerFirstTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringLowerFirstTest.php
      *
      * @param int|float|string|null $value
      * @return string
@@ -85,7 +85,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает строку со всеми словами в верхнем регистре
-     * @see ./tests/HelperStringTrait/HelperStringUpperFirstAllTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringUpperFirstAllTest.php
      *
      * @param int|float|string|null $value
      * @return string
@@ -111,7 +111,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает строку со всеми словами в нижнем регистре
-     * @see ./tests/HelperStringTrait/HelperStringLowerFirstAllTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringLowerFirstAllTest.php
      *
      * @param int|float|string|null $value
      * @return string
@@ -139,7 +139,7 @@ trait HelperStringTrait
      * Возвращает массив подстрок разбитых на части между разделителем в строке
      * Если передан параметр index, то возвращает значение элемента из этого массива
      * Если cacheEnabled выключен, то кеш не используется
-     * @see ./tests/HelperStringTrait/HelperStringSplitTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringSplitTest.php
      *
      * @param int|float|string $value
      * @param int|float|string|array|null $delimiter
@@ -182,7 +182,7 @@ trait HelperStringTrait
 
     /**
      * Копирует подстроку из строки с позиции start длиной length
-     * @see ./tests/HelperStringTrait/HelperStringCopyTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringCopyTest.php
      *
      * @param int|float|string|null $value
      * @param int $start
@@ -197,7 +197,7 @@ trait HelperStringTrait
 
     /**
      * Удаляет из строки с позиции start длиной length
-     * @see ./tests/HelperStringTrait/HelperStringDeleteTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringDeleteTest.php
      *
      * @param int|float|string|null $value
      * @param int $start
@@ -218,7 +218,7 @@ trait HelperStringTrait
 
     /**
      * Вырезает подстроку из строки с позиции start длиной length
-     * @see ./tests/HelperStringTrait/HelperStringCutTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringCutTest.php
      *
      * @param int|float|string|null $value
      * @param int $start
@@ -242,7 +242,7 @@ trait HelperStringTrait
 
     /**
      * Вставляет подстроку в строку с позиции start
-     * @see ./tests/HelperStringTrait/HelperStringPasteTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringPasteTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string $paste
@@ -266,7 +266,7 @@ trait HelperStringTrait
 
     /**
      * Заменяет на подстроку в строке с позиции start
-     * @see ./tests/HelperStringTrait/HelperStringChangeTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringChangeTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string $change
@@ -292,7 +292,7 @@ trait HelperStringTrait
 
     /**
      * Проверяет начало строки на совпадение подстрок и возвращает найденную подстроку или null
-     * @see ./tests/HelperStringTrait/HelperStringStartsTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringStartsTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
@@ -319,7 +319,7 @@ trait HelperStringTrait
 
     /**
      * Проверяет конец строки на совпадение подстрок и возвращает найденную подстроку или null
-     * @see ./tests/HelperStringTrait/HelperStringEndsTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringEndsTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
@@ -346,7 +346,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает число с числительным названием из массива с тремя вариантами для [0|5..9, 1, 2..4]
-     * @see ./tests/HelperStringTrait/HelperStringPluralTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringPluralTest.php
      *
      * @param int|float|string $number
      * @param array $words
@@ -372,7 +372,7 @@ trait HelperStringTrait
 
     /**
      * Разбивает текст на части указанной длины по словам или строкам и возвращает массив строк
-     * @see ./tests/HelperStringTrait/HelperStringBreakByLengthTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringBreakByLengthTest.php
      *
      * @param string $message
      * @param HelperStringBreakTypeEnum $breakType
@@ -465,7 +465,7 @@ trait HelperStringTrait
 
     /**
      * Соединяет значения values через разделитель delimiter
-     * @see ./tests/HelperStringTrait/HelperStringConcatTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringConcatTest.php
      *
      * @param int|float|string|null $delimiter
      * @param mixed ...$values
@@ -491,7 +491,7 @@ trait HelperStringTrait
 
     /**
      * Добавляет в начало строки префикс при выполнении условия condition
-     * @see ./tests/HelperStringTrait/HelperstringPadPrefixTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringPadPrefixTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string|null $prefix
@@ -511,7 +511,7 @@ trait HelperStringTrait
 
     /**
      * Добавляет в конец строки суффикс при выполнении условия condition
-     * @see ./tests/HelperStringTrait/HelperstringPadSuffixTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringPadSuffixTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string|null $suffix
@@ -531,7 +531,7 @@ trait HelperStringTrait
 
     /**
      * Объединяет значения в одну строку с заменой предыдущих символов
-     * @see ./tests/HelperStringTrait/HelperStringMergeTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringMergeTest.php
      *
      * @param mixed ...$values
      * @return string
@@ -552,7 +552,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает массив первой искомой подстроки найденной в строке
-     * @see ./tests/HelperStringTrait/HelperStringSearchAnyTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringSearchAnyTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
@@ -589,7 +589,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает массив всех искомых подстрок найденных в строке
-     * @see ./tests/HelperStringTrait/HelperStringSearchAllTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringSearchAllTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
@@ -628,7 +628,7 @@ trait HelperStringTrait
 
     /**
      * Заменяет подстроки в строке
-     * @see ./tests/HelperStringTrait/HelperStringReplaceTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringReplaceTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string|array $searches
@@ -666,7 +666,11 @@ trait HelperStringTrait
                             ?: (
                                 $value = ($useRegexp && static::regexpValidatePattern($search))
                                 ? (preg_replace($search, $replaces[$key] ?? '', $value) ?? $value)
-                                : str_replace($search, $replaces[$key] ?? '', $value)
+                                : str_replace(
+                                    $search,
+                                    is_array($replaces) ? ($replaces[$key] ?? '') : ($replaces ?? ''),
+                                    $value,
+                                )
                             );
 
                     } else {
@@ -687,7 +691,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает количество найденных вхождений подстрок в строке
-     * @see ./tests/HelperStringTrait/HelperStringCountTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringCountTest.php
      *
      * @param int|float|string|null $value
      * @param int|float|string|array $searches
@@ -713,7 +717,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает повторяющуюся строку значения указанное количество раз
-     * @see ./tests/HelperStringTrait/HelperStringRepeatTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringRepeatTest.php
      *
      * @param int|float|string $value
      * @param int $count
@@ -727,7 +731,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает реверсивную строку значения
-     * @see ./tests/HelperStringTrait/HelperStringReverseTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringReverseTest.php
      *
      * @param int|float|string $value
      * @return string
@@ -740,7 +744,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает случайную строку по шаблону регулярного выражения
-     * @see ./tests/HelperStringTrait/HelperStringRandomTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringRandomTest.php
      *
      * @param string|BackedEnum $pattern
      * @return string
@@ -845,7 +849,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает массив позиции первой искомой подстроки найденной в строке
-     * @see ./tests/HelperStringTrait/HelperStringPosAnyTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringPosAnyTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
@@ -877,7 +881,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает массив всех позиций искомых подстрок найденных в строке
-     * @see ./tests/HelperStringTrait/HelperStringPosAllTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringPosAllTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$searches
@@ -925,7 +929,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает строку значения удаляя последовательные повторы подстрок
-     * @see ./tests/HelperStringTrait/HelperStringDeleteMultiplesTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringDeleteMultiplesTest.php
      *
      * @param int|float|string|null $value
      * @param mixed ...$multiples
@@ -947,7 +951,7 @@ trait HelperStringTrait
 
     /**
      * Возвращает строку с разбиением слитных слов и цифр
-     * @see ./tests/HelperStringTrait/HelperStringSegmentTest.php
+     * @see ../../tests/HelperStringTrait/HelperStringSegmentTest.php
      *
      * @param string $value
      * @return string

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
-use Closure;
-
 /**
  * Трейт для работы с массивами
  */
@@ -17,7 +15,7 @@ trait HelperArrayTrait
 
     /**
      * Исключает из массива трассировки пакетные ошибки
-     * @see ./tests/HelperArrayTrait/HelperArrayExcludeTraceVendorTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArrayExcludeTraceVendorTest.php
      *
      * @param array $trace
      * @return array
@@ -51,7 +49,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает массив с маппингом ключей
-     * @see ./tests/HelperArrayTrait/HelperArrayMappingKeysTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArrayMappingKeysTest.php
      *
      * @param array|object $value
      * @param int|float|string|array|object $from
@@ -92,8 +90,10 @@ trait HelperArrayTrait
 
             if (isset($mappings[$keyCurrent])) {
                 $result[$mappings[$keyCurrent]] = $v;
+
             } else if ($keySearch = static::stringSearchAny($keyCurrent, $mappingKeys)) {
                 $result[$mappings[static::arrayFirst($keySearch)]] = $v;
+
             } else {
                 $result[$key] = $v;
             }
@@ -107,7 +107,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает массив найденных ключей в искомом массиве
-     * @see ./tests/HelperArrayTrait/HelperArraySearchKeysTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArraySearchKeysTest.php
      *
      * @param array|object $value
      * @param mixed ...$searches
@@ -140,6 +140,7 @@ trait HelperArrayTrait
                         && (
                             $searchString === '*'
                             || $key === $search
+                            || $key === $searchString
                             || (static::regexpValidatePattern($searchString) && preg_match($searchString, $key))
                             || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $key))
                         )
@@ -148,7 +149,6 @@ trait HelperArrayTrait
                     }
                 }
             }
-
         }
 
         return $result;
@@ -157,7 +157,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает массив найденных значений в искомом массиве
-     * @see ./tests/HelperArrayTrait/HelperArraySearchValuesTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArraySearchValuesTest.php
      *
      * @param array|object $value
      * @param mixed ...$searches
@@ -204,7 +204,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает массив найденных ключей и значений в искомом массиве
-     * @see ./tests/HelperArrayTrait/HelperArraySearchKeysAndValuesTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArraySearchKeysAndValuesTest.php
      *
      * @param array|object $value
      * @param int|float|bool|string|array|object $keys
@@ -222,7 +222,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает значение из массива по имению ключа
-     * @see ./tests/HelperArrayTrait/HelperArrayGetTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArrayGetTest.php
      *
      * @param array|object $value
      * @param int|float|string|bool|null $key
@@ -254,7 +254,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает значение первого элемента массива
-     * @see ./tests/HelperArrayTrait/HelperArrayFirstTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArrayFirstTest.php
      *
      * @param array|object $value
      * @return mixed
@@ -269,7 +269,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает значение последнего элемента массива
-     * @see ./tests/HelperArrayTrait/HelperArrayLastTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArrayLastTest.php
      *
      * @param array|object $value
      * @return mixed
@@ -284,7 +284,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает одномерный массив из многомерного
-     * @see ./tests/HelperArrayTrait/HelperArrayDotTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArrayDotTest.php
      *
      * @param array|object $value
      * @return array
@@ -297,7 +297,7 @@ trait HelperArrayTrait
 
     /**
      * Возвращает многомерный массив из одномерного
-     * @see ./tests/HelperArrayTrait/HelperArrayUnDotTest.php
+     * @see ../../tests/HelperArrayTrait/HelperArrayUnDotTest.php
      *
      * @param array $value
      * @return array
@@ -323,6 +323,7 @@ trait HelperArrayTrait
                 $current[$lastKey] = $v;
 
                 unset($current);
+
             } else {
                 $result[$key] = $v;
             }
@@ -331,5 +332,60 @@ trait HelperArrayTrait
         }
 
         return $result;
+    }
+
+
+    /**
+     * Возвращает массив с удаленными ключами
+     * @see ../../tests/HelperArrayTrait/HelperArrayDeleteKeysTest.php
+     *
+     * @param array|object $value
+     * @param mixed ...$keys
+     * @return array
+     */
+    public static function arrayDeleteKeys(array|object $value, mixed ...$searches): array
+    {
+        $value = static::transformToArray($value);
+        $searches = static::transformToArray($searches);
+
+        foreach ($value as $key => $v) {
+            if (is_array($v) || is_object($v)) {
+
+                $subValue = [];
+                foreach ($v as $key2 => $v2) {
+                    $subValue["{$key}.{$key2}"] = $v2;
+                }
+
+                $value[$key] = static::arrayDeleteKeys($subValue, ...$searches)[$key] ?? [];
+
+            }
+
+            foreach ($searches as $search) {
+                if (is_array($search) || is_object($search)) {
+                    $v = static::arrayDeleteKeys([$key => $v], ...$search)[$key];
+                    if (is_null($v)) {
+                        unset($value[$key]);
+
+                    } else {
+                        $value[$key] = $v;
+                    }
+
+                } else if (
+                    !is_null($search)
+                    && (($searchString = (string)$search) || $searchString === '0')
+                    && (
+                        $searchString === '*'
+                        || $key === $search
+                        || $key === $searchString
+                        || (static::regexpValidatePattern($searchString) && preg_match($searchString, $key))
+                        || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $key))
+                    )
+                ) {
+                    unset($value[$key]);
+                }
+            }
+        }
+
+        return static::arrayUnDot($value);
     }
 }

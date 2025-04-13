@@ -13,7 +13,7 @@ trait HelperTelegramTrait
 {
     /**
      * Разбивает текст сообщения на части для отправки в телеграм
-     * @see ./tests/HelperTelegramTrait/HelperTelegramBreakMessageTest.php
+     * @see ../../tests/HelperTelegramTrait/HelperTelegramBreakMessageTest.php
      *
      * @param int|float|string $value
      * @param bool $hasAttach

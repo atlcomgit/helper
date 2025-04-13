@@ -22,6 +22,12 @@ composer require atlcom/helper
 Работа с массивами
 
 ---
+##### [arrayDeleteKeys(\$value, ...\$searches): array](./tests/HelperArrayTrait/HelperArrayDeleteKeysTest.php)
+Возвращает массив с удаленными ключами
+```php
+$array = Helper::arrayDeleteKeys(['a' => 1, 'b' => 2], 'a'); // $array = ['b' => 2]
+```
+---
 ##### [arrayDot(\$value): array](./tests/HelperArrayTrait/HelperArrayDotTest.php)
 Возвращает одномерный массив из многомерного
 ```php
@@ -450,6 +456,23 @@ $string = Helper::pathRoot(); // $string = '/home/path'
 ```
 ---
 
+#### Phone
+Работа с телефонами
+
+---
+##### [phoneFormat(\$value, \$countryNumber): string](./tests/HelperPhoneTrait/HelperPhoneFormatTest.php)
+Возвращает отформатированный номер телефона
+```php
+$string = Helper::phoneFormat('79001112233'); // $string = '+7 (900) 111-22-33'
+```
+---
+##### [phoneNumber(\$value, \$countryNumber): string](./tests/HelperPhoneTrait/HelperPhoneNumberTest.php)
+Возвращает только цифры номера телефона
+```php
+$string = Helper::phoneNumber('+7 (900) 111-22-33'); // $string = '79001112233'
+```
+---
+
 #### Regexp
 Работа с валидацией
 
@@ -779,5 +802,28 @@ $string = Helper::timeSecondsToString(123); // $string = '2 минуты 3 се�
 ```php
 $array = Helper::transformToArray(['a', 'b']); // $array = ['a', 'b']
 $array = Helper::transformToArray('a'); // $array = ['a']
+```
+---
+
+#### Translit
+Работа с транслитерацией
+
+---
+##### [translitFromSlug(\$value, \$slugSeparator = '_'): string](./tests/HelperTranslitTrait/HelperTransformToArrayTest.php)
+Возвращает строку из slug
+```php
+$string = Helper::translitFromSlug('abv_gde_123'); // $string = 'абв где 123'
+```
+---
+##### [translitString(\$value, \$direction): string](./tests/HelperTranslitTrait/HelperTranslitStringTest.php)
+Возвращает транслитерацию строки
+```php
+$string = Helper::translitString('абвгд'); // $string = 'abvgd'
+```
+---
+##### [translitToSlug(\$value, \$slugSeparator = '_'): string](./tests/HelperTranslitTrait/HelperTranslitToSlugTest.php)
+Возвращает транслитерацию строки
+```php
+$string = Helper::translitToSlug('абв Где!.123'); // $string = 'abv_gde_123'
 ```
 ---

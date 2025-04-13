@@ -13,7 +13,7 @@ trait HelperExceptionTrait
 {
     /**
      * Возвращает исключение в виде строки json
-     * @see ./tests/HelperExceptionTrait/HelperExceptionToStringTest.php
+     * @see ../../tests/HelperExceptionTrait/HelperExceptionToStringTest.php
      *
      * @param Throwable $value
      * @return string

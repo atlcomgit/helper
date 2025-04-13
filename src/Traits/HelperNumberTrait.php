@@ -17,7 +17,7 @@ trait HelperNumberTrait
 {
     /**
      * Возвращает число прописью на русском языке с учетом склонения по падежу, роду и числительному перечислению
-     * @see ./tests/HelperNumberTrait/HelperNumberToStringTest.php
+     * @see ../../tests/HelperNumberTrait/HelperNumberToStringTest.php
      *
      * @param int|float|string $value
      * @param Declension $declension

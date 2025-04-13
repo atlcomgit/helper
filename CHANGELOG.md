@@ -1,5 +1,16 @@
 # Changelog
 
+## Версия 1.09
+- Добавлен метод Helper::arrayDeleteKeys
+- Добавлен метод Helper::phoneFormat
+- Добавлен метод Helper::phoneNumber
+- Добавлен метод Helper::translitFromSlug
+- Добавлен метод Helper::translitString
+- Добавлен метод Helper::translitToSlug
+
+- Обновлен метод Helper::stringReplace
+- Обновлен метод Helper::timeSecondsToString
+
 ## Версия 1.08
 - Обновлен метод Helper::stringRandom
 - Обновлен метод Helper::stringSegment

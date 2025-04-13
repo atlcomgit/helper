@@ -11,7 +11,7 @@ trait HelperSizeTrait
 {
     /**
      * Возвращает размер в байтах как строку
-     * @see ./tests/HelperSizeTrait/HelperSizeBytesToStringTest.php
+     * @see ../../tests/HelperSizeTrait/HelperSizeBytesToStringTest.php
      *
      * @param int|float|string|null $bytes
      * @return string
@@ -31,7 +31,7 @@ trait HelperSizeTrait
 
     /**
      * Возвращает размер в байтах из строки размера
-     * @see ./tests/HelperSizeTrait/HelperSizeStringToBytesTest.php
+     * @see ../../tests/HelperSizeTrait/HelperSizeStringToBytesTest.php
      *
      * @param string $size
      * @return int

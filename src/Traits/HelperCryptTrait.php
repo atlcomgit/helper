@@ -20,7 +20,7 @@ trait HelperCryptTrait
 
     /**
      * Шифрует строку с паролем
-     * @see ./tests/HelperCryptTrait/HelperCryptEncodeTest.php
+     * @see ../../tests/HelperCryptTrait/HelperCryptEncodeTest.php
      *
      * @param mixed $value
      * @param string|null $password
@@ -77,7 +77,7 @@ trait HelperCryptTrait
 
     /**
      * Дешифрует строку с паролем
-     * @see ./tests/HelperCryptTrait/HelperCryptDecodeTest.php
+     * @see ../../tests/HelperCryptTrait/HelperCryptDecodeTest.php
      *
      * @param string $string
      * @return mixed
@@ -149,7 +149,7 @@ trait HelperCryptTrait
 
     /**
      * Шифрует все значения элементов массива с добавлением хеша значения 'hash:crypt'
-     * @see ./tests/HelperCryptTrait/HelperCryptArrayEncodeTest.php
+     * @see ../../tests/HelperCryptTrait/HelperCryptArrayEncodeTest.php
      *
      * @param array|object $value
      * @param string|null $password
@@ -172,7 +172,7 @@ trait HelperCryptTrait
 
     /**
      * Дешифрует все значения элементов массива вида 'hash:crypt'
-     * @see ./tests/HelperCryptTrait/HelperCryptArrayDecodeTest.php
+     * @see ../../tests/HelperCryptTrait/HelperCryptArrayDecodeTest.php
      *
      * @param array $value
      * @param string|null $password

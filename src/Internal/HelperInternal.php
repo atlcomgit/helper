@@ -414,7 +414,6 @@ class HelperInternal
 
     /**
      * Задает случайный генератор
-     * @see ./tests/HelperCryptTrait/HelperCryptMakeRandomTest.php
      *
      * @return float
      */
@@ -428,7 +427,6 @@ class HelperInternal
 
     /**
      * Упаковывает строку из чисел
-     * @see ./tests/HelperCryptTrait/HelperCryptShrinkTest.php
      *
      * @param mixed $value
      * @return string
@@ -463,7 +461,6 @@ class HelperInternal
 
     /**
      * Распаковывает строку из чисел
-     * @see ./tests/HelperCryptTrait/HelperCryptUnShrinkTest.php
      *
      * @param string $value
      * @return string
@@ -493,7 +490,6 @@ class HelperInternal
 
     /**
      * Добавляет хеш в строку
-     * @see ./tests/HelperCryptTrait/HelperCryptHashTest.php
      * 
      * @param string $value
      * @return string
@@ -524,7 +520,6 @@ class HelperInternal
 
     /**
      * Удаляет хеш из строки
-     * @see ./tests/HelperCryptTrait/HelperCryptUnHashTest.php
      * 
      * @param string $value
      * @return string

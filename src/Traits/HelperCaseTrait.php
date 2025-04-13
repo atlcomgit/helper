@@ -11,7 +11,7 @@ trait HelperCaseTrait
 {
     /**
      * Возвращает строку в стиле camelCase
-     * @see ./tests/HelperCaseTrait/HelperCaseCamelTest.php
+     * @see ../../tests/HelperCaseTrait/HelperCaseCamelTest.php
      *
      * @param string $value
      * @return string
@@ -29,7 +29,7 @@ trait HelperCaseTrait
 
     /**
      * Возвращает строку в стиле kebab-case
-     * @see ./tests/HelperCaseTrait/HelperCaseKebabTest.php
+     * @see ../../tests/HelperCaseTrait/HelperCaseKebabTest.php
      *
      * @param string $value
      * @return string
@@ -46,7 +46,7 @@ trait HelperCaseTrait
 
     /**
      * Возвращает строку в стиле PascalCase
-     * @see ./tests/HelperCaseTrait/HelperCasePascalTest.php
+     * @see ../../tests/HelperCaseTrait/HelperCasePascalTest.php
      *
      * @param string $value
      * @return string
@@ -64,7 +64,7 @@ trait HelperCaseTrait
 
     /**
      * Возвращает строку в стиле snake_case
-     * @see ./tests/HelperCaseTrait/HelperCaseSnakeTest.php
+     * @see ../../tests/HelperCaseTrait/HelperCaseSnakeTest.php
      *
      * @param string $value
      * @return string

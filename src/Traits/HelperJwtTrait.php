@@ -11,7 +11,7 @@ trait HelperJwtTrait
 {
     /**
      * Возвращает массив с данными из декодированного jwt токена
-     * @see ./tests/HelperJwtTrait/HelperJwtDecodeTest.php
+     * @see ../../tests/HelperJwtTrait/HelperJwtDecodeTest.php
      *
      * @param string $value
      * @param string|null $signKey
@@ -57,7 +57,7 @@ trait HelperJwtTrait
 
     /**
      * Возвращает строку с jwt токеном из закодированных данных
-     * @see ./tests/HelperJwtTrait/HelperJwtEncodeTest.php
+     * @see ../../tests/HelperJwtTrait/HelperJwtEncodeTest.php
      *
      * @param array $value
      * @param array $header

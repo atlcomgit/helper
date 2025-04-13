@@ -17,7 +17,7 @@ trait HelperDateTrait
 {
     /**
      * Возвращает объект Carbon с распознанной датой или null
-     * @see ./tests/HelperDateTrait/HelperDateFromStringTest.php
+     * @see ../../tests/HelperDateTrait/HelperDateFromStringTest.php
      *
      * @param string $value
      * @return Carbon|null
@@ -430,7 +430,7 @@ trait HelperDateTrait
 
     /**
      * Возвращает дату прописью на русском языке с учетом склонения по падежу
-     * @see ./tests/HelperDateTrait/HelperDateToStringTest.php
+     * @see ../../tests/HelperDateTrait/HelperDateToStringTest.php
      *
      * @param Carbon|string|int|null $value
      * @param Declension $declension
@@ -507,7 +507,7 @@ trait HelperDateTrait
 
     /**
      * Возвращает название дня недели переданного значения
-     * @see ./tests/HelperDateTrait/HelperDateDayNameTest.php
+     * @see ../../tests/HelperDateTrait/HelperDateDayNameTest.php
      *
      * @param Carbon|int|string $value
      * @return string

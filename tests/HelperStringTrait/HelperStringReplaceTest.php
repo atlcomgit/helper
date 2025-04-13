@@ -37,5 +37,8 @@ final class HelperStringReplaceTest extends TestCase
 
         $string = Helper::stringReplace('abcd', ['/a/' => 'x']);
         $this->assertTrue($string === 'xbcd');
+
+        $string = Helper::stringReplace('abc', ['a', 'b'], 'x');
+        $this->assertTrue($string === 'xxc');
     }
 }

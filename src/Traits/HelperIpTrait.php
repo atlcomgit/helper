@@ -11,7 +11,7 @@ trait HelperIpTrait
 {
     /**
      * Возвращает массив найденных масок подсетей, в которые входит ip адрес
-     * @see ./tests/HelperIpTrait/HelperIpInRangeTest.php
+     * @see ../../tests/HelperIpTrait/HelperIpInRangeTest.php
      *
      * @param string $value
      * @param mixed ...$masks

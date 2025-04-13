@@ -11,7 +11,7 @@ trait HelperHashTrait
 {
     /**
      * Возвращает xxh128 хеш значения
-     * @see ./tests/HelperHashTrait/HelperHashXxh128Test.php
+     * @see ../../tests/HelperHashTrait/HelperHashXxh128Test.php
      *
      * @param mixed $value
      * @param string|null $prefix

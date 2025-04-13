@@ -13,7 +13,7 @@ trait HelperRegexpTrait
 {
     /**
      * Проверяет значение строки на формат электронной почты
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidateEmailTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateEmailTest.php
      *
      * @param string $value
      * @return bool
@@ -26,7 +26,7 @@ trait HelperRegexpTrait
 
     /**
      * Проверяет значение строки на формат регулярного выражения
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidatePatternTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidatePatternTest.php
      *
      * @param string $value
      * @return bool
@@ -39,7 +39,7 @@ trait HelperRegexpTrait
 
     /**
      * Проверяет значение строки на формат номера телефона
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidatePhoneTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidatePhoneTest.php
      *
      * @param string $value
      * @return bool
@@ -55,7 +55,7 @@ trait HelperRegexpTrait
 
     /**
      * Проверяет значение строки на формат идентификатора uuid
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php
      *
      * @param string $value
      * @return bool
@@ -68,7 +68,7 @@ trait HelperRegexpTrait
 
     /**
      * Проверяет значение строки на формат json
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidateJsonTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateJsonTest.php
      *
      * @param string $value
      * @return bool
@@ -82,7 +82,7 @@ trait HelperRegexpTrait
 
     /**
      * Проверяет значение строки на формат ascii (латинский алфавита и цифры)
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidateAsciiTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateAsciiTest.php
      *
      * @param string $value
      * @return bool
@@ -95,7 +95,7 @@ trait HelperRegexpTrait
 
     /**
      * Проверяет значение строки на формат юникода
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidateUnicodeTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUnicodeTest.php
      *
      * @param string $value
      * @return bool
@@ -108,7 +108,7 @@ trait HelperRegexpTrait
 
     /**
      * Проверяет значение строки на формат даты
-     * @see ./tests/HelperRegexpTrait/HelperRegexpValidateDateTest.php
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateDateTest.php
      *
      * @param string $value
      * @return bool

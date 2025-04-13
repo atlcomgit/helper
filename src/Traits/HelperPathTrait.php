@@ -11,7 +11,7 @@ trait HelperPathTrait
 {
     /**
      * Возвращает путь домашней папки
-     * @see ./tests/HelperPathTrait/HelperPathRootTest.php
+     * @see ../../tests/HelperPathTrait/HelperPathRootTest.php
      *
      * @param string|null $value
      * @return string
@@ -24,7 +24,7 @@ trait HelperPathTrait
 
     /**
      * Возвращает имя класса без namespace
-     * @see ./tests/HelperPathTrait/HelperPathClassNameTest.php
+     * @see ../../tests/HelperPathTrait/HelperPathClassNameTest.php
      *
      * @param string $value
      * @return string

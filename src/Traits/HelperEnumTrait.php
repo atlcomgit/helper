@@ -13,7 +13,7 @@ trait HelperEnumTrait
 {
     /**
      * Возвращает имена ключей перечисления enum
-     * @see ./tests/HelperEnumTrait/HelperEnumNamesTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumNamesTest.php
      *
      * @param class-string|null $value
      * @return array<string>
@@ -26,7 +26,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает значения ключей перечисления enum
-     * @see ./tests/HelperEnumTrait/HelperEnumValuesTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumValuesTest.php
      *
      * @param class-string|null $value
      * @return array<mixed>
@@ -39,7 +39,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает массив ключей и значений enum
-     * @see ./tests/HelperEnumTrait/HelperEnumToArrayTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumToArrayTest.php
      *
      * @param BackedEnum|class-string|null $value
      * @return array<string, mixed>
@@ -60,7 +60,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает ключ перечисления
-     * @see ./tests/HelperEnumTrait/HelperEnumNameTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumNameTest.php
      *
      * @param BackedEnum|string $value
      * @return string|null
@@ -73,7 +73,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает значение перечисления
-     * @see ./tests/HelperEnumTrait/HelperEnumValueTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumValueTest.php
      *
      * @param BackedEnum|string $value
      * @return mixed
@@ -86,7 +86,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает случайное перечисление
-     * @see ./tests/HelperEnumTrait/HelperEnumRandomTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumRandomTest.php
      *
      * @param class-string|null $value
      * @return BackedEnum|null
@@ -102,7 +102,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает найденное перечисление по имени, по значению или по перечислению
-     * @see ./tests/HelperEnumTrait/HelperEnumFromTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumFromTest.php
      *
      * @param BackedEnum|string|null $value
      * @return BackedEnum|null
@@ -130,7 +130,7 @@ trait HelperEnumTrait
 
     /**
      * Проверяет на существование перечисления по значению и возвращает true/false
-     * @see ./tests/HelperEnumTrait/HelperEnumExistsTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumExistsTest.php
      *
      * @param mixed $value
      * @return bool
@@ -143,7 +143,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает описание перечисления
-     * @see ./tests/HelperEnumTrait/HelperEnumLabelTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumLabelTest.php
      *
      * @param BackedEnum|null $value
      * @return string|null
@@ -158,7 +158,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает описание перечисления
-     * @see ./tests/HelperEnumTrait/HelperEnumLabelTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumLabelTest.php
      *
      * @return string|null
      */
@@ -170,7 +170,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает список перечислений для ресурса
-     * @see ./tests/HelperEnumTrait/HelperEnumLabelsTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumLabelsTest.php
      *
      * @param string $value
      * @param string $label
@@ -194,7 +194,7 @@ trait HelperEnumTrait
 
     /**
      * Возвращает массив ключей и значений enum
-     * @see ./tests/HelperEnumTrait/HelperEnumToArrayTest.php
+     * @see ../../tests/HelperEnumTrait/HelperEnumToArrayTest.php
      *
      * @return array
      */

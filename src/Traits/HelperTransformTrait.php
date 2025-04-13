@@ -13,7 +13,7 @@ trait HelperTransformTrait
 {
     /**
      * Возвращает массив из значения
-     * @see ./tests/HelperTransformTrait/HelperTransformToArrayTest.php
+     * @see ../../tests/HelperTransformTrait/HelperTransformToArrayTest.php
      *
      * @param mixed $value
      * @return array

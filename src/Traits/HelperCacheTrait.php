@@ -16,7 +16,7 @@ trait HelperCacheTrait
 
     /**
      * Проверяет существование ключа в кеше и возвращает true/false
-     * @see ./tests/HelperCacheTrait/HelperCacheRuntimeExistsTest.php
+     * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeExistsTest.php
      *
      * @param int|float|string $key
      * @return bool
@@ -29,7 +29,7 @@ trait HelperCacheTrait
 
     /**
      * Сохраняет значение value в кеше по ключу key и возвращает значение
-     * @see ./tests/HelperCacheTrait/HelperCacheRuntimeSetTest.php
+     * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeSetTest.php
      *
      * @param int|float|string $key
      * @param mixed $value
@@ -43,7 +43,7 @@ trait HelperCacheTrait
 
     /**
      * Возвращает значение из кеша по ключу key или возвращает значение по умолчанию default
-     * @see ./tests/HelperCacheTrait/HelperCacheRuntimeGetTest.php
+     * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeGetTest.php
      *
      * @param int|float|string $key
      * @param mixed|null $default
@@ -58,7 +58,7 @@ trait HelperCacheTrait
     /**
      * Сохраняет значение value в кеше по ключу key или возвращает значение при его наличии
      * Если cacheEnabled выключен, то кеш не используется
-     * @see ./tests/HelperCacheTrait/HelperCacheRuntimeTest.php
+     * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeTest.php
      *
      * @param int|float|string $key
      * @param Closure $callback

@@ -11,7 +11,7 @@ trait HelperColorTrait
 {
     /**
      * Возвращает массив с RGB цветом из цвета HEX строки
-     * @see ./tests/HelperColorTrait/HelperColorHexToRgbTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *
      * @param string $value
      * @return array
@@ -34,7 +34,7 @@ trait HelperColorTrait
 
     /**
      * Возвращает HEX строку из RGB цвета
-     * @see ./tests/HelperColorTrait/HelperColorRgbToHexTest.php
+     * @see ../../tests/HelperColorTrait/HelperColorRgbToHexTest.php
      *
      * @param int $red
      * @param int $green

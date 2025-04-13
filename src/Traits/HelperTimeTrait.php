@@ -31,7 +31,7 @@ trait HelperTimeTrait
 
     /**
      * Возвращает массив периодов между датами
-     * @see ./tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
+     * @see ../../tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
@@ -99,7 +99,7 @@ trait HelperTimeTrait
 
     /**
      * Возвращает период между датами в виде строки YDHM
-     * @see ./tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
+     * @see ../../tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
      *
      * @param Carbon|string $dateFrom
      * @param Carbon|string $dateTo
@@ -145,7 +145,7 @@ trait HelperTimeTrait
 
     /**
      * Возвращает массив периодов из количества секунд
-     * @see ./tests/HelperTimeTrait/HelperTimeSecondsToArrayTest.php
+     * @see ../../tests/HelperTimeTrait/HelperTimeSecondsToArrayTest.php
      *
      * @param int|float|string|null $value
      * @return array
@@ -184,7 +184,7 @@ trait HelperTimeTrait
 
     /**
      * Возвращает период из количества секунд в виде строки YDHM
-     * @see ./tests/HelperTimeTrait/HelperTimeSecondsToStringTest.php
+     * @see ../../tests/HelperTimeTrait/HelperTimeSecondsToStringTest.php
      *
      * @param int|float|string|null $value
      * @param bool $withZero
@@ -229,7 +229,11 @@ trait HelperTimeTrait
                     ? ' ' . static::stringPlural($milliseconds, static::$pluralMilliseconds)
                     : ($milliseconds ? ' ' . static::stringPlural($milliseconds, static::$pluralMilliseconds) : '')
                 )
-                : static::stringPlural(round($value, 1), static::$pluralSeconds);
+                : (
+                    static::stringSplit($value, '.', 1)
+                    ? round($value, 1) . ' ' . static::stringPlural(2, static::$pluralSeconds, false)
+                    : static::stringPlural(round($value, 1), static::$pluralSeconds)
+                );
         }
 
         $timeArray = static::timeSecondsToArray((int)$value);
