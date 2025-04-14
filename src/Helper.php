@@ -31,7 +31,7 @@ use Atlcom\Traits\HelperTranslitTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.09
+ * @version 1.10
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper

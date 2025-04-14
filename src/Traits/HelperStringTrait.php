@@ -160,6 +160,8 @@ trait HelperStringTrait
 
         $result = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
             $result = [];
+            $delimiter = '';
+
             while ($value || $delimiter) {
                 $delimiter = static::arrayFirst(static::stringSearchAny($value, $delimiters));
 

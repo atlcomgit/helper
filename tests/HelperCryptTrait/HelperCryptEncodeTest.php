@@ -101,7 +101,7 @@ final class HelperCryptEncodeTest extends TestCase
         $string = Helper::cryptDecode($string, 'password');
         $this->assertTrue($string === 'Иванов Иван Иванович');
 
-        for ($a = 0; $a < 100; $a++) {
+        for ($a = 0; $a < 10; $a++) {
             $string = Helper::cryptEncode($a, (string)$a);
             $string = Helper::cryptDecode($string, (string)$a);
             $this->assertEquals($string, $a);

@@ -1,5 +1,8 @@
 # Changelog
 
+## Версия 1.10
+- Обновлен метод Helper::stringSplit
+
 ## Версия 1.09
 - Добавлен метод Helper::arrayDeleteKeys
 - Добавлен метод Helper::phoneFormat
