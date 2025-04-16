@@ -44,6 +44,9 @@ final class HelperEnumFromTest extends TestCase
         $enum = HelperEnumFromEnum::enumFrom('value1');
         $this->assertTrue($enum === HelperEnumFromEnum::Name1);
 
+        $enum = HelperEnumFromEnum::enumFrom(null);
+        $this->assertTrue($enum === null);
+
         $enum = Helper::enumFrom(HelperEnumFromEnum::class);
         $this->assertTrue($enum === null);
 

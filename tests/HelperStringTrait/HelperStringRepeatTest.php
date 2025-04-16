@@ -25,5 +25,8 @@ final class HelperStringRepeatTest extends TestCase
 
         $string = Helper::stringRepeat(1, 3);
         $this->assertTrue($string === '111');
+
+        $string = Helper::stringRepeat(null, 0);
+        $this->assertTrue($string === '');
     }
 }

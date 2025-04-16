@@ -37,5 +37,8 @@ final class HelperStringCopyTest extends TestCase
 
         $string = Helper::stringCopy(123, -2, 1);
         $this->assertTrue($string === '2');
+
+        $string = Helper::stringCopy(null, 0, 1);
+        $this->assertTrue($string === '');
     }
 }

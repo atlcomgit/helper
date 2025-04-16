@@ -49,6 +49,12 @@ final class HelperEnumLabelsTest extends TestCase
             ['id' => 'value2', 'description' => 'Описание 2'],
         ]);
 
+        $array = HelperEnumLabelsEnum::enumLabels(null, null);
+        $this->assertTrue($array === [
+            ['value' => 'value1', 'label' => 'Описание 1'],
+            ['value' => 'value2', 'label' => 'Описание 2'],
+        ]);
+
         $array = Helper::enumLabels();
         $this->assertTrue($array === []);
     }

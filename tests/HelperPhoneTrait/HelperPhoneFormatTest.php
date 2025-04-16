@@ -20,6 +20,9 @@ final class HelperPhoneFormatTest extends TestCase
         $string = Helper::phoneFormat('79001112233');
         $this->assertEquals('+7 (900) 111-22-33', $string);
 
+        $string = Helper::phoneFormat('+79001112233');
+        $this->assertEquals('+7 (900) 111-22-33', $string);
+
         $string = Helper::phoneFormat('9001112233');
         $this->assertEquals('+7 (900) 111-22-33', $string);
 
@@ -38,5 +41,8 @@ final class HelperPhoneFormatTest extends TestCase
         Helper::$phoneFormat = '%s(%s%s%s)%s%s%s%s%s%s%s';
         $string = Helper::phoneFormat('79001112233');
         $this->assertEquals('7(900)1112233', $string);
+
+        $string = Helper::phoneFormat(null);
+        $this->assertEquals('', $string);
     }
 }

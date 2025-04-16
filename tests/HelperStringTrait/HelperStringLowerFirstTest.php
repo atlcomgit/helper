@@ -25,5 +25,8 @@ final class HelperStringLowerFirstTest extends TestCase
 
         $string = Helper::stringLowerFirst('Абв Где еёж');
         $this->assertTrue($string === 'абв Где еёж');
+
+        $string = Helper::stringLowerFirst(null);
+        $this->assertTrue($string === '');
     }
 }

@@ -37,5 +37,11 @@ final class HelperStringPasteTest extends TestCase
 
         $string = Helper::stringPaste(123, 4, 3);
         $this->assertTrue($string === '1234');
+
+        $string = Helper::stringPaste(null, '0', 0);
+        $this->assertTrue($string === '0');
+
+        $string = Helper::stringPaste(null, null, 0);
+        $this->assertTrue($string === '');
     }
 }

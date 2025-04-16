@@ -15,11 +15,17 @@ trait HelperTranslitTrait
     /**
      * Возвращает транслитерацию строки
      * @see ../../tests/HelperTranslitTrait/HelperTranslitStringTest.php
+     *
+     * @param string|null $value
+     * @param HelperTranslitDirectionEnum $direction
+     * @return string
      */
     public static function translitString(
-        string $value,
+        ?string $value,
         HelperTranslitDirectionEnum $direction = HelperTranslitDirectionEnum::Auto,
     ): string {
+        $value = (string)$value;
+
         // Автоматическое определение направления
         switch ($direction) {
             // Авто
@@ -52,11 +58,11 @@ trait HelperTranslitTrait
      * Возвращает slug из строки
      * @see ../../tests/HelperTranslitTrait/HelperTranslitToSlugTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @param string $slugSeparator
      * @return string
      */
-    public static function translitToSlug(string $value, string $slugSeparator = '_'): string
+    public static function translitToSlug(?string $value, string $slugSeparator = '_'): string
     {
         $value = (string)$value;
         $value = static::stringSegment($value);
@@ -74,11 +80,11 @@ trait HelperTranslitTrait
      * Возвращает строку из slug
      * @see ../../tests/HelperTranslitTrait/HelperTranslitFromSlugTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @param string $slugSeparator
      * @return string
      */
-    public static function translitFromSlug(string $value, string $slugSeparator = '_'): string
+    public static function translitFromSlug(?string $value, string $slugSeparator = '_'): string
     {
         $value = (string)$value;
         $value = static::stringSegment($value);

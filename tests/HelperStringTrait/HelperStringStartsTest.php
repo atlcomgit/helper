@@ -22,6 +22,9 @@ final class HelperStringStartsTest extends TestCase
 
         $string = Helper::stringStarts('abc', ['a', 'b', 'c']);
         $this->assertTrue($string === 'a');
+
+        $string = Helper::stringStarts(null, ['a']);
+        $this->assertTrue($string === null);
     }
 
 

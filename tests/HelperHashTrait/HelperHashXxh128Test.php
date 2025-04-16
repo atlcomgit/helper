@@ -19,5 +19,8 @@ final class HelperHashXxh128Test extends TestCase
     {
         $string = Helper::hashXxh128('abc');
         $this->assertTrue($string === '06b05ab6733a618578af5f94892f3950');
+
+        $string = Helper::hashXxh128(null);
+        $this->assertEquals($string, 'dc32537e27486e2c652e7b35ccc22eda');
     }
 }

@@ -13,4 +13,5 @@ enum HelperNumberGenderEnum: int
     case Female = 1; // Женский род
     case Neuter = 2; // Средний род
     case Common = 3; // Общий род
+
 }

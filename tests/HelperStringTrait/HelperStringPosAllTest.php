@@ -31,5 +31,11 @@ final class HelperStringPosAllTest extends TestCase
 
         $array = Helper::stringPosAll('Иванов Иван Иванович и Петр', [['a' => 'Петр', 'b' => 'Иван', 'c' => 'Иванов']]);
         $this->assertTrue($array === ['Петр' => [23], 'Иван' => [0, 7, 12], 'Иванов' => [0, 12]]);
+
+        $array = Helper::stringPosAll(null);
+        $this->assertTrue($array === []);
+
+        $array = Helper::stringPosAll(null, null);
+        $this->assertTrue($array === []);
     }
 }

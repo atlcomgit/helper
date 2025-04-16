@@ -68,5 +68,8 @@ final class HelperIntervalCollectionTest extends TestCase
             ['equal' => '14'],
             ['min' => '100', 'max' => null],
         ], $array);
+
+        $array = Helper::intervalCollection(null);
+        $this->assertEquals([], $array);
     }
 }

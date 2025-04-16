@@ -43,6 +43,9 @@ final class HelperEnumLabelTest extends TestCase
         $string = HelperEnumLabelEnum::Name1->label();
         $this->assertTrue($string === 'Описание 1');
 
+        $string = HelperEnumLabelEnum::enumLabel(null);
+        $this->assertTrue($string === null);
+
         $string = Helper::enumLabel(HelperEnumLabelEnum::Name1);
         $this->assertTrue($string === 'Name1 (value1)');
 

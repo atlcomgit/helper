@@ -19,14 +19,14 @@ trait HelperNumberTrait
      * Возвращает число прописью на русском языке с учетом склонения по падежу, роду и числительному перечислению
      * @see ../../tests/HelperNumberTrait/HelperNumberToStringTest.php
      *
-     * @param int|float|string $value
+     * @param int|float|string|null $value
      * @param Declension $declension
      * @param Gender $gender
      * @param Enumeration $enumeration
      * @return string
      */
     public static function numberToString(
-        int|float|string $value,
+        int|float|string|null $value,
         Declension $declension = Declension::Nominative,
         Gender $gender = Gender::Male,
         Enumeration $enumeration = Enumeration::Numerical,
@@ -440,5 +440,12 @@ trait HelperNumberTrait
         }
 
         return $result;
+    }
+
+
+    // !todo
+    public static function numberFromString(?string $value): float
+    {
+        return 0;
     }
 }

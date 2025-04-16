@@ -61,6 +61,9 @@ final class HelperIntervalOverlapTest extends TestCase
 
         $array = Helper::intervalOverlap('.., ..');
         $this->assertEquals(['..'], $array);
+
+        $array = Helper::intervalOverlap(null);
+        $this->assertEquals([], $array);
     }
 
 

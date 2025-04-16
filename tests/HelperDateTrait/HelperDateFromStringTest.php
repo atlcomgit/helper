@@ -20,23 +20,23 @@ final class HelperDateFromStringTest extends TestCase
     {
         $now = Carbon::today();
 
-        // $date = Helper::dateFromString('');
-        // $this->assertTrue($date === null);
+        $date = Helper::dateFromString('');
+        $this->assertTrue($date === null);
 
-        // $date = Helper::dateFromString('сегодня');
-        // $this->assertEquals((clone $now)->format('d.m.Y'), $date?->format('d.m.Y'));
+        $date = Helper::dateFromString('сегодня');
+        $this->assertEquals((clone $now)->format('d.m.Y'), $date?->format('d.m.Y'));
 
-        // $date = Helper::dateFromString('завтра');
-        // $this->assertEquals((clone $now)->addDay()->format('d.m.Y'), $date?->format('d.m.Y'));
+        $date = Helper::dateFromString('завтра');
+        $this->assertEquals((clone $now)->addDay()->format('d.m.Y'), $date?->format('d.m.Y'));
 
-        // $date = Helper::dateFromString('послезавтра');
-        // $this->assertEquals((clone $now)->addDays(2)->format('d.m.Y'), $date?->format('d.m.Y'));
+        $date = Helper::dateFromString('послезавтра');
+        $this->assertEquals((clone $now)->addDays(2)->format('d.m.Y'), $date?->format('d.m.Y'));
 
-        // $date = Helper::dateFromString('вчера');
-        // $this->assertEquals((clone $now)->subDay()->format('d.m.Y'), $date?->format('d.m.Y'));
+        $date = Helper::dateFromString('вчера');
+        $this->assertEquals((clone $now)->subDay()->format('d.m.Y'), $date?->format('d.m.Y'));
 
-        // $date = Helper::dateFromString('позавчера');
-        // $this->assertEquals((clone $now)->subDays(2)->format('d.m.Y'), $date?->format('d.m.Y'));
+        $date = Helper::dateFromString('позавчера');
+        $this->assertEquals((clone $now)->subDays(2)->format('d.m.Y'), $date?->format('d.m.Y'));
 
         $date = Helper::dateFromString('в этот понедельник');
         $this->assertEquals((clone $now)->weekday(1)->format('d.m.Y'), $date?->format('d.m.Y'));
@@ -145,5 +145,8 @@ final class HelperDateFromStringTest extends TestCase
 
         $date = Helper::dateFromString('Октябрь, 25 2025');
         $this->assertEquals((clone $now)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
+
+        $date = Helper::dateFromString(null);
+        $this->assertTrue($date === null);
     }
 }

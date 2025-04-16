@@ -109,6 +109,18 @@ $mixed = Helper::cacheRuntime('key', fn () => 1); // $mixed = 1
 $mixed = Helper::cacheRuntimeGet('key'); // $mixed = 1
 ```
 ---
+[cacheRuntimeClear(): void](./tests/HelperCacheTrait/HelperCacheRuntimeClearTest.php)
+Очищает весь кеш
+```php
+Helper::cacheRuntimeClear(); // 
+```
+---
+[cacheRuntimeDelete(\$key): void](./tests/HelperCacheTrait/HelperCacheRuntimeDeleteTest.php)
+Удаляет значение из кеша по ключу key
+```php
+Helper::cacheRuntimeDelete('key'); // 
+```
+---
 [cacheRuntimeExists(\$key): bool](./tests/HelperCacheTrait/HelperCacheRuntimeExistsTest.php)
 Проверяет существование ключа в кеше и возвращает true/false
 ```php

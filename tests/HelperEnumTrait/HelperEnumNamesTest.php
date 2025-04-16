@@ -29,7 +29,13 @@ final class HelperEnumNamesTest extends TestCase
         $array = HelperEnumNamesEnum::enumNames();
         $this->assertEquals($array, ['Name1', 'Name2']);
 
+        $array = HelperEnumNamesEnum::enumNames(null);
+        $this->assertEquals($array, ['Name1', 'Name2']);
+
         $array = Helper::enumNames(HelperEnumNamesEnum::class);
         $this->assertEquals($array, ['Name1', 'Name2']);
+
+        $array = Helper::enumNames(null);
+        $this->assertEquals($array, []);
     }
 }

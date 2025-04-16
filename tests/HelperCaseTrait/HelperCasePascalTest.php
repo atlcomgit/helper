@@ -35,5 +35,7 @@ final class HelperCasePascalTest extends TestCase
         $string = Helper::casePascal('абв_Где_еёж_123');
         $this->assertTrue($string === 'АбвГдеЕёж123');
 
+        $string = Helper::casePascal(null);
+        $this->assertTrue($string === '');
     }
 }

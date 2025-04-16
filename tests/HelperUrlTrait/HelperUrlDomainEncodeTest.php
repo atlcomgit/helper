@@ -22,5 +22,8 @@ final class HelperUrlDomainEncodeTest extends TestCase
 
         $string = Helper::urlDomainEncode('abc.com');
         $this->assertEquals('abc.com', $string);
+
+        $string = Helper::urlDomainEncode(null);
+        $this->assertEquals('', $string);
     }
 }

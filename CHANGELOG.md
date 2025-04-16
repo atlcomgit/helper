@@ -1,5 +1,14 @@
 # Changelog
 
+## Версия 1.12
+- Добавлен метод Helper::cacheRuntimeClear
+- Добавлен метод Helper::cacheRuntimeDelete
+- Добавлен метод Helper::jsonFlags
+
+- Обновлен метод Helper::phoneFormat
+- Обновлен метод Helper::phoneNumber
+- Обновлен метод Helper::urlParse
+
 ## Версия 1.11
 - Добавлен метод Helper::urlCreate
 - Добавлен метод Helper::urlDomainDecode

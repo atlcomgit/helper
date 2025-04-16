@@ -44,6 +44,9 @@ final class HelperEnumNameTest extends TestCase
         $string = HelperEnumNameEnum::enumName('value1');
         $this->assertTrue($string === 'Name1');
 
+        $string = HelperEnumNameEnum::enumName(null);
+        $this->assertTrue($string === null);
+
         $string = Helper::enumName(HelperEnumNameEnum::Name1);
         $this->assertTrue($string === 'Name1');
 
@@ -54,6 +57,9 @@ final class HelperEnumNameTest extends TestCase
         $this->assertTrue($string === null);
 
         $string = Helper::enumName('Name1');
+        $this->assertTrue($string === null);
+
+        $string = Helper::enumName(null);
         $this->assertTrue($string === null);
     }
 }

@@ -31,6 +31,12 @@ final class HelperIpInRangeTest extends TestCase
 
         $array = Helper::ipInRange('192.168.1.1', ['192.168.1.0/24', '192.168.0.0/16']);
         $this->assertTrue($array === ['192.168.1.0/24', '192.168.0.0/16']);
+
+        $array = Helper::ipInRange(null, null);
+        $this->assertTrue($array === []);
+
+        $array = Helper::ipInRange(null, ['']);
+        $this->assertTrue($array === []);
     }
 
 

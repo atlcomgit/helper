@@ -25,5 +25,8 @@ final class HelperRegexpValidateEmailTest extends TestCase
 
         $boolean = Helper::regexpValidateEmail('test.example_domain.com');
         $this->assertFalse($boolean);
+
+        $boolean = Helper::regexpValidateEmail(null);
+        $this->assertTrue($boolean === false);
     }
 }

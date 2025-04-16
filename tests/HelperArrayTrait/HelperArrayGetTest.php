@@ -61,5 +61,8 @@ final class HelperArrayGetTest extends TestCase
 
         $mixed = Helper::arrayGet([['a' => [['b' => 1]], 'c' => 2]], '0.a.0.b');
         $this->assertTrue($mixed === 1);
+
+        $mixed = Helper::arrayGet(null, null);
+        $this->assertTrue($mixed === null);
     }
 }

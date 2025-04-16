@@ -13,18 +13,22 @@ trait HelperIpTrait
      * Возвращает массив найденных масок подсетей, в которые входит ip адрес
      * @see ../../tests/HelperIpTrait/HelperIpInRangeTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @param mixed ...$masks
      * @return array
      */
-    public static function ipInRange(string $value, mixed ...$masks): array
+    public static function ipInRange(?string $value, mixed ...$masks): array
     {
         $result = [];
 
         foreach ($masks as $mask) {
 
-            if (is_array($mask) || is_object($mask)) {
+            if (is_null($mask)) {
+                continue;
+
+            } else if (is_array($mask) || is_object($mask)) {
                 $result = [...$result, ...static::ipInRange($value, ...(array)$mask)];
+
             } else {
                 $mask = (string)$mask;
 
@@ -45,7 +49,7 @@ trait HelperIpTrait
                         $result[] = $mask;
                     }
 
-                } else if ($value == trim($maskExplode[0])) {
+                } else if ($value === trim($maskExplode[0])) {
                     $result[] = $mask;
 
                 } else if (trim($maskExplode[0]) === '*') {

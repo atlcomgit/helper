@@ -15,11 +15,15 @@ trait HelperExceptionTrait
      * Возвращает исключение в виде строки json
      * @see ../../tests/HelperExceptionTrait/HelperExceptionToStringTest.php
      *
-     * @param Throwable $value
+     * @param ?Throwable $value
      * @return string
      */
-    public static function exceptionToString(Throwable $value): string
+    public static function exceptionToString(?Throwable $value): string
     {
+        if (is_null($value)) {
+            return '';
+        }
+
         $exceptionArray = [
             'code' => $value->getCode(),
             'message' => $value->getMessage(),
@@ -32,9 +36,6 @@ trait HelperExceptionTrait
             'trace' => static::arrayExcludeTraceVendor($value->getTrace()),
         ];
 
-        return json_encode(
-            $exceptionArray,
-            JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
-        );
+        return json_encode($exceptionArray, JSON_THROW_ON_ERROR | static::jsonFlags());
     }
 }

@@ -28,5 +28,8 @@ final class HelperArrayUnDotTest extends TestCase
 
         $array = Helper::arrayUnDot(['a.b.c' => 3, 'a.b.d' => 4]);
         $this->assertEquals(['a' => ['b' => ['c' => 3, 'd' => 4]]], $array);
+
+        $array = Helper::arrayUnDot(null);
+        $this->assertEquals([], $array);
     }
 }

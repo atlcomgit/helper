@@ -40,5 +40,8 @@ final class HelperStringSearchAllTest extends TestCase
 
         $string = Helper::stringSearchAll('abc', 'd');
         $this->assertTrue($string === []);
+
+        $string = Helper::stringSearchAll(null, null);
+        $this->assertTrue($string === []);
     }
 }

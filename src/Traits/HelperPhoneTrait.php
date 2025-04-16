@@ -16,19 +16,19 @@ trait HelperPhoneTrait
      * Возвращает отформатированный номер телефона
      * @see ../../tests/HelperPhoneTrait/HelperPhoneFormatTest.php
      *
-     * @param int|float|string $value
+     * @param int|float|string|null $value
      * @param string|null $countryNumber
      * @param string $format = null
      * @return string
      */
     public static function phoneFormat(
-        int|float|string $value,
+        int|float|string|null $value,
         ?string $countryNumber = '7',
         ?string $format = null,
     ): string {
         $value = (string)$value;
         $value = preg_replace('/[^0-9]/', '', $value);
-        (static::stringStarts($value, $countryNumber) && static::stringLength($value) >= 11)
+        !(static::stringLength($value) + static::stringLength($countryNumber) == 11)
             ?: $value = "{$countryNumber}{$value}";
 
         $format ??= static::$phoneFormat;
@@ -43,7 +43,7 @@ trait HelperPhoneTrait
                     ...$chars,
                 ],
             ),
-            ['+ ' => ''],
+            ['+ ' => '', '()' => ''],
         );
     }
 
@@ -52,15 +52,15 @@ trait HelperPhoneTrait
      * Возвращает только цифры номера телефона
      * @see ../../tests/HelperPhoneTrait/HelperPhoneNumberTest.php
      *
-     * @param int|float|string $value
+     * @param int|float|string|null $value
      * @param string|null $countryNumber
      * @return string
      */
-    public static function phoneNumber(int|float|string $value, ?string $countryNumber = '7'): string
+    public static function phoneNumber(int|float|string|null $value, ?string $countryNumber = '7'): string
     {
         $value = (string)$value;
         $value = preg_replace('/[^0-9]/', '', $value);
-        (static::stringStarts($value, $countryNumber) && static::stringLength($value) >= 11)
+        !(static::stringLength($value) + static::stringLength($countryNumber) == 11)
             ?: $value = "{$countryNumber}{$value}";
 
         return $value;

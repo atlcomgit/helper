@@ -79,10 +79,10 @@ trait HelperCryptTrait
      * Дешифрует строку с паролем
      * @see ../../tests/HelperCryptTrait/HelperCryptDecodeTest.php
      *
-     * @param string $string
+     * @param string|null $string
      * @return mixed
      */
-    public static function cryptDecode(string $value, ?string $password = null): mixed
+    public static function cryptDecode(?string $value, ?string $password = null): mixed
     {
         $result = '';
 
@@ -151,12 +151,12 @@ trait HelperCryptTrait
      * Шифрует все значения элементов массива с добавлением хеша значения 'hash:crypt'
      * @see ../../tests/HelperCryptTrait/HelperCryptArrayEncodeTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @param string|null $password
      * @param bool|null $random
      * @return array
      */
-    public static function cryptArrayEncode(array|object $value, ?string $password = null, ?bool $random = null): array
+    public static function cryptArrayEncode(array|object|null $value, ?string $password = null, ?bool $random = null): array
     {
         $value = static::transformToArray($value);
 
@@ -174,11 +174,11 @@ trait HelperCryptTrait
      * Дешифрует все значения элементов массива вида 'hash:crypt'
      * @see ../../tests/HelperCryptTrait/HelperCryptArrayDecodeTest.php
      *
-     * @param array $value
+     * @param array|null $value
      * @param string|null $password
      * @return array
      */
-    public static function cryptArrayDecode(array $value, ?string $password = null): array
+    public static function cryptArrayDecode(?array $value, ?string $password = null): array
     {
         $result = [];
 

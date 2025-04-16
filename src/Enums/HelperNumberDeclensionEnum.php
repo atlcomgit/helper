@@ -15,4 +15,5 @@ enum HelperNumberDeclensionEnum: int
     case Accusative = 3; // Винительный падеж
     case Instrumental = 4; // Творительный падеж
     case Prepositional = 5; // Предложный падеж
+
 }

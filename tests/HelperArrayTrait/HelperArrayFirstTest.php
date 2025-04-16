@@ -23,7 +23,10 @@ final class HelperArrayFirstTest extends TestCase
         $mixed = Helper::arrayFirst(['a' => 1, 'b' => 2]);
         $this->assertEquals(1, $mixed);
 
-        $mixed = Helper::arrayLast([]);
+        $mixed = Helper::arrayFirst([]);
+        $this->assertTrue($mixed === null);
+
+        $mixed = Helper::arrayFirst(null);
         $this->assertTrue($mixed === null);
     }
 }

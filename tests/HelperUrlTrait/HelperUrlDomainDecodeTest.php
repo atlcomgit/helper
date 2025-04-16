@@ -22,5 +22,8 @@ final class HelperUrlDomainDecodeTest extends TestCase
 
         $string = Helper::urlDomainDecode('abc.com');
         $this->assertEquals('abc.com', $string);
+
+        $string = Helper::urlDomainDecode(null);
+        $this->assertEquals('', $string);
     }
 }

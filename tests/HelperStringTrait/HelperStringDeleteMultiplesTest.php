@@ -34,5 +34,11 @@ final class HelperStringDeleteMultiplesTest extends TestCase
 
         $string = Helper::stringDeleteMultiples(112233, [1, 2, 3]);
         $this->assertTrue($string === '123');
+
+        $string = Helper::stringDeleteMultiples(null);
+        $this->assertTrue($string === '');
+
+        $string = Helper::stringDeleteMultiples(null, null);
+        $this->assertTrue($string === '');
     }
 }

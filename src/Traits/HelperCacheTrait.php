@@ -18,10 +18,10 @@ trait HelperCacheTrait
      * Проверяет существование ключа в кеше и возвращает true/false
      * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeExistsTest.php
      *
-     * @param int|float|string $key
+     * @param int|float|string|null $key
      * @return bool
      */
-    public static function cacheRuntimeExists(int|float|string $key): bool
+    public static function cacheRuntimeExists(int|float|string|null $key): bool
     {
         return array_key_exists($key, static::$cache);
     }
@@ -31,13 +31,13 @@ trait HelperCacheTrait
      * Сохраняет значение value в кеше по ключу key и возвращает значение
      * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeSetTest.php
      *
-     * @param int|float|string $key
+     * @param int|float|string|null $key
      * @param mixed $value
      * @return mixed
      */
-    public static function cacheRuntimeSet(int|float|string $key, mixed $value): mixed
+    public static function cacheRuntimeSet(int|float|string|null $key, mixed $value): mixed
     {
-        return static::$cache[$key] = $value;
+        return static::$cache[$key ?? ''] = $value;
     }
 
 
@@ -45,13 +45,13 @@ trait HelperCacheTrait
      * Возвращает значение из кеша по ключу key или возвращает значение по умолчанию default
      * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeGetTest.php
      *
-     * @param int|float|string $key
+     * @param int|float|string|null $key
      * @param mixed|null $default
      * @return mixed
      */
-    public static function cacheRuntimeGet(int|float|string $key, mixed $default = null): mixed
+    public static function cacheRuntimeGet(int|float|string|null $key, mixed $default = null): mixed
     {
-        return static::$cache[$key] ?? $default;
+        return static::$cache[$key ?? ''] ?? $default;
     }
 
 
@@ -60,12 +60,12 @@ trait HelperCacheTrait
      * Если cacheEnabled выключен, то кеш не используется
      * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeTest.php
      *
-     * @param int|float|string $key
+     * @param int|float|string|null $key
      * @param Closure $callback
      * @param bool $cacheEnabled
      * @return mixed
      */
-    public static function cacheRuntime(int|float|string $key, Closure $callback, bool $cacheEnabled = true): mixed
+    public static function cacheRuntime(int|float|string|null $key, Closure $callback, bool $cacheEnabled = true): mixed
     {
         if (!$cacheEnabled) {
             return $callback();
@@ -76,5 +76,30 @@ trait HelperCacheTrait
         }
 
         return static::cacheRuntimeSet($key, $callback());
+    }
+
+
+    /**
+     * Удаляет значение из кеша по ключу key
+     * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeDeleteTest.php
+     *
+     * @param int|float|string|null $key
+     * @return void
+     */
+    public static function cacheRuntimeDelete(int|float|string|null $key): void
+    {
+        unset(static::$cache[$key ?? '']);
+    }
+
+
+    /**
+     * Очищает весь кеш
+     * @see ../../tests/HelperCacheTrait/HelperCacheRuntimeClearTest.php
+     *
+     * @return void
+     */
+    public static function cacheRuntimeClear(): void
+    {
+        static::$cache = [];
     }
 }

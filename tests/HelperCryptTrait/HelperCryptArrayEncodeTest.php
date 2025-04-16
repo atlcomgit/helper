@@ -58,5 +58,8 @@ final class HelperCryptArrayEncodeTest extends TestCase
                 'name' => '06b05ab6733a618578af5f94892f3950:3eg3374c37wb3f6dcb244aUff2Cf2eya466047934cybq0rfX0pd31K85do3XcO3W49Cy3Rgn',
             ],
         ]);
+
+        $array = Helper::cryptArrayEncode(null);
+        $this->assertTrue($array === []);
     }
 }

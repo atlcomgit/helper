@@ -55,5 +55,8 @@ final class HelperCryptArrayDecodeTest extends TestCase
                 'name' => 'abc',
             ],
         ]);
+
+        $array = Helper::cryptArrayDecode(null, null);
+        $this->assertEquals($array, []);
     }
 }

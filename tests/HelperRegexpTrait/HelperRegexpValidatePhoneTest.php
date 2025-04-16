@@ -34,5 +34,8 @@ final class HelperRegexpValidatePhoneTest extends TestCase
 
         $boolean = Helper::regexpValidatePhone('+7 (900) 123-45-6a');
         $this->assertFalse($boolean);
+
+        $boolean = Helper::regexpValidatePhone(null);
+        $this->assertTrue($boolean === false);
     }
 }

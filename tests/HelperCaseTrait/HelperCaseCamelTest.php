@@ -32,5 +32,7 @@ final class HelperCaseCamelTest extends TestCase
         $string = Helper::caseCamel('абв_Где_еёж_123');
         $this->assertTrue($string === 'абвГдеЕёж123');
 
+        $string = Helper::caseCamel(null);
+        $this->assertTrue($string === '');
     }
 }

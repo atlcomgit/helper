@@ -26,10 +26,10 @@ trait HelperPathTrait
      * Возвращает имя класса без namespace
      * @see ../../tests/HelperPathTrait/HelperPathClassNameTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function pathClassName(string $value): string
+    public static function pathClassName(?string $value): string
     {
         !static::stringEnds($value, '.php') ?: $value = static::stringDelete($value, -4);
 

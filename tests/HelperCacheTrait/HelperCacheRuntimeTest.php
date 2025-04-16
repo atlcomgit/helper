@@ -17,26 +17,34 @@ final class HelperCacheRuntimeTest extends TestCase
     #[Test]
     public function cacheRuntime(): void
     {
-        $mixed = Helper::cacheRuntime('keyA', static fn () => 1);
-        $mixed = Helper::cacheRuntimeGet('keyA');
+        Helper::cacheRuntimeClear();
+
+        $mixed = Helper::cacheRuntime('keyRuntimeA', static fn () => 1);
+        $mixed = Helper::cacheRuntimeGet('keyRuntimeA');
         $this->assertTrue($mixed === 1);
-        $mixed = Helper::cacheRuntime('keyA', static fn () => 0);
+        $mixed = Helper::cacheRuntime('keyRuntimeA', static fn () => 0);
         $this->assertTrue($mixed === 1);
 
-        $mixed = Helper::cacheRuntime('keyB', static fn () => '2');
-        $mixed = Helper::cacheRuntimeGet('keyB');
+        $mixed = Helper::cacheRuntime('keyRuntimeB', static fn () => '2');
+        $mixed = Helper::cacheRuntimeGet('keyRuntimeB');
         $this->assertTrue($mixed === '2');
-        $mixed = Helper::cacheRuntime('keyB', static fn () => 0);
+        $mixed = Helper::cacheRuntime('keyRuntimeB', static fn () => 0);
         $this->assertTrue($mixed === '2');
 
-        $mixed = Helper::cacheRuntime('keyC', static fn () => ['3']);
-        $mixed = Helper::cacheRuntimeGet('keyC');
+        $mixed = Helper::cacheRuntime('keyRuntimeC', static fn () => ['3']);
+        $mixed = Helper::cacheRuntimeGet('keyRuntimeC');
         $this->assertTrue($mixed === ['3']);
-        $mixed = Helper::cacheRuntime('keyC', static fn () => 0);
+        $mixed = Helper::cacheRuntime('keyRuntimeC', static fn () => 0);
         $this->assertTrue($mixed === ['3']);
 
-        $mixed = Helper::cacheRuntime('keyD', static fn () => 1, false);
-        $mixed = Helper::cacheRuntimeGet('keyD');
+        $mixed = Helper::cacheRuntime('keyRuntimeD', static fn () => 1, false);
+        $mixed = Helper::cacheRuntimeGet('keyRuntimeD');
         $this->assertTrue($mixed === null);
+
+        $mixed = Helper::cacheRuntime(null, static fn () => 4);
+        $mixed = Helper::cacheRuntimeGet(null);
+        $this->assertTrue($mixed === 4);
+        $mixed = Helper::cacheRuntime(null, static fn () => 0);
+        $this->assertTrue($mixed === 4);
     }
 }

@@ -49,5 +49,11 @@ final class HelperStringSplitTest extends TestCase
 
         $string = Helper::stringSplit('abc def', ' ', -3);
         $this->assertTrue($string === null);
+
+        $string = Helper::stringSplit('abc', '');
+        $this->assertTrue($string === ['abc']);
+
+        $string = Helper::stringSplit(null, ' ');
+        $this->assertTrue($string === []);
     }
 }

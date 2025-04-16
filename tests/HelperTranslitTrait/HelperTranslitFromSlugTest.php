@@ -28,5 +28,8 @@ final class HelperTranslitFromSlugTest extends TestCase
 
         $string = Helper::translitFromSlug('abv-gde-123', '-');
         $this->assertEquals('абв где 123', $string);
+
+        $string = Helper::translitFromSlug(null);
+        $this->assertEquals('', $string);
     }
 }

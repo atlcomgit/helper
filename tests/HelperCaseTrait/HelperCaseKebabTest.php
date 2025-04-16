@@ -35,5 +35,7 @@ final class HelperCaseKebabTest extends TestCase
         $string = Helper::caseKebab('абв_Где_еёж_123');
         $this->assertTrue($string === 'абв-Где-еёж-123');
 
+        $string = Helper::caseKebab(null);
+        $this->assertTrue($string === '');
     }
 }

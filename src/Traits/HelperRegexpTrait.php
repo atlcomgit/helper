@@ -15,12 +15,12 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат электронной почты
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateEmailTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidateEmail(string $value): bool
+    public static function regexpValidateEmail(?string $value): bool
     {
-        return (bool)preg_match(HelperRegexpEnum::Email->value, $value);
+        return (bool)preg_match(HelperRegexpEnum::Email->value, $value ?? '');
     }
 
 
@@ -28,12 +28,12 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат регулярного выражения
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidatePatternTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidatePattern(string $value): bool
+    public static function regexpValidatePattern(?string $value): bool
     {
-        return (bool)preg_match(HelperRegexpEnum::Pattern->value, $value);
+        return (bool)preg_match(HelperRegexpEnum::Pattern->value, $value ?? '');
     }
 
 
@@ -41,14 +41,14 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат номера телефона
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidatePhoneTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidatePhone(string $value): bool
+    public static function regexpValidatePhone(?string $value): bool
     {
         return (bool)(
-            preg_match(HelperRegexpEnum::Phone->value, $value)
-            && static::stringLength(preg_replace('/[^0-9]/', '', $value)) >= 10
+            preg_match(HelperRegexpEnum::Phone->value, $value ?? '')
+            && static::stringLength(preg_replace('/[^0-9]/', '', $value ?? '')) >= 10
         );
     }
 
@@ -57,12 +57,12 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат идентификатора uuid
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidateUuid(string $value): bool
+    public static function regexpValidateUuid(?string $value): bool
     {
-        return (bool)preg_match(HelperRegexpEnum::Uuid->value, $value);
+        return (bool)preg_match(HelperRegexpEnum::Uuid->value, $value ?? '');
     }
 
 
@@ -70,12 +70,12 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат json
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateJsonTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidateJson(string $value): bool
+    public static function regexpValidateJson(?string $value): bool
     {
-        return (bool)($array = json_decode($value, true, 512, JSON_INVALID_UTF8_IGNORE))
+        return (bool)($array = json_decode($value ?? '', true, 512, JSON_INVALID_UTF8_IGNORE))
             && is_array($array);
     }
 
@@ -84,12 +84,12 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат ascii (латинский алфавита и цифры)
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateAsciiTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidateAscii(string $value): bool
+    public static function regexpValidateAscii(?string $value): bool
     {
-        return !preg_match(HelperRegexpEnum::Ascii->value, $value);
+        return $value !== null && !preg_match(HelperRegexpEnum::Ascii->value, $value ?? '');
     }
 
 
@@ -97,12 +97,12 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат юникода
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUnicodeTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidateUnicode(string $value): bool
+    public static function regexpValidateUnicode(?string $value): bool
     {
-        return (bool)preg_match(HelperRegexpEnum::Unicode->value, $value);
+        return (bool)preg_match(HelperRegexpEnum::Unicode->value, $value ?? '');
     }
 
 
@@ -110,11 +110,11 @@ trait HelperRegexpTrait
      * Проверяет значение строки на формат даты
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateDateTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return bool
      */
-    public static function regexpValidateDate(string $value): bool
+    public static function regexpValidateDate(?string $value): bool
     {
-        return (bool)preg_match(HelperRegexpEnum::Date->value, $value);
+        return (bool)preg_match(HelperRegexpEnum::Date->value, $value ?? '');
     }
 }

@@ -31,5 +31,8 @@ final class HelperRegexpValidateAsciiTest extends TestCase
 
         $boolean = Helper::regexpValidateAscii('01 AZ az АЯ ая 😀');
         $this->assertTrue($boolean === false);
+
+        $boolean = Helper::regexpValidateAscii(null);
+        $this->assertTrue($boolean === false);
     }
 }

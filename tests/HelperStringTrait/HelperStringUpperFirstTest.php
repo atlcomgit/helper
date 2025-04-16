@@ -25,5 +25,8 @@ final class HelperStringUpperFirstTest extends TestCase
 
         $string = Helper::stringUpperFirst('абв Где еёж');
         $this->assertTrue($string === 'Абв Где еёж');
+
+        $string = Helper::stringUpperFirst(null);
+        $this->assertTrue($string === '');
     }
 }

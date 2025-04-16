@@ -104,5 +104,8 @@ final class HelperArraySearchKeysAndValuesTest extends TestCase
             ['c' => 'Иванович'],
         ], ['/(a|b|c)/'], ['/Иванов/']);
         $this->assertEquals(['0.a' => 'Иванов', '2.c' => 'Иванович'], $array);
+
+        $array = Helper::arraySearchKeysAndValues(null, null, null);
+        $this->assertEquals([], $array);
     }
 }

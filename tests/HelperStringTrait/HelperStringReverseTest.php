@@ -22,5 +22,8 @@ final class HelperStringReverseTest extends TestCase
 
         $string = Helper::stringReverse(123);
         $this->assertTrue($string === '321');
+
+        $string = Helper::stringReverse(null);
+        $this->assertTrue($string === '');
     }
 }

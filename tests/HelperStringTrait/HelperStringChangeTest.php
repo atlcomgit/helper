@@ -40,5 +40,11 @@ final class HelperStringChangeTest extends TestCase
 
         $string = Helper::stringChange('abcefg', 'xyz', -1);
         $this->assertTrue($string === 'abcefxyz');
+
+        $string = Helper::stringChange(null, 'xyz', 0);
+        $this->assertTrue($string === 'xyz');
+
+        $string = Helper::stringChange(null, null, 0);
+        $this->assertTrue($string === '');
     }
 }

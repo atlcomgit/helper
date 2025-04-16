@@ -35,5 +35,14 @@ final class HelperTimeBetweenDatesToStringTest extends TestCase
 
         $string = Helper::timeBetweenDatesToString('01.01.2025 00:00:00', '02.02.2026 01:02:03', true, true);
         $this->assertEquals('1 год 1 месяц 1 сутки 1 час 2 минуты 3 секунды', $string);
+
+        $string = Helper::timeBetweenDatesToString(null, null);
+        $this->assertEquals('0 дней', $string);
+
+        $string = Helper::timeBetweenDatesToString(null, null, true);
+        $this->assertEquals('0 дней', $string);
+
+        $string = Helper::timeBetweenDatesToString(null, null, true, true);
+        $this->assertEquals('0 суток', $string);
     }
 }

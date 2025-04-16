@@ -115,5 +115,8 @@ final class HelperCryptEncodeTest extends TestCase
             $this->assertEquals($string, $source);
             $this->assertTrue($string === $source);
         }
+
+        $string = Helper::cryptEncode(null, null);
+        $this->assertEquals($string, '47409dk45bTb4aW4S1j957q96dPeI3t24bz9a4H2273dH1n75951i9vf675394m6n');
     }
 }

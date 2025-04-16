@@ -19,10 +19,10 @@ trait HelperDateTrait
      * Возвращает объект Carbon с распознанной датой или null
      * @see ../../tests/HelperDateTrait/HelperDateFromStringTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return Carbon|null
      */
-    public static function dateFromString(string $value): ?Carbon
+    public static function dateFromString(?string $value): ?Carbon
     {
         $value = ' ' . static::stringReplace(static::stringLower($value), [',' => ' , ']) . ' ';
         $date = Carbon::today()->setTime(0, 0, 0, 0);

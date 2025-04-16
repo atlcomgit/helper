@@ -32,10 +32,16 @@ final class HelperEnumRandomTest extends TestCase
         $enum = HelperEnumRandomEnum::enumRandom();
         $this->assertInstanceOf(HelperEnumRandomEnum::class, $enum);
 
+        $enum = HelperEnumRandomEnum::enumRandom(null);
+        $this->assertInstanceOf(HelperEnumRandomEnum::class, $enum);
+
         $enum = Helper::enumRandom(HelperEnumRandomEnum::class);
         $this->assertInstanceOf(HelperEnumRandomEnum::class, $enum);
 
         $enum = Helper::enumRandom();
+        $this->assertTrue($enum === null);
+
+        $enum = Helper::enumRandom(null);
         $this->assertTrue($enum === null);
     }
 }

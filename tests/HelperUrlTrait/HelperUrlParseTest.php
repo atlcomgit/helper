@@ -64,28 +64,27 @@ final class HelperUrlParseTest extends TestCase
             'query' => ['param1' => 'test1'],
         ], $array);
 
-        $array = Helper::urlParse('/path/subpath?param1=test1');
+        $array = Helper::urlParse('/path/subpath?a=b');
         $this->assertEquals([
             'scheme' => null,
             'host' => null,
             'path' => '/path/subpath',
-            'query' => ['param1' => 'test1'],
+            'query' => ['a' => 'b'],
         ], $array);
 
         $array = Helper::urlParse('tel://79001112233');
-        $this->assertEquals([
-            'scheme' => 'tel',
-            'host' => '79001112233',
-            'path' => null,
-            'query' => [],
-        ], $array);
+        $this->assertEquals(['scheme' => 'tel', 'host' => '79001112233', 'path' => null, 'query' => []], $array);
 
         $array = Helper::urlParse('http://xn--80acd.xn--c1acd/её?%D0%B6=%D0%B7');
-        $this->assertEquals([
-            'scheme' => 'http',
-            'host' => 'абв.где',
-            'path' => '/её',
-            'query' => ['ж' => 'з'],
-        ], $array);
+        $this->assertEquals(['scheme' => 'http', 'host' => 'абв.где', 'path' => '/её', 'query' => ['ж' => 'з']], $array);
+
+        $array = Helper::urlParse('?a=b');
+        $this->assertEquals(['scheme' => null, 'host' => null, 'path' => null, 'query' => ['a' => 'b']], $array);
+
+        $array = Helper::urlParse('');
+        $this->assertEquals(['scheme' => null, 'host' => null, 'path' => null, 'query' => []], $array);
+
+        $array = Helper::urlParse(null);
+        $this->assertEquals(['scheme' => null, 'host' => null, 'path' => null, 'query' => []], $array);
     }
 }

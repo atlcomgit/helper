@@ -25,5 +25,8 @@ final class HelperArrayLastTest extends TestCase
 
         $mixed = Helper::arrayLast([]);
         $this->assertTrue($mixed === null);
+
+        $mixed = Helper::arrayLast(null);
+        $this->assertTrue($mixed === null);
     }
 }

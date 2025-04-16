@@ -34,5 +34,8 @@ final class HelperExceptionToStringTest extends TestCase
         $this->assertEquals('Exception', $array['exception']);
         $this->assertMatchesRegularExpression('/HelperExceptionToStringTest.php:[0-9]{1,}/', $array['file']);
         $this->assertIsArray($array['trace']);
+
+        $string = Helper::exceptionToString(null);
+        $this->assertEquals('', $string);
     }
 }

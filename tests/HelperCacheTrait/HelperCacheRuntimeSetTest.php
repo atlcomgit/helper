@@ -17,7 +17,14 @@ final class HelperCacheRuntimeSetTest extends TestCase
     #[Test]
     public function cacheRuntimeSet(): void
     {
-        Helper::cacheRuntimeSet('key', 1);
-        $this->assertTrue(true);
+        Helper::cacheRuntimeClear();
+
+        Helper::cacheRuntimeSet('keySet1', 1);
+        $boolean = Helper::cacheRuntimeExists('keySet1');
+        $this->assertTrue($boolean === true);
+
+        Helper::cacheRuntimeSet(null, null);
+        $boolean = Helper::cacheRuntimeExists(null);
+        $this->assertTrue($boolean === true);
     }
 }

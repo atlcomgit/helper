@@ -44,6 +44,9 @@ final class HelperEnumValueTest extends TestCase
         $mixed = HelperEnumValueEnum::enumValue('value1');
         $this->assertTrue($mixed === 'value1');
 
+        $mixed = HelperEnumValueEnum::enumValue(null);
+        $this->assertTrue($mixed === null);
+
         $mixed = Helper::enumValue(HelperEnumValueEnum::Name1);
         $this->assertTrue($mixed === 'value1');
 
@@ -54,6 +57,9 @@ final class HelperEnumValueTest extends TestCase
         $this->assertTrue($mixed === null);
 
         $mixed = Helper::enumValue('value1');
+        $this->assertTrue($mixed === null);
+
+        $mixed = Helper::enumValue(null);
         $this->assertTrue($mixed === null);
     }
 }

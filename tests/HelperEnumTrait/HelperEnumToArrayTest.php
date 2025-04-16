@@ -29,13 +29,19 @@ final class HelperEnumToArrayTest extends TestCase
         $array = HelperEnumToArrayEnum::enumToArray();
         $this->assertEquals($array, ['Name1' => 'value1', 'Name2' => 'value2']);
 
+        $array = HelperEnumToArrayEnum::Name1->toArray();
+        $this->assertEquals($array, ['name' => 'Name1', 'value' => 'value1']);
+
+        $array = HelperEnumToArrayEnum::enumToArray(null);
+        $this->assertEquals($array, ['Name1' => 'value1', 'Name2' => 'value2']);
+
         $array = Helper::enumToArray(HelperEnumToArrayEnum::class);
         $this->assertEquals($array, ['Name1' => 'value1', 'Name2' => 'value2']);
 
         $array = Helper::enumToArray(HelperEnumToArrayEnum::Name1);
         $this->assertEquals($array, ['name' => 'Name1', 'value' => 'value1']);
 
-        $array = HelperEnumToArrayEnum::Name1->toArray();
-        $this->assertEquals($array, ['name' => 'Name1', 'value' => 'value1']);
+        $array = Helper::enumToArray(null);
+        $this->assertEquals($array, []);
     }
 }

@@ -23,5 +23,8 @@ final class HelperPathClassNameTest extends TestCase
 
         $string = Helper::pathClassName('/test/Test.php');
         $this->assertTrue($string === 'Test');
+
+        $string = Helper::pathClassName(null);
+        $this->assertTrue($string === '');
     }
 }

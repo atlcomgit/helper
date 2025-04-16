@@ -36,5 +36,10 @@ final class HelperStringCutTest extends TestCase
         $string = Helper::stringCut($source, 0);
         $this->assertTrue($source === '');
         $this->assertTrue($string === 'abc');
+
+        $source = null;
+        $string = Helper::stringCut($source, 0, 1);
+        $this->assertTrue($source === '');
+        $this->assertTrue($string === '');
     }
 }

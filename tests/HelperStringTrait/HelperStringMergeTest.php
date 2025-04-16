@@ -31,5 +31,8 @@ final class HelperStringMergeTest extends TestCase
 
         $string = Helper::stringMerge(['000', '11'], '0');
         $this->assertTrue($string === '010');
+
+        $string = Helper::stringMerge(null, null);
+        $this->assertTrue($string === '');
     }
 }

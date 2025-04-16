@@ -49,6 +49,9 @@ final class HelperSizeStringToBytesTest extends TestCase
 
         $integer = Helper::sizeStringToBytes('1 Петабайт');
         $this->assertTrue($integer === 1000000000000000);
+
+        $integer = Helper::sizeStringToBytes(null);
+        $this->assertTrue($integer === 0);
     }
 
 

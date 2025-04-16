@@ -17,11 +17,21 @@ final class HelperCacheRuntimeExistsTest extends TestCase
     #[Test]
     public function cacheRuntimeExists(): void
     {
-        $boolean = Helper::cacheRuntimeExists('keyX');
+        Helper::cacheRuntimeClear();
+
+        $boolean = Helper::cacheRuntimeExists('keyExists1');
         $this->assertTrue($boolean === false);
 
-        Helper::cacheRuntimeSet('keyX', fn () => 1);
-        $boolean = Helper::cacheRuntimeExists('keyX');
+        Helper::cacheRuntimeSet('keyExists1', 1);
+        $boolean = Helper::cacheRuntimeExists('keyExists1');
+        $this->assertTrue($boolean === true);
+
+        Helper::cacheRuntimeSet('keyExists2', fn () => 2);
+        $boolean = Helper::cacheRuntimeExists('keyExists2');
+        $this->assertTrue($boolean === true);
+
+        Helper::cacheRuntimeSet(null, null);
+        $boolean = Helper::cacheRuntimeExists(null);
         $this->assertTrue($boolean === true);
     }
 }

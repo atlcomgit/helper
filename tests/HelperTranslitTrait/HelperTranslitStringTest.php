@@ -46,5 +46,8 @@ final class HelperTranslitStringTest extends TestCase
         $this->assertEquals('S"esh\' eschjo yetih myagkih francuzskih bulok, da vyipey chayu s yogurtom', $string);
         $string = Helper::translitString($string);
         $this->assertEquals('Съешь ещё этих мягких французских булок, да выпей чаю с йогуртом', $string);
+
+        $string = Helper::translitString(null);
+        $this->assertEquals('', $string);
     }
 }

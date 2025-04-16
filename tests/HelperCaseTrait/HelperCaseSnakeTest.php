@@ -31,9 +31,11 @@ final class HelperCaseSnakeTest extends TestCase
 
         $string = Helper::caseSnake('-abc-def-');
         $this->assertTrue($string === '_abc_def_');
-        
+
         $string = Helper::caseSnake('абв-Где-еёж-123');
         $this->assertTrue($string === 'абв_Где_еёж_123');
 
+        $string = Helper::caseSnake(null);
+        $this->assertTrue($string === '');
     }
 }

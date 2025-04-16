@@ -27,5 +27,8 @@ final class HelperPathRootTest extends TestCase
 
         $string = Helper::pathRoot('/home/path/test');
         $this->assertTrue($string === '/home/path/test');
+
+        $string = Helper::pathRoot(null);
+        $this->assertNotEmpty($string);
     }
 }

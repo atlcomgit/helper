@@ -61,6 +61,9 @@ final class HelperIntervalBetweenTest extends TestCase
 
         $array = Helper::intervalBetween(2, [null, null]);
         $this->assertEquals(['..'], $array);
+
+        $array = Helper::intervalBetween(null, null);
+        $this->assertEquals([], $array);
     }
 
 

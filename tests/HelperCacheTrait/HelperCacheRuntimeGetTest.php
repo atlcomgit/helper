@@ -17,16 +17,26 @@ final class HelperCacheRuntimeGetTest extends TestCase
     #[Test]
     public function cacheRuntimeGet(): void
     {
-        Helper::cacheRuntimeSet('key1', 1);
-        $integer = Helper::cacheRuntimeGet('key1');
+        Helper::cacheRuntimeClear();
+
+        Helper::cacheRuntimeSet('keyGet1', 1);
+        $integer = Helper::cacheRuntimeGet('keyGet1');
         $this->assertTrue($integer === 1);
 
-        Helper::cacheRuntimeSet('key2', '2');
-        $string = Helper::cacheRuntimeGet('key2');
+        Helper::cacheRuntimeSet('keyGet2', '2');
+        $string = Helper::cacheRuntimeGet('keyGet2');
         $this->assertTrue($string === '2');
 
-        Helper::cacheRuntimeSet('key3', ['3']);
-        $array = Helper::cacheRuntimeGet('key3');
+        Helper::cacheRuntimeSet('keyGet3', ['3']);
+        $array = Helper::cacheRuntimeGet('keyGet3');
         $this->assertTrue($array === ['3']);
+
+        Helper::cacheRuntimeSet(null, 4);
+        $array = Helper::cacheRuntimeGet(null);
+        $this->assertTrue($array === 4);
+
+        Helper::cacheRuntimeSet(null, null);
+        $array = Helper::cacheRuntimeGet(null);
+        $this->assertTrue($array === null);
     }
 }

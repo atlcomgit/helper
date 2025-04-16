@@ -37,5 +37,8 @@ final class HelperStringDeleteTest extends TestCase
 
         $string = Helper::stringDelete(123, -2);
         $this->assertTrue($string === '1');
+
+        $string = Helper::stringDelete(null, 0, 1);
+        $this->assertTrue($string === '');
     }
 }

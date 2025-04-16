@@ -28,5 +28,11 @@ final class HelperStringPosAnyTest extends TestCase
 
         $array = Helper::stringPosAny('Иванов Иван Иванович и Петр', ['name1' => 'Петр', 'name2' => 'Иван']);
         $this->assertTrue($array === ['Петр' => 23]);
+
+        $array = Helper::stringPosAny(null);
+        $this->assertTrue($array === []);
+
+        $array = Helper::stringPosAny(null, null);
+        $this->assertTrue($array === []);
     }
 }

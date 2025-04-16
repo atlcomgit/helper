@@ -40,5 +40,8 @@ final class HelperStringSearchAnyTest extends TestCase
 
         $array = Helper::stringSearchAny('abc', 'd');
         $this->assertTrue($array === []);
+
+        $array = Helper::stringSearchAny(null, null);
+        $this->assertTrue($array === []);
     }
 }

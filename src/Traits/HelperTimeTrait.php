@@ -33,11 +33,11 @@ trait HelperTimeTrait
      * Возвращает массив периодов между датами
      * @see ../../tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
      *
-     * @param Carbon|string $dateFrom
-     * @param Carbon|string $dateTo
+     * @param Carbon|string|null $dateFrom
+     * @param Carbon|string|null $dateTo
      * @return array
      */
-    public static function timeBetweenDatesToArray(Carbon|string $dateFrom, Carbon|string $dateTo): array
+    public static function timeBetweenDatesToArray(Carbon|string|null $dateFrom, Carbon|string|null $dateTo): array
     {
         $result = [
             static::$nameYears => $years = 0,
@@ -99,18 +99,18 @@ trait HelperTimeTrait
 
     /**
      * Возвращает период между датами в виде строки YDHM
-     * @see ../../tests/HelperTimeTrait/HelperTimeBetweenDatesToArrayTest.php
+     * @see ../../tests/HelperTimeTrait/HelperTimeBetweenDatesToStringTest.php
      *
-     * @param Carbon|string $dateFrom
-     * @param Carbon|string $dateTo
+     * @param Carbon|string|null $dateFrom
+     * @param Carbon|string|null $dateTo
      * @param bool $withTime
      * @param bool $time24
      * @param mixed 
      * @return string
      */
     public static function timeBetweenDatesToString(
-        Carbon|string $dateFrom,
-        Carbon|string $dateTo,
+        Carbon|string|null $dateFrom,
+        Carbon|string|null $dateTo,
         bool $withTime = false,
         bool $time24 = false,
     ): string {
@@ -199,7 +199,6 @@ trait HelperTimeTrait
         bool $withMilliseconds = false,
         array $pluralNames = [],
     ): string {
-        $value = filter_var($value, FILTER_VALIDATE_FLOAT);
         $result = '';
         $pluralNames ?: $pluralNames = [
             static::$nameYears => static::$pluralYears,
@@ -209,6 +208,12 @@ trait HelperTimeTrait
             static::$nameMinutes => static::$pluralMinutes,
             static::$nameSeconds => static::$pluralSeconds,
         ];
+
+        if (is_null($value)) {
+            return '';
+        }
+
+        $value = filter_var($value, FILTER_VALIDATE_FLOAT) ?: 0;
 
         if ($value < 0) {
             return 'Отрицательное число';

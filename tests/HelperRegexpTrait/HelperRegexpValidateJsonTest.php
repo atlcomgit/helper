@@ -46,5 +46,8 @@ final class HelperRegexpValidateJsonTest extends TestCase
         $boolean = Helper::regexpValidateJson($string);
         $this->assertTrue(json_decode($string, true) === ['a' => 1]);
         $this->assertTrue($boolean === true);
+
+        $boolean = Helper::regexpValidateJson(null);
+        $this->assertTrue($boolean === false);
     }
 }

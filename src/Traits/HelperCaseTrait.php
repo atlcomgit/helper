@@ -13,14 +13,14 @@ trait HelperCaseTrait
      * Возвращает строку в стиле camelCase
      * @see ../../tests/HelperCaseTrait/HelperCaseCamelTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function caseCamel(string $value): string
+    public static function caseCamel(?string $value): string
     {
         return static::stringLowerFirst(
             static::stringReplace(
-                static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
+                static::stringUpperFirstAll(static::stringReplace(ltrim($value ?? ''), ['_' => ' ', '-' => ' '])),
                 [' ' => ''],
             ),
         );
@@ -31,13 +31,13 @@ trait HelperCaseTrait
      * Возвращает строку в стиле kebab-case
      * @see ../../tests/HelperCaseTrait/HelperCaseKebabTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function caseKebab(string $value): string
+    public static function caseKebab(?string $value): string
     {
         return ltrim(
-            preg_replace('/(?<=\w)(?=[A-ZА-ЯЁ])/u', '-', static::stringReplace($value, [' ' => '-', '_' => '-'])),
+            preg_replace('/(?<=\w)(?=[A-ZА-ЯЁ])/u', '-', static::stringReplace($value ?? '', [' ' => '-', '_' => '-'])),
             '-',
         );
         ;
@@ -48,14 +48,14 @@ trait HelperCaseTrait
      * Возвращает строку в стиле PascalCase
      * @see ../../tests/HelperCaseTrait/HelperCasePascalTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function casePascal(string $value): string
+    public static function casePascal(?string $value): string
     {
         return static::stringUpperFirst(
             static::stringReplace(
-                static::stringUpperFirstAll(static::stringReplace(ltrim($value), ['_' => ' ', '-' => ' '])),
+                static::stringUpperFirstAll(static::stringReplace(ltrim($value ?? ''), ['_' => ' ', '-' => ' '])),
                 [' ' => ''],
             ),
         );
@@ -66,10 +66,10 @@ trait HelperCaseTrait
      * Возвращает строку в стиле snake_case
      * @see ../../tests/HelperCaseTrait/HelperCaseSnakeTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function caseSnake(string $value): string
+    public static function caseSnake(?string $value): string
     {
         return static::stringReplace(
             preg_replace('/(?<=\w)(?=[A-ZА-ЯЁ])/u', '-', static::stringReplace($value, [' ' => '-', '_' => '-'])),

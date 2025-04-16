@@ -28,5 +28,8 @@ final class HelperJwtEncodeTest extends TestCase
 
         $string = Helper::jwtEncode(['id' => 1], signKey: '123', hash: 'sha256');
         $this->assertEquals('eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJpZCI6MX0.jeH2xt5EOGgPBH5u1nsrMDoWtNBd_BmiD44m-wlKDeo', $string);
+
+        $string = Helper::jwtEncode(null, null);
+        $this->assertEquals('eyJhbGciOiJTSEE1MTIiLCJ0eXAiOiJKV1QifQ.W10.KwfjBPnnk-A2zALCVXbcfn8UQaPuvFEOgQuFR7Xp-YfSFoVoIdDcjCYydfOBYMTRpI1v8ZY1dsFoaSuaO70QaA', $string);
     }
 }

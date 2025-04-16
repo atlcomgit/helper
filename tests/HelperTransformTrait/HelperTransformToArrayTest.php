@@ -59,5 +59,8 @@ final class HelperTransformToArrayTest extends TestCase
 
         $array = Helper::transformToArray(static fn () => new ArrayableObject());
         $this->assertTrue($array === ['a' => 1]);
+
+        $array = Helper::transformToArray(null);
+        $this->assertTrue($array === []);
     }
 }

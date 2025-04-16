@@ -22,6 +22,9 @@ final class HelperStringEndsTest extends TestCase
 
         $string = Helper::stringEnds('abc', ['a', 'b', 'c']);
         $this->assertTrue($string === 'c');
+
+        $string = Helper::stringEnds(null, ['a']);
+        $this->assertTrue($string === null);
     }
 
 

@@ -57,5 +57,8 @@ final class HelperNumberToStringTest extends TestCase
             HelperNumberEnumerationEnum::Numerical,
         );
         $this->assertEquals('плюс минус тринадцати тысяч пятиста семидести девяти', $string);
+
+        $string = Helper::numberToString(null);
+        $this->assertEquals('', $string);
     }
 }

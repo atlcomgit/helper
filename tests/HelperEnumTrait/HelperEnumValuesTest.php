@@ -29,7 +29,13 @@ final class HelperEnumValuesTest extends TestCase
         $array = HelperEnumValuesEnum::enumValues();
         $this->assertEquals($array, ['value1', 'value2']);
 
+        $array = HelperEnumValuesEnum::enumValues();
+        $this->assertEquals($array, ['value1', 'value2']);
+
         $array = Helper::enumValues(HelperEnumValuesEnum::class);
         $this->assertEquals($array, ['value1', 'value2']);
+
+        $array = Helper::enumValues(null);
+        $this->assertEquals($array, []);
     }
 }

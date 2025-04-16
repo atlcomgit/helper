@@ -25,5 +25,8 @@ final class HelperRegexpValidatePatternTest extends TestCase
 
         $boolean = Helper::regexpValidatePattern('test');
         $this->assertFalse($boolean);
+
+        $boolean = Helper::regexpValidatePattern(null);
+        $this->assertTrue($boolean === false);
     }
 }

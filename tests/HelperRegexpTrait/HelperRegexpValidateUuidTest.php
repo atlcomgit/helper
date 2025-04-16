@@ -25,5 +25,8 @@ final class HelperRegexpValidateUuidTest extends TestCase
 
         $boolean = Helper::regexpValidateUuid('04d19f50-2fab-417a-815d-306b6a6f67e');
         $this->assertFalse($boolean);
+
+        $boolean = Helper::regexpValidateUuid(null);
+        $this->assertTrue($boolean === false);
     }
 }

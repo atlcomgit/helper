@@ -44,6 +44,9 @@ final class HelperEnumExistsTest extends TestCase
         $boolean = HelperEnumExistsEnum::enumExists('value1');
         $this->assertTrue($boolean === true);
 
+        $boolean = HelperEnumExistsEnum::enumExists(null);
+        $this->assertTrue($boolean === false);
+
         $boolean = Helper::enumExists(HelperEnumExistsEnum::class);
         $this->assertTrue($boolean === false);
 

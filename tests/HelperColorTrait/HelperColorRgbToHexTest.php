@@ -22,5 +22,8 @@ final class HelperColorRgbToHexTest extends TestCase
 
         $string = Helper::colorRgbToHex(0, 0, 0, 0);
         $this->assertTrue($string === '#00000000');
+
+        $string = Helper::colorRgbToHex(null, null, null, null);
+        $this->assertEquals($string, '#000000');
     }
 }

@@ -34,5 +34,8 @@ final class HelperPhoneNumberTest extends TestCase
 
         $string = Helper::phoneNumber('900-111-22-33', null);
         $this->assertEquals('9001112233', $string);
+
+        $string = Helper::phoneNumber(null);
+        $this->assertEquals('', $string);
     }
 }

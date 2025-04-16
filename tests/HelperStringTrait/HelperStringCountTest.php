@@ -28,5 +28,8 @@ final class HelperStringCountTest extends TestCase
 
         $integer = Helper::stringCount('абв', 'а');
         $this->assertTrue($integer === 1);
+
+        $integer = Helper::stringCount(null, null);
+        $this->assertTrue($integer === 0);
     }
 }

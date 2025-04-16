@@ -33,11 +33,12 @@ trait HelperSizeTrait
      * Возвращает размер в байтах из строки размера
      * @see ../../tests/HelperSizeTrait/HelperSizeStringToBytesTest.php
      *
-     * @param string $size
+     * @param string|null $size
      * @return int
      */
-    public static function sizeStringToBytes(string $value): int
+    public static function sizeStringToBytes(?string $value): int
     {
+        $value = (string)$value;
         $exp = match (static::stringUpper(preg_replace('/[^a-zа-яё]/ui', '', $value))) {
             'ПБ', 'PB', 'PIB', 'ПБАЙТ', 'ПЕТАБАЙТ' => pow(1000, 5),
             'ТБ', 'TB', 'TIB', 'ТБАЙТ', 'ТЕРАБАЙТ' => pow(1000, 4),

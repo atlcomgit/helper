@@ -49,5 +49,8 @@ final class HelperSizeBytesToStringTest extends TestCase
 
         $string = Helper::sizeBytesToString(1111111111111111);
         $this->assertTrue($string === '1.11 Пб');
+
+        $string = Helper::sizeBytesToString(null);
+        $this->assertTrue($string === '0 байт');
     }
 }

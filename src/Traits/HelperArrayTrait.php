@@ -17,10 +17,10 @@ trait HelperArrayTrait
      * Исключает из массива трассировки пакетные ошибки
      * @see ../../tests/HelperArrayTrait/HelperArrayExcludeTraceVendorTest.php
      *
-     * @param array $trace
+     * @param array|null $trace
      * @return array
      */
-    public static function arrayExcludeTraceVendor(array $value, ?string $basePath = null): array
+    public static function arrayExcludeTraceVendor(?array $value, ?string $basePath = null): array
     {
         $basePath ??= static::pathRoot();
 
@@ -51,15 +51,15 @@ trait HelperArrayTrait
      * Возвращает массив с маппингом ключей
      * @see ../../tests/HelperArrayTrait/HelperArrayMappingKeysTest.php
      *
-     * @param array|object $value
-     * @param int|float|string|array|object $from
+     * @param array|object|null $value
+     * @param int|float|string|array|object|null $from
      * @param int|float|string|array|object|null|null $to
      * @param string|null $rootKey
      * @return array
      */
     public static function arrayMappingKeys(
-        array|object $value,
-        int|float|string|array|object $from,
+        array|object|null $value,
+        int|float|string|array|object|null $from,
         int|float|string|array|object|null $to = null,
         ?string $rootKey = null,
     ): array {
@@ -109,11 +109,11 @@ trait HelperArrayTrait
      * Возвращает массив найденных ключей в искомом массиве
      * @see ../../tests/HelperArrayTrait/HelperArraySearchKeysTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @param mixed ...$searches
      * @return array
      */
-    public static function arraySearchKeys(array|object $value, mixed ...$searches): array
+    public static function arraySearchKeys(array|object|null $value, mixed ...$searches): array
     {
         $result = [];
         $value = static::transformToArray($value);
@@ -159,11 +159,11 @@ trait HelperArrayTrait
      * Возвращает массив найденных значений в искомом массиве
      * @see ../../tests/HelperArrayTrait/HelperArraySearchValuesTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @param mixed ...$searches
      * @return array
      */
-    public static function arraySearchValues(array|object $value, mixed ...$searches): array
+    public static function arraySearchValues(array|object|null $value, mixed ...$searches): array
     {
         $result = [];
         $value = static::transformToArray($value);
@@ -206,15 +206,15 @@ trait HelperArrayTrait
      * Возвращает массив найденных ключей и значений в искомом массиве
      * @see ../../tests/HelperArrayTrait/HelperArraySearchKeysAndValuesTest.php
      *
-     * @param array|object $value
-     * @param int|float|bool|string|array|object $keys
-     * @param int|float|bool|string|array|object $values
+     * @param array|object|null $value
+     * @param int|float|bool|string|array|object|null $keys
+     * @param int|float|bool|string|array|object|null $values
      * @return array
      */
     public static function arraySearchKeysAndValues(
-        array|object $value,
-        int|float|bool|string|array|object $keys,
-        int|float|bool|string|array|object $values,
+        array|object|null $value,
+        int|float|bool|string|array|object|null $keys,
+        int|float|bool|string|array|object|null $values,
     ): array {
         return static::arraySearchValues(static::arraySearchKeys($value, $keys), $values);
     }
@@ -224,13 +224,16 @@ trait HelperArrayTrait
      * Возвращает значение из массива по имению ключа
      * @see ../../tests/HelperArrayTrait/HelperArrayGetTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @param int|float|string|bool|null $key
      * @param mixed|null $default
      * @return mixed
      */
-    public static function arrayGet(array|object $value, int|float|string|bool|null $key, mixed $default = null): mixed
-    {
+    public static function arrayGet(
+        array|object|null $value,
+        int|float|string|bool|null $key,
+        mixed $default = null,
+    ): mixed {
         if (is_null($key)) {
             return null;
         }
@@ -256,10 +259,10 @@ trait HelperArrayTrait
      * Возвращает значение первого элемента массива
      * @see ../../tests/HelperArrayTrait/HelperArrayFirstTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @return mixed
      */
-    public static function arrayFirst(array|object $value): mixed
+    public static function arrayFirst(array|object|null $value): mixed
     {
         $value = static::transformToArray($value);
 
@@ -271,10 +274,10 @@ trait HelperArrayTrait
      * Возвращает значение последнего элемента массива
      * @see ../../tests/HelperArrayTrait/HelperArrayLastTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @return mixed
      */
-    public static function arrayLast(array|object $value): mixed
+    public static function arrayLast(array|object|null $value): mixed
     {
         $value = static::transformToArray($value);
 
@@ -286,10 +289,10 @@ trait HelperArrayTrait
      * Возвращает одномерный массив из многомерного
      * @see ../../tests/HelperArrayTrait/HelperArrayDotTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @return array
      */
-    public static function arrayDot(array|object $value): array
+    public static function arrayDot(array|object|null $value): array
     {
         return static::arraySearchKeys(static::transformToArray($value), ['*']);
     }
@@ -299,10 +302,10 @@ trait HelperArrayTrait
      * Возвращает многомерный массив из одномерного
      * @see ../../tests/HelperArrayTrait/HelperArrayUnDotTest.php
      *
-     * @param array $value
+     * @param array|null $value
      * @return array
      */
-    public static function arrayUnDot(array $value): array
+    public static function arrayUnDot(array|null $value): array
     {
         $result = [];
 
@@ -339,11 +342,11 @@ trait HelperArrayTrait
      * Возвращает массив с удаленными ключами
      * @see ../../tests/HelperArrayTrait/HelperArrayDeleteKeysTest.php
      *
-     * @param array|object $value
+     * @param array|object|null $value
      * @param mixed ...$keys
      * @return array
      */
-    public static function arrayDeleteKeys(array|object $value, mixed ...$searches): array
+    public static function arrayDeleteKeys(array|object|null $value, mixed ...$searches): array
     {
         $value = static::transformToArray($value);
         $searches = static::transformToArray($searches);

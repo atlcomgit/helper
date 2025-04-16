@@ -22,5 +22,8 @@ final class HelperStringLengthTest extends TestCase
 
         $integer = Helper::stringLength('');
         $this->assertTrue($integer === 0);
+
+        $integer = Helper::stringLength(null);
+        $this->assertTrue($integer === 0);
     }
 }

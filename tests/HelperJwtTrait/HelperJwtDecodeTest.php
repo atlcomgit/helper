@@ -46,5 +46,8 @@ final class HelperJwtDecodeTest extends TestCase
             'header' => ['alg' => 'SHA256', 'typ' => 'JWT'],
             'body' => ['id' => 1],
         ], $array);
+
+        $array = Helper::jwtDecode(null, null);
+        $this->assertTrue($array === null);
     }
 }

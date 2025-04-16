@@ -22,5 +22,8 @@ final class HelperTelegramBreakMessageTest extends TestCase
 
         $array = Helper::telegramBreakMessage('Иванов\nИван\nИванович', 10, 100, 1);
         $this->assertTrue($array === ['Иванов']);
+
+        $array = Helper::telegramBreakMessage(null, 10, 100, 1);
+        $this->assertTrue($array === []);
     }
 }

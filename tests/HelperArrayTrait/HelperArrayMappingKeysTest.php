@@ -67,5 +67,8 @@ final class HelperArrayMappingKeysTest extends TestCase
             ['a' => 1, 'd' => 2],
             ['c' => 3, 'd' => 4],
         ], $array);
+
+        $array = Helper::arrayMappingKeys(null, null);
+        $this->assertEquals([], $array);
     }
 }

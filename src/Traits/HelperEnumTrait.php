@@ -20,7 +20,9 @@ trait HelperEnumTrait
      */
     public static function enumNames(?string $value = null): array
     {
-        return array_column(($value ?? self::class)::cases(), 'name');
+        return ($enumClass = $value ?? (is_subclass_of(self::class, BackedEnum::class) ? self::class : null))
+            ? array_column($enumClass::cases(), 'name')
+            : [];
     }
 
 
@@ -33,7 +35,9 @@ trait HelperEnumTrait
      */
     public static function enumValues(?string $value = null): array
     {
-        return array_column(($value ?? self::class)::cases(), 'value');
+        return ($enumClass = $value ?? (is_subclass_of(self::class, BackedEnum::class) ? self::class : null))
+            ? array_column($enumClass::cases(), 'value')
+            : [];
     }
 
 
@@ -53,7 +57,9 @@ trait HelperEnumTrait
             ],
             is_string($value) => array_combine($value::enumNames(), $value::enumValues()),
 
-            default => array_combine(self::enumNames(), self::enumValues()),
+            default => ($enumClass = is_subclass_of(self::class, BackedEnum::class) ? self::class : null)
+            ? array_combine($enumClass::enumNames(), $enumClass::enumValues())
+            : [],
         };
     }
 
@@ -62,10 +68,10 @@ trait HelperEnumTrait
      * Возвращает ключ перечисления
      * @see ../../tests/HelperEnumTrait/HelperEnumNameTest.php
      *
-     * @param BackedEnum|string $value
+     * @param BackedEnum|string|null $value
      * @return string|null
      */
-    public static function enumName(BackedEnum|string $value): ?string
+    public static function enumName(BackedEnum|string|null $value): ?string
     {
         return static::enumFrom($value)?->name;
     }
@@ -75,10 +81,10 @@ trait HelperEnumTrait
      * Возвращает значение перечисления
      * @see ../../tests/HelperEnumTrait/HelperEnumValueTest.php
      *
-     * @param BackedEnum|string $value
+     * @param BackedEnum|string|null $value
      * @return mixed
      */
-    public static function enumValue(BackedEnum|string $value): mixed
+    public static function enumValue(BackedEnum|string|null $value): mixed
     {
         return static::enumFrom($value)?->value;
     }
@@ -93,8 +99,8 @@ trait HelperEnumTrait
      */
     public static function enumRandom(?string $value = null): ?BackedEnum
     {
-        $enum = $value ?: static::class;
-        $names = is_subclass_of($enum, BackedEnum::class) ? $enum::cases() : [];
+        $enumClass = $value ?: (is_subclass_of(static::class, BackedEnum::class) ? static::class : null);
+        $names = is_subclass_of($enumClass, BackedEnum::class) ? $enumClass::cases() : [];
 
         return $names ? $names[array_rand($names, 1)] : null;
     }
@@ -172,19 +178,19 @@ trait HelperEnumTrait
      * Возвращает список перечислений для ресурса
      * @see ../../tests/HelperEnumTrait/HelperEnumLabelsTest.php
      *
-     * @param string $value
-     * @param string $label
+     * @param string|null $value
+     * @param string|null $label
      * @return array
      */
-    public static function enumLabels(string $value = 'value', string $label = 'label'): array
+    public static function enumLabels(?string $value = 'value', ?string $label = 'label'): array
     {
         $result = [];
         $enums = is_subclass_of(static::class, BackedEnum::class) ? static::cases() : [];
 
         foreach ($enums as $enum) {
             $result[] = [
-                $value => $enum->value,
-                $label => static::enumLabel($enum),
+                ($value ?? 'value') => $enum->value,
+                ($label ?? 'label') => static::enumLabel($enum),
             ];
         }
 

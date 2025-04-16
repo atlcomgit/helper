@@ -141,14 +141,14 @@ trait HelperStringTrait
      * Если cacheEnabled выключен, то кеш не используется
      * @see ../../tests/HelperStringTrait/HelperStringSplitTest.php
      *
-     * @param int|float|string $value
+     * @param int|float|string|null $value
      * @param int|float|string|array|null $delimiter
      * @param int|null $index
      * @param bool $cacheEnabled
      * @return array|string|null
      */
     public static function stringSplit(
-        int|float|string $value,
+        int|float|string|null $value,
         int|float|string|array|null $delimiter,
         ?int $index = null,
         bool $cacheEnabled = true,
@@ -247,12 +247,13 @@ trait HelperStringTrait
      * @see ../../tests/HelperStringTrait/HelperStringPasteTest.php
      *
      * @param int|float|string|null $value
-     * @param int|float|string $paste
+     * @param int|float|string|null $paste
      * @param int $start
      * @return string
      */
-    public static function stringPaste(int|float|string|null $value, int|float|string $paste, int $start): string
+    public static function stringPaste(int|float|string|null $value, int|float|string|null $paste, int $start): string
     {
+        $value = (string)$value;
         $paste = (string)$paste;
 
         return match (true) {
@@ -271,12 +272,13 @@ trait HelperStringTrait
      * @see ../../tests/HelperStringTrait/HelperStringChangeTest.php
      *
      * @param int|float|string|null $value
-     * @param int|float|string $change
+     * @param int|float|string|null $change
      * @param int $start
      * @return string
      */
-    public static function stringChange(int|float|string|null $value, int|float|string $change, int $start): string
+    public static function stringChange(int|float|string|null $value, int|float|string|null $change, int $start): string
     {
+        $value = (string)$value;
         $change = (string)$change;
 
         return match (true) {
@@ -350,25 +352,28 @@ trait HelperStringTrait
      * Возвращает число с числительным названием из массива с тремя вариантами для [0|5..9, 1, 2..4]
      * @see ../../tests/HelperStringTrait/HelperStringPluralTest.php
      *
-     * @param int|float|string $number
+     * @param int|float|string|null $number
      * @param array $words
      * @param bool $includeNumber
      * @return string
      */
-    public static function stringPlural(int|float|string $value, array $plurals, bool $includeValue = true): string
+    public static function stringPlural(int|float|string|null $value, array $plurals, bool $includeValue = true): string
     {
         $numberString = (string)abs(floor(floatval($value)));
         $numberPart = (int)static::stringCopy($numberString, static::stringLength($numberString) - 2, 2);
         $numberMod = $numberPart % 10;
 
-        return ($includeValue ? "{$value} " : "")
-            . match (true) {
-                $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
-                $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
-                => (string)($plurals[2] ?? ''),
+        return is_null($value)
+            ? ''
+            : (($includeValue ? "{$value} " : "")
+                . match (true) {
+                    $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
+                    $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
+                    => (string)($plurals[2] ?? ''),
 
-                default => (string)($plurals[0] ?? ''),
-            };
+                    default => (string)($plurals[0] ?? ''),
+                }
+            );
     }
 
 
@@ -376,14 +381,14 @@ trait HelperStringTrait
      * Разбивает текст на части указанной длины по словам или строкам и возвращает массив строк
      * @see ../../tests/HelperStringTrait/HelperStringBreakByLengthTest.php
      *
-     * @param string $message
+     * @param string|null $message
      * @param HelperStringBreakTypeEnum $breakType
      * @param int $partLengthMax
      * @param int|null $firstPartIsShort
      * @return array
      */
     public static function stringBreakByLength(
-        string $value,
+        ?string $value,
         HelperStringBreakTypeEnum $breakType,
         int $partLengthMax = 4000,
         ?int $firstPartLength = null, // 1000
@@ -395,7 +400,7 @@ trait HelperStringTrait
         if (
             static::stringLength($value) <= ($firstPartLength ? min($firstPartLength, $partLengthMax) : $partLengthMax)
         ) {
-            $result[] = $value;
+            is_null($value) ?: $result[] = $value;
 
         } else {
             // Разбиваем сообщение на строки
@@ -635,14 +640,14 @@ trait HelperStringTrait
      * @see ../../tests/HelperStringTrait/HelperStringReplaceTest.php
      *
      * @param int|float|string|null $value
-     * @param int|float|string|array $searches
+     * @param int|float|string|array|null $searches
      * @param int|float|string|array|null $replaces
      * @param bool $useRegexp
      * @return string
      */
     public static function stringReplace(
         int|float|string|null $value,
-        int|float|string|array $searches,
+        int|float|string|array|null $searches,
         int|float|string|array|null $replaces = null,
         bool $useRegexp = true,
     ): string {
@@ -698,10 +703,10 @@ trait HelperStringTrait
      * @see ../../tests/HelperStringTrait/HelperStringCountTest.php
      *
      * @param int|float|string|null $value
-     * @param int|float|string|array $searches
+     * @param int|float|string|array|null $searches
      * @return int
      */
-    public static function stringCount(int|float|string|null $value, int|float|string|array ...$searches): int
+    public static function stringCount(int|float|string|null $value, int|float|string|array|null ...$searches): int
     {
         $value = (string)$value;
         $result = 0;
@@ -723,11 +728,11 @@ trait HelperStringTrait
      * Возвращает повторяющуюся строку значения указанное количество раз
      * @see ../../tests/HelperStringTrait/HelperStringRepeatTest.php
      *
-     * @param int|float|string $value
+     * @param int|float|string|null $value
      * @param int $count
      * @return string
      */
-    public static function stringRepeat(int|float|string $value, int $count): string
+    public static function stringRepeat(int|float|string|null $value, int $count): string
     {
         return str_repeat((string)$value, $count);
     }
@@ -737,10 +742,10 @@ trait HelperStringTrait
      * Возвращает реверсивную строку значения
      * @see ../../tests/HelperStringTrait/HelperStringReverseTest.php
      *
-     * @param int|float|string $value
+     * @param int|float|string|null $value
      * @return string
      */
-    public static function stringReverse(int|float|string $value): string
+    public static function stringReverse(int|float|string|null $value): string
     {
         return implode(array_reverse(mb_str_split((string)$value)));
     }
@@ -750,14 +755,14 @@ trait HelperStringTrait
      * Возвращает случайную строку по шаблону регулярного выражения
      * @see ../../tests/HelperStringTrait/HelperStringRandomTest.php
      *
-     * @param string|BackedEnum $pattern
+     * @param string|BackedEnum|null $pattern
      * @return string
      */
-    public static function stringRandom(string|BackedEnum $pattern): string
+    public static function stringRandom(string|BackedEnum|null $pattern): string
     {
         $result = '';
 
-        !($pattern instanceof BackedEnum) ?: $pattern = (string)$pattern->value;
+        $pattern = ($pattern instanceof BackedEnum) ? (string)$pattern->value : (string)$pattern;
         if (static::regexpValidatePattern($pattern)) {
             $patterns = static::stringSplit($pattern, '/');
             $patterns = array_slice($patterns, 1, -1);
@@ -957,10 +962,10 @@ trait HelperStringTrait
      * Возвращает строку с разбиением слитных слов и цифр
      * @see ../../tests/HelperStringTrait/HelperStringSegmentTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function stringSegment(string $value): string
+    public static function stringSegment(?string $value): string
     {
         $result = '';
 

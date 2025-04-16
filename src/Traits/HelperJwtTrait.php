@@ -13,14 +13,15 @@ trait HelperJwtTrait
      * Возвращает массив с данными из декодированного jwt токена
      * @see ../../tests/HelperJwtTrait/HelperJwtDecodeTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @param string|null $signKey
      * @return array|null
      */
     public static function jwtDecode(
-        string $value,
+        ?string $value,
         ?string $signKey = null,
     ): ?array {
+        $value = (string)$value;
         $token = explode('.', $value);
 
         if (count($token) !== 3) {
@@ -59,30 +60,30 @@ trait HelperJwtTrait
      * Возвращает строку с jwt токеном из закодированных данных
      * @see ../../tests/HelperJwtTrait/HelperJwtEncodeTest.php
      *
-     * @param array $value
-     * @param array $header
+     * @param array|null $value
+     * @param array|null $header
      * @param string|null $signKey
      * @param string $hash
      * @return string
      */
     public static function jwtEncode(
-        array $value,
-        array $header = [],
+        ?array $value,
+        ?array $header = null,
         ?string $signKey = null,
         string $hash = 'sha512',
     ): string {
         $header = array_merge(
-            $header,
-            $header = [
+            $header ?? [],
+            [
                 "alg" => static::stringUpper($hash),
                 "typ" => 'JWT',
-            ]
+            ],
         );
 
         return static::stringConcat(
             '.',
-            $base64Header = rtrim(strtr(base64_encode(json_encode($header)), '+/', '-_'), '='),
-            $base64Payload = rtrim(strtr(base64_encode(json_encode($value)), '+/', '-_'), '='),
+            $base64Header = rtrim(strtr(base64_encode(json_encode($header ?? [])), '+/', '-_'), '='),
+            $base64Payload = rtrim(strtr(base64_encode(json_encode($value ?? [])), '+/', '-_'), '='),
             rtrim(strtr(base64_encode(
                 hash_hmac(
                     $hash,

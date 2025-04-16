@@ -43,5 +43,8 @@ final class HelperRegexpValidateDateTest extends TestCase
 
         $boolean = Helper::regexpValidateDate('20250101');
         $this->assertTrue($boolean === false);
+
+        $boolean = Helper::regexpValidateDate(null);
+        $this->assertTrue($boolean === false);
     }
 }

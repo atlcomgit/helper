@@ -61,5 +61,8 @@ final class HelperArrayDeleteKeysTest extends TestCase
 
         $array = Helper::arrayDeleteKeys(['a' => ['b' => 2, 'c' => 3]], ['/(a\.b|a\.c)/']);
         $this->assertEquals(['a' => []], $array);
+
+        $array = Helper::arrayDeleteKeys(null, null);
+        $this->assertEquals([], $array);
     }
 }

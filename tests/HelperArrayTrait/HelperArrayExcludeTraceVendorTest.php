@@ -17,8 +17,8 @@ final class HelperArrayExcludeTraceVendorTest extends TestCase
     #[Test]
     public function arrayExcludeTraceVendor(): void
     {
-        // $array = Helper::arrayExcludeTraceVendor(debug_backtrace());
-        // $this->assertEquals([], $array);
+        $array = Helper::arrayExcludeTraceVendor(debug_backtrace());
+        $this->assertEquals([], $array);
 
         $array = Helper::arrayExcludeTraceVendor([
             [
@@ -42,5 +42,8 @@ final class HelperArrayExcludeTraceVendorTest extends TestCase
             ...debug_backtrace(),
         ]);
         $this->assertEquals([['file' => 'test.php', 'func' => 'TestClass::test()']], $array);
+
+        $array = Helper::arrayExcludeTraceVendor(null, null);
+        $this->assertEquals([], $array);
     }
 }

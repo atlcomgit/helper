@@ -25,5 +25,8 @@ final class HelperStringPadPrefixTest extends TestCase
 
         $string = Helper::stringPadPrefix('', 'abc');
         $this->assertTrue($string === '');
+
+        $string = Helper::stringPadPrefix(null, null);
+        $this->assertTrue($string === '');
     }
 }

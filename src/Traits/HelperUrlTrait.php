@@ -15,24 +15,26 @@ trait HelperUrlTrait
      * Возвращает массив частей адреса url
      * @see ../../tests/HelperUrlTrait/HelperUrlParseTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return array
      */
-    public static function urlParse(string $value): array
+    public static function urlParse(?string $value): array
     {
-        $parsed = parse_url($value);
+        $value = (string)$value;
+        $parsed = parse_url($value) ?: [];
         $scheme = $parsed['scheme'] ?? null;
         $host = $parsed['host'] ?? null;
         $path = $parsed['path'] ?? null;
 
         if (!$scheme) {
-            $parsed = parse_url("http://$value");
+            $parsed = parse_url("http://$value") ?: [];
             $host = $parsed['host'] ?? null;
             $path = $parsed['path'] ?? null;
 
             if (!$host) {
-                $parsed = parse_url($value = "http://domain/" . ltrim($value, '/'));
+                $parsed = parse_url($value = "http://domain/" . ltrim($value, '/')) ?: [];
                 $path = $parsed['path'] ?? null;
+                !($path === '/') ?: $path = null;
             }
         }
 
@@ -96,12 +98,13 @@ trait HelperUrlTrait
      * Возвращает кодированный русский домен в виде xn--
      * @see ../../tests/HelperUrlTrait/HelperUrlDomainEncodeTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function urlDomainEncode(string $value): string
+    public static function urlDomainEncode(?string $value): string
     {
         $result = [];
+        $value = (string)$value;
         $parts = explode('.', static::stringLower($value));
 
         foreach ($parts as $part) {
@@ -118,12 +121,13 @@ trait HelperUrlTrait
      * Возвращает декодированный русский домен вида xn--
      * @see ../../tests/HelperUrlTrait/HelperUrlDomainDecodeTest.php
      *
-     * @param string $value
+     * @param string|null $value
      * @return string
      */
-    public static function urlDomainDecode(string $value): string
+    public static function urlDomainDecode(?string $value): string
     {
         $result = [];
+        $value = (string)$value;
         $parts = explode('.', $value);
 
         foreach ($parts as $part) {

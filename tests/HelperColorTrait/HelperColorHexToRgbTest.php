@@ -31,5 +31,8 @@ final class HelperColorHexToRgbTest extends TestCase
 
         $array = Helper::colorHexToRgb('0000');
         $this->assertTrue($array === []);
+
+        $array = Helper::colorHexToRgb(null);
+        $this->assertTrue($array === []);
     }
 }

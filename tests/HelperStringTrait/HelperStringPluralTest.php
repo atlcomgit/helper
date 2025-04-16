@@ -26,7 +26,19 @@ final class HelperStringPluralTest extends TestCase
         $string = Helper::stringPlural(2, ['штук', 'штука', 'штуки']);
         $this->assertTrue($string === '2 штуки');
 
+        $string = Helper::stringPlural(4, ['штук', 'штука', 'штуки']);
+        $this->assertTrue($string === '4 штуки');
+
+        $string = Helper::stringPlural(5, ['штук', 'штука', 'штуки']);
+        $this->assertTrue($string === '5 штук');
+
+        $string = Helper::stringPlural(10, ['штук', 'штука', 'штуки']);
+        $this->assertTrue($string === '10 штук');
+
         $string = Helper::stringPlural(1, ['штук', 'штука', 'штуки'], false);
         $this->assertTrue($string === 'штука');
+
+        $string = Helper::stringPlural(null, ['штук', 'штука', 'штуки'], false);
+        $this->assertTrue($string === '');
     }
 }

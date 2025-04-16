@@ -61,5 +61,8 @@ final class HelperTimeSecondsToStringTest extends TestCase
 
         $string = Helper::timeSecondsToString(5.5);
         $this->assertEquals('5 секунд', $string);
+
+        $string = Helper::timeSecondsToString(null);
+        $this->assertEquals('', $string);
     }
 }

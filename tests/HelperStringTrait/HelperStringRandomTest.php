@@ -47,5 +47,8 @@ final class HelperStringRandomTest extends TestCase
 
         $string = Helper::stringRandom($pattern = HelperRegexpEnum::Uuid->value);
         $this->assertMatchesRegularExpression($pattern, $string);
+
+        $string = Helper::stringRandom(null);
+        $this->assertTrue($string === '');
     }
 }

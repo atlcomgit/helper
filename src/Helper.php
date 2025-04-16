@@ -16,6 +16,7 @@ use Atlcom\Traits\HelperExceptionTrait;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperIntervalTrait;
 use Atlcom\Traits\HelperIpTrait;
+use Atlcom\Traits\HelperJsonTrait;
 use Atlcom\Traits\HelperJwtTrait;
 use Atlcom\Traits\HelperNumberTrait;
 use Atlcom\Traits\HelperPathTrait;
@@ -52,6 +53,8 @@ use Atlcom\Traits\HelperUrlTrait;
  * 
  * @group cache - Работа с кешем
  * @method @see static::cacheRuntime()
+ * @method @see static::cacheRuntimeClear()
+ * @method @see static::cacheRuntimeDelete()
  * @method @see static::cacheRuntimeExists()
  * @method @see static::cacheRuntimeGet()
  * @method @see static::cacheRuntimeSet()
@@ -111,6 +114,9 @@ use Atlcom\Traits\HelperUrlTrait;
  * 
  * @group ip - Работа с ip адресами
  * @method @see static::ipInRange()
+ * 
+ * @group ip - Работа с json строками
+ * @method @see static::jsonFlags()
  * 
  * @group jwt - Работа с jwt токенами
  * @method @see static::jwtDecode()
@@ -211,6 +217,7 @@ abstract class Helper
     use HelperHashTrait;
     use HelperIntervalTrait;
     use HelperIpTrait;
+    use HelperJsonTrait;
     use HelperJwtTrait;
     use HelperNumberTrait;
     use HelperPathTrait;

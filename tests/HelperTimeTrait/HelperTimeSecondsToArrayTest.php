@@ -46,5 +46,15 @@ final class HelperTimeSecondsToArrayTest extends TestCase
             'seconds' => 30,
             'milliseconds' => 123,
         ], $array);
+
+        $array = Helper::timeSecondsToArray(null);
+        $this->assertEquals([
+            'years' => 0,
+            'days' => 0,
+            'hours' => 0,
+            'minutes' => 0,
+            'seconds' => 0,
+            'milliseconds' => 0,
+        ], $array);
     }
 }

@@ -41,5 +41,8 @@ final class HelperStringBreakByLengthTest extends TestCase
 
         $array = Helper::stringBreakByLength('Иванов Иван Иванович', HelperStringBreakTypeEnum::Line, 1);
         $this->assertTrue($array === ['Иванов Иван Иванович']);
+
+        $array = Helper::stringBreakByLength(null, HelperStringBreakTypeEnum::Line, 1);
+        $this->assertTrue($array === []);
     }
 }
