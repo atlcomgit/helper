@@ -19,5 +19,11 @@ final class HelperStringPadSuffixTest extends TestCase
     {
         $string = Helper::stringPadSuffix('abc', 'def', true);
         $this->assertTrue($string === 'abcdef');
+
+        $string = Helper::stringPadSuffix('abc', 'def');
+        $this->assertTrue($string === 'abcdef');
+
+        $string = Helper::stringPadSuffix('', 'def');
+        $this->assertTrue($string === '');
     }
 }

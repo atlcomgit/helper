@@ -503,9 +503,10 @@ trait HelperStringTrait
     public static function stringPadPrefix(
         int|float|string|null $value,
         int|float|string|null $prefix,
-        mixed $condition = true,
+        mixed $condition = null,
     ): string {
         !is_callable($condition) ?: $condition = $condition($value, $prefix);
+        !is_null($condition) ?: $condition = (bool)$value;
 
         return (($prefix && (bool)$condition) ? (string)$prefix : '') . (string)$value;
     }
@@ -523,11 +524,12 @@ trait HelperStringTrait
     public static function stringPadSuffix(
         int|float|string|null $value,
         int|float|string|null $suffix,
-        mixed $condition = true,
+        mixed $condition = null,
     ): string {
         !is_callable($condition) ?: $condition = $condition($value, $suffix);
+        !is_null($condition) ?: $condition = (bool)$value;
 
-        return (string)$value . (($suffix && $condition) ? (string)$suffix : '');
+        return (string)$value . (($suffix && (bool)$condition) ? (string)$suffix : '');
     }
 
 
@@ -804,7 +806,7 @@ trait HelperStringTrait
             $chars = [];
             if (preg_match('/^\[(.*)\]$/', $char, $charMatch)) {
                 // Обработка символьного класса
-                $chars = HelperInternal::parseCharacterClass($charMatch[1]);
+                $chars = HelperInternal::internalParseCharacterClass($charMatch[1]);
             } elseif (preg_match('/^\\\\([dws])$/', $char, $escapeMatch)) {
                 // Обработка специальных классов
                 $chars = match ($escapeMatch[1]) {
@@ -812,8 +814,8 @@ trait HelperStringTrait
                     'w' => array_merge(
                         range('a', 'z'),
                         range('A', 'Z'),
-                        HelperInternal::mbRange('А', 'Я'),
-                        HelperInternal::mbRange('а', 'я'),
+                        HelperInternal::internalRange('А', 'Я'),
+                        HelperInternal::internalRange('а', 'я'),
                         range('0', '9'),
                         ['Ё', 'ё'],
                         ['_'],
@@ -967,8 +969,8 @@ trait HelperStringTrait
         $en = range('a', 'z');
         $En = array_merge($EN, $en);
         $dEn = array_merge($d, $EN, $en);
-        $RU = [...HelperInternal::mbRange('А', 'Я'), 'Ё'];
-        $ru = [...HelperInternal::mbRange('а', 'я'), 'ё'];
+        $RU = [...HelperInternal::internalRange('А', 'Я'), 'Ё'];
+        $ru = [...HelperInternal::internalRange('а', 'я'), 'ё'];
         $closeChars = [')', '}', '>', ']', '"', '_', '.', ',', ':', ';', '!', '?', '%'];
         $prevChar = '';
 

@@ -18,21 +18,26 @@ trait HelperPhoneTrait
      *
      * @param int|float|string $value
      * @param string|null $countryNumber
+     * @param string $format = null
      * @return string
      */
-    public static function phoneFormat(int|float|string $value, ?string $countryNumber = '7'): string
-    {
+    public static function phoneFormat(
+        int|float|string $value,
+        ?string $countryNumber = '7',
+        ?string $format = null,
+    ): string {
         $value = (string)$value;
         $value = preg_replace('/[^0-9]/', '', $value);
         (static::stringStarts($value, $countryNumber) && static::stringLength($value) >= 11)
             ?: $value = "{$countryNumber}{$value}";
 
-        $digits = static::stringCount(static::$phoneFormat, ['%d', '%s']);
+        $format ??= static::$phoneFormat;
+        $digits = static::stringCount($format, ['%d', '%s']);
         $chars = str_split($value);
 
         return static::stringReplace(
             sprintf(
-                static::$phoneFormat,
+                $format,
                 ...[
                     ...array_fill(0, max(0, $digits - count($chars)), null),
                     ...$chars,

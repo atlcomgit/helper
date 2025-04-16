@@ -16,7 +16,9 @@ trait HelperTelegramTrait
      * @see ../../tests/HelperTelegramTrait/HelperTelegramBreakMessageTest.php
      *
      * @param int|float|string $value
-     * @param bool $hasAttach
+     * @param int $firstPartLength
+     * @param int|null $partLengthMax
+     * @param int|null $partCountMax
      * @return array
      */
     public static function telegramBreakMessage(

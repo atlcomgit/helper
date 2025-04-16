@@ -460,7 +460,7 @@ $string = Helper::pathRoot(); // $string = '/home/path'
 Работа с телефонами
 
 ---
-##### [phoneFormat(\$value, \$countryNumber): string](./tests/HelperPhoneTrait/HelperPhoneFormatTest.php)
+##### [phoneFormat(\$value, \$countryNumber, \$format): string](./tests/HelperPhoneTrait/HelperPhoneFormatTest.php)
 Возвращает отформатированный номер телефона
 ```php
 $string = Helper::phoneFormat('79001112233'); // $string = '+7 (900) 111-22-33'
@@ -825,5 +825,34 @@ $string = Helper::translitString('абвгд'); // $string = 'abvgd'
 Возвращает транслитерацию строки
 ```php
 $string = Helper::translitToSlug('абв Где!.123'); // $string = 'abv_gde_123'
+```
+---
+
+#### Url
+Работа с url адресом
+
+---
+##### [urlCreate(\$scheme, \$host, \$path, \$query): array](./tests/HelperUrlTrait/HelperUrlCreateTest.php)
+Возвращает строку адреса url
+```php
+$string = Helper::urlCreate(scheme: 'https', host: 'a.com', path: 'b', query: ['c' => 1]); // $string = 'https://a.com/b?c=1'
+```
+---
+##### [urlDomainDecode(\$value): string](./tests/HelperUrlTrait/HelperUrlDomainDecodeTest.php)
+Возвращает декодированный русский домен вида xn--
+```php
+$string = Helper::urlDomainDecode('xn--e1afmkfd.xn--p1ai'); // $string = 'пример.рф'
+```
+---
+##### [urlDomainEncode(\$value): string](./tests/HelperUrlTrait/HelperUrlDomainEncodeTest.php)
+Возвращает кодированный русский домен в виде xn--
+```php
+$string = Helper::urlDomainEncode('пример.рф'); // $string = 'xn--e1afmkfd.xn--p1ai'
+```
+---
+##### [urlParse(\$value): array](./tests/HelperUrlTrait/HelperUrlParseTest.php)
+Возвращает массив частей адреса url
+```php
+$array = Helper::urlParse('http://a.com/d/?e=f'); // $array = ['scheme' => 'http', 'host' => 'a.com', 'path' => '/d', 'query' => ['e' => 'f']]
 ```
 ---

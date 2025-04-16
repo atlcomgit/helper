@@ -1,5 +1,13 @@
 # Changelog
 
+## Версия 1.11
+- Добавлен метод Helper::urlCreate
+- Добавлен метод Helper::urlDomainDecode
+- Добавлен метод Helper::urlDomainEncode
+- Добавлен метод Helper::phoneFormat
+
+- Обновлен метод Helper::stringSplit
+
 ## Версия 1.10
 - Обновлен метод Helper::stringSplit
 

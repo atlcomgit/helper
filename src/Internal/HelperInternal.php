@@ -8,8 +8,10 @@ use Atlcom\Consts\HelperConsts as Consts;
 use Atlcom\Enums\HelperNumberDeclensionEnum as Declension;
 use Atlcom\Enums\HelperNumberEnumerationEnum as Enumeration;
 use Atlcom\Enums\HelperNumberGenderEnum as Gender;
+use Atlcom\Helper;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperStringTrait;
+use InvalidArgumentException;
 
 /**
  * Класс вспомогательных внутренних методов
@@ -556,7 +558,7 @@ class HelperInternal
      * @param string $value
      * @return array
      */
-    public static function parseCharacterClass(string $value): array
+    public static function internalParseCharacterClass(string $value): array
     {
         $chars = [];
         $i = 0;
@@ -571,7 +573,7 @@ class HelperInternal
                 // Диапазон символов
                 $start = mb_substr($value, $i, 1);
                 $end = mb_substr($value, $i + 2, 1);
-                $chars = array_merge($chars, static::mbRange($start, $end));
+                $chars = array_merge($chars, static::internalRange($start, $end));
                 $i += 3;
             } else {
                 // Одиночный символ
@@ -591,7 +593,7 @@ class HelperInternal
      * @param mixed $end
      * @return array
      */
-    public static function mbRange($start, $end): array
+    public static function internalRange($start, $end): array
     {
         if ($start === $end) {
             return [$start];
@@ -606,6 +608,195 @@ class HelperInternal
             $_current += $_offset;
         }
         $result[] = $end;
+
+        return $result;
+    }
+
+
+    /**
+     * Возвращает кодирование код символа
+     *
+     * @param int $value
+     * @return string
+     */
+    public static function internalDigitEncode(int $value): string
+    {
+        return ($value < 26) ? chr($value + 97) : chr($value + 22);
+    }
+
+
+    /**
+     * Возвращает декодирование символа в код
+     *
+     * @param string $value
+     * @return int
+     */
+    public static function internalDigitDecode(string $value): int
+    {
+        $cp = ord($value);
+
+        return match (true) {
+            ($cp >= 0x30 && $cp <= 0x39) => $cp - 22, // 0-9
+            ($cp >= 0x41 && $cp <= 0x5A) => $cp - 65, // A-Z
+            ($cp >= 0x61 && $cp <= 0x7A) => $cp - 97, // a-z
+
+            default => throw new InvalidArgumentException("Недопустимый символ: {$value}"),
+        };
+    }
+
+
+    /**
+     * Адаптация смещения для корректировки кодирования
+     * Динамически регулирует параметры кодирования/декодирования
+     *
+     * @param int $value - начальная коррекция
+     * @param int $numberPoints - количество уже обработанных символов
+     * @param bool $isFirst
+     * @return int
+     */
+    public static function internalAdapt(int $value, int $numberPoints, bool $isFirst): int
+    {
+        $value = $isFirst ? (int)($value / 700) : (int)($value / 2);
+        $value += (int)($value / $numberPoints);
+
+        for ($k = 0; $value > 455; $k += 36) {
+            $value = (int)($value / 35);
+        }
+
+        return (int)($k + (36 * $value) / ($value + 38));
+    }
+
+
+    /**
+     * Возвращает кодирование русских доменов в Punycode
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function internalPunycodeEncode(string $value): string
+    {
+        $result = '';
+        $chars = preg_split('//u', $value, -1, PREG_SPLIT_NO_EMPTY);
+        $n = 128;
+        $delta = 0;
+        $bias = 72;
+        $basic = [];
+
+        // Отделяем базовые символы
+        foreach ($chars as $c) {
+            !(ord($c) < 128) ?: $basic[] = ord($c);
+        }
+
+        $basic = array_unique($basic);
+        sort($basic);
+
+        $result = implode('', array_map('chr', $basic));
+        $h = $b = count($basic);
+        !($b > 0) ?: $result .= '-';
+
+        // Кодирование не базовых символов
+        $codePoints = [];
+        foreach ($chars as $c) {
+            $code = mb_ord($c, 'UTF-8');
+            if ($code >= 128) $codePoints[$code] = true;
+        }
+
+        $codePoints = array_keys($codePoints);
+        sort($codePoints);
+        $valueLength = Helper::stringLength($value);
+
+        while ($h < $valueLength) {
+            $m = PHP_INT_MAX;
+            foreach ($codePoints as $c) {
+                !($c >= $n && $c < $m) ?: $m = $c;
+            }
+
+            $delta += ($m - $n) * ($h + 1);
+            $n = $m;
+
+            foreach ($chars as $char) {
+                $code = mb_ord($char, 'UTF-8');
+                if ($code < $n && ++$delta === PHP_INT_MAX) {
+                    break 2;
+                }
+                if ($code === $n) {
+                    for ($q = $delta, $k = 36; ; $k += 36) {
+                        $t = ($k <= $bias) ? 1 : (($k >= $bias + 26) ? 26 : $k - $bias);
+
+                        if ($q < $t) {
+                            break;
+                        }
+
+                        $result .= static::internalDigitEncode($t + ($q - $t) % (36 - $t));
+                        $q = (int)(($q - $t) / (36 - $t));
+                    }
+
+                    $result .= static::internalDigitEncode($q);
+                    $bias = static::internalAdapt($delta, $h + 1, $h === $b);
+                    $delta = 0;
+                    $h++;
+                }
+            }
+
+            $delta++;
+            $n++;
+        }
+
+        return "xn--{$result}";
+    }
+
+
+    public static function internalPunycodeDecode(string $value): string
+    {
+        $n = 128;
+        $index = 0;
+        $bias = 72;
+        $output = [];
+
+        // Разделение базовых и расширенных символов
+        $lastDash = strrpos($value, '-');
+        $basic = ($lastDash !== false) ? substr($value, 0, $lastDash) : '';
+        $value = ($lastDash !== false) ? substr($value, $lastDash + 1) : $value;
+
+        // Обработка базовых символов
+        for ($j = 0; $j < strlen($basic); $j++) {
+            $output[] = ord($basic[$j]);
+        }
+
+        $count = ($lastDash !== false) ? count($output) : 0;
+
+        // Декодирование расширенных символов
+        while (!empty($value)) {
+            $indexOld = $index;
+            $w = 1;
+
+            for ($k = 36; ; $k += 36) {
+                $digit = static::internalDigitDecode($value[0]);
+                $value = substr($value, 1);
+                $index += $digit * $w;
+                $t = ($k <= $bias) ? 1 : (($k >= $bias + 26) ? 26 : $k - $bias);
+
+                if ($digit < $t) {
+                    break;
+                }
+
+                $w *= 36 - $t;
+            }
+
+            $bias = static::internalAdapt($index - $indexOld, $count + 1, $indexOld === 0);
+            $n += (int)($index / ($count + 1));
+            $index %= $count + 1;
+
+            array_splice($output, $index, 0, $n);
+            $index++;
+            $count++;
+        }
+
+        // Преобразование кодовых точек в UTF-8
+        $result = '';
+        foreach ($output as $code) {
+            $result .= mb_chr($code);
+        }
 
         return $result;
     }

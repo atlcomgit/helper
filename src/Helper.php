@@ -27,6 +27,7 @@ use Atlcom\Traits\HelperTelegramTrait;
 use Atlcom\Traits\HelperTimeTrait;
 use Atlcom\Traits\HelperTransformTrait;
 use Atlcom\Traits\HelperTranslitTrait;
+use Atlcom\Traits\HelperUrlTrait;
 
 /**
  * Абстрактный класс Helper
@@ -189,6 +190,12 @@ use Atlcom\Traits\HelperTranslitTrait;
  * @method @see static::translitFromSlug()
  * @method @see static::translitString()
  * @method @see static::translitToSlug()
+ * 
+ * @group url - Работа с url адресами
+ * @method @see static::urlCreate()
+ * @method @see static::urlDomainDecode()
+ * @method @see static::urlDomainEncode()
+ * @method @see static::urlParse()
  */
 abstract class Helper
 {
@@ -215,4 +222,5 @@ abstract class Helper
     use HelperTimeTrait;
     use HelperTransformTrait;
     use HelperTranslitTrait;
+    use HelperUrlTrait;
 }
