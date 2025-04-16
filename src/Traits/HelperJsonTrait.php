@@ -15,14 +15,11 @@ trait HelperJsonTrait
      *
      * @param string|null $value
      * @param mixed ...$masks
-     * @return array
+     * @return int
      */
     public static function jsonFlags(): int
     {
-        return JSON_UNESCAPED_UNICODE
-            | JSON_UNESCAPED_SLASHES
-            | JSON_PRETTY_PRINT
-            | JSON_INVALID_UTF8_SUBSTITUTE
-            | JSON_INVALID_UTF8_IGNORE;
+        return
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_INVALID_UTF8_IGNORE;
     }
 }
