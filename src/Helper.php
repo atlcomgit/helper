@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atlcom;
 
 use Atlcom\Traits\HelperArrayTrait;
+use Atlcom\Traits\HelperBracketTrait;
 use Atlcom\Traits\HelperCacheTrait;
 use Atlcom\Traits\HelperCaseTrait;
 use Atlcom\Traits\HelperColorTrait;
@@ -33,7 +34,7 @@ use Atlcom\Traits\HelperUrlTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.10
+ * @version 1.13
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -50,6 +51,12 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::arraySearchKeysAndValues()
  * @method @see static::arraySearchValues()
  * @method @see static::arrayUnDot()
+ * 
+ * @group bracket - Работа со скобками
+ * @method @see static::bracketChange()
+ * @method @see static::bracketCopy()
+ * @method @see static::bracketDelete()
+ * @method @see static::bracketReplace()
  * 
  * @group cache - Работа с кешем
  * @method @see static::cacheRuntime()
@@ -115,7 +122,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @group ip - Работа с ip адресами
  * @method @see static::ipInRange()
  * 
- * @group ip - Работа с json строками
+ * @group json - Работа с json строками
  * @method @see static::jsonFlags()
  * 
  * @group jwt - Работа с jwt токенами
@@ -123,6 +130,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::jwtEncode()
  * 
  * @group number - Работа с числами
+ * @method @see static::numberFromString()
  * @method @see static::numberToString()
  * 
  * @group path - Работа с путями
@@ -206,6 +214,7 @@ use Atlcom\Traits\HelperUrlTrait;
 abstract class Helper
 {
     use HelperArrayTrait;
+    use HelperBracketTrait;
     use HelperCacheTrait;
     use HelperCaseTrait;
     use HelperColorTrait;

@@ -423,6 +423,17 @@ $array = Helper::ipInRange('192.168.1.1', '192.168.1.0/24'); // $array = ['192.1
 ```
 ---
 
+#### Json
+Работа с json строками
+
+---
+##### [jsonFlags(): int](./tests/HelperJsonTrait/HelperJsonFlagsTest.php)
+Возвращает флаг для формирования json строки
+```php
+$integer = Helper::jsonFlags(); // $integer = 3146176
+```
+---
+
 #### Jwt
 Работа с jwt токенами
 

@@ -156,29 +156,29 @@ trait HelperStringTrait
         $value = (string)$value;
         $delimiters = static::transformToArray($delimiter);
         $delimiters = array_values(static::arrayDot($delimiters));
-        $cacheKey = static::hashXxh128($value . implode($delimiters) . $index);
+        $cacheKey = static::hashXxh128(__CLASS__ . __FUNCTION__ . $value . implode($delimiters));
 
-        $result = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
-            $result = [];
+        $splits = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
+            $splits = [];
             $delimiter = '';
 
             while ($value || $delimiter) {
                 $delimiter = static::arrayFirst(static::stringSearchAny($value, $delimiters));
 
                 $delimiter
-                    ? $result[] = static::stringDelete(
+                    ? $splits[] = static::stringDelete(
                         static::stringCut($value, 0, mb_strpos($value, $delimiter) + static::stringLength($delimiter)),
                         -static::stringLength($delimiter)
                     )
-                    : $result[] = static::stringCut($value, 0);
+                    : $splits[] = static::stringCut($value, 0);
             }
 
-            return $result;
+            return $splits;
         }, $cacheEnabled);
 
         return is_null($index)
-            ? $result
-            : ($result[$index < 0 ? count($result) + $index : $index] ?? null);
+            ? $splits
+            : ($splits[$index < 0 ? count($splits) + $index : $index] ?? null);
     }
 
 

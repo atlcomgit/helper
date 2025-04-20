@@ -95,6 +95,9 @@ final class HelperStringSegmentTest extends TestCase
         $string = Helper::stringSegment('abc"defXyz"123"456"');
         $this->assertEquals($string, 'abc"def Xyz"123"456"');
 
+        $string = Helper::stringSegment('1+2*(3+4-1)');
+        $this->assertEquals($string, '1 + 2 * (3 + 4 -1)');
+
         $string = Helper::stringSegment(null);
         $this->assertEquals($string, '');
     }

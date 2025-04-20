@@ -1,5 +1,12 @@
 # Changelog
 
+## Версия 1.13
+- Добавлен метод Helper::bracketChange
+- Добавлен метод Helper::bracketCopy
+- Добавлен метод Helper::bracketDelete
+- Добавлен метод Helper::bracketReplace
+- Добавлен метод Helper::numberFromString
+
 ## Версия 1.12
 - Добавлен метод Helper::cacheRuntimeClear
 - Добавлен метод Helper::cacheRuntimeDelete

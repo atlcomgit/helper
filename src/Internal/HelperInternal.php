@@ -746,6 +746,12 @@ class HelperInternal
     }
 
 
+    /**
+     * Возвращает декодирование русских доменов из Punycode
+     *
+     * @param string $value
+     * @return string
+     */
     public static function internalPunycodeDecode(string $value): string
     {
         $n = 128;
@@ -799,5 +805,78 @@ class HelperInternal
         }
 
         return $result;
+    }
+
+
+    /**
+     * Возвращает массив индексов частей между скобками
+     *
+     * @param string|null $value
+     * @param string $left
+     * @param string $right
+     * @return array
+     */
+    public static function internalBrackets(string|null $value, string $left, string $right): array
+    {
+        $cacheKey = Helper::hashXxh128(__CLASS__ . __FUNCTION__ . "{$value}{$left}{$right}");
+
+        return $value
+            ? Helper::cacheRuntime($cacheKey, static function () use (&$value, &$left, &$right) {
+                $value = (string)$value;
+                $tokens = $stack = $brackets = [];
+                $leftLen = static::stringLength($left);
+                $rightLen = static::stringLength($right);
+                $valueLen = static::stringLength($value);
+                $currentPos = 0;
+
+                while ($currentPos < $valueLen) {
+                    $nextLeft = mb_strpos($value, $left, $currentPos);
+                    $nextRight = mb_strpos($value, $right, $currentPos);
+
+                    if ($nextLeft === false && $nextRight === false) {
+                        break;
+
+                    } elseif ($nextLeft === false) {
+                        $minPos = $nextRight;
+                        $type = 'right';
+
+                    } elseif ($nextRight === false) {
+                        $minPos = $nextLeft;
+                        $type = 'left';
+
+                    } else {
+                        if ($nextLeft < $nextRight) {
+                            $minPos = $nextLeft;
+                            $type = 'left';
+
+                        } else {
+                            $minPos = $nextRight;
+                            $type = 'right';
+                        }
+                    }
+
+                    $tokens[] = ['type' => $type, 'pos' => $minPos];
+                    $currentPos = $minPos + ($type === 'left' ? $leftLen : $rightLen);
+                }
+
+                foreach ($tokens as $token) {
+                    if ($token['type'] === 'left') {
+                        array_push($stack, $token['pos']);
+
+                    } else {
+                        if (empty($stack)) {
+                            continue;
+                        }
+
+                        $start = array_pop($stack);
+                        $brackets[] = ['start' => $start, 'end' => $token['pos']];
+                    }
+                }
+
+                usort($brackets, static fn ($a, $b) => $a['start'] - $b['start']);
+
+                return $brackets;
+            })
+            : [];
     }
 }

@@ -443,9 +443,99 @@ trait HelperNumberTrait
     }
 
 
-    // !todo
-    public static function numberFromString(?string $value): float
+    //?!? test
+    /**
+     * Возвращает число из строки с числом прописью на русском языке
+     * @see ../../tests/HelperNumberTrait/HelperNumberFromStringTest.php
+     *
+     * @param int|float|string|null $value
+     * @return int|float
+     */
+    public static function numberFromString(int|float|string|null $value): int|float
     {
-        return 0;
+        $result = '';
+
+        if (is_numeric($value)) {
+            $result = static::stringSearchAny($value, '.') ? (float)$value : (int)$value;
+
+        } else if ($value) {
+
+            $value = static::stringLower($value);
+            $nameNumbers = array_map(
+                static fn ($v) => "{$v}*",
+                static::arrayDot(Consts::NAME_NUMBERS),
+            );
+            $isMinus = false;
+            $resultFrac = '';
+
+            for ($aa = static::stringCount($value, ' '); $aa >= 0; $aa--) {
+                $word = static::stringSplit($value, ' ', $aa);
+                $name = static::arrayLast(static::stringSearchAll($word, $nameNumbers));
+
+                if (!is_null($name)) {
+                    $number = static::arrayFirst(
+                        array_keys(static::arraySearchKeysAndValues($nameNumbers, '*', $name)),
+                    );
+                    $number = static::stringSplit($number, '.', 0);
+
+                    // $number = str_pad($number, static::stringLength($result), '0', STR_PAD_LEFT);
+                    // $result = str_pad($result, static::stringLength($number), '0', STR_PAD_LEFT);
+                    // $result = static::stringMerge($number, $result);
+
+                    $result = match (true) {
+                        static::stringLength($number) > static::stringLength($result)
+                        => static::stringChange($number, $result, -static::stringLength($result)),
+
+                        static::stringLength($number) < static::stringLength($result)
+                        => static::stringChange($result, $number, -static::stringLength($number)),
+
+                        default => $result,
+                    };
+
+
+                } else if (static::stringSearchAny($word, ['цел*'])) {
+                    $resultFrac = $result;
+                    $result = '';
+
+                } else if (static::stringSearchAny($word, ['минус', '-'])) {
+                    $isMinus = true;
+                }
+            }
+
+            $result ?: $result = '0';
+            !$resultFrac ?: $resultFrac = static::stringChange($resultFrac, '0', 0);
+            $result = $resultFrac ? (float)"{$result}.{$resultFrac}" : (int)$result;
+            !$isMinus ?: $result *= -1;
+        } else {
+            $result = 0;
+        }
+
+        return $result;
+    }
+
+
+    //?!? test
+    public static function numberCalculate(string $value): string
+    {
+        $value = static::stringSegment($value);
+        $parts = static::stringSplit($value, '(', ')');
+
+        return '';
+    }
+
+
+    //?!? test
+    /**
+     * Меняет местами значения value1 и value2
+     *
+     * @param int|float|null $value1
+     * @param int|float|null $value2
+     * @return void
+     */
+    public static function numberSwap(int|float|null &$value1, int|float|null &$value2): void
+    {
+        $temp = $value1;
+        $value1 = $value2;
+        $value2 = $temp;
     }
 }
