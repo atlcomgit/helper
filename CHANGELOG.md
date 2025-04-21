@@ -6,9 +6,12 @@
 - Добавлен метод Helper::bracketCount
 - Добавлен метод Helper::bracketDelete
 - Добавлен метод Helper::bracketReplace
+- Добавлен метод Helper::numberCalculate
+- Добавлен метод Helper::numberDecimalDigits
 - Добавлен метод Helper::numberFromString
 - Добавлен метод Helper::numberSwap
 
+- Обновлен метод Helper::numberToString
 - Обновлен метод Helper::stringDeleteMultiples
 
 ## Версия 1.12

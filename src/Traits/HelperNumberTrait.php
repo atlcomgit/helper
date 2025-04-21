@@ -38,9 +38,21 @@ trait HelperNumberTrait
         $getFrac = '';
         $result = '';
 
-        $value = static::stringReplace($value, '/[^0-9+-.]/u', '');
+        $valueDigits = static::stringReplace($value, '/[^0-9+-.]/u', '');
 
-        if (!$value === '') {
+        if ($valueDigits === '') {
+            $valueString = static::stringReplace(static::stringSegment($value), '/[0-9+-.]/u', '');
+            if (!static::regexpValidateUnicode($valueString)) {
+                return '';
+            }
+
+            $value = static::numberFromString($valueString);
+
+        } else {
+            $value = $valueDigits;
+        }
+
+        if ($value === '') {
             return $result;
         }
 
@@ -443,7 +455,6 @@ trait HelperNumberTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает число из строки с числом прописью на русском языке
      * @see ../../tests/HelperNumberTrait/HelperNumberFromStringTest.php
@@ -515,7 +526,6 @@ trait HelperNumberTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку с результатом калькуляции значений в строке
      * @see ../../tests/HelperNumberTrait/HelperNumberCalculateTest.php
@@ -678,16 +688,15 @@ trait HelperNumberTrait
     }
 
 
-    //?!? test
     /**
      * Меняет местами значения value1 и value2
      * @see ../../tests/HelperNumberTrait/HelperNumberSwapTest.php
      *
-     * @param int|float|null $value1
-     * @param int|float|null $value2
+     * @param int|float|string|null $value1
+     * @param int|float|string|null $value2
      * @return void
      */
-    public static function numberSwap(int|float|null &$value1, int|float|null &$value2): void
+    public static function numberSwap(int|float|string|null &$value1, int|float|string|null &$value2): void
     {
         $temp = $value1;
         $value1 = $value2;
@@ -695,9 +704,9 @@ trait HelperNumberTrait
     }
 
 
-    //?!? test
     /**
-     * Возвращает количество знаком дробной части числа
+     * Возвращает количество знаков дробной части числа
+     * @see ../../tests/HelperNumberTrait/HelperNumberDecimalDigitsTest.php
      *
      * @param int|float|string|null $value
      * @return int

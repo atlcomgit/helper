@@ -17,6 +17,8 @@ final class HelperBracketDeleteTest extends TestCase
     #[Test]
     public function bracketDelete(): void
     {
+        $this->assertSame(Helper::bracketDelete('(a)(b)', '(', ')', 0), '(b)');
+
         $example1 = '(1 + 2 * (3 - 4 / (5 - 3)))';
 
         $string = Helper::bracketDelete($example1, '(', ')', 0);

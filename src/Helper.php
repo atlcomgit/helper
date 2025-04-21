@@ -52,7 +52,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::arraySearchValues()
  * @method @see static::arrayUnDot()
  * 
- * @group bracket - Работа со скобками
+ * @group bracket - Работа со скобками/тегами
  * @method @see static::bracketChange()
  * @method @see static::bracketCopy()
  * @method @see static::bracketCount()
@@ -131,6 +131,8 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::jwtEncode()
  * 
  * @group number - Работа с числами
+ * @method @see static::numberCalculate()
+ * @method @see static::numberDecimalDigits()
  * @method @see static::numberFromString()
  * @method @see static::numberSwap()
  * @method @see static::numberToString()

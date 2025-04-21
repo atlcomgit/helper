@@ -17,6 +17,8 @@ final class HelperBracketCountTest extends TestCase
     #[Test]
     public function bracketCount(): void
     {
+        $this->assertSame(Helper::bracketCount('(a)(b)', '(', ')'), 2);
+
         $integer = Helper::bracketCount('(1 + 2 * (3 - 4 / (5 - 3)))', '(', ')');
         $this->assertEquals($integer, 3);
 

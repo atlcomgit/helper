@@ -90,10 +90,45 @@ $array = Helper::arraySearchValues(['a', 'b'], 'a'); // $array = ['a']
 $array = Helper::arraySearchValues(['abc', 'def'], ['a*', '*f']); // $array = ['abc', 'def']
 ```
 ---
-##### [arrayUnDot(\$value): array): array](./tests/HelperArrayTrait/HelperArrayUnDotTest.php)
+##### [arrayUnDot(\$value): array](./tests/HelperArrayTrait/HelperArrayUnDotTest.php)
 Возвращает многомерный массив из одномерного
 ```php
 $array = Helper::arrayUnDot(['a.b' => 2, 'a.c' => 3]); // $array = ['a' => ['b' => 2, 'c' => 3]]
+```
+---
+
+#### Bracket
+Работа со скобками/тегами
+
+---
+##### [bracketChange(\$value, \$left, \$right, \$index): string](./tests/HelperBracketTrait/HelperBracketChangeTest.php)
+Возвращает строку с заменой содержимого внутри блока скобок под индексом index на строку change
+```php
+$string = Helper::bracketChange('(a)(b)', '(', ')', 0, 'c'); // $string = '(c)(b)'
+```
+---
+##### [bracketCopy(\$value, \$left, \$right, \$index): string](./tests/HelperBracketTrait/HelperBracketCopyTest.php)
+Возвращает содержимое внутри блока скобок под индексом index
+```php
+$string = Helper::bracketCopy('(a)(b)', '(', ')', 0); // $string = 'a'
+```
+---
+##### [bracketCount(\$value, \$left, \$right): int](./tests/HelperBracketTrait/HelperBracketCountTest.php)
+Возвращает количество блоков скобок
+```php
+$integer = Helper::bracketCount('(a)(b)', '(', ')'); // $integer = 2
+```
+---
+##### [bracketDelete(\$value, \$left, \$right, \$index): string](./tests/HelperBracketTrait/HelperBracketDeleteTest.php)
+Возвращает строку с удалением блока скобок под индексом index
+```php
+$string = Helper::bracketDelete('(a)(b)', '(', ')', 0); // $string = '(b)'
+```
+---
+##### [bracketReplace(\$value, \$left, \$right, \$index, \$replace): string](./tests/HelperBracketTrait/HelperBracketReplaceTest.php)
+Возвращает строку с заменой блока скобок под индексом index на строку replace
+```php
+$string = Helper::bracketReplace('(a)(b)', '(', ')', 0, '(c)'); // $string = '(c)(b)'
 ```
 ---
 
@@ -454,6 +489,31 @@ $string = Helper::jwtEncode(['id' => 1]); // $string = 'eyJhbGciOiJTSEE1MTIiLCJ0
 #### Number
 Работа с числами
 
+---
+##### [numberCalculate(\$value, \$precision): string](./tests/HelperNumberTrait/HelperNumberCalculateTest.php)
+Возвращает строку с результатом калькуляции значений в строке
+```php
+$string = Helper::numberCalculate('1 + 2'); // $string = '3'
+```
+---
+##### [numberDecimalDigits(\$value): int](./tests/HelperNumberTrait/HelperNumberDecimalDigitsTest.php)
+Возвращает количество знаков дробной части числа
+```php
+$integer = Helper::numberDecimalDigits(1.123); // $integer = 3
+```
+---
+##### [numberFromString(\$value): int|float](./tests/HelperNumberTrait/HelperNumberFromStringTest.php)
+Возвращает число из строки с числом прописью на русском языке
+```php
+$string = Helper::numberFromString('сто двадцать три'); // $string = 123
+```
+---
+##### [numberSwap(\$value1, \$value2): void](./tests/HelperNumberTrait/HelperNumberSwapTest.php)
+Меняет местами значения value1 и value2
+```php
+$integer1 = 1; $integer2 = 2;
+Helper::numberSwap($integer1, $integer2); // $integer1 = 2, $integer2 = 1
+```
 ---
 ##### [numberToString(\$value, \$declension, \$gender, \$enumeration): string](./tests/HelperNumberTrait/HelperNumberToStringTest.php)
 Возвращает число прописью на русском языке с учетом склонения по падежу, роду и числительному перечислению

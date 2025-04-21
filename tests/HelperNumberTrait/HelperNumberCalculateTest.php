@@ -17,6 +17,8 @@ final class HelperNumberCalculateTest extends TestCase
     #[Test]
     public function numberCalculate(): void
     {
+        $this->assertSame(Helper::numberCalculate('1 + 2'), '3');
+
         $string = Helper::numberCalculate('(1 + 2 + 3 - 4) * 5 / 6');
         $this->assertEquals($string, '1.66666666666666666666');
 

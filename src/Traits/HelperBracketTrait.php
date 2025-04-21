@@ -7,11 +7,10 @@ namespace Atlcom\Traits;
 use Atlcom\Internal\HelperInternal;
 
 /**
- * Трейт для работы со скобками
+ * Трейт для работы со скобками/тегами
  */
 trait HelperBracketTrait
 {
-    //?!? readme
     /**
      * Возвращает содержимое внутри блока скобок под индексом index
      * @see ../../tests/HelperBracketTrait/HelperBracketCopyTest.php
@@ -42,7 +41,6 @@ trait HelperBracketTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку с удалением блока скобок под индексом index
      * @see ../../tests/HelperBracketTrait/HelperBracketDeleteTest.php
@@ -71,7 +69,6 @@ trait HelperBracketTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку с заменой блока скобок под индексом index на строку replace
      * @see ../../tests/HelperBracketTrait/HelperBracketReplaceTest.php
@@ -108,7 +105,6 @@ trait HelperBracketTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает строку с заменой содержимого внутри блока скобок под индексом index на строку change
      * @see ../../tests/HelperBracketTrait/HelperBracketChangeTest.php
@@ -145,7 +141,6 @@ trait HelperBracketTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает количество блоков скобок
      * @see ../../tests/HelperBracketTrait/HelperBracketCountTest.php

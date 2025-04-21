@@ -17,6 +17,8 @@ final class HelperBracketReplaceTest extends TestCase
     #[Test]
     public function bracketReplace(): void
     {
+        $this->assertSame(Helper::bracketReplace('(a)(b)', '(', ')', 0, '(c)'), '(c)(b)');
+
         $example1 = '(1 + 2 * (3 - 4 / (5 - 3)))';
 
         $string = Helper::bracketReplace($example1, '(', ')', 0, 'x');

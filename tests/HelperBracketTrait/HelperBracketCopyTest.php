@@ -17,6 +17,8 @@ final class HelperBracketCopyTest extends TestCase
     #[Test]
     public function bracketCopy(): void
     {
+        $this->assertSame(Helper::bracketCopy('(a)(b)', '(', ')', 0), 'a');
+
         $example1 = '(1 + 2 * (3 - 4 / (5 - 3)))';
 
         $string = Helper::bracketCopy($example1, '(', ')', 0);

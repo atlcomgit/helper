@@ -58,6 +58,22 @@ final class HelperNumberToStringTest extends TestCase
         );
         $this->assertEquals('плюс минус тринадцати тысяч пятиста семидести девяти', $string);
 
+        $string = Helper::numberToString(
+            'сто двадцать три',
+            HelperNumberDeclensionEnum::Dative,
+            HelperNumberGenderEnum::Male,
+            HelperNumberEnumerationEnum::Ordinal,
+        );
+        $this->assertEquals('сто двадцать третьему', $string);
+
+        $string = Helper::numberToString(
+            'abc',
+            HelperNumberDeclensionEnum::Dative,
+            HelperNumberGenderEnum::Male,
+            HelperNumberEnumerationEnum::Ordinal,
+        );
+        $this->assertEquals('', $string);
+
         $string = Helper::numberToString(null);
         $this->assertEquals('', $string);
     }
