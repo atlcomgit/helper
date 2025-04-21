@@ -951,7 +951,7 @@ trait HelperStringTrait
         foreach ($multiples as $multiple) {
             $value = (is_array($multiple) || is_object($multiple))
                 ? static::stringDeleteMultiples($value, ...static::transformToArray($multiple))
-                : preg_replace("/({$multiple})+/", (string)$multiple, $value);
+                : preg_replace("/(" . preg_quote($multiple = (string)$multiple, '/') . "){2,}/", $multiple, $value);
         }
 
         return $value;

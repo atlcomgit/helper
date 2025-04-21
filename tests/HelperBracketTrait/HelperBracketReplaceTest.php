@@ -62,6 +62,9 @@ final class HelperBracketReplaceTest extends TestCase
         $string = Helper::bracketReplace($example3, '<a', '>', 2, '<a href="x">');
         $this->assertEquals($string, '<a href="1"><a href="2"></a></a> <a href="x"></a>');
 
+        $string = Helper::bracketReplace('abc', '(', ')', 0, null);
+        $this->assertEquals($string, 'abc');
+
         $string = Helper::bracketReplace(null, '(', ')', 0, null);
         $this->assertEquals($string, '');
     }

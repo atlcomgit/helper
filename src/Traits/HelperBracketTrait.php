@@ -143,4 +143,20 @@ trait HelperBracketTrait
 
         return $value;
     }
+
+
+    //?!? readme
+    /**
+     * Возвращает количество блоков скобок
+     * @see ../../tests/HelperBracketTrait/HelperBracketCountTest.php
+     *
+     * @param string|null $value
+     * @param string $left
+     * @param string $right
+     * @return int
+     */
+    public static function bracketCount(string|null $value, string $left, string $right): int
+    {
+        return count(HelperInternal::internalBrackets($value, $left, $right));
+    }
 }

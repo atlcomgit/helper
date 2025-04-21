@@ -62,6 +62,9 @@ final class HelperBracketCopyTest extends TestCase
         $string = Helper::bracketCopy($example3, '<a ', '>', 2);
         $this->assertEquals($string, 'href="3"');
 
+        $string = Helper::bracketCopy('abc', '(', ')', 0);
+        $this->assertEquals($string, '');
+
         $string = Helper::bracketCopy(null, '(', ')', 0);
         $this->assertEquals($string, '');
     }

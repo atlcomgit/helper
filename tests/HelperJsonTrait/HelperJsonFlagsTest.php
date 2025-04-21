@@ -18,6 +18,6 @@ final class HelperJsonFlagsTest extends TestCase
     public function jsonFlags(): void
     {
         $integer = Helper::jsonFlags();
-        $this->assertEquals(3146176, $integer);
+        $this->assertEquals(3146048, $integer);
     }
 }

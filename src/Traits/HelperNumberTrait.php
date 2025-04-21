@@ -443,7 +443,7 @@ trait HelperNumberTrait
     }
 
 
-    //?!? test
+    //?!? readme
     /**
      * Возвращает число из строки с числом прописью на русском языке
      * @see ../../tests/HelperNumberTrait/HelperNumberFromStringTest.php
@@ -482,15 +482,16 @@ trait HelperNumberTrait
                     // $result = str_pad($result, static::stringLength($number), '0', STR_PAD_LEFT);
                     // $result = static::stringMerge($number, $result);
 
-                    $result = match (true) {
-                        static::stringLength($number) > static::stringLength($result)
-                        => static::stringChange($number, $result, -static::stringLength($result)),
+                    $result = static::numberCalculate(($result ?: '0') . '+' . ($number ?: '0'), 0);
+                    // $result = match (true) {
+                    //     static::stringLength($number) > static::stringLength($result)
+                    //     => static::stringChange($number, $result, -static::stringLength($result)),
 
-                        static::stringLength($number) < static::stringLength($result)
-                        => static::stringChange($result, $number, -static::stringLength($number)),
+                    //     static::stringLength($number) < static::stringLength($result)
+                    //     => static::stringChange($result, $number, -static::stringLength($number)),
 
-                        default => $result,
-                    };
+                    //     default => $result,
+                    // };
 
 
                 } else if (static::stringSearchAny($word, ['цел*'])) {
@@ -503,7 +504,7 @@ trait HelperNumberTrait
             }
 
             $result ?: $result = '0';
-            !$resultFrac ?: $resultFrac = static::stringChange($resultFrac, '0', 0);
+            !$resultFrac ?: $resultFrac = static::stringDelete($resultFrac, 0, 1);
             $result = $resultFrac ? (float)"{$result}.{$resultFrac}" : (int)$result;
             !$isMinus ?: $result *= -1;
         } else {
@@ -514,19 +515,173 @@ trait HelperNumberTrait
     }
 
 
-    //?!? test
-    public static function numberCalculate(string $value): string
+    //?!? readme
+    /**
+     * Возвращает строку с результатом калькуляции значений в строке
+     * @see ../../tests/HelperNumberTrait/HelperNumberCalculateTest.php
+     *
+     * @param string|null $value
+     * @param int|string|null $precision
+     * @return string
+     */
+    public static function numberCalculate(?string $value, int|string|null $precision = 20): ?string
     {
-        $value = static::stringSegment($value);
-        $parts = static::stringSplit($value, '(', ')');
+        $value = (string)$value;
+        $precision = (int)($precision ?? 20);
 
-        return '';
+        // Унарный минус перед скобками
+        $value = preg_replace('/(?<![\d\)])-\s*\(/', '-1*(', $value);
+        // Неявное умножение: число перед скобкой
+        $value = preg_replace('/(\d)\s*\(/', '$1*(', $value);
+        // Неявное умножение: скобка перед числом
+        $value = preg_replace('/\)\s*(\d)/', ')*$1', $value);
+        // Неявное умножение: скобка перед скобкой
+        $value = preg_replace('/\)\s*\(/', ')*(', $value);
+        // Неявное умножение: число перед числом (опционально, если пробел между числами)
+        // $value = preg_replace('/(\d)\s+(\d)/', '$1*$2', $value);
+        // Удаляем пробелы
+        $value = trim(static::stringReplace($value, [' ' => '']));
+        // Удаляем дубликаты операторов
+        $value = static::stringDeleteMultiples($value, ['-', '+', '*', '/']);
+
+        for ($aa = static::bracketCount($value, '(', ')') - 1; $aa >= 0; $aa--) {
+            $bracketBlock = static::bracketCopy($value, '(', ')', $aa);
+            $bracketBlockCalculate = static::numberCalculate($bracketBlock, $precision);
+            $value = static::bracketReplace($value, '(', ')', $aa, $bracketBlockCalculate);
+        }
+
+        $tokens = [];
+        $num = '';
+        for ($i = 0, $l = strlen($value); $i < $l; $i++) {
+            $c = $value[$i];
+            if (ctype_digit($c) || $c === '.') {
+                $num .= $c;
+            } elseif ($c === '-' && ($i === 0 || in_array($value[$i - 1], ['+', '-', '*', '/']))) {
+                $num .= $c;
+            } else {
+                if ($num !== '') {
+                    !(static::stringStarts($num, '.')) ?: $num = "0{$num}";
+                    !(static::stringEnds($num, '.')) ?: $num = "{$num}0";
+                    $tokens[] = $num;
+                    $num = '';
+                }
+                $tokens[] = $c;
+            }
+        }
+        if ($num !== '') {
+            !(static::stringStarts($num, '.')) ?: $num = "0{$num}";
+            !(static::stringEnds($num, '.')) ?: $num = "{$num}0";
+            $tokens[] = $num;
+        }
+
+        $prec = ['+' => 1, '-' => 1, '*' => 2, '/' => 2];
+        $out = [];
+        $ops = [];
+
+        foreach ($tokens as $t) {
+            if (preg_match('/^-?\d+(\.\d+)?$/', $t)) {
+                $out[] = $t;
+            } else {
+                while ($ops && $prec[end($ops)] >= $prec[$t]) {
+                    $out[] = array_pop($ops);
+                }
+                $ops[] = $t;
+            }
+        }
+        while ($ops) $out[] = array_pop($ops);
+
+        $stack = [];
+
+        foreach ($out as $t) {
+            if (preg_match('/^-?\d+(\.\d+)?$/', $t)) {
+                $stack[] = $t;
+            } else {
+                $b = array_pop($stack) ?? '0';
+                $a = array_pop($stack) ?? '0';
+
+                $aParts = explode('.', "{$a}.");
+                $bParts = explode('.', "{$b}.");
+                $maxDec = max(strlen($aParts[1] ?? '0'), strlen($bParts[1] ?? '0'));
+
+                $aSign = $a[0] === '-' ? -1 : 1;
+                $bSign = $b[0] === '-' ? -1 : 1;
+
+                $aAbs = ltrim($a, '+-');
+                $bAbs = ltrim($b, '+-');
+
+                $aParts = explode('.', "{$aAbs}.");
+                $bParts = explode('.', "{$bAbs}.");
+
+                $maxDec = max(strlen($aParts[1] ?? '0'), strlen($bParts[1] ?? '0'));
+
+                $aInt = str_replace('.', '', $aAbs) . str_repeat('0', $maxDec - strlen($aParts[1] ?? '0'));
+                $bInt = str_replace('.', '', $bAbs) . str_repeat('0', $maxDec - strlen($bParts[1] ?? '0'));
+
+                switch ($t) {
+                    case '+':
+                        if ($aSign === $bSign) {
+                            $res = HelperInternal::internalNumberAdd($aInt, $bInt);
+                            $result = HelperInternal::internalNumberInsertDecimal($res, $maxDec);
+                            if ($aSign < 0) $result = "-$result";
+                        } else {
+                            $cmp = HelperInternal::internalNumberCompare($aInt, $bInt);
+                            if ($cmp === 0) {
+                                $result = '0';
+                            } elseif ($cmp > 0) {
+                                $res = HelperInternal::internalNumberSubtract($aInt, $bInt);
+                                $result = HelperInternal::internalNumberInsertDecimal($res, $maxDec);
+                                if ($aSign < 0) $result = "-$result";
+                            } else {
+                                $res = HelperInternal::internalNumberSubtract($bInt, $aInt);
+                                $result = HelperInternal::internalNumberInsertDecimal($res, $maxDec);
+                                if ($bSign < 0) $result = "-$result";
+                            }
+                        }
+                        break;
+
+                    case '-':
+                        $bSign *= -1;
+                        // теперь: a - b == a + (-b)
+                        // => повторно используй блок "case '+'"
+                        if ($aSign === $bSign) {
+                            $res = HelperInternal::internalNumberAdd($aInt, $bInt);
+                            $result = HelperInternal::internalNumberInsertDecimal($res, $maxDec);
+                            if ($aSign < 0) $result = "-$result";
+                        } else {
+                            $cmp = HelperInternal::internalNumberCompare($aInt, $bInt);
+                            if ($cmp === 0) {
+                                $result = '0';
+                            } elseif ($cmp > 0) {
+                                $res = HelperInternal::internalNumberSubtract($aInt, $bInt);
+                                $result = HelperInternal::internalNumberInsertDecimal($res, $maxDec);
+                                if ($aSign < 0) $result = "-$result";
+                            } else {
+                                $res = HelperInternal::internalNumberSubtract($bInt, $aInt);
+                                $result = HelperInternal::internalNumberInsertDecimal($res, $maxDec);
+                                if ($bSign < 0) $result = "-$result";
+                            }
+                        }
+                        break;
+                    case '*':
+                        $result = HelperInternal::internalNumberMultiply($a, $b, $precision);
+                        break;
+                    case '/':
+                        $result = HelperInternal::internalNumberDivide($a, $b, $precision);
+                        break;
+                }
+
+                $stack[] = HelperInternal::internalNumberTrimTrailingZeros(HelperInternal::internalNumberRoundStr($result, $precision));
+            }
+        }
+
+        return $stack[0] ?? "0";
     }
 
 
     //?!? test
     /**
      * Меняет местами значения value1 и value2
+     * @see ../../tests/HelperNumberTrait/HelperNumberSwapTest.php
      *
      * @param int|float|null $value1
      * @param int|float|null $value2
@@ -537,5 +692,20 @@ trait HelperNumberTrait
         $temp = $value1;
         $value1 = $value2;
         $value2 = $temp;
+    }
+
+
+    //?!? test
+    /**
+     * Возвращает количество знаком дробной части числа
+     *
+     * @param int|float|string|null $value
+     * @return int
+     */
+    public static function numberDecimalDigits(int|float|string|null $value): int
+    {
+        $parts = explode('.', (string)$value);
+
+        return isset($parts[1]) ? strlen(rtrim($parts[1], '0')) : 0;
     }
 }

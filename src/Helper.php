@@ -55,6 +55,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @group bracket - Работа со скобками
  * @method @see static::bracketChange()
  * @method @see static::bracketCopy()
+ * @method @see static::bracketCount()
  * @method @see static::bracketDelete()
  * @method @see static::bracketReplace()
  * 
@@ -131,6 +132,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * 
  * @group number - Работа с числами
  * @method @see static::numberFromString()
+ * @method @see static::numberSwap()
  * @method @see static::numberToString()
  * 
  * @group path - Работа с путями

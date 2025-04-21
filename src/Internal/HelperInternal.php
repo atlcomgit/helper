@@ -569,12 +569,14 @@ class HelperInternal
                 // Экранированный символ
                 $chars[] = mb_substr($value, $i + 1, 1);
                 $i += 2;
+
             } elseif ($i + 2 < $len && mb_substr($value, $i + 1, 1) === '-') {
                 // Диапазон символов
                 $start = mb_substr($value, $i, 1);
                 $end = mb_substr($value, $i + 2, 1);
                 $chars = array_merge($chars, static::internalRange($start, $end));
                 $i += 3;
+
             } else {
                 // Одиночный символ
                 $chars[] = mb_substr($value, $i, 1);
@@ -836,11 +838,11 @@ class HelperInternal
                     if ($nextLeft === false && $nextRight === false) {
                         break;
 
-                    } elseif ($nextLeft === false) {
+                    } else if ($nextLeft === false) {
                         $minPos = $nextRight;
                         $type = 'right';
 
-                    } elseif ($nextRight === false) {
+                    } else if ($nextRight === false) {
                         $minPos = $nextLeft;
                         $type = 'left';
 
@@ -878,5 +880,237 @@ class HelperInternal
                 return $brackets;
             })
             : [];
+    }
+
+
+    /**
+     * Складывает строковые числа
+     *
+     * @param string $a
+     * @param string $b
+     * @return string
+     */
+    public static function internalNumberAdd(string $a, string $b): string
+    {
+        $a = str_pad($a, max(strlen($a), strlen($b)), '0', STR_PAD_LEFT);
+        $b = str_pad($b, strlen($a), '0', STR_PAD_LEFT);
+        $carry = 0;
+        $res = '';
+
+        for ($i = strlen($a) - 1; $i >= 0; $i--) {
+            $sum = (int)$a[$i] + (int)$b[$i] + $carry;
+            $carry = intdiv($sum, 10);
+            $res = ($sum % 10) . $res;
+        }
+
+        return $carry ? "{$carry}{$res}" : $res;
+    }
+
+
+    /**
+     * Вычитает строковые числа
+     *
+     * @param string $a
+     * @param string $b
+     * @return string
+     */
+    public static function internalNumberSubtract(string $a, string $b): string
+    {
+        $neg = false;
+        if (static::internalNumberCompare($a, $b) < 0) {
+            [$a, $b] = [$b, $a];
+            $neg = true;
+        }
+
+        $b = str_pad($b, strlen($a), '0', STR_PAD_LEFT);
+        $carry = 0;
+        $res = '';
+
+        for ($i = strlen($a) - 1; $i >= 0; $i--) {
+            $diff = (int)$a[$i] - (int)$b[$i] - $carry;
+            if ($diff < 0) {
+                $diff += 10;
+                $carry = 1;
+
+            } else {
+                $carry = 0;
+            }
+
+            $res = "{$diff}{$res}";
+        }
+
+        return $neg ? ('-' . ltrim($res, '0')) : (ltrim($res, '0') ?: '0');
+    }
+
+
+    /**
+     * Умножает строковые числа
+     *
+     * @param string $a
+     * @param string $b
+     * @param int $precision
+     * @return string
+     */
+    public static function internalNumberMultiply(string $a, string $b, int $precision): string
+    {
+        $neg = ($a[0] === '-') ^ ($b[0] === '-');
+        $a = ltrim($a, '+-');
+        $b = ltrim($b, '+-');
+        $aDec = Helper::numberDecimalDigits($a);
+        $bDec = Helper::numberDecimalDigits($b);
+        $a = str_replace('.', '', $a);
+        $b = str_replace('.', '', $b);
+        $res = array_fill(0, strlen($a) + strlen($b), 0);
+
+        for ($i = strlen($a) - 1; $i >= 0; $i--) {
+            for ($j = strlen($b) - 1; $j >= 0; $j--) {
+                $res[$i + $j + 1] += (int)$a[$i] * (int)$b[$j];
+            }
+        }
+
+        for ($i = count($res) - 1; $i > 0; $i--) {
+            $res[$i - 1] += intdiv($res[$i], 10);
+            $res[$i] %= 10;
+        }
+
+        $result = ltrim(implode('', $res), '0') ?: '0';
+        $precisionDigits = $aDec + $bDec;
+
+        return ($neg ? '-' : '') . static::internalNumberInsertDecimal($result, $precisionDigits);
+    }
+
+
+    /**
+     * Делит строковые числа
+     *
+     * @param string $a
+     * @param string $b
+     * @param int $precision
+     * @return string
+     */
+    public static function internalNumberDivide(string $a, string $b, int $precision): string
+    {
+        if (static::internalNumberIsZero($b)) return 'NaN';
+        $neg = ($a[0] === '-') ^ ($b[0] === '-');
+        $a = ltrim($a, '+-');
+        $b = ltrim($b, '+-');
+        // $aDec = Helper::numberDecimalDigits($a);
+        $bDec = Helper::numberDecimalDigits($b);
+        $precision += $bDec;
+        $a = str_replace('.', '', $a) . str_repeat('0', $precision);
+        $b = str_replace('.', '', $b);
+        $res = '';
+        $rem = '';
+
+        for ($i = 0; $i < strlen($a); $i++) {
+            $rem .= $a[$i];
+            $q = '0';
+
+            while (static::internalNumberCompare($rem, $b) >= 0) {
+                $rem = static::internalNumberSubtract($rem, $b);
+                $q++;
+            }
+
+            $res .= $q;
+        }
+
+        $res = ltrim($res, '0') ?: '0';
+
+        return ($neg ? '-' : '') . static::internalNumberInsertDecimal($res, $precision);
+    }
+
+
+    /**
+     * Сравнивает строковые числа
+     *
+     * @param string $a
+     * @param string $b
+     * @return int
+     */
+    public static function internalNumberCompare(string $a, string $b): int
+    {
+        $a = ltrim($a, '0');
+        $b = ltrim($b, '0');
+
+        if (strlen($a) > strlen($b)) {
+            return 1;
+        }
+
+        if (strlen($a) < strlen($b)) {
+            return -1;
+        }
+
+        return strcmp($a, $b);
+    }
+
+
+    /**
+     * Добавляет нули к строковому числу
+     *
+     * @param string $num
+     * @param int $pos
+     * @return string
+     */
+    public static function internalNumberInsertDecimal(string $num, int $pos): string
+    {
+        if ($pos <= 0) return $num;
+        $num = str_pad($num, $pos + 1, '0', STR_PAD_LEFT);
+
+        return substr($num, 0, -$pos) . '.' . substr($num, -$pos);
+    }
+
+
+    /**
+     * Округляет строковое число
+     *
+     * @param string $num
+     * @param int $precision
+     * @return string
+     */
+    public static function internalNumberRoundStr(string $num, int $precision): string
+    {
+        if (!str_contains($num, '.')) return $num;
+        [$int, $dec] = explode('.', $num);
+        if (strlen($dec) <= $precision) return $num;
+        $roundDigit = (int)($dec[$precision] ?? '0');
+        $dec = substr($dec, 0, $precision);
+
+        if ($roundDigit >= 5) {
+            $inc = '0.' . str_pad('1', $precision, '0', STR_PAD_LEFT);
+            $num = static::internalNumberAdd(str_replace('.', '', "{$int}{$dec}"), str_replace('.', '', $inc));
+            $num = static::internalNumberInsertDecimal($num, $precision);
+
+        } else {
+            $num = "{$int}.{$dec}";
+        }
+
+        return $num;
+    }
+
+
+    /**
+     * Удаляет нули справа у строкового числа
+     *
+     * @param string $num
+     * @return string
+     */
+    public static function internalNumberTrimTrailingZeros(string $num): string
+    {
+        if (str_contains($num, '.')) {
+            $num = rtrim(rtrim($num, '0'), '.');
+        }
+        return $num === '-0' ? '0' : $num;
+    }
+
+
+    /**
+     * Проверяет строковое число на ноль
+     *
+     * @param string $value
+     * @return bool
+     */
+    public static function internalNumberIsZero(string $value): bool
+    {
+        return ltrim(str_replace('.', '', $value), '0') === '';
     }
 }
