@@ -225,7 +225,7 @@ $string = Helper::colorRgbToHex(0, 0, 0, 0); // $string = '#00000000'
 ---
 
 #### Crypt
-Работа с шифрацией
+Работа с шифрованием
 
 ---
 ##### [cryptArrayDecode(\$value, \$password): array](./tests/HelperCryptTrait/HelperCryptArrayDecodeTest.php)
@@ -452,7 +452,7 @@ $bool = (bool)Helper::intervalOverlap('1..3', '2..4'); // $bool = false
 
 ---
 ##### [ipInRange(\$value, ...\$masks): array](./tests/HelperIpTrait/HelperIpInRangeTest.php)
-Возвращает xxh128 хеш значения
+Возвращает массив найденных масок подсетей, в которые входит ip адрес
 ```php
 $array = Helper::ipInRange('192.168.1.1', '192.168.1.0/24'); // $array = ['192.168.1.0/24']
 ```
@@ -465,7 +465,7 @@ $array = Helper::ipInRange('192.168.1.1', '192.168.1.0/24'); // $array = ['192.1
 ##### [jsonFlags(): int](./tests/HelperJsonTrait/HelperJsonFlagsTest.php)
 Возвращает флаг для формирования json строки
 ```php
-$integer = Helper::jsonFlags(); // $integer = 3146176
+$integer = Helper::jsonFlags(); // $integer = 3146048
 ```
 ---
 
@@ -491,7 +491,7 @@ $string = Helper::jwtEncode(['id' => 1]); // $string = 'eyJhbGciOiJTSEE1MTIiLCJ0
 
 ---
 ##### [numberCalculate(\$value, \$precision): string](./tests/HelperNumberTrait/HelperNumberCalculateTest.php)
-Возвращает строку с результатом калькуляции значений в строке
+Возвращает строку с результатом калькуляции больших числовых значений в строке
 ```php
 $string = Helper::numberCalculate('1 + 2'); // $string = '3'
 ```

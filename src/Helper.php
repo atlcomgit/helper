@@ -77,7 +77,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::colorHexToRgb()
  * @method @see static::colorRgbToHex()
  * 
- * @group crypt - Работа с шифрацией
+ * @group crypt - Работа с шифрованием
  * @method @see static::cryptArrayDecode()
  * @method @see static::cryptArrayEncode()
  * @method @see static::cryptDecode()
