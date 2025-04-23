@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с путями
+ * @mixin \Atlcom\Helper
  */
 trait HelperPathTrait
 {

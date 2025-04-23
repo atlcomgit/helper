@@ -8,6 +8,7 @@ use Atlcom\Enums\HelperStringBreakTypeEnum;
 
 /**
  * Трейт для работы с мессенджером телеграм
+ * @mixin \Atlcom\Helper
  */
 trait HelperTelegramTrait
 {

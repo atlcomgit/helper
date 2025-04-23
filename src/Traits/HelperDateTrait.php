@@ -12,6 +12,7 @@ use Carbon\Carbon;
 
 /**
  * Трейт для работы с датами
+ * @mixin \Atlcom\Helper
  */
 trait HelperDateTrait
 {

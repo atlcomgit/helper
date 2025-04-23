@@ -8,6 +8,7 @@ use Atlcom\Internal\HelperInternal;
 
 /**
  * Трейт для работы с кодированием
+ * @mixin \Atlcom\Helper
  */
 trait HelperCryptTrait
 {

@@ -8,6 +8,7 @@ use BackedEnum;
 
 /**
  * Трейт для работы с перечислениями
+ * @mixin \Atlcom\Helper
  */
 trait HelperEnumTrait
 {

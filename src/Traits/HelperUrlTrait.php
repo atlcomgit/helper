@@ -8,6 +8,7 @@ use Atlcom\Internal\HelperInternal;
 
 /**
  * Трейт для работы с url
+ * @mixin \Atlcom\Helper
  */
 trait HelperUrlTrait
 {
@@ -23,18 +24,25 @@ trait HelperUrlTrait
         $value = (string)$value;
         $parsed = parse_url($value) ?: [];
         $scheme = $parsed['scheme'] ?? null;
+        $user = $parsed['user'] ?? null;
+        $pass = $parsed['pass'] ?? null;
         $host = $parsed['host'] ?? null;
         $path = $parsed['path'] ?? null;
+        $anchor = $parsed['fragment'] ?? null;
 
         if (!$scheme) {
             $parsed = parse_url("http://$value") ?: [];
+            $user = $parsed['user'] ?? null;
+            $pass = $parsed['pass'] ?? null;
             $host = $parsed['host'] ?? null;
             $path = $parsed['path'] ?? null;
+            $anchor = $parsed['fragment'] ?? null;
 
             if (!$host) {
                 $parsed = parse_url($value = "http://domain/" . ltrim($value, '/')) ?: [];
                 $path = $parsed['path'] ?? null;
                 !($path === '/') ?: $path = null;
+                $anchor = $parsed['fragment'] ?? null;
             }
         }
 
@@ -54,7 +62,15 @@ trait HelperUrlTrait
             $query,
         );
 
-        return ['scheme' => $scheme, 'host' => $host, 'path' => $path, 'query' => $query];
+        return [
+            'scheme' => $scheme,
+            'user' => $user,
+            'password' => $pass,
+            'host' => $host,
+            'path' => $path,
+            'query' => $query,
+            'anchor' => $anchor,
+        ];
     }
 
 
@@ -69,13 +85,17 @@ trait HelperUrlTrait
      * @return string
      */
     public static function urlCreate(
+        ?string $user = null,
+        ?string $password = null,
         ?string $scheme = null,
         ?string $host = null,
         ?string $path = null,
         string|array|null $query = null,
+        string|array|null $anchor = null,
     ): string {
         return rtrim(
             static::stringPadSuffix(trim($scheme, ':/'), '://')
+            . ($user || $password ? $user . static::stringPadPrefix($password, ':') . '@' : '')
             . static::stringPadSuffix(
                 static::urlDomainEncode(trim(static::stringReplace($host, ['/' => '']))),
                 '/',
@@ -90,7 +110,8 @@ trait HelperUrlTrait
                     default => $query,
                 },
                 '?',
-            );
+            )
+            . static::stringPadPrefix($anchor, '#');
     }
 
 

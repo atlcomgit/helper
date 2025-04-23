@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с интервалами
+ * @mixin \Atlcom\Helper
  */
 trait HelperIntervalTrait
 {

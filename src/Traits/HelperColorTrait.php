@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с цветами
+ * @mixin \Atlcom\Helper
  */
 trait HelperColorTrait
 {

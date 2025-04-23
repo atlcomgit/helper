@@ -25,5 +25,25 @@ final class HelperUrlCreateTest extends TestCase
 
         $string = Helper::urlCreate(scheme: 'http://', host: 'абв.Где/', path: '/её/', query: ['ж' => 'з']);
         $this->assertEquals('http://xn--80acd.xn--c1acd/её?%D0%B6=%D0%B7', $string);
+
+        $string = Helper::urlCreate(
+            scheme: 'http://',
+            host: 'абв.Где/',
+            path: '/её/',
+            query: ['ж' => 'з'],
+            anchor: 'def',
+        );
+        $this->assertEquals('http://xn--80acd.xn--c1acd/её?%D0%B6=%D0%B7#def', $string);
+
+        $string = Helper::urlCreate(
+            user: 'u',
+            password: 'p',
+            scheme: 'https',
+            host: 'a.com',
+            path: 'b',
+            query: ['c' => 1],
+            anchor: 'def',
+        );
+        $this->assertEquals('https://u:p@a.com/b?c=1#def', $string);
     }
 }

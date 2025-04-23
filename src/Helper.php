@@ -14,6 +14,7 @@ use Atlcom\Traits\HelperDateTrait;
 use Atlcom\Traits\HelperEnumTrait;
 use Atlcom\Traits\HelperEnvTrait;
 use Atlcom\Traits\HelperExceptionTrait;
+use Atlcom\Traits\HelperGenerateTrait;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperIntervalTrait;
 use Atlcom\Traits\HelperIpTrait;
@@ -34,7 +35,7 @@ use Atlcom\Traits\HelperUrlTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.13
+ * @version 1.14
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -227,6 +228,7 @@ abstract class Helper
     use HelperEnumTrait;
     use HelperEnvTrait;
     use HelperExceptionTrait;
+    use HelperGenerateTrait;
     use HelperHashTrait;
     use HelperIntervalTrait;
     use HelperIpTrait;

@@ -8,6 +8,7 @@ use Closure;
 
 /**
  * Трейт для работы с кешем
+ * @mixin \Atlcom\Helper
  */
 trait HelperCacheTrait
 {

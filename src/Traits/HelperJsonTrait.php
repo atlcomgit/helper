@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с json
+ * @mixin \Atlcom\Helper
  */
 trait HelperJsonTrait
 {

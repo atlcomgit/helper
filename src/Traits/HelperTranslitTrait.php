@@ -9,6 +9,7 @@ use Atlcom\Enums\HelperTranslitDirectionEnum;
 
 /**
  * Трейт для работы с транслитерацией
+ * @mixin \Atlcom\Helper
  */
 trait HelperTranslitTrait
 {

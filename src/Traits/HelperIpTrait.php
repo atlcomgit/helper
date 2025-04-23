@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с массивами
+ * @mixin \Atlcom\Helper
  */
 trait HelperIpTrait
 {

@@ -8,6 +8,7 @@ use BackedEnum;
 
 /**
  * Трейт для работы с трансформацией
+ * @mixin \Atlcom\Helper
  */
 trait HelperTransformTrait
 {

@@ -12,6 +12,7 @@ use Atlcom\Internal\HelperInternal;
 
 /**
  * Трейт для работы с числами
+ * @mixin \Atlcom\Helper
  */
 trait HelperNumberTrait
 {

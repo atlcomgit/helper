@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 /**
  * Трейт для работы со временем
+ * @mixin \Atlcom\Helper
  */
 trait HelperTimeTrait
 {

@@ -98,6 +98,9 @@ final class HelperStringSegmentTest extends TestCase
         $string = Helper::stringSegment('1+2*(3+4-1)');
         $this->assertEquals($string, '1 + 2 * (3 + 4 -1)');
 
+        $string = Helper::stringSegment('abcабв');
+        $this->assertEquals($string, 'abc абв');
+
         $string = Helper::stringSegment(null);
         $this->assertEquals($string, '');
     }

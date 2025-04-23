@@ -8,6 +8,7 @@ use Throwable;
 
 /**
  * Трейт для работы с exception
+ * @mixin \Atlcom\Helper
  */
 trait HelperExceptionTrait
 {

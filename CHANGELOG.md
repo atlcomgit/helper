@@ -1,5 +1,12 @@
 # Changelog
 
+## Версия 1.14
+- Добавлен метод Helper::generateUrl
+- Добавлен метод Helper::regexpValidateUrl
+
+- Обновлен метод Helper::urlCreate
+- Обновлен метод Helper::urlParse
+
 ## Версия 1.13
 - Добавлен метод Helper::bracketChange
 - Добавлен метод Helper::bracketCopy

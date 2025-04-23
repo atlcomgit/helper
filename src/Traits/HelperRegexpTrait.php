@@ -8,6 +8,7 @@ use Atlcom\Enums\HelperRegexpEnum;
 
 /**
  * Трейт для работы с regexp
+ * @mixin \Atlcom\Helper
  */
 trait HelperRegexpTrait
 {
@@ -116,5 +117,49 @@ trait HelperRegexpTrait
     public static function regexpValidateDate(?string $value): bool
     {
         return (bool)preg_match(HelperRegexpEnum::Date->value, $value ?? '');
+    }
+
+
+    //?!? readme
+    /**
+     * Проверяет значение строки на формат url
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUrlTest.php
+     *
+     * @param string|null $value
+     * @return bool
+     */
+    public static function regexpValidateUrl(?string $value): bool
+    {
+        // Проверка по регулярному выражению
+        if (!preg_match(HelperRegexpEnum::Url->value, $value)) {
+            return false;
+        }
+
+        $parts = parse_url($value);
+        $host = $parts['host'] ?? '';
+
+        if (!$parts || !$host) {
+            return false;
+        }
+
+        // Host не должен начинаться с точки и не быть только точкой
+        if ($host[0] === '.' || $host === '.') {
+            return false;
+        }
+
+        // Проверка на IPv4-вид
+        if (preg_match('/^\d{1,3}(\.\d{1,3}){3}$/', $host)) {
+            // Если невалидный IP, то false
+            if (!filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                return false;
+            }
+        }
+
+        // Проверка userinfo: если есть user, но нет host — невалидно
+        if (isset($parts['user']) && empty($host)) {
+            return false;
+        }
+
+        return true;
     }
 }

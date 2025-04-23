@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с окружением
+ * @mixin \Atlcom\Helper
  */
 trait HelperEnvTrait
 {

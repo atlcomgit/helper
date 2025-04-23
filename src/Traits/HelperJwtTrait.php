@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с jwt токеном
+ * @mixin \Atlcom\Helper
  */
 trait HelperJwtTrait
 {

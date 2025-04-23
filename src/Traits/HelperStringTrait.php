@@ -11,6 +11,7 @@ use BackedEnum;
 
 /**
  * Трейт для работы со строками
+ * @mixin \Atlcom\Helper
  */
 trait HelperStringTrait
 {

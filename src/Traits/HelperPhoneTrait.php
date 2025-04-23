@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с трансформацией
+ * @mixin \Atlcom\Helper
  */
 trait HelperPhoneTrait
 {

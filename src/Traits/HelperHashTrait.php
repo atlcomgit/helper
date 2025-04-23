@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с хешем
+ * @mixin \Atlcom\Helper
  */
 trait HelperHashTrait
 {

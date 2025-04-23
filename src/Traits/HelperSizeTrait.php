@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы с размерами
+ * @mixin \Atlcom\Helper
  */
 trait HelperSizeTrait
 {

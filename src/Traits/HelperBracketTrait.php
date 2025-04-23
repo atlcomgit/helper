@@ -8,6 +8,7 @@ use Atlcom\Internal\HelperInternal;
 
 /**
  * Трейт для работы со скобками/тегами
+ * @mixin \Atlcom\Helper
  */
 trait HelperBracketTrait
 {

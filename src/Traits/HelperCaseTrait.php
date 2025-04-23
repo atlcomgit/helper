@@ -6,6 +6,7 @@ namespace Atlcom\Traits;
 
 /**
  * Трейт для работы со стилями кода
+ * @mixin \Atlcom\Helper
  */
 trait HelperCaseTrait
 {
