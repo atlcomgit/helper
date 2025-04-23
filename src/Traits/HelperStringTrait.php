@@ -777,6 +777,7 @@ trait HelperStringTrait
             '\*' => '%STAR%',
             '\.' => '%DOT%',
             '\_' => '%UND%',
+            '\-' => '%MINUS%',
             '+' => '{1,10}',
             '*' => '{0,10}',
             '\d' => '0-9',
@@ -789,6 +790,7 @@ trait HelperStringTrait
             '%STAR%' => '\*',
             '%DOT%' => '\.',
             '%UND%' => '\_',
+            '%MINUS%' => '\-',
             '\/' => '/',
             '^' => '',
             '$' => '',
@@ -813,6 +815,7 @@ trait HelperStringTrait
             if (preg_match('/^\[(.*)\]$/', $char, $charMatch)) {
                 // Обработка символьного класса
                 $chars = HelperInternal::internalParseCharacterClass($charMatch[1]);
+
             } elseif (preg_match('/^\\\\([dws])$/', $char, $escapeMatch)) {
                 // Обработка специальных классов
                 $chars = match ($escapeMatch[1]) {
@@ -840,7 +843,7 @@ trait HelperStringTrait
                 preg_match('/(\d+)(,(\d+))?/', $quantifier, $qMatch);
                 if (mb_strpos($quantifier, ',') !== false) {
                     $min = isset($qMatch[1]) ? (int)$qMatch[1] : 0;
-                    $max = isset($qMatch[3]) ? (int)$qMatch[3] : PHP_INT_MAX;
+                    $max = isset($qMatch[3]) ? (int)$qMatch[3] : 100;
                 } else {
                     $min = $max = (int)mb_substr($quantifier, 1, -1);
                 }

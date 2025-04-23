@@ -1,7 +1,13 @@
 # Changelog
 
 ## Версия 1.14
+- Добавлен метод Helper::generateEmail
+- Добавлен метод Helper::generateName
+- Добавлен метод Helper::generatePassword
+- Добавлен метод Helper::generatePhone
 - Добавлен метод Helper::generateUrl
+- Добавлен метод Helper::generateUuid4
+- Добавлен метод Helper::generateUuid7
 - Добавлен метод Helper::regexpValidateUrl
 
 - Обновлен метод Helper::urlCreate

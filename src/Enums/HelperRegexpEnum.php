@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Atlcom\Enums;
 
+/**
+ * Регулярки
+ */
 enum HelperRegexpEnum: string
 {
     case Email = '/^([A-Za-z0-9\_\.\-]+)@([0-9A-Za-z\_\.\-]+)\.([A-Za-z\.]{2,6})$/';
     case Pattern = '/^\/.+\/[a-z]*$/i';
-    case Phone = '/^[\+]{0,1}[0-9\-\(\)\s]*$/';
+    case Phone = '/^[\+]{0,1}[0-9\-\(\)\s]{10,20}$/';
     case Uuid = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iD';
     case Ascii = '/[^\x09\x10\x13\x0A\x0D\x20-\x7E]/';
     case Unicode = '/[\x{0080}-\x{FFFF}]+/u';

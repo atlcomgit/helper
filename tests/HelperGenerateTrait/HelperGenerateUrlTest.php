@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class HelperGenerateUrlTest extends TestCase
 {
     #[Test]
-    public function testGenerateUrlReturnsString(): void
+    public function generateUrlReturnsString(): void
     {
         $url = Hlp::generateUrl();
         $this->assertIsString($url);
@@ -25,7 +25,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlHasProtocol(): void
+    public function generateUrlHasProtocol(): void
     {
         $url = Helper::generateUrl();
         $this->assertMatchesRegularExpression(HelperRegexpEnum::Url->value, $url);
@@ -33,7 +33,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlHasDomain(): void
+    public function generateUrlHasDomain(): void
     {
         $url = Helper::generateUrl();
         $this->assertMatchesRegularExpression('/^https?:\/\/[a-z0-9\-]+(\.[a-z0-9\-]+)+(\/|\?|#|$)/i', $url);
@@ -41,7 +41,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlHasPath(): void
+    public function generateUrlHasPath(): void
     {
         $url = Helper::generateUrl();
         $this->assertMatchesRegularExpression('/^https?:\/\/[a-z0-9\-]+(\.[a-z0-9\-]+)+\/[^\s\?]*/i', $url);
@@ -49,7 +49,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlWithQueryParams(): void
+    public function generateUrlWithQueryParams(): void
     {
         $url = Helper::generateUrl();
         if (strpos($url, '?') !== false) {
@@ -65,7 +65,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlMultipleTimesUnique(): void
+    public function generateUrlMultipleTimesUnique(): void
     {
         $urls = [];
         for ($i = 0; $i < 10; $i++) {
@@ -76,7 +76,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlCustomParams(): void
+    public function generateUrlCustomParams(): void
     {
         $url = Helper::generateUrl(
             ['http'],
@@ -93,7 +93,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlWithAnchor(): void
+    public function generateUrlWithAnchor(): void
     {
         // Якорь задан явно
         $url = Helper::generateUrl(
@@ -110,7 +110,7 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function testGenerateUrlWithRandomAnchor(): void
+    public function generateUrlWithRandomAnchor(): void
     {
         // Якорь не задан, должен быть сгенерирован случайно
         $url = Helper::generateUrl();
@@ -120,5 +120,22 @@ final class HelperGenerateUrlTest extends TestCase
         } else {
             $this->assertTrue(true, 'Anchor is optional');
         }
+    }
+
+
+    #[Test]
+    public function generateUrlWithNull(): void
+    {
+        // Якорь не задан, должен быть сгенерирован случайно
+        $url = Helper::generateUrl(
+            protocols: null,
+            domainNames: null,
+            domainZones: null,
+            paths: null,
+            queries: null,
+            anchors: null,
+        );
+
+        $this->assertMatchesRegularExpression('/#([a-z0-9\-]{0,10})$/', $url);
     }
 }

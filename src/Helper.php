@@ -112,6 +112,15 @@ use Atlcom\Traits\HelperUrlTrait;
  * @group exception - Работа с исключениями
  * @method @see static::exceptionToString()
  * 
+ * @group generate - Работа с генерацией данных
+ * @method @see static::generateEmail()
+ * @method @see static::generateName()
+ * @method @see static::generatePassword()
+ * @method @see static::generatePhone()
+ * @method @see static::generateUrl()
+ * @method @see static::generateUuid4()
+ * @method @see static::generateUuid7()
+ * 
  * @group hash - Работа с хешами
  * @method @see static::hashXxh128()
  * 
@@ -154,6 +163,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::regexpValidatePattern()
  * @method @see static::regexpValidatePhone()
  * @method @see static::regexpValidateUnicode()
+ * @method @see static::regexpValidateUrl()
  * @method @see static::regexpValidateUuid()
  * 
  * @group size - Работа с размерами
