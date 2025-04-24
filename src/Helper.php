@@ -14,7 +14,7 @@ use Atlcom\Traits\HelperDateTrait;
 use Atlcom\Traits\HelperEnumTrait;
 use Atlcom\Traits\HelperEnvTrait;
 use Atlcom\Traits\HelperExceptionTrait;
-use Atlcom\Traits\HelperGenerateTrait;
+use Atlcom\Traits\HelperFakeTrait;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperIntervalTrait;
 use Atlcom\Traits\HelperIpTrait;
@@ -112,14 +112,14 @@ use Atlcom\Traits\HelperUrlTrait;
  * @group exception - Работа с исключениями
  * @method @see static::exceptionToString()
  * 
- * @group generate - Работа с генерацией данных
- * @method @see static::generateEmail()
- * @method @see static::generateName()
- * @method @see static::generatePassword()
- * @method @see static::generatePhone()
- * @method @see static::generateUrl()
- * @method @see static::generateUuid4()
- * @method @see static::generateUuid7()
+ * @group fake - Работа с генерацией данных
+ * @method @see static::fakeEmail()
+ * @method @see static::fakeName()
+ * @method @see static::fakePassword()
+ * @method @see static::fakePhone()
+ * @method @see static::fakeUrl()
+ * @method @see static::fakeUuid4()
+ * @method @see static::fakeUuid7()
  * 
  * @group hash - Работа с хешами
  * @method @see static::hashXxh128()
@@ -164,7 +164,8 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::regexpValidatePhone()
  * @method @see static::regexpValidateUnicode()
  * @method @see static::regexpValidateUrl()
- * @method @see static::regexpValidateUuid()
+ * @method @see static::regexpValidateUuid4()
+ * @method @see static::regexpValidateUuid7()
  * 
  * @group size - Работа с размерами
  * @method @see static::sizeBytesToString()
@@ -238,7 +239,7 @@ abstract class Helper
     use HelperEnumTrait;
     use HelperEnvTrait;
     use HelperExceptionTrait;
-    use HelperGenerateTrait;
+    use HelperFakeTrait;
     use HelperHashTrait;
     use HelperIntervalTrait;
     use HelperIpTrait;

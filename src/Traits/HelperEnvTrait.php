@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Internal\HelperInternal;
+
 /**
  * Трейт для работы с окружением
  * @mixin \Atlcom\Helper
  */
 trait HelperEnvTrait
 {
+    public static string $keyAppEnv = 'APP_ENV';
+
+
     /**
      * Проверяет окружение приложения на локальное и возвращает true/false
      * @see ../../tests/HelperEnvTrait/HelperEnvLocalTest.php
@@ -18,7 +23,12 @@ trait HelperEnvTrait
      */
     public static function envLocal(): bool
     {
-        return in_array(static::stringLower(getenv('APP_ENV')), ['local']);
+        return in_array(
+            static::stringLower(
+                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv)
+            ),
+            ['local'],
+        );
     }
 
 
@@ -30,7 +40,12 @@ trait HelperEnvTrait
      */
     public static function envDev(): bool
     {
-        return in_array(static::stringLower(getenv('APP_ENV')), ['dev', 'develop', 'development']);
+        return in_array(
+            static::stringLower(
+                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
+            ),
+            ['dev', 'develop', 'development'],
+        );
     }
 
 
@@ -42,7 +57,12 @@ trait HelperEnvTrait
      */
     public static function envTest(): bool
     {
-        return in_array(static::stringLower(getenv('APP_ENV')), ['test']);
+        return in_array(
+            static::stringLower(
+                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
+            ),
+            ['test'],
+        );
     }
 
 
@@ -54,7 +74,12 @@ trait HelperEnvTrait
      */
     public static function envTesting(): bool
     {
-        return in_array(static::stringLower(getenv('APP_ENV')), ['testing']);
+        return in_array(
+            static::stringLower(
+                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
+            ),
+            ['testing'],
+        );
     }
 
 
@@ -66,7 +91,12 @@ trait HelperEnvTrait
      */
     public static function envStage(): bool
     {
-        return in_array(static::stringLower(getenv('APP_ENV')), ['stage', 'staging', 'preprod']);
+        return in_array(
+            static::stringLower(
+                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
+            ),
+            ['stage', 'staging', 'preprod'],
+        );
     }
 
 
@@ -78,6 +108,11 @@ trait HelperEnvTrait
      */
     public static function envProd(): bool
     {
-        return in_array(static::stringLower(getenv('APP_ENV')), ['prod', 'production']);
+        return in_array(
+            static::stringLower(
+                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
+            ),
+            ['prod', 'production'],
+        );
     }
 }

@@ -18,6 +18,7 @@ final class HelperRegexpValidateUrlTest extends TestCase
     public function regexpValidateUrl(): void
     {
         $this->assertTrue(Helper::regexpValidateUrl('http://abc.def'));
+        $this->assertTrue(Helper::regexpValidateUrl('http://abc.com/def?klm#xyz'));
     }
 
 

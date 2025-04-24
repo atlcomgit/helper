@@ -8,10 +8,14 @@ use Atlcom\Consts\HelperConsts as Consts;
 use Atlcom\Enums\HelperNumberDeclensionEnum as Declension;
 use Atlcom\Enums\HelperNumberEnumerationEnum as Enumeration;
 use Atlcom\Enums\HelperNumberGenderEnum as Gender;
+use Atlcom\Exceptions\HelperException;
 use Atlcom\Helper;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperStringTrait;
+use Exception;
 use InvalidArgumentException;
+use RuntimeException;
+use Throwable;
 
 /**
  * Класс вспомогательных внутренних методов
@@ -180,6 +184,7 @@ class HelperInternal
                                         ? Consts::NUMBER_CASE_10[$decl][$gend][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                         : Consts::NUMBER_CASE_10[$declG][$gendFM][Consts::NUMBER_CASE_X10[$digitB - 1]]
                                     );
+
                             } else {
                                 $result = $usePrev
                                     ? Consts::NUMBER_NAMES[(int)"{$digitB}{$digitC}"][Enumeration::Numerical->value]
@@ -225,6 +230,7 @@ class HelperInternal
                                     )
                                     . ($result !== '' ? ' ' : '')
                                     . $result;
+
                             } else {
                                 $result = $usePrev
                                     ? Consts::NUMBER_NAMES[18 + $digitB][0]
@@ -273,6 +279,7 @@ class HelperInternal
                             )
                             . ($result !== '' ? ' ' : '')
                             . $result;
+
                     } else {
                         $result = $usePrev
 
@@ -1112,5 +1119,198 @@ class HelperInternal
     public static function internalNumberIsZero(string $value): bool
     {
         return ltrim(str_replace('.', '', $value), '0') === '';
+    }
+
+
+    /**
+     * Возвращает значение параметра по названию ключа из .env файла в корне
+     * @see ../../tests/HelperInternal/HelperInternalEnvTest.php
+     *
+     * @param string|null $value
+     * @return mixed
+     */
+    public static function internalEnv(string|null $value): mixed
+    {
+        $env = Helper::cacheRuntime(__CLASS__ . __FUNCTION__, static function () {
+            $env = [];
+            $lines = preg_split('/\R/', file_get_contents(Helper::pathRoot() . '/.env') ?: '');
+            $buffer = '';
+            $key = null;
+            $in_multiline = false;
+            $quote_type = null;
+
+            foreach ($lines as $line) {
+                $trimmed = ltrim($line);
+                if (($trimmed[0] ?? null) === '#') {
+                    continue;
+                }
+
+                if ($in_multiline) {
+                    $buffer .= "\n{$line}";
+                    if (
+                        ($quote_type === '"' && Helper::stringEnds($line, '"')) ||
+                        ($quote_type === "'" && Helper::stringEnds($line, "'"))
+                    ) {
+                        $valueBuf = $buffer;
+                        if (
+                            ($quote_type === '"' && Helper::stringStarts($buffer, '"') && Helper::stringEnds($buffer, '"')) ||
+                            ($quote_type === "'" && Helper::stringStarts($buffer, "'") && Helper::stringEnds($buffer, "'"))
+                        ) {
+                            $valueBuf = substr($buffer, 1, -1);
+                        }
+                        // Убедимся, что пустые строки внутри кавычек сохраняются
+                        if ((Helper::stringStarts($valueBuf, '"') && Helper::stringEnds($valueBuf, '"')) || (Helper::stringStarts($valueBuf, "'") && str_ends_with($valueBuf, "'"))) {
+                            $valueBuf = preg_replace('/\\n/', "\n", $valueBuf);
+                        }
+                        // Нормализация символов новой строки
+                        $valueBuf = Helper::stringReplace($valueBuf, "\r\n", "\n");
+                        // Убедимся, что символы новой строки и пробелы обрабатываются корректно
+                        $valueBuf = preg_replace("/\r\n|\r/", "\n", $valueBuf);
+                        $env[$key] = $valueBuf;
+                        $in_multiline = false;
+                        $buffer = '';
+                        $key = null;
+                        $quote_type = null;
+                    }
+
+                    continue;
+                }
+
+                if (mb_strpos($line, '=') === false) {
+                    continue;
+                }
+
+                [$k, $v] = explode('=', $line, 2);
+                $k = trim($k);
+                $v = ltrim($v);
+
+                // Удаление лишних пробелов вокруг значений
+                $v = trim($v);
+
+                if (($pos = mb_strpos($v, ' #')) !== false) {
+                    $v = mb_substr($v, 0, $pos);
+                }
+
+                // Многострочные значения
+                if (
+                    (Helper::stringStarts($v, '"') && !Helper::stringEnds($v, '"')) ||
+                    (Helper::stringStarts($v, "'") && !Helper::stringEnds($v, "'"))
+                ) {
+                    $in_multiline = true;
+                    $key = $k;
+                    $buffer = $v;
+                    $quote_type = $v[0] ?? null;
+
+                    continue;
+                }
+
+                $env[$k] = $v;
+            }
+
+            // Рекурсивный резолвер с защитой от зацикливания
+            $resolve = function ($name, $value, $env, $stack = []) use (&$resolve) {
+                // Убедимся, что значение не null перед вызовом preg_replace_callback
+                if ($value === null) {
+                    return null;
+                }
+
+                if ($value === "\$\{$name\}") {
+                    // throw new Exception("Ссылка к самой себе: {$name}");
+                    return null;
+                }
+
+                if (in_array($name, $stack, true)) {
+                    // throw new Exception("Ссылка с зацикливанием: $name");
+                    return null;
+                }
+
+                // Резолвинг ${KEY}
+                $value = preg_replace_callback('/\$\{([A-Z0-9_]+)\}/i', function ($m) use ($env, $stack, $resolve, $name) {
+                    $var = $m[1];
+                    if (in_array($var, $stack, true)) {
+                        return null;
+                    }
+
+                    if (isset($env[$var])) {
+                        $resolved = $resolve($var, $env[$var], $env, array_merge($stack, [$name]));
+
+                        return $resolved;
+                        // return $resolved === null ? '' : $resolved;
+                    }
+
+                    return null;
+                }, $value);
+
+                if ($value === '') {
+                    return null;
+                }
+
+                $len = strlen($value);
+                $was_quoted = false;
+                if (
+                    $len >= 2 &&
+                    (
+                        ($value[0] === '"' && $value[$len - 1] === '"') ||
+                        ($value[0] === "'" && $value[$len - 1] === "'")
+                    )
+                ) {
+                    $value = substr($value, 1, -1);
+                    $was_quoted = true;
+                }
+
+                // Если не было кавычек — trim пробелы и табы
+                if (!$was_quoted) {
+                    $value = trim($value, " \t");
+                }
+
+                $map = [
+                    'true' => true,
+                    '(true)' => true,
+                    'false' => false,
+                    '(false)' => false,
+                    'null' => null,
+                    '(null)' => null,
+                    'empty' => '',
+                    '(empty)' => '',
+                ];
+                $v = strtolower($value);
+                if (!$was_quoted && array_key_exists($v, $map)) {
+                    return $map[$v];
+                }
+
+                if (!$was_quoted && is_numeric($value)) {
+                    if (strpos($value, '.') === false) {
+                        if (strlen($value) > strlen((string)PHP_INT_MAX)) {
+                            return $value;
+                        }
+
+                        return (int)$value;
+
+                    } else {
+                        [$int, $frac] = explode('.', $value);
+                        if (strlen($int) > strlen((string)PHP_INT_MAX) || strlen($frac) > PHP_FLOAT_DIG) {
+                            return $value;
+                        }
+
+                        return (float)$value;
+                    }
+                }
+
+                return $value;
+            };
+
+            $result = [];
+            foreach ($env as $k => $v) {
+                try {
+                    $result[$k] = $resolve($k, $v, $env, []);
+                } catch (Throwable $e) {
+                    $result[$k] = null;
+                }
+            }
+
+            return $result;
+        });
+
+        return $env[$value] ?? null;
     }
 }

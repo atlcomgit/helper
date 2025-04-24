@@ -55,15 +55,28 @@ trait HelperRegexpTrait
 
 
     /**
-     * Проверяет значение строки на формат идентификатора uuid
-     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php
+     * Проверяет значение строки на формат идентификатора uuid v4
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUuid4Test.php
      *
      * @param string|null $value
      * @return bool
      */
-    public static function regexpValidateUuid(?string $value): bool
+    public static function regexpValidateUuid4(?string $value): bool
     {
-        return (bool)preg_match(HelperRegexpEnum::Uuid->value, $value ?? '');
+        return (bool)preg_match(HelperRegexpEnum::Uuid4->value, $value ?? '');
+    }
+
+
+    /**
+     * Проверяет значение строки на формат идентификатора uuid v7
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUuid7Test.php
+     *
+     * @param string|null $value
+     * @return bool
+     */
+    public static function regexpValidateUuid7(?string $value): bool
+    {
+        return (bool)preg_match(HelperRegexpEnum::Uuid7->value, $value ?? '');
     }
 
 
@@ -120,7 +133,6 @@ trait HelperRegexpTrait
     }
 
 
-    //?!? readme
     /**
      * Проверяет значение строки на формат url
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUrlTest.php
@@ -155,7 +167,7 @@ trait HelperRegexpTrait
             }
         }
 
-        // Проверка userinfo: если есть user, но нет host — невалидно
+        // Проверка user: если есть user, но нет host — невалидно
         if (isset($parts['user']) && empty($host)) {
             return false;
         }

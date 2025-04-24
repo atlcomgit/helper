@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atlcom\Tests\HelperGenerateTrait;
+namespace Atlcom\Tests\HelperFakeTrait;
 
 use Atlcom\Enums\HelperRegexpEnum;
 use Atlcom\Helper;
@@ -12,46 +12,46 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Тест метода трейта
- * @see \Atlcom\Traits\HelperGenerateTrait
+ * @see \Atlcom\Traits\HelperFakeTrait
  */
-final class HelperGenerateUrlTest extends TestCase
+final class HelperFakeUrlTest extends TestCase
 {
     #[Test]
-    public function generateUrlReturnsString(): void
+    public function fakeUrlReturnsString(): void
     {
-        $url = Hlp::generateUrl();
+        $url = Hlp::fakeUrl();
         $this->assertIsString($url);
     }
 
 
     #[Test]
-    public function generateUrlHasProtocol(): void
+    public function fakeUrlHasProtocol(): void
     {
-        $url = Helper::generateUrl();
+        $url = Helper::fakeUrl();
         $this->assertMatchesRegularExpression(HelperRegexpEnum::Url->value, $url);
     }
 
 
     #[Test]
-    public function generateUrlHasDomain(): void
+    public function fakeUrlHasDomain(): void
     {
-        $url = Helper::generateUrl();
+        $url = Helper::fakeUrl();
         $this->assertMatchesRegularExpression('/^https?:\/\/[a-z0-9\-]+(\.[a-z0-9\-]+)+(\/|\?|#|$)/i', $url);
     }
 
 
     #[Test]
-    public function generateUrlHasPath(): void
+    public function fakeUrlHasPath(): void
     {
-        $url = Helper::generateUrl();
+        $url = Helper::fakeUrl();
         $this->assertMatchesRegularExpression('/^https?:\/\/[a-z0-9\-]+(\.[a-z0-9\-]+)+\/[^\s\?]*/i', $url);
     }
 
 
     #[Test]
-    public function generateUrlWithQueryParams(): void
+    public function fakeUrlWithQueryParams(): void
     {
-        $url = Helper::generateUrl();
+        $url = Helper::fakeUrl();
         if (strpos($url, '?') !== false) {
             $query = parse_url($url, PHP_URL_QUERY);
             $this->assertNotEmpty($query);
@@ -65,20 +65,20 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function generateUrlMultipleTimesUnique(): void
+    public function fakeUrlMultipleTimesUnique(): void
     {
         $urls = [];
         for ($i = 0; $i < 10; $i++) {
-            $urls[] = Helper::generateUrl();
+            $urls[] = Helper::fakeUrl();
         }
         $this->assertGreaterThan(1, count(array_unique($urls)));
     }
 
 
     #[Test]
-    public function generateUrlCustomParams(): void
+    public function fakeUrlCustomParams(): void
     {
-        $url = Helper::generateUrl(
+        $url = Helper::fakeUrl(
             ['http'],
             ['testdomain'],
             ['xyz'],
@@ -93,10 +93,10 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function generateUrlWithAnchor(): void
+    public function fakeUrlWithAnchor(): void
     {
         // Якорь задан явно
-        $url = Helper::generateUrl(
+        $url = Helper::fakeUrl(
             null,
             null,
             null,
@@ -110,10 +110,10 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function generateUrlWithRandomAnchor(): void
+    public function fakeUrlWithRandomAnchor(): void
     {
         // Якорь не задан, должен быть сгенерирован случайно
-        $url = Helper::generateUrl();
+        $url = Helper::fakeUrl();
         // Если якорь есть, он должен соответствовать формату
         if (strpos($url, '#') !== false) {
             $this->assertMatchesRegularExpression('/#([a-z0-9\-]{0,10})$/', $url);
@@ -124,10 +124,10 @@ final class HelperGenerateUrlTest extends TestCase
 
 
     #[Test]
-    public function generateUrlWithNull(): void
+    public function fakeUrlWithNull(): void
     {
         // Якорь не задан, должен быть сгенерирован случайно
-        $url = Helper::generateUrl(
+        $url = Helper::fakeUrl(
             protocols: null,
             domainNames: null,
             domainZones: null,
@@ -136,6 +136,6 @@ final class HelperGenerateUrlTest extends TestCase
             anchors: null,
         );
 
-        $this->assertMatchesRegularExpression('/#([a-z0-9\-]{0,10})$/', $url);
+        $this->assertMatchesRegularExpression(HelperRegexpEnum::Url->value, $url);
     }
 }

@@ -69,7 +69,7 @@ final class HelperCryptEncodeTest extends TestCase
         $value = Helper::stringConcat(
             ',',
             '1000',
-            Helper::stringRandom(HelperRegexpEnum::Uuid),
+            Helper::stringRandom(HelperRegexpEnum::Uuid4),
             Carbon::now()->toDateTimeString(),
         );
         $string = Helper::cryptEncode($value, 'password', true);

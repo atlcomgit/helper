@@ -400,6 +400,53 @@ $string = Helper::exceptionToString(new Exception('message', 400)); // $string =
 ```
 ---
 
+#### Fake
+Работа с генерацией данных
+
+---
+##### [fakeEmail(): string](./tests/HelperFakeTrait/HelperFakeEmailTest.php)
+Возвращает случайно сгенерированный email
+```php
+$string = Helper::fakeEmail(); // $string = 'abc@asd.ru'
+```
+---
+##### [fakeName(\$locale, \$surnames, \$firstNames, \$patronymics): string](./tests/HelperFakeTrait/HelperFakeNameTest.php)
+Возвращает случайно сгенерированное ФИО
+```php
+$string = Helper::fakeName(); // $string = 'Иванов Иван Иванович'
+```
+---
+##### [fakePassword(): string](./tests/HelperFakeTrait/HelperFakePasswordTest.php)
+Возвращает случайно сгенерированный пароль
+```php
+$string = Helper::fakePassword(); // $string = 'af3usn5f'
+```
+---
+##### [fakePhone(): string](./tests/HelperFakeTrait/HelperFakePhoneTest.php)
+Возвращает случайно сгенерированный номер телефона с/без кодом страны
+```php
+$string = Helper::fakePhone(); // $string = '79645831465'
+```
+---
+##### [fakeUrl(\$protocols, \$domainNames, \$domainZones, \$paths, \$queries, \$anchors): string](./tests/HelperFakeTrait/HelperFakeUrlTest.php)
+Возвращает случайно сгенерированный url
+```php
+$string = Helper::fakeUrl(); // $string = 'http://abc.com/def?a=b#xyz'
+```
+---
+##### [fakeUuid4(): string](./tests/HelperFakeTrait/HelperFakeUuid4Test.php)
+Возвращает случайно сгенерированный UUID v4
+```php
+$string = Helper::fakeUuid4(); // $string = 'f1f27725-7a51-4581-a6b8-45f236e50d81'
+```
+---
+##### [fakeUuid7(): string](./tests/HelperFakeTrait/HelperFakeUuid7Test.php)
+Возвращает случайно сгенерированный UUID v7
+```php
+$string = Helper::fakeUuid7(); // $string = '019668c4-7b6c-7333-9563-d10b583c4046'
+```
+---
+
 #### Hash
 Работа с хешами
 
@@ -602,10 +649,22 @@ $boolean = Helper::regexpValidatePhone('+79001234567'); // $boolean = true
 $boolean = Helper::regexpValidateUnicode('01 AZ az АЯ ая 😀'); // $boolean = true
 ```
 ---
-##### [regexpValidateUuid(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php)
-Проверяет значение строки на формат идентификатора uuid
+##### [regexpValidateUrl(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateUrlTest.php)
+Проверяет значение строки на формат url
 ```php
-$boolean = Helper::regexpValidateUuid('04d19f50-2fab-417a-815d-306b6a6f67ec'); // $boolean = true
+$boolean = Helper::regexpValidateUrl('http://abc.com/def?klm#xyz'); // $boolean = true
+```
+---
+##### [regexpValidateUuid4(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateUuid4Test.php)
+Проверяет значение строки на формат идентификатора uuid v4
+```php
+$boolean = Helper::regexpValidateUuid4('04d19f50-2fab-417a-815d-306b6a6f67ec'); // $boolean = true
+```
+---
+##### [regexpValidateUuid7(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateUuid7Test.php)
+Проверяет значение строки на формат идентификатора uuid v7
+```php
+$boolean = Helper::regexpValidateUuid7('019668a4-02a1-7f64-9d90-52760464b9ce'); // $boolean = true
 ```
 ---
 

@@ -1,17 +1,21 @@
 # Changelog
 
 ## Версия 1.14
-- Добавлен метод Helper::generateEmail
-- Добавлен метод Helper::generateName
-- Добавлен метод Helper::generatePassword
-- Добавлен метод Helper::generatePhone
-- Добавлен метод Helper::generateUrl
-- Добавлен метод Helper::generateUuid4
-- Добавлен метод Helper::generateUuid7
+- Добавлен метод Helper::fakeEmail
+- Добавлен метод Helper::fakeName
+- Добавлен метод Helper::fakePassword
+- Добавлен метод Helper::fakePhone
+- Добавлен метод Helper::fakeUrl
+- Добавлен метод Helper::fakeUuid4
+- Добавлен метод Helper::fakeUuid7
 - Добавлен метод Helper::regexpValidateUrl
 
+- Обновлен метод Helper::regexpValidateUuid4
+- Обновлен метод Helper::regexpValidateUuid7
 - Обновлен метод Helper::urlCreate
 - Обновлен метод Helper::urlParse
+
+- Обновлен трейт HelperEnvTrait
 
 ## Версия 1.13
 - Добавлен метод Helper::bracketChange

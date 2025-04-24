@@ -127,7 +127,7 @@ trait HelperCryptTrait
             : '';
 
         $result = base64_decode($result);
-        $result = gzinflate($result) ?: '';
+        $result = @gzinflate($result ?: '') ?: '';
 
         $type = explode('|', $result)[0];
         $result = static::stringDelete($result, 0, 2);
@@ -183,7 +183,7 @@ trait HelperCryptTrait
     {
         $result = [];
 
-        foreach ($value as $key => $v) {
+        foreach ($value ?? [] as $key => $v) {
             if (is_array($v) || is_object($v)) {
                 $v = static::cryptArrayDecode($v, $password);
             } else if (is_string($v) && static::stringSearchAny($v, ':')) {

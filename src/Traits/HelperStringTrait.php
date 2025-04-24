@@ -912,7 +912,7 @@ trait HelperStringTrait
                     ...(static::stringPosAll($value, ...static::transformToArray($search)) ?: []),
                 ];
 
-            } {
+            } else {
                 $searchString = (string)$search;
                 $currentValue = $value;
                 $offsetValue = 0;

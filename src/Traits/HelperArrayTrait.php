@@ -26,7 +26,7 @@ trait HelperArrayTrait
         $basePath ??= static::pathRoot();
 
         $resultTrace = [];
-        foreach ($value as $item) {
+        foreach ($value ?? [] as $item) {
             if (
                 !static::stringSearchAny($item['file'] ?? '', static::$ignoreFiles)
                 &&
@@ -310,7 +310,7 @@ trait HelperArrayTrait
     {
         $result = [];
 
-        foreach ($value as $key => $v) {
+        foreach ($value ?? [] as $key => $v) {
             if (is_string($key) && mb_strpos($key, '.') !== false) {
                 $keys = static::stringSplit($key, '.');
                 $current = &$result;
@@ -366,7 +366,7 @@ trait HelperArrayTrait
 
             foreach ($searches as $search) {
                 if (is_array($search) || is_object($search)) {
-                    $v = static::arrayDeleteKeys([$key => $v], ...$search)[$key];
+                    $v = static::arrayDeleteKeys([$key => $v], ...$search)[$key] ?? null;
                     if (is_null($v)) {
                         unset($value[$key]);
 

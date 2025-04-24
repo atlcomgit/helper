@@ -29,6 +29,8 @@ trait HelperColorTrait
             default => [],
         };
 
+        count($rgba) !== 3 ?: $rgba = array_pad($rgba, 4, null);
+
         return ($rgba && [$r, $g, $b, $a] = $rgba) ? ['r' => $r, 'g' => $g, 'b' => $b, 'a' => $a] : [];
     }
 

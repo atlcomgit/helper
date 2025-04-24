@@ -31,7 +31,7 @@ trait HelperExceptionTrait
             'exception' => static::pathClassName($value::class),
             'file' => static::stringConcat(
                 ':',
-                trim(static::stringReplace($value->getFile(), static::pathRoot(), ''), '/'),
+                trim(static::stringReplace($value->getFile(), static::pathRoot(), '', useRegexp: false), '/'),
                 $value->getLine(),
             ),
             'trace' => static::arrayExcludeTraceVendor($value->getTrace()),

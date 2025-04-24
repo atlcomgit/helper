@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Atlcom\Traits;
 
 use Atlcom\Consts\HelperConsts as Consts;
-use Atlcom\Enums\HelperGenerateLocaleEnum as Locale;
+use Atlcom\Enums\HelperFakeLocaleEnum as Locale;
 
 /**
  * Трейт для работы с генерацией данных
  * @mixin \Atlcom\Helper
  */
-trait HelperGenerateTrait
+trait HelperFakeTrait
 {
-    //?!? readme
     /**
      * Возвращает случайно сгенерированный url
-     * @see ../../tests/HelperGenerateTrait/HelperGenerateUrlTest.php
+     * @see ../../tests/HelperFakeTrait/HelperFakeUrlTest.php
      *
      * @param array|string|null|null $protocols
      * @param array|string|null|null $domainNames
@@ -26,7 +25,7 @@ trait HelperGenerateTrait
      * @param array|string|null|null $anchors
      * @return string
      */
-    public static function generateUrl(
+    public static function fakeUrl(
         array|string|null $protocols = null,
         array|string|null $domainNames = null,
         array|string|null $domainZones = null,
@@ -92,28 +91,26 @@ trait HelperGenerateTrait
     }
 
 
-    //?!? readme
     /**
      * Возвращает случайно сгенерированный пароль
-     * @see ../../tests/HelperGenerateTrait/HelperGeneratePasswordTest.php
+     * @see ../../tests/HelperFakeTrait/HelperFakePasswordTest.php
      * 
      * @param string $pattern
      * @return string
      */
-    public static function generatePassword(string $pattern = '/[A-Za-z0-9!@#$%^&\*()_\+]{8,16}/'): string
+    public static function fakePassword(string $pattern = '/[A-Za-z0-9!@#$%^&\*()_\+]{8,16}/'): string
     {
         return static::stringRandom($pattern);
     }
 
 
-    //?!? test
     /**
      * Возвращает случайно сгенерированный email
-     * @see ../../tests/HelperGenerateTrait/HelperGenerateEmailTest.php
+     * @see ../../tests/HelperFakeTrait/HelperFakeEmailTest.php
      * 
      * @return string
      */
-    public static function generateEmail(): string
+    public static function fakeEmail(): string
     {
         $user = static::stringRandom('/[a-z0-9]{5,10}/');
         $domain = static::stringRandom('/[a-z]{5,10}/');
@@ -123,31 +120,29 @@ trait HelperGenerateTrait
     }
 
 
-    //?!? test
     /**
-     * Возвращает случайно сгенерированный номер телефона с кодом страны
-     * @see ../../tests/HelperGenerateTrait/HelperGeneratePhoneTest.php
+     * Возвращает случайно сгенерированный номер телефона с/без кодом страны
+     * @see ../../tests/HelperFakeTrait/HelperFakePhoneTest.php
      * 
-     * @param string $countryCode
+     * @param string|null $countryCode
      * @return string
      */
-    public static function generatePhone(string $countryCode = '+7'): string
+    public static function fakePhone(?string $countryCode = '7'): string
     {
-        // Пример для России: +7 9XX XXX-XX-XX
-        $number = $countryCode . static::stringRandom('/[0-9]{10}/');
+        // Пример для России: +79XXXXXXXXX
+        $number = $countryCode . static::stringRandom('/\9[0-9]{9}/');
 
         return $number;
     }
 
 
-    //?!? test
     /**
      * Возвращает случайно сгенерированный UUID v4
-     * @see ../../tests/HelperGenerateTrait/HelperGenerateUuid4Test.php
+     * @see ../../tests/HelperFakeTrait/HelperFakeUuid4Test.php
      * 
      * @return string
      */
-    public static function generateUuid4(): string
+    public static function fakeUuid4(): string
     {
         $data = random_bytes(16);
         $data[6] = chr((ord($data[6]) & 0x0f) | 0x40); // version 4
@@ -157,40 +152,43 @@ trait HelperGenerateTrait
     }
 
 
-    //?!? test
     /**
      * Возвращает случайно сгенерированный UUID v7
-     * @see ../../tests/HelperGenerateTrait/HelperGenerateUuid7Test.php
+     * @see ../../tests/HelperFakeTrait/HelperFakeUuid7Test.php
      * 
      * @return string
      */
-    public static function generateUuid7(): string
+    public static function fakeUuid7(): string
     {
-        // Uuidv7: 48 бит Unix TimeStamp MS, 12 бит случайные, 2 -битные версии, 62 бита случайные
-        $time = (int) (microtime(true) * 1000); // миллисекунды
+        // 48 бит времени в миллисекундах
+        $time = (int)(microtime(true) * 1000);
         $timeHex = str_pad(dechex($time), 12, '0', STR_PAD_LEFT);
 
-        $rand = bin2hex(random_bytes(10)); // 20 шестнадцатеричных частей = 80 бит
+        // 4 случайных hex (16 бит)
+        $randA = bin2hex(random_bytes(2));
+
+        // 12 случайных hex (48 бит)
+        $randB = bin2hex(random_bytes(6));
 
         // Формируем UUIDv7: xxxxxxxx-xxxx-7xxx-yxxx-xxxxxxxxxxxx
         $uuid = sprintf(
-            '%08s-%04s-7%03s-%s%s-%s',
+            '%08s-%04s-7%03s-%s%03s-%012s',
             substr($timeHex, 0, 8),
             substr($timeHex, 8, 4),
-            substr($rand, 0, 3),
-            dechex((hexdec(substr($rand, 3, 1)) & 0x3) | 0x8), // вариант 10xx
-            substr($rand, 4, 3),
-            substr($rand, 7)
+            substr($randA, 0, 3),
+            // Вариант 8, 9, a, b
+            dechex((hexdec($randA[3] ?? '8') & 0x3 | 0x8)),
+            substr($randA, 4, 3),
+            $randB,
         );
 
         return $uuid;
     }
 
 
-    //?!? test
     /**
      * Возвращает случайно сгенерированное ФИО
-     * @see ../../tests/HelperGenerateTrait/HelperGenerateNameTest.php
+     * @see ../../tests/HelperFakeTrait/HelperFakeNameTest.php
      *
      * @param Locale $locale
      * @param array|string|bool|null $surnames
@@ -198,41 +196,48 @@ trait HelperGenerateTrait
      * @param array|string|bool|null $patronymics
      * @return string
      */
-    public static function generateName(
+    public static function fakeName(
         Locale $locale = Locale::Russian,
         array|string|bool|null $surnames = true,
         array|string|bool|null $firstNames = true,
         array|string|bool|null $patronymics = false,
     ): string {
-        $surnamePrefixes = in_array($surnames, [null, false], true)
+        $surnamePrefixes = in_array($surnames, [null, true], true)
             ? match ($locale) {
                 Locale::English => Consts::SURNAME_PREFIXES_EN,
                 Locale::Russian => Consts::SURNAME_PREFIXES_RU,
-            } : [];
-        $surnameSuffixes = in_array($surnames, [null, false], true) ? match ($locale) {
-            Locale::English => Consts::SURNAME_SUFFIXES_EN,
-            Locale::Russian => Consts::SURNAME_SUFFIXES_RU,
-        } : [];
-        $firstNamePrefixes = in_array($firstNames, [null, false], true)
+            }
+            : ($surnames ?: []);
+        $surnameSuffixes = in_array($surnames, [null, true], true)
+            ? match ($locale) {
+                Locale::English => Consts::SURNAME_SUFFIXES_EN,
+                Locale::Russian => Consts::SURNAME_SUFFIXES_RU,
+            }
+            : [];
+        $firstNamePrefixes = in_array($firstNames, [null, true], true)
             ? match ($locale) {
                 Locale::English => Consts::FIRSTNAME_PREFIXES_EN,
                 Locale::Russian => Consts::FIRSTNAME_PREFIXES_RU,
-            } : [];
-        $firstNameSuffixes = in_array($firstNames, [null, false], true)
+            }
+            : ($firstNames ?: []);
+        $firstNameSuffixes = in_array($firstNames, [null, true], true)
             ? match ($locale) {
-                Locale::English => Consts::FIRSTNAME_PREFIXES_EN,
-                Locale::Russian => Consts::FIRSTNAME_PREFIXES_RU,
-            } : [];
-        $patronymicPrefixes = in_array($patronymics, [null, false], true)
+                Locale::English => Consts::FIRSTNAME_SUFFIXES_EN,
+                Locale::Russian => Consts::FIRSTNAME_SUFFIXES_RU,
+            }
+            : [];
+        $patronymicPrefixes = in_array($patronymics, [null, true], true)
             ? match ($locale) {
                 Locale::English => [],
                 Locale::Russian => Consts::PATRONYNIC_PREFIXES_RU,
-            } : [];
-        $patronymicSuffixes = in_array($patronymics, [null, false], true)
+            }
+            : ($patronymics ?: []);
+        $patronymicSuffixes = in_array($patronymics, [null, true], true)
             ? match ($locale) {
                 Locale::English => [],
                 Locale::Russian => Consts::PATRONYNIC_SUFFIXES_RU,
-            } : [];
+            }
+            : [];
 
         $names = [];
 

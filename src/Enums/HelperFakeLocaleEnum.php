@@ -7,7 +7,7 @@ namespace Atlcom\Enums;
 /**
  * Локаль
  */
-enum HelperGenerateLocaleEnum: string
+enum HelperFakeLocaleEnum: string
 {
     case English = 'english';
     case Russian = 'russian';
