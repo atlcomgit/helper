@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atlcom\Tests\HelperInternal;
 
+use Atlcom\Helper;
 use Atlcom\Internal\HelperInternal;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +18,8 @@ class HelperInternalEnvTest extends TestCase
     #[Test]
     public function internalEnv()
     {
+        Helper::cacheRuntimeClear();
+
         $this->assertSame('Atlcom Helper', HelperInternal::internalEnv('APP_ENV'));
         $this->assertSame('', HelperInternal::internalEnv('EMPTY_1'));
         $this->assertSame('', HelperInternal::internalEnv('EMPTY_2'));

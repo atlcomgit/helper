@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atlcom\Tests\HelperEnvTrait;
 
 use Atlcom\Helper;
+use Atlcom\Internal\HelperInternal;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -17,11 +18,11 @@ final class HelperEnvTestTest extends TestCase
     #[Test]
     public function envTest(): void
     {
-        putenv('APP_ENV=Test');
+        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv', ['APP_ENV' => 'Test']);
         $boolean = Helper::envTest();
         $this->assertTrue($boolean === true);
 
-        putenv('APP_ENV=none');
+        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv', ['APP_ENV' => 'none']);
         $boolean = Helper::envTest();
         $this->assertTrue($boolean === false);
     }

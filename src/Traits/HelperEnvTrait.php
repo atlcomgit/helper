@@ -24,9 +24,7 @@ trait HelperEnvTrait
     public static function envLocal(): bool
     {
         return in_array(
-            static::stringLower(
-                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv)
-            ),
+            static::stringLower(HelperInternal::internalEnv(static::$keyAppEnv)),
             ['local'],
         );
     }
@@ -41,9 +39,7 @@ trait HelperEnvTrait
     public static function envDev(): bool
     {
         return in_array(
-            static::stringLower(
-                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
-            ),
+            static::stringLower(HelperInternal::internalEnv(static::$keyAppEnv)),
             ['dev', 'develop', 'development'],
         );
     }
@@ -58,9 +54,7 @@ trait HelperEnvTrait
     public static function envTest(): bool
     {
         return in_array(
-            static::stringLower(
-                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
-            ),
+            static::stringLower(HelperInternal::internalEnv(static::$keyAppEnv)),
             ['test'],
         );
     }
@@ -75,9 +69,7 @@ trait HelperEnvTrait
     public static function envTesting(): bool
     {
         return in_array(
-            static::stringLower(
-                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
-            ),
+            static::stringLower(HelperInternal::internalEnv(static::$keyAppEnv)),
             ['testing'],
         );
     }
@@ -92,9 +84,7 @@ trait HelperEnvTrait
     public static function envStage(): bool
     {
         return in_array(
-            static::stringLower(
-                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
-            ),
+            static::stringLower(HelperInternal::internalEnv(static::$keyAppEnv)),
             ['stage', 'staging', 'preprod'],
         );
     }
@@ -109,9 +99,7 @@ trait HelperEnvTrait
     public static function envProd(): bool
     {
         return in_array(
-            static::stringLower(
-                getenv(static::$keyAppEnv) ?: HelperInternal::internalEnv(static::$keyAppEnv),
-            ),
+            static::stringLower(HelperInternal::internalEnv(static::$keyAppEnv)),
             ['prod', 'production'],
         );
     }
