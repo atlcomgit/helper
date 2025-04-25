@@ -349,43 +349,43 @@ $array = MyEnum::enumValues(); // $array = ['value1']
 ##### [envDev(): bool](./tests/HelperEnvTrait/HelperEnvDevTest.php)
 Проверяет окружение приложения на разработку и возвращает true/false
 ```php
-putenv('APP_ENV=Dev');
-$boolean = Helper::envDev(); // $boolean = true
+$$boolean$ = Helper::envDev(); // $boolean = true/false
+```
+---
+##### [envGet(\$value): mixed](./tests/HelperEnvTrait/HelperEnvGetTest.php)
+Возвращает значение ключа из файла .env
+```php
+$mixed = Helper::envDev('APP_ENV'); // $mixed = mixed
 ```
 ---
 ##### [envLocal(): bool](./tests/HelperEnvTrait/HelperEnvLocalTest.php)
 Проверяет окружение приложения на локальное и возвращает true/false
 ```php
-putenv('APP_ENV=Local');
-$boolean = Helper::envLocal(); // $boolean = true
+$boolean = Helper::envLocal(); // $boolean = true/false
 ```
 ---
 ##### [envProd(): bool](./tests/HelperEnvTrait/HelperEnvProdTest.php)
 Проверяет окружение приложения на боевое и возвращает true/false
 ```php
-putenv('APP_ENV=Prod');
-$boolean = Helper::envProd(); // $boolean = true
+$boolean = Helper::envProd(); // $boolean = true/false
 ```
 ---
 ##### [envStage(): bool](./tests/HelperEnvTrait/HelperEnvStageTest.php)
 Проверяет окружение приложения на пред боевое и возвращает true/false
 ```php
-putenv('APP_ENV=Stage');
-$boolean = Helper::envStage(); // $boolean = true
+$boolean = Helper::envStage(); // $boolean = true/false
 ```
 ---
 ##### [envTest(): bool](./tests/HelperEnvTrait/HelperEnvTestTest.php)
 Проверяет окружение приложения на тестовое и возвращает true/false
 ```php
-putenv('APP_ENV=Test');
-$boolean = Helper::envTest(); // $boolean = true
+$boolean = Helper::envTest(); // $boolean = true/false
 ```
 ---
 ##### [envTesting(): bool](./tests/HelperEnvTrait/HelperEnvTestingTest.php)
 Проверяет окружение приложения на авто-тестирование и возвращает true/false
 ```php
-putenv('APP_ENV=Testing');
-$boolean = Helper::envTesting(); // $boolean = true
+$boolean = Helper::envTesting(); // $boolean = true/false
 ```
 ---
 

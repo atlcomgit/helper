@@ -16,6 +16,19 @@ trait HelperEnvTrait
 
 
     /**
+     * Возвращает значение ключа из файла .env
+     * @see ../../tests/HelperEnvTrait/HelperEnvGetTest.php
+     *
+     * @param string|null $value
+     * @return mixed
+     */
+    public static function envGet(?string $value, ): mixed
+    {
+        return HelperInternal::internalEnv($value);
+    }
+
+
+    /**
      * Проверяет окружение приложения на локальное и возвращает true/false
      * @see ../../tests/HelperEnvTrait/HelperEnvLocalTest.php
      *

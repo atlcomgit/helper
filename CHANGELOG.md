@@ -1,6 +1,7 @@
 # Changelog
 
 ## Версия 1.14
+- Добавлен метод Helper::envGet
 - Добавлен метод Helper::fakeEmail
 - Добавлен метод Helper::fakeName
 - Добавлен метод Helper::fakePassword

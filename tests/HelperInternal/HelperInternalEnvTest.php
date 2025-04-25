@@ -89,6 +89,16 @@ class HelperInternalEnvTest extends TestCase
         $this->assertSame("a\nb\n\tc\nd", HelperInternal::internalEnv('DATA_4'));
         $this->assertSame("a\nb\n\tc\nd", HelperInternal::internalEnv('DATA_4'));
 
+        $this->assertSame([], HelperInternal::internalEnv('ARRAY_1'));
+        $this->assertSame([], HelperInternal::internalEnv('ARRAY_2'));
+        $this->assertSame([0 => 1, 1 => 2], HelperInternal::internalEnv('ARRAY_3'));
+        $this->assertSame([0 => '1', 1 => '2'], HelperInternal::internalEnv('ARRAY_4'));
+        $this->assertSame([], HelperInternal::internalEnv('ARRAY_5'));
+        $this->assertSame(['a' => 1, 'b' => 2, 'c' => '3'], HelperInternal::internalEnv('ARRAY_6'));
+        $this->assertSame('{\"a\":1, \"b\":2, \"c\":\"3\"}', HelperInternal::internalEnv('ARRAY_7'));
+        $this->assertSame('{"a":1, "b":2, "c":"3"}', HelperInternal::internalEnv('ARRAY_8'));
+        $this->assertSame(['a' => 1, 'b' => 2, 'c' => '3'], HelperInternal::internalEnv('ARRAY_9'));
+
         $this->assertSame('value2', HelperInternal::internalEnv('DUPLICATE'));
 
     }

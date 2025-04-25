@@ -1275,6 +1275,7 @@ class HelperInternal
                     return $map[$v];
                 }
 
+                // Числа
                 if (!$was_quoted && is_numeric($value)) {
                     if (strpos($value, '.') === false) {
                         if (strlen($value) > strlen((string)PHP_INT_MAX)) {
@@ -1293,6 +1294,24 @@ class HelperInternal
                     }
                 }
 
+                // Массивы
+                if (
+                    $len >= 2 && (
+                        ($value[0] === '[' && $value[$len - 1] === ']') ||
+                        ($value[0] === "{" && $value[$len - 1] === "}")
+                    )
+                ) {
+                    return json_decode($value, true, 512, JSON_INVALID_UTF8_IGNORE)
+                        ?: json_decode(Helper::stringReplace($value, ["'" => '"']), true, 512, JSON_INVALID_UTF8_IGNORE)
+                        ?: json_decode(
+                            Helper::stringReplace(stripslashes($value), ["'" => '"']),
+                            true,
+                            512,
+                            JSON_INVALID_UTF8_IGNORE,
+                        )
+                        ?: [];
+                }
+
                 return $value;
             };
 
@@ -1308,6 +1327,6 @@ class HelperInternal
             return $result;
         });
 
-        return $env[$value] ?? null;
+        return is_null($value) ? null : ($env[$value] ?? null);
     }
 }

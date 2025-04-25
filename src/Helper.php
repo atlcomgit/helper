@@ -103,6 +103,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * 
  * @group env - Работа с окружением
  * @method @see static::envDev()
+ * @method @see static::envGet()
  * @method @see static::envLocal()
  * @method @see static::envProd()
  * @method @see static::envStage()
