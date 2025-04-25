@@ -20,11 +20,12 @@ trait HelperEnvTrait
      * @see ../../tests/HelperEnvTrait/HelperEnvGetTest.php
      *
      * @param string|null $value
+     * @param string|null $file
      * @return mixed
      */
-    public static function envGet(?string $value, ): mixed
+    public static function envGet(?string $value, ?string $file = null): mixed
     {
-        return HelperInternal::internalEnv($value);
+        return HelperInternal::internalEnv($value, $file);
     }
 
 

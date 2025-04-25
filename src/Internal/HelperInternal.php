@@ -1120,17 +1120,20 @@ class HelperInternal
 
 
     /**
-     * Возвращает значение параметра по названию ключа из .env файла в корне
+     * Возвращает значение параметра по названию ключа из .env файла в корне или из указанного в file
      * @see ../../tests/HelperInternal/HelperInternalEnvTest.php
      *
      * @param string|null $value
+     * @param string|null $file
      * @return mixed
      */
-    public static function internalEnv(string|null $value): mixed
+    public static function internalEnv(string|null $value, ?string $file = null): mixed
     {
-        $env = Helper::cacheRuntime(__CLASS__ . __FUNCTION__, static function () {
+        $file ??= '';
+
+        $env = Helper::cacheRuntime(__CLASS__ . __FUNCTION__ . $file, static function () use ($file) {
             $env = [];
-            $lines = preg_split('/\R/', file_get_contents(Helper::pathRoot() . '/.env') ?: '');
+            $lines = preg_split('/\R/', file_get_contents($file ?: Helper::pathRoot() . '/.env') ?: '');
             $buffer = '';
             $key = null;
             $in_multiline = false;

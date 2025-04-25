@@ -352,10 +352,10 @@ $array = MyEnum::enumValues(); // $array = ['value1']
 $$boolean$ = Helper::envDev(); // $boolean = true/false
 ```
 ---
-##### [envGet(\$value): mixed](./tests/HelperEnvTrait/HelperEnvGetTest.php)
+##### [envGet(\$value, \$file): mixed](./tests/HelperEnvTrait/HelperEnvGetTest.php)
 Возвращает значение ключа из файла .env
 ```php
-$mixed = Helper::envDev('APP_ENV'); // $mixed = mixed
+$mixed = Helper::envDev('APP_ENV', '.env.example'); // $mixed = mixed
 ```
 ---
 ##### [envLocal(): bool](./tests/HelperEnvTrait/HelperEnvLocalTest.php)
