@@ -12,6 +12,8 @@ use Atlcom\Helper;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperStringTrait;
 use InvalidArgumentException;
+use ReflectionMethod;
+use ReflectionProperty;
 use Throwable;
 
 /**
@@ -1130,8 +1132,8 @@ class HelperInternal
     public static function internalEnv(string|null $value, ?string $file = null): mixed
     {
         $file ??= '';
-
-        $env = Helper::cacheRuntime(__CLASS__ . __FUNCTION__ . $file, static function () use ($file) {
+        $cacheKey = __CLASS__ . __FUNCTION__ . ($file ?? '');
+        $env = Helper::cacheRuntime($cacheKey, static function () use ($file) {
             $env = [];
             $lines = preg_split('/\R/', file_get_contents($file ?: Helper::pathRoot() . '/.env') ?: '');
             $buffer = '';
@@ -1250,8 +1252,8 @@ class HelperInternal
                 if (
                     $len >= 2 &&
                     (
-                        ($value[0] === '"' && $value[$len - 1] === '"') ||
-                        ($value[0] === "'" && $value[$len - 1] === "'")
+                        (($value[0] ?? null) === '"' && ($value[$len - 1] ?? null) === '"') ||
+                        (($value[0] ?? null) === "'" && ($value[$len - 1] ?? null) === "'")
                     )
                 ) {
                     $value = substr($value, 1, -1);
@@ -1300,8 +1302,8 @@ class HelperInternal
                 // Массивы
                 if (
                     $len >= 2 && (
-                        ($value[0] === '[' && $value[$len - 1] === ']') ||
-                        ($value[0] === "{" && $value[$len - 1] === "}")
+                        (($value[0] ?? null) === '[' && ($value[$len - 1] ?? null) === ']') ||
+                        (($value[0] ?? null) === "{" && ($value[$len - 1] ?? null) === "}")
                     )
                 ) {
                     return json_decode($value, true, 512, JSON_INVALID_UTF8_IGNORE)
@@ -1331,5 +1333,100 @@ class HelperInternal
         });
 
         return is_null($value) ? null : ($env[$value] ?? null);
+    }
+
+
+    /**
+     * Возвращает массив с разложенными параметрами из phpdoc
+     *
+     * @param string|bool|null $phpdoc
+     * @return array
+     */
+    public static function internalParsePhpDoc(string|bool|null $phpdoc): array
+    {
+        if (!$phpdoc) {
+            return [];
+        }
+
+        $parsed = [];
+
+        // Убираем /** и */
+        $phpdoc = trim(preg_replace('/^\/\*\*|\*\/$/', '', $phpdoc));
+
+        $lines = preg_split('/\r?\n/', $phpdoc);
+
+        foreach ($lines as $line) {
+            $line = trim(ltrim($line, "* \t"));
+
+            if (empty($line)) {
+                continue;
+            }
+
+            if (strpos($line, '@') === 0) {
+                preg_match('/^@(\w+)\s+(.*)$/', $line, $matches);
+                if ($matches) {
+                    $tag = $matches[1];
+                    $content = trim($matches[2]);
+
+                    switch ($tag) {
+                        case 'param':
+                            preg_match('/^([\w\|\\\\\[\]]+)\s+\$(\w+)\s*(.*)$/', $content, $paramMatches);
+                            if ($paramMatches) {
+                                $type = $paramMatches[1];
+                                $name = $paramMatches[2];
+                                $description = trim($paramMatches[3] ?? '');
+
+                                $parsed['param'][$name] = [
+                                    'types' => preg_split('/\|/', $type),
+                                    'description' => $description,
+                                ];
+                            }
+                            break;
+
+                        case 'return':
+                            preg_match('/^([\w\|\\\\\[\]]+)\s*(.*)$/', $content, $returnMatches);
+                            if ($returnMatches) {
+                                $type = $returnMatches[1];
+                                $description = trim($returnMatches[2] ?? '');
+
+                                $parsed['return'] = [
+                                    'types' => preg_split('/\|/', $type),
+                                    'description' => $description,
+                                ];
+                            }
+                            break;
+
+                        default:
+                            if (!isset($parsed[$tag])) {
+                                $parsed[$tag] = [];
+                            }
+                            $parsed[$tag][] = $content;
+                            break;
+                    }
+                }
+            } else {
+                $parsed['description'] ??= '';
+                $parsed['description'] .= ($parsed['description'] ? ' ' : '') . $line;
+            }
+        }
+
+        return $parsed;
+    }
+
+
+    /**
+     * Определяет видимость свойства или метода
+     *
+     * @param mixed ReflectionProperty|ReflectionMethod $member
+     * @return void
+     */
+    public static function internalVisibility(ReflectionProperty|ReflectionMethod $member): string
+    {
+        return match (true) {
+            $member->isPrivate() => 'private',
+            $member->isProtected() => 'protected',
+
+            default => 'public',
+        };
     }
 }

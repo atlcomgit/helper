@@ -1,6 +1,13 @@
 # Changelog
 
-## Версия 1.14
+## _Версия 1.15_
+- Добавлен метод Helper::reflectionArgumentAttributes
+- Добавлен метод Helper::reflectionClassAttributes
+- Добавлен метод Helper::reflectionMethodAttributes
+- Добавлен метод Helper::reflectionPhpDoc
+- Добавлен метод Helper::reflectionPropertyAttributes
+
+## _Версия 1.14_
 - Добавлен метод Helper::envGet
 - Добавлен метод Helper::fakeEmail
 - Добавлен метод Helper::fakeName
@@ -18,7 +25,7 @@
 
 - Обновлен трейт HelperEnvTrait
 
-## Версия 1.13
+## _Версия 1.13_
 - Добавлен метод Helper::bracketChange
 - Добавлен метод Helper::bracketCopy
 - Добавлен метод Helper::bracketCount
@@ -32,7 +39,7 @@
 - Обновлен метод Helper::numberToString
 - Обновлен метод Helper::stringDeleteMultiples
 
-## Версия 1.12
+## _Версия 1.12_
 - Добавлен метод Helper::cacheRuntimeClear
 - Добавлен метод Helper::cacheRuntimeDelete
 - Добавлен метод Helper::jsonFlags
@@ -41,7 +48,7 @@
 - Обновлен метод Helper::phoneNumber
 - Обновлен метод Helper::urlParse
 
-## Версия 1.11
+## _Версия 1.11_
 - Добавлен метод Helper::urlCreate
 - Добавлен метод Helper::urlDomainDecode
 - Добавлен метод Helper::urlDomainEncode
@@ -49,10 +56,10 @@
 
 - Обновлен метод Helper::stringSplit
 
-## Версия 1.10
+## _Версия 1.10_
 - Обновлен метод Helper::stringSplit
 
-## Версия 1.09
+## _Версия 1.09_
 - Добавлен метод Helper::arrayDeleteKeys
 - Добавлен метод Helper::phoneFormat
 - Добавлен метод Helper::phoneNumber
@@ -63,11 +70,11 @@
 - Обновлен метод Helper::stringReplace
 - Обновлен метод Helper::timeSecondsToString
 
-## Версия 1.08
+## _Версия 1.08_
 - Обновлен метод Helper::stringRandom
 - Обновлен метод Helper::stringSegment
 
-## Версия 1.07
+## _Версия 1.07_
 - Добавлен метод Helper::dateDayName
 - Добавлен метод Helper::dateToString
 - Добавлен метод Helper::numberToString
@@ -82,7 +89,7 @@
 - Обновлен метод Helper::timeSecondsToArray
 - Обновлен метод Helper::timeSecondsToString
 
-## Версия 1.06
+## _Версия 1.06_
 - Добавлен метод Helper::dateFromString
 - Добавлен метод Helper::enumExists
 - Добавлен метод Helper::enumFrom
@@ -99,7 +106,7 @@
 
 - Обновлен метод Helper::telegramBreakMessage
 
-## Версия 1.05
+## _Версия 1.05_
 - Добавлен метод Helper::envDev
 - Добавлен метод Helper::envLocal
 - Добавлен метод Helper::envProd
@@ -111,7 +118,7 @@
 - Обновлен метод Helper::cryptEncode
 - Обновлен метод Helper::stringPosAll
 
-## Версия 1.04
+## _Версия 1.04_
 - Добавлен метод Helper::arrayDot
 - Добавлен метод Helper::arrayUnDot
 - Добавлен метод Helper::cacheRuntime
@@ -132,7 +139,7 @@
 - Добавлен метод Helper::stringUpperFirst
 - Добавлен метод Helper::stringUpperFirstAll
 
-## Версия 1.03
+## _Версия 1.03_
 - Добавлен метод Helper::arrayFirst
 - Добавлен метод Helper::arrayGet
 - Добавлен метод Helper::arrayLast
@@ -146,7 +153,7 @@
 - Добавлен метод Helper::stringReverse
 - Добавлен метод Helper::transformToArray
 
-## Версия 1.02
+## _Версия 1.02_
 - Добавлен метод Helper::arrayExcludeTraceVendor
 - Добавлен метод Helper::arrayMappingKeys
 - Добавлен метод Helper::cacheRuntimeGet
@@ -195,11 +202,11 @@
 - Добавлен метод Helper::timeSecondsToArray
 - Добавлен метод Helper::timeSecondsToString
 
-## Версия 1.01
+## _Версия 1.01_
 - Добавлен метод Helper::intervalBetween
 - Добавлен метод Helper::intervalOverlap
 
 - Метод Helper::inInterval переименован в Helper::intervalBetween
 
-## Версия 1.00
+## _Версия 1.00_
 - Добавлен метод Helper::inInterval

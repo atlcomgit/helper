@@ -35,6 +35,7 @@ class HelperInternalEnvTest extends TestCase
         $this->assertSame(-1, HelperInternal::internalEnv('INT_3'));
         $this->assertSame('10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000', HelperInternal::internalEnv('INT_4'));
         $this->assertIsString(HelperInternal::internalEnv('INT_4'));
+        $this->assertSame('123', HelperInternal::internalEnv('INT_5'));
 
         $this->assertSame(1.2, HelperInternal::internalEnv('FLOAT_1'));
         $this->assertSame(-1.2, HelperInternal::internalEnv('FLOAT_2'));
@@ -93,11 +94,12 @@ class HelperInternalEnvTest extends TestCase
         $this->assertSame([], HelperInternal::internalEnv('ARRAY_2'));
         $this->assertSame([0 => 1, 1 => 2], HelperInternal::internalEnv('ARRAY_3'));
         $this->assertSame([0 => '1', 1 => '2'], HelperInternal::internalEnv('ARRAY_4'));
-        $this->assertSame([], HelperInternal::internalEnv('ARRAY_5'));
-        $this->assertSame(['a' => 1, 'b' => 2, 'c' => '3'], HelperInternal::internalEnv('ARRAY_6'));
-        $this->assertSame('{\"a\":1, \"b\":2, \"c\":\"3\"}', HelperInternal::internalEnv('ARRAY_7'));
-        $this->assertSame('{"a":1, "b":2, "c":"3"}', HelperInternal::internalEnv('ARRAY_8'));
-        $this->assertSame(['a' => 1, 'b' => 2, 'c' => '3'], HelperInternal::internalEnv('ARRAY_9'));
+        $this->assertSame("['1', '2']", HelperInternal::internalEnv('ARRAY_5'));
+        $this->assertSame([], HelperInternal::internalEnv('ARRAY_6'));
+        $this->assertSame(['a' => 1, 'b' => 2, 'c' => '3'], HelperInternal::internalEnv('ARRAY_7'));
+        $this->assertSame('{\"a\":1, \"b\":2, \"c\":\"3\"}', HelperInternal::internalEnv('ARRAY_8'));
+        $this->assertSame('{"a":1, "b":2, "c":"3"}', HelperInternal::internalEnv('ARRAY_9'));
+        $this->assertSame(['a' => 1, 'b' => 2, 'c' => '3'], HelperInternal::internalEnv('ARRAY_10'));
 
         $this->assertSame('value2', HelperInternal::internalEnv('DUPLICATE'));
 

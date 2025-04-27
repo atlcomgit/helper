@@ -23,6 +23,7 @@ use Atlcom\Traits\HelperJwtTrait;
 use Atlcom\Traits\HelperNumberTrait;
 use Atlcom\Traits\HelperPathTrait;
 use Atlcom\Traits\HelperPhoneTrait;
+use Atlcom\Traits\HelperReflectionTrait;
 use Atlcom\Traits\HelperRegexpTrait;
 use Atlcom\Traits\HelperSizeTrait;
 use Atlcom\Traits\HelperStringTrait;
@@ -35,7 +36,7 @@ use Atlcom\Traits\HelperUrlTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.14
+ * @version 1.15
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -156,6 +157,13 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::phoneFormat()
  * @method @see static::phoneNumber()
  * 
+ * @group reflection - Работа с рефлексией
+ * @method @see static::reflectionArgumentAttributes()
+ * @method @see static::reflectionClassAttributes()
+ * @method @see static::reflectionMethodAttributes()
+ * @method @see static::reflectionPhpDoc()
+ * @method @see static::reflectionPropertyAttributes()
+ * 
  * @group regexp - Работа с валидацией
  * @method @see static::regexpValidateAscii()
  * @method @see static::regexpValidateDate()
@@ -249,6 +257,7 @@ abstract class Helper
     use HelperNumberTrait;
     use HelperPathTrait;
     use HelperPhoneTrait;
+    use HelperReflectionTrait;
     use HelperRegexpTrait;
     use HelperSizeTrait;
     use HelperStringTrait;

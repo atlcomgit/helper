@@ -607,6 +607,52 @@ $string = Helper::phoneNumber('+7 (900) 111-22-33'); // $string = '79001112233'
 Работа с валидацией
 
 ---
+##### [reflectionArgumentAttributes(\$class, \$method, \$argument): array](./tests/HelperReflectionTrait/HelperReflectionArgumentAttributesTest.php)
+Возвращает массив аттрибутов у аргументов метода класса
+```php
+class Example {public function methodName(#[ExampleAttribute] $paramName)}
+$array = Helper::reflectionArgumentAttributes(Example::class, 'methodName', 'paramName'); // $array = [['attribute' => [...], 'arguments' => [...], 'instance' => {...}]]
+```
+---
+##### [reflectionClassAttributes(\$class): array](./tests/HelperReflectionTrait/HelperReflectionClassAttributesTest.php)
+Возвращает массив аттрибутов у класса
+```php
+#[ExampleAttribute]
+class Example {}
+$array = Helper::reflectionClassAttributes(Example::class); // $array = [['attribute' => [...], 'arguments' => [...], 'instance' => {...}]]
+```
+---
+##### [reflectionMethodAttributes(\$class, \$method): array](./tests/HelperReflectionTrait/HelperReflectionMethodAttributesTest.php)
+Возвращает массив аттрибутов у методов класса
+```php
+#[ExampleAttribute]
+class Example {#[ExampleAttribute] public function methodName($param)}
+$array = Helper::reflectionMethodAttributes(Example::class, 'methodName'); // $array = [['attribute' => [...], 'arguments' => [...], 'instance' => {...}]]
+```
+---
+##### [reflectionPhpDoc(\$class): array](./tests/HelperReflectionTrait/HelperReflectionPhpDocTest.php)
+Возвращает массив с разложенными параметрами из всех phpdoc блоков класса
+```php
+/** description class*/
+class Example {
+	/** @var string */ public string $propertyName
+	/** description method */ public function methodName() {}
+}
+$array = Helper::reflectionPhpDoc(Example::class); // $array = [...]
+```
+---
+##### [reflectionPropertyAttributes(\$class, \$property): array](./tests/HelperReflectionTrait/HelperReflectionPropertyAttributesTest.php)
+Возвращает массив аттрибутов у свойств класса
+```php
+class Example {#[ExampleAttribute] public string $propertyName}
+$array = Helper::reflectionPropertyAttributes(Example::class, 'propertyName'); // $array = [['attribute' => [...], 'arguments' => [...], 'instance' => {...}]]
+```
+---
+
+#### Regexp
+Работа с валидацией
+
+---
 ##### [regexpValidateAscii(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateAsciiTest.php)
 Проверяет значение строки на формат ascii (латинский алфавита и цифры)
 ```php
