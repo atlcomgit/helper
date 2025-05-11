@@ -41,6 +41,9 @@ final class HelperStringReplaceTest extends TestCase
         $string = Helper::stringReplace('abc', ['a', 'b'], 'x');
         $this->assertTrue($string === 'xxc');
 
+        $string = Helper::stringReplace('abc 123.456', '/[^0-9.+-]/', '');
+        $this->assertSame($string, '123.456');
+
         $string = Helper::stringReplace(null, null);
         $this->assertTrue($string === '');
     }

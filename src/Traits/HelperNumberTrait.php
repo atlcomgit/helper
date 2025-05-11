@@ -467,8 +467,16 @@ trait HelperNumberTrait
     {
         $result = '';
 
-        if (is_numeric($value)) {
-            $result = static::stringSearchAny($value, '.') ? (float)$value : (int)$value;
+        if (
+            is_numeric($number = static::stringReplace($value, [',' => '.', ' ' => '']))
+            || ($number = static::stringReplace($number, '/[^0-9.+-]/', ''))
+        ) {
+            $result = match (true) {
+                is_null($number) => 0,
+                is_integer($number), is_float($number) => $number,
+
+                default => static::stringSearchAny($number, '.') ? (float)$number : (int)$number,
+            };
 
         } else if ($value) {
 
@@ -717,5 +725,30 @@ trait HelperNumberTrait
         $parts = explode('.', (string)$value);
 
         return isset($parts[1]) ? strlen(rtrim($parts[1], '0')) : 0;
+    }
+
+
+    /**
+     * Возвращает число в виде строки с форматированием
+     * @see ../../tests/HelperNumberTrait/HelperNumberFormatTest.php
+     *
+     * @param int|float|string|null $value
+     * @param int|null $decimals
+     * @param string|null $separator
+     * @return string
+     */
+    public static function numberFormat(
+        int|float|string|null $value,
+        ?int $decimals = null,
+        ?string $separator = null,
+    ): string {
+        $value = (float)static::numberFromString($value);
+
+        return number_format(
+            num: $value,
+            decimals: is_null($decimals) ? static::numberDecimalDigits($value) : $decimals,
+            decimal_separator: is_null($separator) ? ',' : $separator,
+            thousands_separator: ' ',
+        );
     }
 }

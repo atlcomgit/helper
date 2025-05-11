@@ -1,5 +1,8 @@
 # Changelog
 
+## _Версия 1.16_
+- Добавлен метод Helper::numberFormat
+
 ## _Версия 1.15_
 - Добавлен метод Helper::reflectionArgumentAttributes
 - Добавлен метод Helper::reflectionClassAttributes

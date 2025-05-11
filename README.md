@@ -549,10 +549,16 @@ $string = Helper::numberCalculate('1 + 2'); // $string = '3'
 $integer = Helper::numberDecimalDigits(1.123); // $integer = 3
 ```
 ---
+##### [numberFormat(\$value, \$decimals, \$separator): string](./tests/HelperNumberTrait/HelperNumberFormatTest.php)
+Возвращает число в виде строки с форматированием
+```php
+$string = Helper::numberFormat(1000.123); // $string = '1 000,123'
+```
+---
 ##### [numberFromString(\$value): int|float](./tests/HelperNumberTrait/HelperNumberFromStringTest.php)
 Возвращает число из строки с числом прописью на русском языке
 ```php
-$string = Helper::numberFromString('сто двадцать три'); // $string = 123
+$integer = Helper::numberFromString('сто двадцать три'); // $integer = 123
 ```
 ---
 ##### [numberSwap(\$value1, \$value2): void](./tests/HelperNumberTrait/HelperNumberSwapTest.php)

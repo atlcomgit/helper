@@ -36,7 +36,7 @@ use Atlcom\Traits\HelperUrlTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.15
+ * @version 1.16
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -145,6 +145,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @group number - Работа с числами
  * @method @see static::numberCalculate()
  * @method @see static::numberDecimalDigits()
+ * @method @see static::numberFormat()
  * @method @see static::numberFromString()
  * @method @see static::numberSwap()
  * @method @see static::numberToString()
