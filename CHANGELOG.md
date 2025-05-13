@@ -1,6 +1,18 @@
 # Changelog
 
 ## _Версия 1.16_
+- Добавлен метод Helper::castToArray
+- Добавлен метод Helper::castToBool
+- Добавлен метод Helper::castToCallable
+- Добавлен метод Helper::castToFloat
+- Добавлен метод Helper::castToJson
+- Добавлен метод Helper::castToInt
+- Добавлен метод Helper::castToObject
+- Добавлен метод Helper::castToString
+- Добавлен метод Helper::fakeIp4
+- Добавлен метод Helper::fakeIp6
+- Добавлен метод Helper::regexpValidateIp4
+- Добавлен метод Helper::regexpValidateIp6
 - Добавлен метод Helper::numberFormat
 
 ## _Версия 1.15_

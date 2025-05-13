@@ -460,14 +460,20 @@ trait HelperNumberTrait
      * Возвращает число из строки с числом прописью на русском языке
      * @see ../../tests/HelperNumberTrait/HelperNumberFromStringTest.php
      *
-     * @param int|float|string|null $value
+     * @param int|float|bool|string|null $value
      * @return int|float
      */
-    public static function numberFromString(int|float|string|null $value): int|float
+    public static function numberFromString(int|float|bool|string|null $value): int|float
     {
         $result = '';
 
-        if (
+        if (in_array($value, ['true', 'True', 'TRUE', true, '1', 1], true)) {
+            $result = 1;
+            
+        } else if (in_array($value, ['false', 'False', 'FALSE', false, '0', 0, null], true)) {
+            $result = 0;
+            
+        } else if (
             is_numeric($number = static::stringReplace($value, [',' => '.', ' ' => '']))
             || ($number = static::stringReplace($number, '/[^0-9.+-]/', ''))
         ) {

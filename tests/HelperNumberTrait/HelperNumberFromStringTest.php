@@ -41,6 +41,15 @@ final class HelperNumberFromStringTest extends TestCase
         $integer = Helper::numberFromString('123.456,789');
         $this->assertSame($integer, 123.456);
 
+        $integer = Helper::numberFromString('true');
+        $this->assertSame($integer, 1);
+
+        $integer = Helper::numberFromString('false');
+        $this->assertSame($integer, 0);
+
+        $integer = Helper::numberFromString('null');
+        $this->assertSame($integer, 0);
+
         $integer = Helper::numberFromString(null);
         $this->assertTrue($integer === 0);
     }

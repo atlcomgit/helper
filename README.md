@@ -204,6 +204,59 @@ $string = Helper::caseSnake('abcDef'); // $string = 'abc_Def'
 ```
 ---
 
+#### Cast
+Работа с типами
+
+---
+##### [castToArray(\$value): ?array](./tests/HelperCastTrait/HelperCastToArrayTest.php)
+Возвращает преобразование значения к массиву
+```php
+$array = Helper::castToArray(1); // $array = [1]
+```
+---
+##### [castToBool(\$value): ?bool](./tests/HelperCastTrait/HelperCastToBoolTest.php)
+Возвращает преобразование значения к логическому типу
+```php
+$boolean = Helper::castToBool(1); // $boolean = true
+```
+---
+##### [castToCallable(\$value): ?callable](./tests/HelperCastTrait/HelperCastToCallableTest.php)
+Возвращает преобразование значения к статичной функции с результатом самого значения
+```php
+$callable = Helper::castToCallable(1); // $callable() = 1
+```
+---
+##### [castToFloat(\$value): ?float](./tests/HelperCastTrait/HelperCastToFloatTest.php)
+Возвращает преобразование значения к вещественному типу
+```php
+$float = Helper::castToFloat(1); // $float = 1.0
+```
+---
+##### [castToJson(\$value): ?string](./tests/HelperCastTrait/HelperCastToJsonTest.php)
+Возвращает преобразование значения к строке json
+```php
+$json = Helper::castToJson(1); // $json = '"1"'
+```
+---
+##### [castToInt(\$value): ?int](./tests/HelperCastTrait/HelperCastToIntTest.php)
+Возвращает преобразование значения к целочисленному типу
+```php
+$integer = Helper::castToInt('1'); // $integer = 1
+```
+---
+##### [castToObject(\$value): ?object](./tests/HelperCastTrait/HelperCastToObjectTest.php)
+Возвращает преобразование значения к объекту
+```php
+$object = Helper::castToObject(1); // $object = (object)[1]
+```
+---
+##### [castToString(\$value): ?string](./tests/HelperCastTrait/HelperCastToStringTest.php)
+Возвращает преобразование значения к строковому типу
+```php
+$string = Helper::castToString(1); // $string = '1'
+```
+---
+
 #### Color
 Работа с цветами
 
@@ -408,6 +461,18 @@ $string = Helper::exceptionToString(new Exception('message', 400)); // $string =
 Возвращает случайно сгенерированный email
 ```php
 $string = Helper::fakeEmail(); // $string = 'abc@asd.ru'
+```
+---
+##### [fakeIp4(): string](./tests/HelperFakeTrait/HelperFakeIp4Test.php)
+Возвращает случайно сгенерированный ip адрес v4
+```php
+$string = Helper::fakeIp4(); // $string = '111.222.33.44'
+```
+---
+##### [fakeIp6(): string](./tests/HelperFakeTrait/HelperFakeIp6Test.php)
+Возвращает случайно сгенерированный ip адрес v6
+```php
+$string = Helper::fakeIp6(); // $string = '2001:0db8:0058:0074:1c60:2c18:1025:2b5f'
 ```
 ---
 ##### [fakeName(\$locale, \$surnames, \$firstNames, \$patronymics): string](./tests/HelperFakeTrait/HelperFakeNameTest.php)
@@ -675,6 +740,18 @@ $boolean = Helper::regexpValidateDate('01.01.2025'); // $boolean = true
 Проверяет значение строки на формат электронной почты
 ```php
 $boolean = Helper::regexpValidateEmail('Test.example_1@domain.com'); // $boolean = true
+```
+---
+##### [regexpValidateIp4(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateIp4Test.php)
+Проверяет значение строки на формат ip адреса v4
+```php
+$boolean = Helper::regexpValidateIp4('111.222.33.44'); // $boolean = true
+```
+---
+##### [regexpValidateIp6(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateIp6Test.php)
+Проверяет значение строки на формат ip адреса v6
+```php
+$boolean = Helper::regexpValidateIp6('2001:0db8:0058:0074:1c60:2c18:1025:2b5f'); // $boolean = true
 ```
 ---
 ##### [regexpValidateJson(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateJsonTest.php)

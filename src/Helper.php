@@ -8,6 +8,7 @@ use Atlcom\Traits\HelperArrayTrait;
 use Atlcom\Traits\HelperBracketTrait;
 use Atlcom\Traits\HelperCacheTrait;
 use Atlcom\Traits\HelperCaseTrait;
+use Atlcom\Traits\HelperCastTrait;
 use Atlcom\Traits\HelperColorTrait;
 use Atlcom\Traits\HelperCryptTrait;
 use Atlcom\Traits\HelperDateTrait;
@@ -75,6 +76,16 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::casePascal()
  * @method @see static::caseSnake()
  * 
+ * @group cast - Работа со типами
+ * @method @see static::castToArray()
+ * @method @see static::castToBool()
+ * @method @see static::castToCallable()
+ * @method @see static::castToFloat()
+ * @method @see static::castToJson()
+ * @method @see static::castToInt()
+ * @method @see static::castToObject()
+ * @method @see static::castToString()
+ * 
  * @group color - Работа с цветами
  * @method @see static::colorHexToRgb()
  * @method @see static::colorRgbToHex()
@@ -116,6 +127,8 @@ use Atlcom\Traits\HelperUrlTrait;
  * 
  * @group fake - Работа с генерацией данных
  * @method @see static::fakeEmail()
+ * @method @see static::fakeIp4()
+ * @method @see static::fakeIp6()
  * @method @see static::fakeName()
  * @method @see static::fakePassword()
  * @method @see static::fakePhone()
@@ -169,6 +182,8 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::regexpValidateAscii()
  * @method @see static::regexpValidateDate()
  * @method @see static::regexpValidateEmail()
+ * @method @see static::regexpValidateIp4()
+ * @method @see static::regexpValidateIp6()
  * @method @see static::regexpValidateJson()
  * @method @see static::regexpValidatePattern()
  * @method @see static::regexpValidatePhone()
@@ -243,6 +258,7 @@ abstract class Helper
     use HelperBracketTrait;
     use HelperCacheTrait;
     use HelperCaseTrait;
+    use HelperCastTrait;
     use HelperColorTrait;
     use HelperCryptTrait;
     use HelperDateTrait;

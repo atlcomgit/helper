@@ -174,4 +174,30 @@ trait HelperRegexpTrait
 
         return true;
     }
+
+
+    /**
+     * Проверяет значение строки на формат ip адреса v4
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateIp4Test.php
+     *
+     * @param string|null $value
+     * @return bool
+     */
+    public static function regexpValidateIp4(?string $value): bool
+    {
+        return (bool)preg_match(HelperRegexpEnum::Ip4->value, $value ?? '');
+    }
+
+
+    /**
+     * Проверяет значение строки на формат ip адреса v6
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateIp6Test.php
+     *
+     * @param string|null $value
+     * @return bool
+     */
+    public static function regexpValidateIp6(?string $value): bool
+    {
+        return (bool)preg_match(HelperRegexpEnum::Ip6->value, $value ?? '');
+    }
 }

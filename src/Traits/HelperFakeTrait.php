@@ -256,4 +256,30 @@ trait HelperFakeTrait
 
         return implode(' ', $names);
     }
+
+
+    /**
+     * Возвращает случайно сгенерированный ip адрес v4
+     * @see ../../tests/HelperFakeTrait/HelperFakeIp4Test.php
+     *
+     * @return string
+     */
+    public static function fakeIp4(): string
+    {
+        return sprintf('%d.%d.%d.%d', rand(1, 255), rand(1, 255), rand(1, 255), rand(1, 255));
+    }
+
+
+    /**
+     * Возвращает случайно сгенерированный ip адрес v6
+     * @see ../../tests/HelperFakeTrait/HelperFakeIp6Test.php
+     *
+     * @return string
+     */
+    public static function fakeIp6(): string
+    {
+        return static::stringRandom(
+            '/' . static::stringConcat(':', array_fill(0, 8, '[a-fA-F0-9]{1,4}')) . '/'
+        );
+    }
 }
