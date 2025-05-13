@@ -37,7 +37,7 @@ use Atlcom\Traits\HelperUrlTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.16
+ * @version 1.17
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -235,10 +235,12 @@ use Atlcom\Traits\HelperUrlTrait;
  * @group time - Работа со временем
  * @method @see static::timeBetweenDatesToArray()
  * @method @see static::timeBetweenDatesToString()
+ * @method @see static::timeFromSeconds()
  * @method @see static::timeSecondsToArray()
  * @method @see static::timeSecondsToString()
  * 
  * @group transform - Работа с трансформацией
+ * @method @see static::transformSecondsToTimeString()
  * @method @see static::transformToArray()
  * 
  * @group translit - Работа с транслитерацией

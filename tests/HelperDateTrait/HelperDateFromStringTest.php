@@ -137,14 +137,20 @@ final class HelperDateFromStringTest extends TestCase
         $date = Helper::dateFromString('01.01.2025');
         $this->assertEquals((clone $now)->year(2025)->month(01)->day(01)->format('d.m.Y'), $date?->format('d.m.Y'));
 
+        $date = Helper::dateFromString('01.01.2025 04:05:06.7890');
+        $this->assertEquals(
+            (clone $now)->year(2025)->month(01)->day(01)->setTime(4, 5, 6, 789000)->format('d.m.Y H:i:s.u'),
+            $date?->format('d.m.Y H:i:s.u'),
+        );
+
         $date = Helper::dateFromString('25 числа следующего месяца');
         $this->assertEquals((clone $now)->addMonth()->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
 
         $date = Helper::dateFromString('25 октября 2025');
-        $this->assertEquals((clone $now)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
+        $this->assertEquals((clone $now)->year(2025)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
 
-        $date = Helper::dateFromString('Октябрь, 25 2025');
-        $this->assertEquals((clone $now)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
+        $date = Helper::dateFromString('Октябрь, 25, 2025');
+        $this->assertEquals((clone $now)->year(2025)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
 
         $date = Helper::dateFromString(null);
         $this->assertTrue($date === null);

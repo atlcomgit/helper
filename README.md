@@ -209,49 +209,49 @@ $string = Helper::caseSnake('abcDef'); // $string = 'abc_Def'
 
 ---
 ##### [castToArray(\$value): ?array](./tests/HelperCastTrait/HelperCastToArrayTest.php)
-Возвращает преобразование значения к массиву
+Возвращает преобразование значения к массиву или null
 ```php
 $array = Helper::castToArray(1); // $array = [1]
 ```
 ---
 ##### [castToBool(\$value): ?bool](./tests/HelperCastTrait/HelperCastToBoolTest.php)
-Возвращает преобразование значения к логическому типу
+Возвращает преобразование значения к логическому типу или null
 ```php
 $boolean = Helper::castToBool(1); // $boolean = true
 ```
 ---
 ##### [castToCallable(\$value): ?callable](./tests/HelperCastTrait/HelperCastToCallableTest.php)
-Возвращает преобразование значения к статичной функции с результатом самого значения
+Возвращает преобразование значения к статичной функции с результатом самого значения или null
 ```php
 $callable = Helper::castToCallable(1); // $callable() = 1
 ```
 ---
 ##### [castToFloat(\$value): ?float](./tests/HelperCastTrait/HelperCastToFloatTest.php)
-Возвращает преобразование значения к вещественному типу
+Возвращает преобразование значения к вещественному типу или null
 ```php
 $float = Helper::castToFloat(1); // $float = 1.0
 ```
 ---
 ##### [castToJson(\$value): ?string](./tests/HelperCastTrait/HelperCastToJsonTest.php)
-Возвращает преобразование значения к строке json
+Возвращает преобразование значения к строке json или null
 ```php
 $json = Helper::castToJson(1); // $json = '"1"'
 ```
 ---
 ##### [castToInt(\$value): ?int](./tests/HelperCastTrait/HelperCastToIntTest.php)
-Возвращает преобразование значения к целочисленному типу
+Возвращает преобразование значения к целочисленному типу или null
 ```php
 $integer = Helper::castToInt('1'); // $integer = 1
 ```
 ---
 ##### [castToObject(\$value): ?object](./tests/HelperCastTrait/HelperCastToObjectTest.php)
-Возвращает преобразование значения к объекту
+Возвращает преобразование значения к объекту или null
 ```php
 $object = Helper::castToObject(1); // $object = (object)[1]
 ```
 ---
 ##### [castToString(\$value): ?string](./tests/HelperCastTrait/HelperCastToStringTest.php)
-Возвращает преобразование значения к строковому типу
+Возвращает преобразование значения к строковому типу или null
 ```php
 $string = Helper::castToString(1); // $string = '1'
 ```
@@ -1049,6 +1049,12 @@ $array = Helper::timeBetweenDatesToArray('01.01.2025 00:00:00', '02.02.2026 01:0
 Возвращает массив периодов между датами
 ```php
 $string = Helper::timeBetweenDatesToString('01.01.2025 00:00:00', '02.02.2026 01:02:03', true); // $string = '1 год 1 месяц 1 день 1 час 2 минуты 3 секунды'
+```
+---
+##### [timeFromSeconds(\$value): string](./tests/HelperTimeTrait/HelperTimeFromSecondsTest.php)
+Возвращает строку вида ##:##:## из переданного количества секунд
+```php
+$string = Helper::timeFromSeconds(3661); // $string = '01:01:01'
 ```
 ---
 ##### [timeSecondsToArray(\$value): array](./tests/HelperTimeTrait/HelperTimeSecondsToArrayTest.php)

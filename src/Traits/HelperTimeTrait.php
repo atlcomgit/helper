@@ -265,4 +265,17 @@ trait HelperTimeTrait
 
         return trim($result);
     }
+
+
+    /**
+     * Возвращает строку вида ##:##:## из переданного количества секунд
+     * @see ../../tests/HelperTimeTrait/HelperTimeFromSecondsTest.php
+     *
+     * @param int|float|string|null $value
+     * @return string
+     */
+    public static function timeFromSeconds(int|float|string|null $value): string
+    {
+        return gmdate('H:i:s', static::castToInt($value ?: 0));
+    }
 }

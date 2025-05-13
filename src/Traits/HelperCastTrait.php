@@ -11,7 +11,7 @@ namespace Atlcom\Traits;
 trait HelperCastTrait
 {
     /**
-     * Возвращает преобразование значения к целочисленному типу
+     * Возвращает преобразование значения к целочисленному типу или null
      * @see ../../tests/HelperCastTrait/HelperCastToIntTest.php
      *
      * @param mixed $value
@@ -31,7 +31,7 @@ trait HelperCastTrait
 
 
     /**
-     * Возвращает преобразование значения к вещественному типу
+     * Возвращает преобразование значения к вещественному типу или null
      * @see ../../tests/HelperCastTrait/HelperCastToFloatTest.php
      *
      * @param mixed $value
@@ -51,7 +51,7 @@ trait HelperCastTrait
 
 
     /**
-     * Возвращает преобразование значения к логическому типу
+     * Возвращает преобразование значения к логическому типу или null
      * @see ../../tests/HelperCastTrait/HelperCastToBoolTest.php
      *
      * @param mixed $value
@@ -71,7 +71,7 @@ trait HelperCastTrait
 
 
     /**
-     * Возвращает преобразование значения к строковому типу
+     * Возвращает преобразование значения к строковому типу или null
      * @see ../../tests/HelperCastTrait/HelperCastToStringTest.php
      *
      * @param mixed $value
@@ -101,7 +101,7 @@ trait HelperCastTrait
 
 
     /**
-     * Возвращает преобразование значения к массиву
+     * Возвращает преобразование значения к массиву или null
      * @see ../../tests/HelperCastTrait/HelperCastToArrayTest.php
      *
      * @param mixed $value
@@ -127,7 +127,7 @@ trait HelperCastTrait
 
 
     /**
-     * Возвращает преобразование значения к объекту
+     * Возвращает преобразование значения к объекту или null
      * @see ../../tests/HelperCastTrait/HelperCastToObjectTest.php
      *
      * @param mixed $value
@@ -147,7 +147,7 @@ trait HelperCastTrait
 
 
     /**
-     * Возвращает преобразование значения к статичной функции с результатом самого значения
+     * Возвращает преобразование значения к статичной функции с результатом самого значения или null
      * @see ../../tests/HelperCastTrait/HelperCastToCallableTest.php
      *
      * @param mixed $value
@@ -165,7 +165,7 @@ trait HelperCastTrait
 
 
     /**
-     * Возвращает преобразование значения к строке json
+     * Возвращает преобразование значения к строке json или null
      * @see ../../tests/HelperCastTrait/HelperCastToJsonTest.php
      *
      * @param mixed $value

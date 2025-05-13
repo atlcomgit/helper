@@ -1,5 +1,8 @@
 # Changelog
 
+## _Версия 1.17_
+- Добавлен метод Helper::timeFromSeconds
+
 ## _Версия 1.16_
 - Добавлен метод Helper::castToArray
 - Добавлен метод Helper::castToBool

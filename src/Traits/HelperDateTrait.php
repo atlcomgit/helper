@@ -55,7 +55,7 @@ trait HelperDateTrait
             $october = '/октябр(ь|я|е|ю)/ui',
             $november = '/ноябр(ь|я|е|ю)/ui',
             $december = '/декабр(ь|я|е|ю)/ui',
-            $year = '/\d{4}/u',
+            $year = '/[^-.\/]\d{4}[^-.\/]/u',
 
             $currentDay = "/это(т|й|м)\s*($monday|$tuesday|$wednesday|$thursday|$friday|$saturday|$sunday)/u",
             $prevDay = "/прошл(ой|ый|ую|ом|ое)\s*($monday|$tuesday|$wednesday|$thursday|$friday|$saturday|$sunday)/u",
@@ -123,9 +123,12 @@ trait HelperDateTrait
             $prevMiddleYear = '/середин(а|е|у)\s*прошл(ого|ый|ем)\s*(год|года|лет)/u',
             $prevEndYear = '/кон(ец|це|цу)\s*прошл(ого|ый|ем)\s*(год|года|лет)/u',
 
-            $numberDay = "/[\s,]{0,}\d{2}[\s,]{0,}/u",
+            $numberDay = "/[\s,]{0,}\d{2}[:\-.\/]{0}[\s,]{0,}|^\d{2}[:\-.\/]{0}[\s,]{1,}/u",
             $numberDay2 = '/(\d*)\s*числ/u',
             $numberDate = '/\d{2}[-.\/]\d{2}[-.\/]\d{4}|\d{4}[-.\/]\d{2}[-.]\d{2}/u',
+
+            $numberTime = '/[\s,]{0,}\d{2}:\d{2}:\d{2}/u',
+            $numberTime2 = '/[\s,]{0,}\d{2}:\d{2}:\d{2}.\d{1,}/u',
         ];
 
         $searched = static::stringSearchAll($value, $keywords);
@@ -400,6 +403,17 @@ trait HelperDateTrait
             $changes['number_date'] = $matches[0] ?? '';
         }
 
+        // Время
+
+        if (in_array($numberTime, $searched)) {
+            preg_match($numberTime, $value, $matches);
+            $changes['number_time'] = trim($matches[0] ?? '');
+        }
+        if (in_array($numberTime2, $searched)) {
+            preg_match($numberTime2, $value, $matches);
+            $changes['number_time'] = trim($matches[0] ?? '');
+        }
+
         // Вычисление даты
 
         empty($changes['add_days']) ?: $date->addDays($changes['add_days']);
@@ -424,6 +438,15 @@ trait HelperDateTrait
         empty($changes['number_month']) ?: $date->month($changes['number_month']);
         empty($changes['number_day']) ?: $date->day($changes['number_day']);
         empty($changes['number_date']) ?: $date = $date->parse($changes['number_date']);
+
+        // Вычисление времени
+
+        empty($changes['number_time']) ?: $date = $date->setTime(
+            (int)(static::stringSplit($changes['number_time'], [':', '.'], 0) ?? 0),
+            (int)(static::stringSplit($changes['number_time'], [':', '.'], 1) ?? 0),
+            (int)(static::stringSplit($changes['number_time'], [':', '.'], 2) ?? 0),
+            (int)str_pad((string)(static::stringSplit($changes['number_time'], [':', '.'], 3) ?? 0), 6, '0'),
+        );
 
         return ($searched && array_filter($changes)) ? $date : null;
     }
