@@ -89,8 +89,7 @@ trait HelperRegexpTrait
      */
     public static function regexpValidateJson(?string $value): bool
     {
-        return (bool)($array = json_decode($value ?? '', true, 512, JSON_INVALID_UTF8_IGNORE))
-            && is_array($array);
+        return is_array(json_decode($value ?? '', true, 512, JSON_INVALID_UTF8_IGNORE));
     }
 
 

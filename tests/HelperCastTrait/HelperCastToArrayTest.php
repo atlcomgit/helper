@@ -35,6 +35,8 @@ final class HelperCastToArrayTest extends TestCase
         $this->assertSame(['a' => 1], Helper::castToArray('{"a": 1}'));
         $this->assertSame(['{"a"}'], Helper::castToArray('{"a"}'));
         $this->assertSame([], Helper::castToArray((object)[]));
+        $this->assertSame([], Helper::castToArray('[]'));
+        $this->assertSame([], Helper::castToArray('"[]"'));
         $this->assertSame([1], Helper::castToArray(' "[1]" '));
 
         $this->assertSame([1], Helper::castToArray(static fn () => 1));
