@@ -3,6 +3,8 @@
 ## _Версия 1.17_
 - Добавлен метод Helper::timeFromSeconds
 
+- Обновлен метод Helper::castToArray
+
 ## _Версия 1.16_
 - Добавлен метод Helper::castToArray
 - Добавлен метод Helper::castToBool
