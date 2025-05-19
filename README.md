@@ -47,6 +47,12 @@ $mixed = Helper::arrayFirst(['a', 'b']); // $mixed === 'a'
 $mixed = Helper::arrayFirst(['a' => 1, 'b' => 2]); // $mixed === 1
 ```
 ---
+##### [arrayFlip(\$value): array](./tests/HelperArrayTrait/HelperArrayFlipTest.php)
+Возвращает массив с заменой местами ключей и значений
+```php
+$array = Helper::arrayFlip(['a' => 'b']); // $array === ['b' => 'a']
+```
+---
 ##### [arrayGet(\$value, \$key): mixed](./tests/HelperArrayTrait/HelperArrayGetTest.php)
 Возвращает значение из массива по имению ключа
 ```php

@@ -35,6 +35,7 @@ final class HelperCastToBoolTest extends TestCase
 
         $this->assertSame(true, Helper::castToBool(static fn () => 1));
 
+        $this->assertSame(false, Helper::castToBool(''));
         $this->assertSame(null, Helper::castToBool(null));
     }
 }

@@ -37,7 +37,7 @@ use Atlcom\Traits\HelperUrlTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.17
+ * @version 1.18
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -47,6 +47,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::arrayDot()
  * @method @see static::arrayExcludeTraceVendor()
  * @method @see static::arrayFirst()
+ * @method @see static::arrayFlip()
  * @method @see static::arrayGet()
  * @method @see static::arrayLast()
  * @method @see static::arrayMappingKeys()

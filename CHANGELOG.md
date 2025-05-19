@@ -1,5 +1,8 @@
 # Changelog
 
+## _Версия 1.18_
+- Добавлен метод Helper::timeFromSeconds
+
 ## _Версия 1.17_
 - Добавлен метод Helper::timeFromSeconds
 

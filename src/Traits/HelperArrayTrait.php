@@ -392,4 +392,28 @@ trait HelperArrayTrait
 
         return static::arrayUnDot($value);
     }
+
+
+    /**
+     * Возвращает массив с заменой местами ключей и значений
+     * @see ../../tests/HelperArrayTrait/HelperArrayFlipTest.php
+     *
+     * @param array|object|null $value
+     * @return array
+     */
+    public static function arrayFlip(array|object|null $value): array
+    {
+        $value = static::transformToArray($value);
+        $result = [];
+
+        foreach ($value as $key => $v) {
+            if (is_array($v) || is_object($v)) {
+                $result = [...$result, ...static::arrayFlip($v)];
+            } else {
+                $result[$v] = $key;
+            }
+        }
+
+        return $result;
+    }
 }

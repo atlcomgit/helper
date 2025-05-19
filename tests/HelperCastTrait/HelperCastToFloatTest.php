@@ -36,6 +36,7 @@ final class HelperCastToFloatTest extends TestCase
 
         $this->assertSame(1.0, Helper::castToFloat(static fn () => 1));
 
+        $this->assertSame(0.0, Helper::castToFloat(''));
         $this->assertSame(null, Helper::castToFloat(null));
     }
 }

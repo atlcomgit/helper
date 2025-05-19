@@ -36,6 +36,7 @@ final class HelperCastToIntTest extends TestCase
 
         $this->assertSame(1, Helper::castToInt(static fn () => 1));
 
+        $this->assertSame(0, Helper::castToInt(''));
         $this->assertSame(null, Helper::castToInt(null));
     }
 }
