@@ -28,6 +28,12 @@ composer require atlcom/helper
 $array = Helper::arrayDeleteKeys(['a' => 1, 'b' => 2], 'a'); // $array = ['b' => 2]
 ```
 ---
+##### [arrayDeleteValues(\$value, ...\$searches): array](./tests/HelperArrayTrait/HelperArrayDeleteValuesTest.php)
+Возвращает массив с удаленными значениями
+```php
+$array = Helper::arrayDeleteValues(['a', 'b'], 'a'); // $array = [1 => 'b']
+```
+---
 ##### [arrayDot(\$value): array](./tests/HelperArrayTrait/HelperArrayDotTest.php)
 Возвращает одномерный массив из многомерного
 ```php
@@ -632,13 +638,6 @@ $string = Helper::numberFormat(1000.123); // $string = '1 000,123'
 $integer = Helper::numberFromString('сто двадцать три'); // $integer = 123
 ```
 ---
-##### [numberSwap(\$value1, \$value2): void](./tests/HelperNumberTrait/HelperNumberSwapTest.php)
-Меняет местами значения value1 и value2
-```php
-$integer1 = 1; $integer2 = 2;
-Helper::numberSwap($integer1, $integer2); // $integer1 = 2, $integer2 = 1
-```
----
 ##### [numberToString(\$value, \$declension, \$gender, \$enumeration): string](./tests/HelperNumberTrait/HelperNumberToStringTest.php)
 Возвращает число прописью на русском языке с учетом склонения по падежу, роду и числительному перечислению
 ```php
@@ -999,10 +998,16 @@ $string = Helper::stringSearchAny('Иванов Иван Иванович', '*И
 $string = Helper::stringSegment('abc2defXyz'); // $string = 'abc 2 def Xyz'
 ```
 ---
-##### [stringSplit(\$value, \$delimiter, \$index, \$cacheEnabled): array](./tests/HelperStringTrait/HelperStringSplitTest.php)
+##### [stringSplit(\$value, \$delimiters, \$index, \$cacheEnabled): array](./tests/HelperStringTrait/HelperStringSplitTest.php)
 Возвращает массив подстрок разбитых на части между разделителем в строке
 ```php
 $array = Helper::stringSplit('abc,,def/xyz', [',', '/']); // $array = ['abc', '', 'def', 'xyz']
+```
+---
+##### [stringSplitRange(\$value, \$delimiters, \$indexFrom, \$indexTo, \$cacheEnabled): array](./tests/HelperStringTrait/HelperStringSplitRangeTest.php)
+Возвращает массив подстрок разбитых на части между разделителем в строке
+```php
+$string = Helper::stringSplitRange('abc,def,xyz', ',', 1, 1); // $string = 'def'
 ```
 ---
 ##### [stringStarts(\$value, ...\$searches): string](./tests/HelperStringTrait/HelperStringStartsTest.php)
@@ -1137,5 +1142,17 @@ $string = Helper::urlDomainEncode('пример.рф'); // $string = 'xn--e1afmk
 Возвращает массив частей адреса url
 ```php
 $array = Helper::urlParse('http://a.com/d/?e=f'); // $array = ['scheme' => 'http', 'host' => 'a.com', 'path' => '/d', 'query' => ['e' => 'f']]
+```
+---
+
+#### Var
+Работа с переменными
+
+---
+##### [numberSwap(\$value1, \$value2): void](./tests/HelperNumberTrait/HelperNumberSwapTest.php)
+Меняет местами значения value1 и value2
+```php
+$integer1 = 1; $integer2 = 2;
+Helper::numberSwap($integer1, $integer2); // $integer1 = 2, $integer2 = 1
 ```
 ---

@@ -17,6 +17,7 @@ use ReflectionProperty;
 use Throwable;
 
 /**
+ * @internal
  * Класс вспомогательных внутренних методов
  */
 class HelperInternal
@@ -1133,6 +1134,7 @@ class HelperInternal
     {
         $file ??= '';
         $cacheKey = __CLASS__ . __FUNCTION__ . ($file ?? '');
+
         $env = Helper::cacheRuntime($cacheKey, static function () use ($file) {
             $env = [];
             $lines = preg_split('/\R/', file_get_contents($file ?: Helper::pathRoot() . '/.env') ?: '');

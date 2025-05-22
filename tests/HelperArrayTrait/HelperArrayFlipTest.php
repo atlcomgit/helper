@@ -29,6 +29,12 @@ final class HelperArrayFlipTest extends TestCase
         $array = Helper::arrayFlip(['a' => 'b', ['c' => 'd']]);
         $this->assertSame(['b' => 'a', 'd' => 'c'], $array);
 
+        $array = Helper::arrayFlip([1, 2, 3]);
+        $this->assertSame([1 => 0, 2 => 1, 3 => 2], $array);
+
+        $array = Helper::arrayFlip(['a' => 1, 'b' => [2, 3, 4], 'c' => 5]);
+        $this->assertSame([1 => 'a', 2 => 0, 3 => 1, 4 => 2, 5 => 'c'], $array);
+
         $array = Helper::arrayFlip(null);
         $this->assertEquals([], $array);
     }

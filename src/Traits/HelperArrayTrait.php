@@ -344,7 +344,7 @@ trait HelperArrayTrait
      * @see ../../tests/HelperArrayTrait/HelperArrayDeleteKeysTest.php
      *
      * @param array|object|null $value
-     * @param mixed ...$keys
+     * @param mixed ...$searches
      * @return array
      */
     public static function arrayDeleteKeys(array|object|null $value, mixed ...$searches): array
@@ -381,8 +381,56 @@ trait HelperArrayTrait
                         $searchString === '*'
                         || $key === $search
                         || $key === $searchString
-                        || (static::regexpValidatePattern($searchString) && preg_match($searchString, $key))
-                        || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $key))
+                        || (static::regexpValidatePattern($searchString) && preg_match($searchString, (string)$key))
+                        || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, (string)$key))
+                    )
+                ) {
+                    unset($value[$key]);
+                }
+            }
+        }
+
+        return static::arrayUnDot($value);
+    }
+
+
+    /**
+     * Возвращает массив с удаленными значениями
+     * @see ../../tests/HelperArrayTrait/HelperArrayDeleteValuesTest.php
+     *
+     * @param array|object|null $value
+     * @param mixed ...$searches
+     * @return array
+     */
+    public static function arrayDeleteValues(array|object|null $value, mixed ...$searches): array
+    {
+        $value = static::transformToArray($value);
+        $searches = static::transformToArray($searches);
+
+        foreach ($value as $key => $v) {
+            if (is_array($v) || is_object($v)) {
+                $value[$key] = static::arrayDeleteValues($v, ...$searches) ?? [];
+            }
+
+            foreach ($searches as $search) {
+                if (is_array($search) || is_object($search)) {
+                    $v = static::arrayDeleteValues([$key => $v], ...$search)[$key] ?? null;
+                    if (is_null($v)) {
+                        unset($value[$key]);
+
+                    } else {
+                        $value[$key] = $v;
+                    }
+
+                } else if (
+                    !is_null($search)
+                    && (($searchString = (string)$search) || $searchString === '0')
+                    && (
+                        $searchString === '*'
+                        || $v === $search
+                        || $v === $searchString
+                        || (static::regexpValidatePattern($searchString) && preg_match($searchString, (string)$v))
+                        || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, (string)$v))
                     )
                 ) {
                     unset($value[$key]);
@@ -408,7 +456,7 @@ trait HelperArrayTrait
 
         foreach ($value as $key => $v) {
             if (is_array($v) || is_object($v)) {
-                $result = [...$result, ...static::arrayFlip($v)];
+                $result += static::arrayFlip($v);
             } else {
                 $result[$v] = $key;
             }

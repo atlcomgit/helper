@@ -29,6 +29,7 @@ trait HelperReflectionTrait
         }
 
         $cacheKey = __CLASS__ . __FUNCTION__ . (is_string($class) ? $class : $class::class);
+
         $attributes = static::cacheRuntime($cacheKey, static function () use ($class) {
             try {
                 $reflectionClass = new ReflectionClass($class);
@@ -69,6 +70,7 @@ trait HelperReflectionTrait
         }
 
         $cacheKey = __CLASS__ . __FUNCTION__ . (is_string($class) ? $class : $class::class);
+
         $attributes = static::cacheRuntime($cacheKey, static function () use ($class) {
             try {
                 $reflectionClass = new ReflectionClass($class);
@@ -118,6 +120,7 @@ trait HelperReflectionTrait
         }
 
         $cacheKey = __CLASS__ . __FUNCTION__ . (is_string($class) ? $class : $class::class);
+
         $attributes = static::cacheRuntime($cacheKey, static function () use ($class) {
             try {
                 $reflectionClass = new ReflectionClass($class);
@@ -171,6 +174,7 @@ trait HelperReflectionTrait
         }
 
         $cacheKey = __CLASS__ . __FUNCTION__ . (is_string($class) ? $class : $class::class);
+
         $attributes = static::cacheRuntime($cacheKey, static function () use ($class) {
             try {
                 $reflectionClass = new ReflectionClass($class);
@@ -232,6 +236,7 @@ trait HelperReflectionTrait
         }
 
         $cacheKey = __CLASS__ . __FUNCTION__ . (is_string($class) ? $class : $class::class);
+
         $phpdoc = static::cacheRuntime($cacheKey, static function () use ($class) {
             try {
                 $reflection = new ReflectionClass($class);

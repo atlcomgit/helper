@@ -704,22 +704,6 @@ trait HelperNumberTrait
 
 
     /**
-     * Меняет местами значения value1 и value2
-     * @see ../../tests/HelperNumberTrait/HelperNumberSwapTest.php
-     *
-     * @param int|float|string|null $value1
-     * @param int|float|string|null $value2
-     * @return void
-     */
-    public static function numberSwap(int|float|string|null &$value1, int|float|string|null &$value2): void
-    {
-        $temp = $value1;
-        $value1 = $value2;
-        $value2 = $temp;
-    }
-
-
-    /**
      * Возвращает количество знаков дробной части числа
      * @see ../../tests/HelperNumberTrait/HelperNumberDecimalDigitsTest.php
      *

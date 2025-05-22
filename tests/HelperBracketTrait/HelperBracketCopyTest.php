@@ -67,6 +67,9 @@ final class HelperBracketCopyTest extends TestCase
         $string = Helper::bracketCopy('abc', '(', ')', 0);
         $this->assertEquals($string, '');
 
+        $string = Helper::bracketCopy('https://example.com/path', 'https://', '/', 0);
+        $this->assertEquals($string, 'example.com');
+
         $string = Helper::bracketCopy(null, '(', ')', 0);
         $this->assertEquals($string, '');
     }

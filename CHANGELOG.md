@@ -1,7 +1,11 @@
 # Changelog
 
 ## _Версия 1.18_
+- Добавлен метод Helper::arrayDeleteValues
+- Добавлен метод Helper::arrayFlip
+- Добавлен метод Helper::stringSplitRange
 - Добавлен метод Helper::timeFromSeconds
+- Переименован метод Helper::numberSwap в Helper::varSwap
 
 ## _Версия 1.17_
 - Добавлен метод Helper::timeFromSeconds

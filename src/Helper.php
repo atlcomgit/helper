@@ -33,6 +33,7 @@ use Atlcom\Traits\HelperTimeTrait;
 use Atlcom\Traits\HelperTransformTrait;
 use Atlcom\Traits\HelperTranslitTrait;
 use Atlcom\Traits\HelperUrlTrait;
+use Atlcom\Traits\HelperVarTrait;
 
 /**
  * Абстрактный класс Helper
@@ -44,6 +45,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * 
  * @group array - Работа с массивами
  * @method @see static::arrayDeleteKeys()
+ * @method @see static::arrayDeleteValues()
  * @method @see static::arrayDot()
  * @method @see static::arrayExcludeTraceVendor()
  * @method @see static::arrayFirst()
@@ -161,7 +163,6 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::numberDecimalDigits()
  * @method @see static::numberFormat()
  * @method @see static::numberFromString()
- * @method @see static::numberSwap()
  * @method @see static::numberToString()
  * 
  * @group path - Работа с путями
@@ -225,6 +226,7 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::stringSearchAny()
  * @method @see static::stringSegment()
  * @method @see static::stringSplit()
+ * @method @see static::stringSplitRange()
  * @method @see static::stringStarts()
  * @method @see static::stringUpper()
  * @method @see static::stringUpperFirst()
@@ -254,6 +256,9 @@ use Atlcom\Traits\HelperUrlTrait;
  * @method @see static::urlDomainDecode()
  * @method @see static::urlDomainEncode()
  * @method @see static::urlParse()
+ * 
+ * @group var - Работа с переменными
+ * @method @see static::varSwap()
  */
 abstract class Helper
 {
@@ -286,4 +291,5 @@ abstract class Helper
     use HelperTransformTrait;
     use HelperTranslitTrait;
     use HelperUrlTrait;
+    use HelperVarTrait;
 }

@@ -143,21 +143,21 @@ trait HelperStringTrait
      * @see ../../tests/HelperStringTrait/HelperStringSplitTest.php
      *
      * @param int|float|string|null $value
-     * @param int|float|string|array|null $delimiter
+     * @param int|float|string|array|null $delimiters
      * @param int|null $index
      * @param bool $cacheEnabled
      * @return array|string|null
      */
     public static function stringSplit(
         int|float|string|null $value,
-        int|float|string|array|null $delimiter,
+        int|float|string|array|null $delimiters,
         ?int $index = null,
         bool $cacheEnabled = true,
     ): array|string|null {
         $value = (string)$value;
-        $delimiters = static::transformToArray($delimiter);
+        $delimiters = static::transformToArray($delimiters);
         $delimiters = array_values(static::arrayDot($delimiters));
-        $cacheKey = static::hashXxh128(__CLASS__ . __FUNCTION__ . $value . implode($delimiters));
+        $cacheKey = static::hashXxh128(__CLASS__ . __FUNCTION__ . $value . implode('|', $delimiters));
 
         $splits = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
             $splits = [];
@@ -180,6 +180,89 @@ trait HelperStringTrait
         return is_null($index)
             ? $splits
             : ($splits[$index < 0 ? count($splits) + $index : $index] ?? null);
+    }
+
+
+    /**
+     * Возвращает строку в интервале разбитых на части между разделителем строки
+     * Если cacheEnabled выключен, то кеш не используется
+     * @see ../../tests/HelperStringTrait/HelperStringSplitRangeTest.php
+     *
+     * @param int|float|string|null $value
+     * @param int|float|string|array|null $delimiters
+     * @param int|null $from
+     * @param int|null $to
+     * @param bool $cacheEnabled
+     * @return string|null
+     */
+    public static function stringSplitRange(
+        int|float|string|null $value,
+        int|float|string|array|null $delimiters,
+        ?int $indexFrom = null,
+        ?int $indexTo = null,
+        bool $cacheEnabled = true,
+    ): string|null {
+        $value = (string)$value;
+        $delimiters = static::transformToArray($delimiters);
+        $delimiters = array_values(static::arrayDot($delimiters));
+        $cacheKey = static::hashXxh128(__CLASS__ . __FUNCTION__ . $value . implode('|', $delimiters));
+
+        $splits = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
+            $splits = [];
+            $delimiter = '';
+
+            while ($value || $delimiter) {
+                $lastDelimiter = $delimiter;
+
+                if ($delimiterIndexed = static::arrayDot(static::stringPosAll($value, $delimiters))) {
+                    asort($delimiterIndexed);
+                    $delimiter = array_key_first($delimiterIndexed);
+                    $delimiterPos = $delimiterIndexed[$delimiter];
+                    $delimiter = static::stringSplit($delimiter, '.', 0);
+                } else {
+                    $delimiter = '';
+                }
+
+                $delimiter
+                    ? $splits[] = [
+                        'delimiter' => $lastDelimiter,
+                        'value' => static::stringDelete(
+                            static::stringCut($value, 0, $delimiterPos + static::stringLength($delimiter)),
+                            -static::stringLength($delimiter)
+                        ),
+                    ]
+                    : $splits[] = [
+                        'delimiter' => $lastDelimiter,
+                        'value' => static::stringCut($value, 0),
+                    ];
+            }
+
+            return $splits;
+        }, $cacheEnabled);
+
+        $result = '';
+        $splitCount = count($splits);
+        $indexFrom = match (true) {
+            is_null($indexFrom) => 0,
+            $indexFrom < 0 => $splitCount + $indexFrom,
+            $indexFrom > $splitCount => $splitCount - 1,
+
+            default => $indexFrom,
+        };
+        $indexTo = match (true) {
+            is_null($indexTo) => $splitCount - 1,
+            $indexTo < 0 => $splitCount + $indexTo,
+            $indexTo > $splitCount => $splitCount - 1,
+
+            default => $indexTo,
+        };
+        ($indexFrom < $indexTo) ?: $indexTo = $indexFrom; //static::varSwap($indexFrom, $indexTo);
+
+        for ($index = $indexFrom; $index <= $indexTo; $index++) {
+            $result .= (($index > $indexFrom) ? $splits[$index]['delimiter'] : '') . $splits[$index]['value'];
+        }
+
+        return $result;
     }
 
 
