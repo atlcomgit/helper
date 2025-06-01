@@ -31,7 +31,7 @@ final class HelperEnvGetTest extends TestCase
         $this->assertSame(null, Helper::envGet('NULL_1'));
         $this->assertSame(null, Helper::envGet(null));
         
-        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv', [Helper::$keyAppEnv => 'none']);
+        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv' . Helper::hashXxh128(''), [Helper::$keyAppEnv => 'none']);
         $this->assertSame('none', Helper::envGet(Helper::$keyAppEnv));
     }
 }

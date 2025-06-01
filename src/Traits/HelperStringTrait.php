@@ -594,7 +594,7 @@ trait HelperStringTrait
         int|float|string|null $prefix,
         mixed $condition = null,
     ): string {
-        !is_callable($condition) ?: $condition = $condition($value, $prefix);
+        !(is_object($value) && is_callable($condition)) ?: $condition = $condition($value, $prefix);
         !is_null($condition) ?: $condition = (bool)$value;
 
         return (($prefix && (bool)$condition) ? (string)$prefix : '') . (string)$value;
@@ -615,7 +615,7 @@ trait HelperStringTrait
         int|float|string|null $suffix,
         mixed $condition = null,
     ): string {
-        !is_callable($condition) ?: $condition = $condition($value, $suffix);
+        !(is_object($value) && is_callable($condition)) ?: $condition = $condition($value, $suffix);
         !is_null($condition) ?: $condition = (bool)$value;
 
         return (string)$value . (($suffix && (bool)$condition) ? (string)$suffix : '');

@@ -29,6 +29,12 @@ final class HelperTimeSecondsToStringTest extends TestCase
         $string = Helper::timeSecondsToString(1);
         $this->assertEquals('1 секунда', $string);
 
+        $string = Helper::timeSecondsToString(0.0000000000001);
+        $this->assertEquals('0 секунд', $string);
+
+        $string = Helper::timeSecondsToString(1.0000000000001);
+        $this->assertEquals('1 секунда', $string);
+
         $string = Helper::timeSecondsToString(123);
         $this->assertEquals('2 минуты 3 секунды', $string);
 
@@ -58,6 +64,12 @@ final class HelperTimeSecondsToStringTest extends TestCase
 
         $string = Helper::timeSecondsToString(1.5);
         $this->assertEquals('1.5 секунды', $string);
+
+        $string = Helper::timeSecondsToString(4.9);
+        $this->assertEquals('4.9 секунды', $string);
+
+        $string = Helper::timeSecondsToString(5);
+        $this->assertEquals('5 секунд', $string);
 
         $string = Helper::timeSecondsToString(5.5);
         $this->assertEquals('5 секунд', $string);

@@ -32,7 +32,7 @@ trait HelperCryptTrait
     {
         $result = '';
 
-        if (is_callable($value)) {
+        if (is_object($value) && is_callable($value)) {
             return $result;
         }
 

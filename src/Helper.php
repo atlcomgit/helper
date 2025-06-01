@@ -38,7 +38,7 @@ use Atlcom\Traits\HelperVarTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.18
+ * @version 1.19
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper

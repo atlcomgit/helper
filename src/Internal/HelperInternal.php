@@ -1132,12 +1132,13 @@ class HelperInternal
      */
     public static function internalEnv(string|null $value, ?string $file = null): mixed
     {
-        $file ??= '';
-        $cacheKey = __CLASS__ . __FUNCTION__ . ($file ?? '');
+        $cacheKey = __CLASS__ . __FUNCTION__ . static::hashXxh128($file ?? '');
 
         $env = Helper::cacheRuntime($cacheKey, static function () use ($file) {
             $env = [];
-            $lines = preg_split('/\R/', file_get_contents($file ?: Helper::pathRoot() . '/.env') ?: '');
+            $file ??= Helper::pathRoot() . '/.env';
+            $fileData = (is_file($file) && file_exists($file)) ? file_get_contents($file) : $file;
+            $lines = preg_split('/\R/', $fileData);
             $buffer = '';
             $key = null;
             $in_multiline = false;

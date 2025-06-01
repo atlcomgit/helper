@@ -236,7 +236,7 @@ trait HelperTimeTrait
                     : ($milliseconds ? ' ' . static::stringPlural($milliseconds, static::$pluralMilliseconds) : '')
                 )
                 : (
-                    static::stringSplit($value, '.', 1)
+                    str_pad((string)static::stringSplit($value, '.', 1), 2, '0') >= '10'
                     ? round($value, 1) . ' ' . static::stringPlural(2, static::$pluralSeconds, false)
                     : static::stringPlural(round($value, 1), static::$pluralSeconds)
                 );

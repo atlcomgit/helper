@@ -23,7 +23,7 @@ trait HelperCastTrait
             is_null($value) => null,
             is_integer($value) => $value,
             is_string($value) => (int)static::numberFromString($value),
-            is_callable($value) => static::castToInt($value()),
+            is_object($value) && is_callable($value) => static::castToInt($value()),
 
             default => (int)$value,
         };
@@ -43,7 +43,7 @@ trait HelperCastTrait
             is_null($value) => null,
             is_float($value) => $value,
             is_string($value) => (float)static::numberFromString($value),
-            is_callable($value) => static::castToFloat($value()),
+            is_object($value) && is_callable($value) => static::castToFloat($value()),
 
             default => (float)$value,
         };
@@ -63,7 +63,7 @@ trait HelperCastTrait
             is_null($value) => null,
             is_bool($value) => $value,
             is_string($value) => (bool)static::numberFromString($value),
-            is_callable($value) => static::castToBool($value()),
+            is_object($value) && is_callable($value) => static::castToBool($value()),
 
             default => (bool)$value,
         };
@@ -83,7 +83,7 @@ trait HelperCastTrait
             is_null($value) => null,
             $value === false => '0',
             is_string($value) => $value,
-            is_callable($value) => static::castToString($value()),
+            is_object($value) && is_callable($value) => static::castToString($value()),
             is_array($value) => (string)json_encode($value, static::jsonFlags()),
             is_object($value) => (string)json_encode(
                     match (true) {
@@ -114,7 +114,7 @@ trait HelperCastTrait
             is_array($value) => $value,
             is_string($value) && static::regexpValidateJson($value) => json_decode($value, true),
             is_string($value) && static::regexpValidateJson(trim($value, '" ')) => json_decode(trim($value, '" '), true),
-            is_callable($value) => static::castToArray($value()),
+            is_object($value) && is_callable($value) => static::castToArray($value()),
             is_object($value) => match (true) {
                     method_exists($value, 'toArray') => (array)$value->toArray(),
                     method_exists($value, 'all') => (array)$value->all(),
@@ -139,7 +139,7 @@ trait HelperCastTrait
         return match (true) {
             is_null($value) => null,
             is_string($value) && static::regexpValidateJson($value) => (object)json_decode($value),
-            is_callable($value) => static::castToObject($value()),
+            is_object($value) && is_callable($value) => static::castToObject($value()),
             is_object($value) => $value,
 
             default => (object)((array)$value),
@@ -158,7 +158,7 @@ trait HelperCastTrait
     {
         return match (true) {
             is_null($value) => null,
-            is_callable($value) => $value,
+            is_object($value) && is_callable($value) => $value,
 
             default => static fn () => $value,
         };
@@ -177,7 +177,7 @@ trait HelperCastTrait
         return match (true) {
             is_null($value) => null,
             is_scalar($value) => (string)json_encode($value, static::jsonFlags()),
-            is_callable($value) => static::castToJson($value()),
+            is_object($value) && is_callable($value) => static::castToJson($value()),
             is_object($value) => (string)json_encode(
                     match (true) {
                         method_exists($value, 'toArray') => (array)$value->toArray(),

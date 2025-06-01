@@ -18,11 +18,11 @@ final class HelperEnvProdTest extends TestCase
     #[Test]
     public function envProd(): void
     {
-        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv', ['APP_ENV' => 'Prod']);
+        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv' . Helper::hashXxh128(''), ['APP_ENV' => 'Prod']);
         $boolean = Helper::envProd();
         $this->assertTrue($boolean === true);
 
-        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv', ['APP_ENV' => 'none']);
+        Helper::cacheRuntimeSet(HelperInternal::class . 'internalEnv' . Helper::hashXxh128(''), ['APP_ENV' => 'none']);
         $boolean = Helper::envProd();
         $this->assertTrue($boolean === false);
     }
