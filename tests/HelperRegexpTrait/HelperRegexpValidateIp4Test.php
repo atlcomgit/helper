@@ -23,6 +23,12 @@ final class HelperRegexpValidateIp4Test extends TestCase
         $boolean = Helper::regexpValidateIp4('111.222.33.44');
         $this->assertTrue($boolean === true);
 
+        $boolean = Helper::regexpValidateIp4('111.222.33.44/24');
+        $this->assertTrue($boolean === true);
+
+        $boolean = Helper::regexpValidateIp4('111.222.0.0/16');
+        $this->assertTrue($boolean === true);
+
         $boolean = Helper::regexpValidateIp4('0.0.0.0');
         $this->assertTrue($boolean === true);
 

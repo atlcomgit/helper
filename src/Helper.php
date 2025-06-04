@@ -27,6 +27,7 @@ use Atlcom\Traits\HelperPhoneTrait;
 use Atlcom\Traits\HelperReflectionTrait;
 use Atlcom\Traits\HelperRegexpTrait;
 use Atlcom\Traits\HelperSizeTrait;
+use Atlcom\Traits\HelperSqlTrait;
 use Atlcom\Traits\HelperStringTrait;
 use Atlcom\Traits\HelperTelegramTrait;
 use Atlcom\Traits\HelperTimeTrait;
@@ -38,7 +39,7 @@ use Atlcom\Traits\HelperVarTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.19
+ * @version 1.20
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -232,6 +233,10 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::stringUpperFirst()
  * @method @see static::stringUpperFirstAll()
  * 
+ * @group sql - Работа с sql запросами
+ * @method @see static::sqlHasWrite()
+ * @method @see static::sqlTables()
+ * 
  * @group telegram - Работа с сообщениями телеграм
  * @method @see static::telegramBreakMessage()
  * 
@@ -286,6 +291,7 @@ abstract class Helper
     use HelperRegexpTrait;
     use HelperSizeTrait;
     use HelperStringTrait;
+    use HelperSqlTrait;
     use HelperTelegramTrait;
     use HelperTimeTrait;
     use HelperTransformTrait;

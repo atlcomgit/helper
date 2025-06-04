@@ -1,6 +1,16 @@
 # Changelog
 
+## _Версия 1.20_
+- Добавлен метод Helper::sqlHasWrite
+- Добавлен метод Helper::sqlTables
+- Добавлен метод Helper::sqlBindings
+- Добавлен метод Helper::sqlFields
+- Добавлен метод Helper::sqlExtractNames
+- Добавлен метод Helper::bracketSearch
+
 ## _Версия 1.19_
+- Добавлен метод Helper::stringSplitRange
+
 - Обновлен метод Helper::timeSecondsToString
 
 ## _Версия 1.18_

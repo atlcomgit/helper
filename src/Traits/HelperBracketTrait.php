@@ -155,4 +155,53 @@ trait HelperBracketTrait
     {
         return count(HelperInternal::internalBrackets($value, $left, $right));
     }
+
+
+    /**
+     * Возвращает массив найденных строк с индексами блоков скобок
+     * @see ../../tests/HelperBracketTrait/HelperBracketSearchTest.php
+     *
+     * @param string|null $value
+     * @param string $left
+     * @param string $right
+     * @param mixed ...$searches
+     * @return array
+     */
+    public static function bracketSearch(string|null $value, string $left, string $right, ...$searches): array
+    {
+        $result = [];
+        $value = (string)$value;
+
+        foreach ($searches as $search) {
+            if (is_array($search) || is_object($search)) {
+                $result = [
+                    ...$result,
+                    ...(static::bracketSearch($value, ...static::transformToArray($search)) ?: []),
+                ];
+
+            } else {
+                $bracketsCount = static::bracketCount($value, $left, $right);
+
+                for ($bracketIndex=0; $bracketIndex < $bracketsCount; $bracketIndex++) {
+                    $bracketValue = static::bracketCopy($value, $left, $right, $bracketIndex);
+
+                    if (
+                        !is_null($search)
+                        && $search !== ''
+                        && (($searchString = (string)$search) || $searchString === '0')
+                        && (
+                            $searchString === '*'
+                            || mb_strpos($bracketValue, $searchString) !== false
+                            || (static::regexpValidatePattern($searchString) && preg_match($searchString, $bracketValue))
+                            || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, $bracketValue))
+                        )
+                    ) {
+                        $result[$search][] = $bracketIndex;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
 }
