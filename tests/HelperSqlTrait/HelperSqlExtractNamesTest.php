@@ -144,30 +144,30 @@ final class HelperSqlExtractNamesTest extends TestCase
             ],
         ], $array);
 
-        $array = Helper::sqlFields("--SELECT name\nSELECT * FROM users WHERE id = 1 AND active = '0' OR status IN (1)");
+        $array = Helper::sqlExtractNames("--SELECT name\nSELECT * FROM users WHERE id = 1 AND active = '0' OR status IN (1)");
         $this->assertEquals([
             'databases' => [
                 '' => [
                     'tables' => [
-                        'users' => ['fields' => ['*', 'id', 'active', 'status']],
+                        'users' => ['fields' => ['*', 'active', 'id', 'status']],
                     ],
                 ],
             ],
         ], $array);
 
-        $array = Helper::sqlFields("SELECT u.*, p.* FROM users as u LEFT JOIN posts p ON p.user_id = u.id WHERE u.id = '335938dd-45c0-4356-9e4d-dbf43a91c9df' AND p.active = 0");
+        $array = Helper::sqlExtractNames("SELECT u.*, p.* FROM users as u LEFT JOIN posts p ON p.user_id = u.id WHERE u.id = '335938dd-45c0-4356-9e4d-dbf43a91c9df' AND p.active = 0");
         $this->assertEquals([
             'databases' => [
                 '' => [
                     'tables' => [
                         'users' => ['fields' => ['*', 'id']],
-                        'posts' => ['fields' => ['*', 'user_id', 'active']],
+                        'posts' => ['fields' => ['*', 'active', 'user_id']],
                     ],
                 ],
             ],
         ], $array);
 
-        $array = Helper::sqlFields("TRUNCATE users");
+        $array = Helper::sqlExtractNames("TRUNCATE users");
         $this->assertEquals([
             'databases' => [
                 '' => [
@@ -180,17 +180,19 @@ final class HelperSqlExtractNamesTest extends TestCase
             ],
         ], $array);
 
-        $array = Helper::sqlFields("DROP DATABASE core");
+        $array = Helper::sqlExtractNames("DROP DATABASE core");
         $this->assertEquals([
             'databases' => [
                 'core' => [
-                    'tables' => [],
+                    'tables' => [
+                        '' => ['fields' => []]
+                    ],
                 ],
             ],
         ], $array);
 
-        $array = Helper::sqlFields(null);
-        $this->assertEquals([], $array);
+        $array = Helper::sqlExtractNames(null);
+        $this->assertEquals(['databases' => []], $array);
 
     }
 }

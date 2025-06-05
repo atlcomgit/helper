@@ -193,7 +193,7 @@ trait HelperSqlTrait
     public static function sqlExtractNames(?string $value): array
     {
         // Удаляем комментарии и нормализуем SQL
-        $sql = preg_replace('/--.*$/m', '', $value ?? []);
+        $sql = preg_replace('/--.*$/m', '', $value ?? '');
         $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
         $sql = preg_replace('/\[(\w+)\]/', '$1', $sql);
         $sql = preg_replace('/`(\w+)`/', '$1', $sql);
@@ -206,11 +206,15 @@ trait HelperSqlTrait
         ];
 
         // Таблицы и алиасы
-        preg_match_all('/(?:UPDATE|FROM|JOIN)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
+        preg_match_all('/(?:UPDATE|FROM|JOIN|TRUNCATE|DROP\s+DATABASE)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
         foreach ($tableMatches as $match) {
             $database = $match[1] ?? null;
             $table = $match[2];
             $alias = (!in_array($match[3] ?? '', $reserved) ? ($match[3] ?? '') : '') ?: $match[2];
+            if (static::stringSearchAny($match[0], '*DROP*DATABASE*')) {
+                $database = $table;
+                $table = $alias = '';
+            }
             (in_array($database, $reserved) || in_array($table, $reserved))
                 ?: $elements[] = [
                     'type' => 'table',
@@ -302,7 +306,11 @@ trait HelperSqlTrait
             $simpleFields,
         );
         foreach ($simpleFields[1] as $field) {
-            (in_array($field, $reserved) || in_array($field, array_keys($tableAliases)))
+            (
+                !preg_match('/^([a-z\_\*]+)$/i', $field)
+                || in_array($field, $reserved)
+                || in_array($field, array_keys($tableAliases))
+            )
                 ?: $elements[] = [
                     'type' => 'simple_field',
                     'database' => null,

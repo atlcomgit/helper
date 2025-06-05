@@ -41,6 +41,9 @@ final class HelperStringSearchAnyTest extends TestCase
         $array = Helper::stringSearchAny('abc', 'd');
         $this->assertTrue($array === []);
 
+        $array = Helper::stringSearchAny('DROP DATABSE name', '*DROP*DATABSE*');
+        $this->assertTrue($array === ['*DROP*DATABSE*']);
+
         $array = Helper::stringSearchAny(null, null);
         $this->assertTrue($array === []);
     }
