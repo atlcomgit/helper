@@ -464,4 +464,26 @@ trait HelperArrayTrait
 
         return $result;
     }
+
+
+    /**
+     * Возвращает массив с применением trim для каждого значения
+     * @see ../../tests/HelperArrayTrait/HelperArrayTrimValuesTest.php
+     *
+     * @param array|object|null $value
+     * @param array|string|null|null $trims
+     * @return array
+     */
+    public static function arrayTrimValues(array|object|null $value, array|string|null $trims = null): array
+    {
+        $value = static::transformToArray($value);
+
+        foreach ($value as $key => $v) {
+            $value[$key] = (is_array($v) || is_object($v))
+                ? (static::arrayTrimValues($v, $trims) ?? [])
+                : trim($v, is_array($trims) ? implode('', $trims) : $trims ?? " .,:;\n\r\t\v\x00");
+        }
+
+        return $value;
+    }
 }

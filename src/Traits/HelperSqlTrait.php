@@ -205,7 +205,6 @@ trait HelperSqlTrait
             ...array_map(static fn ($word) => static::stringUpper($word), Consts::SQL_RESERVED_WORDS),
         ];
 
-
         // Таблицы и алиасы
         preg_match_all('/(?:UPDATE|FROM|JOIN)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
         foreach ($tableMatches as $match) {
@@ -297,7 +296,11 @@ trait HelperSqlTrait
         // preg_match_all('/\b(?!' . implode('|', $reserved) . ')(\w+)\b(?!\.)/i', $sql, $simpleFields);
         // Получаем все слова, не содержащие точку и не входящие в зарезервированные слова
         // preg_match_all('/\b(?!' . implode('|', $reserved) . ')\w+\b(?!\s*\.)/i', $sql, $simpleFields);
-        preg_match_all('/\b(?:SELECT|WHERE|GROUP BY|ORDER BY|HAVING|ON)\s+([a-z0-9_\.][\w]*|[\*])/i', $sql, $simpleFields);
+        preg_match_all(
+            '/\b(?:SELECT|WHERE|GROUP BY|ORDER BY|HAVING|ON|AND|OR|IN)\s+([a-z0-9_\.][\w]*|[\*])/i',
+            static::stringReplace($sql, ['(' => ' ', ')' => ' ']),
+            $simpleFields,
+        );
         foreach ($simpleFields[1] as $field) {
             (in_array($field, $reserved) || in_array($field, array_keys($tableAliases)))
                 ?: $elements[] = [
@@ -328,7 +331,71 @@ trait HelperSqlTrait
             $a++;
         }
 
-        // update
+        $a = 0; //level=1, message = 'text' WHERE id IN NOT NULL OR deleted_at IS NULL
+        preg_match_all('/UPDATE\s+(?:\w+\.)?\w+\s+SET\s+([^=]+=[^,]+(?:,\s*[^=]+=[^,]+)*)(?=\s+WHERE\s+|;|\s*$)/i', $sql, $simpleFields);
+        foreach ($simpleFields[1] ?? [] as $fields) {
+            // (?:^|\bUPDATE\b|\bSET\b|\bWHERE\b|\bIN\b|\bOR\b)(.*?)(?=\bUPDATE\b|\bSET\b|\bWHERE\b|\bIN\b|\bOR\b|$)
+            // $fields = static::arrayTrimValues(static::stringSplit($fields, [...$reserved, ...Consts::SQL_OPERATORS]));
+
+            $words = static::stringSplit($fields, [" ", "\n", "\r", "\t", "\v", ...Consts::SQL_OPERATORS]);
+            $fields = [];
+            foreach ($words as $word) {
+                (
+                    !preg_match('/^([a-z\_]+)$/i', $word)
+                    || in_array($word, $reserved)
+                    || in_array($word, Consts::SQL_OPERATORS)
+                )
+                    ?: $fields[] = $word;
+            }
+
+            foreach ($fields as $field) {
+                preg_match_all('/(?:UPDATE)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $simpleFields[0][$a] ?? '', $tableMatches, PREG_SET_ORDER);
+                $db = $tableMatches[0][1] ?? null;
+                $table = $tableMatches[0][2] ?? null;
+                $field = trim($field);
+                (in_array($field, $reserved) || in_array($field, array_keys($tableAliases)))
+                    ?: $elements[] = [
+                        'type' => 'simple_field',
+                        'database' => $db,
+                        'table' => $table,
+                        'name' => $field,
+                    ];
+            }
+            $a++;
+        }
+
+        $a = 0; //level=1, message = 'text' WHERE id IN NOT NULL OR deleted_at IS NULL
+        preg_match_all('/\bDELETE\s+FROM\b.+?\bWHERE\b\s+(.*)/i', $sql, $simpleFields);
+        foreach ($simpleFields[1] ?? [] as $fields) {
+            // (?:^|\bUPDATE\b|\bSET\b|\bWHERE\b|\bIN\b|\bOR\b)(.*?)(?=\bUPDATE\b|\bSET\b|\bWHERE\b|\bIN\b|\bOR\b|$)
+            // $fields = static::arrayTrimValues(static::stringSplit($fields, [...$reserved, ...Consts::SQL_OPERATORS]));
+
+            $words = static::stringSplit($fields, [" ", "\n", "\r", "\t", "\v", ...Consts::SQL_OPERATORS]);
+            $fields = [];
+            foreach ($words as $word) {
+                (
+                    !preg_match('/^([a-z\_]+)$/i', $word)
+                    || in_array($word, $reserved)
+                    || in_array($word, Consts::SQL_OPERATORS)
+                )
+                    ?: $fields[] = $word;
+            }
+
+            foreach ($fields as $field) {
+                preg_match_all('/(?:DELETE\s+FROM)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $simpleFields[0][$a] ?? '', $tableMatches, PREG_SET_ORDER);
+                $db = $tableMatches[0][1] ?? null;
+                $table = $tableMatches[0][2] ?? null;
+                $field = trim($field);
+                (in_array($field, $reserved) || in_array($field, array_keys($tableAliases)))
+                    ?: $elements[] = [
+                        'type' => 'simple_field',
+                        'database' => $db,
+                        'table' => $table,
+                        'name' => $field,
+                    ];
+            }
+            $a++;
+        }
 
         // Определяем основную таблицу в запросе
         $patterns = [
@@ -379,18 +446,24 @@ trait HelperSqlTrait
                 $table = $element['table'] ?? null;
                 $field = $element['name'];
                 if (!empty($tableAliases)) {
-                    $db ??= $mainDatabase;
-                    $filedSearch = static::stringReplace($field, ['*' => '%STAR%']);
-                    $bracketSearch = static::bracketSearch($sqlSearch, '(', ')', $filedSearch);
-                    $bracketIndex = static::arrayLast($bracketSearch[$filedSearch] ?? []);
+                    $fieldSearch = static::stringReplace($field, ['*' => '%STAR%']);
+                    $bracketSearch = static::bracketSearch($sqlSearch, '(', ')', $fieldSearch);
+                    $bracketIndex = static::arrayLast($bracketSearch[$fieldSearch] ?? []);
                     $bracketSql = is_null($bracketIndex) ? $sql : static::bracketCopy($sql, '(', ')', $bracketIndex);
+                    !static::stringSearchAny($bracketSql, ['SELECT ', 'INSERT ', 'UPDATE ', 'DELETE '])
+                        ?: $bracketSql = static::stringSplit(
+                            $sql,
+                            static::stringSplitSearch($bracketSql, ';', $fieldSearch)[';'][0],
+                        )[0];
 
                     $table ??= preg_match(
-                        '/(?:FROM|JOIN|UPDATE|INSERT\s+INTO)\s+(?:`?(\w+)`?\.)?`?(\w+)`?(?:\s+AS\s+(\w+))?/i',
+                        '/(?:FROM|JOIN|INSERT\s+INTO|UPDATE)\s+(?:`?(\w+)`?\.)?`?(\w+)`?(?:\s+AS\s+(\w+))?/i',
                         $bracketSql,
                         $tableMatch,
                     )
                         ? ($tableMatch[2] ?: $mainTable) : $mainTable;
+                    $table = $tableAliases[$table]['table'] ?: $table;
+                    $db = $tableAliases[$table]['database'] ?? $mainDatabase;
 
                     if ($table && !in_array($field, $result['databases'][$db]['tables'][$table]['fields'] ?? [])) {
                         $result['databases'][$db]['tables'][$table]['fields'] ??= [];

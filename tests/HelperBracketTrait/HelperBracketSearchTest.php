@@ -17,6 +17,8 @@ final class HelperBracketSearchTest extends TestCase
     #[Test]
     public function bracketSearch(): void
     {
+        $this->assertSame(Helper::bracketSearch('a b', '(', ')', 'a'), []);
+
         $this->assertSame(Helper::bracketSearch('(a)(b)', '(', ')', 'a'), ['a' => [0]]);
 
         $example1 = '(1 + 2 * (3 - 4 / (5 - 3)))';

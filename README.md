@@ -18,7 +18,7 @@ composer require atlcom/helper
 
 ---
 
-#### Array
+### Array
 Работа с массивами
 
 ---
@@ -109,7 +109,7 @@ $array = Helper::arrayUnDot(['a.b' => 2, 'a.c' => 3]); // $array = ['a' => ['b' 
 ```
 ---
 
-#### Bracket
+### Bracket
 Работа со скобками/тегами
 
 ---
@@ -144,11 +144,11 @@ $string = Helper::bracketReplace('(a)(b)', '(', ')', 0, '(c)'); // $string = '(c
 ```
 ---
 
-#### Cache
+### Cache
 Работа с кешем
 
 ---
-[cacheRuntime(\$key, \$callback, \$cacheEnabled): mixed](./tests/HelperCacheTrait/HelperCacheRuntimeTest.php)
+##### [cacheRuntime(\$key, \$callback, \$cacheEnabled): mixed](./tests/HelperCacheTrait/HelperCacheRuntimeTest.php)
 Сохраняет значение value в кеше по ключу key или возвращает значение при его наличии\
 Если cacheEnabled выключен, то кеш не используется
 ```php
@@ -156,19 +156,19 @@ $mixed = Helper::cacheRuntime('key', fn () => 1); // $mixed = 1
 $mixed = Helper::cacheRuntimeGet('key'); // $mixed = 1
 ```
 ---
-[cacheRuntimeClear(): void](./tests/HelperCacheTrait/HelperCacheRuntimeClearTest.php)
+##### [cacheRuntimeClear(): void](./tests/HelperCacheTrait/HelperCacheRuntimeClearTest.php)
 Очищает весь кеш
 ```php
 Helper::cacheRuntimeClear(); // 
 ```
 ---
-[cacheRuntimeDelete(\$key): void](./tests/HelperCacheTrait/HelperCacheRuntimeDeleteTest.php)
+##### [cacheRuntimeDelete(\$key): void](./tests/HelperCacheTrait/HelperCacheRuntimeDeleteTest.php)
 Удаляет значение из кеша по ключу key
 ```php
 Helper::cacheRuntimeDelete('key'); // 
 ```
 ---
-[cacheRuntimeExists(\$key): bool](./tests/HelperCacheTrait/HelperCacheRuntimeExistsTest.php)
+##### [cacheRuntimeExists(\$key): bool](./tests/HelperCacheTrait/HelperCacheRuntimeExistsTest.php)
 Проверяет существование ключа в кеше и возвращает true/false
 ```php
 $boolean = Helper::cacheRuntimeExists('key'); // $boolean = false
@@ -187,7 +187,7 @@ $mixed = Helper::cacheRuntimeSet('key', 'value'); // $mixed = 'value'
 ```
 ---
 
-#### Case
+### Case
 Работа со стилем
 
 ---
@@ -216,7 +216,7 @@ $string = Helper::caseSnake('abcDef'); // $string = 'abc_Def'
 ```
 ---
 
-#### Cast
+### Cast
 Работа с типами
 
 ---
@@ -269,7 +269,7 @@ $string = Helper::castToString(1); // $string = '1'
 ```
 ---
 
-#### Color
+### Color
 Работа с цветами
 
 ---
@@ -289,7 +289,7 @@ $string = Helper::colorRgbToHex(0, 0, 0, 0); // $string = '#00000000'
 ```
 ---
 
-#### Crypt
+### Crypt
 Работа с шифрованием
 
 ---
@@ -318,7 +318,7 @@ $string = Helper::cryptEncode('abc', 'password'); // $string = 'nh93432NibR3td26
 ```
 ---
 
-#### Date
+### Date
 Работа с датами
 
 ---
@@ -342,7 +342,7 @@ $string = Helper::dateToString(Carbon::parse('01.02.2025')); // $string = 'пе�
 ```
 ---
 
-#### Enum
+### Enum
 Работа с перечислениями
 
 ---
@@ -407,7 +407,7 @@ $array = MyEnum::enumValues(); // $array = ['value1']
 ```
 ---
 
-#### Env
+### Env
 Работа с окружением
 
 ---
@@ -454,7 +454,7 @@ $boolean = Helper::envTesting(); // $boolean = true/false
 ```
 ---
 
-#### Exception
+### Exception
 Работа с исключениями
 
 ---
@@ -465,7 +465,7 @@ $string = Helper::exceptionToString(new Exception('message', 400)); // $string =
 ```
 ---
 
-#### Fake
+### Fake
 Работа с генерацией данных
 
 ---
@@ -524,7 +524,7 @@ $string = Helper::fakeUuid7(); // $string = '019668c4-7b6c-7333-9563-d10b583c404
 ```
 ---
 
-#### Hash
+### Hash
 Работа с хешами
 
 ---
@@ -535,7 +535,7 @@ $string = Helper::hashXxh128('abc'); // $string = '06b05ab6733a618578af5f94892f3
 ```
 ---
 
-#### Interval
+### Interval
 Работа с интервалами
 
 ---
@@ -571,7 +571,7 @@ $bool = (bool)Helper::intervalOverlap('1..3', '2..4'); // $bool = false
 ```
 ---
 
-#### Ip
+### Ip
 Работа с ip адресами
 
 ---
@@ -582,7 +582,7 @@ $array = Helper::ipInRange('192.168.1.1', '192.168.1.0/24'); // $array = ['192.1
 ```
 ---
 
-#### Json
+### Json
 Работа с json строками
 
 ---
@@ -593,7 +593,7 @@ $integer = Helper::jsonFlags(); // $integer = 3146048
 ```
 ---
 
-#### Jwt
+### Jwt
 Работа с jwt токенами
 
 ---
@@ -610,7 +610,7 @@ $string = Helper::jwtEncode(['id' => 1]); // $string = 'eyJhbGciOiJTSEE1MTIiLCJ0
 ```
 ---
 
-#### Number
+### Number
 Работа с числами
 
 ---
@@ -645,7 +645,7 @@ $string = Helper::numberToString(123.456); // $string = 'сто двадцать
 ```
 ---
 
-#### Path
+### Path
 Работа с путями
 
 ---
@@ -662,7 +662,7 @@ $string = Helper::pathRoot(); // $string = '/home/path'
 ```
 ---
 
-#### Phone
+### Phone
 Работа с телефонами
 
 ---
@@ -679,7 +679,7 @@ $string = Helper::phoneNumber('+7 (900) 111-22-33'); // $string = '79001112233'
 ```
 ---
 
-#### Regexp
+### Reflection
 Работа с валидацией
 
 ---
@@ -725,7 +725,7 @@ $array = Helper::reflectionPropertyAttributes(Example::class, 'propertyName'); /
 ```
 ---
 
-#### Regexp
+### Regexp
 Работа с валидацией
 
 ---
@@ -802,7 +802,7 @@ $boolean = Helper::regexpValidateUuid7('019668a4-02a1-7f64-9d90-52760464b9ce'); 
 ```
 ---
 
-#### Size
+### Size
 Работа с размерами
 
 ---
@@ -819,7 +819,7 @@ $integer = Helper::sizeStringToBytes('1 Килобайт'); // $integer = 1000
 ```
 ---
 
-#### String
+### String
 Работа со строками
 
 ---
@@ -1035,7 +1035,7 @@ $string = Helper::stringUpperFirstAll('abc Def ghi-jkl_mno'); // $string = 'Abc 
 ```
 ---
 
-#### Telegram
+### Telegram
 Работа с сообщениями телеграм
 
 ---
@@ -1046,7 +1046,7 @@ $array = Helper::telegramBreakMessage('Иванов Иван Иванович', 
 ```
 ---
 
-#### Time
+### Time
 Работа со временем
 
 ---
@@ -1081,7 +1081,7 @@ $string = Helper::timeSecondsToString(123); // $string = '2 минуты 3 се�
 ```
 ---
 
-#### Transform
+### Transform
 Работа с трансформацией
 
 ---
@@ -1093,7 +1093,7 @@ $array = Helper::transformToArray('a'); // $array = ['a']
 ```
 ---
 
-#### Translit
+### Translit
 Работа с транслитерацией
 
 ---
@@ -1116,7 +1116,7 @@ $string = Helper::translitToSlug('абв Где!.123'); // $string = 'abv_gde_12
 ```
 ---
 
-#### Url
+### Url
 Работа с url адресом
 
 ---
@@ -1145,7 +1145,7 @@ $array = Helper::urlParse('http://a.com/d/?e=f'); // $array = ['scheme' => 'http
 ```
 ---
 
-#### Var
+### Var
 Работа с переменными
 
 ---

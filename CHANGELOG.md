@@ -7,6 +7,10 @@
 - Добавлен метод Helper::sqlFields
 - Добавлен метод Helper::sqlExtractNames
 - Добавлен метод Helper::bracketSearch
+- Добавлен метод Helper::arrayTrim
+- Добавлен метод Helper::stringSplitSearch
+
+- Обновлен метод Helper::stringSplit
 
 ## _Версия 1.19_
 - Добавлен метод Helper::stringSplitRange

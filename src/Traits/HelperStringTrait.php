@@ -164,11 +164,18 @@ trait HelperStringTrait
             $delimiter = '';
 
             while ($value || $delimiter) {
-                $delimiter = static::arrayFirst(static::stringSearchAny($value, $delimiters));
+                if ($delimiterIndexed = static::arrayDot(static::stringPosAll($value, $delimiters))) {
+                    asort($delimiterIndexed);
+                    $delimiter = array_key_first($delimiterIndexed);
+                    $delimiterPos = $delimiterIndexed[$delimiter];
+                    $delimiter = explode('.', $delimiter)[0];
+                } else {
+                    $delimiter = '';
+                }
 
                 $delimiter
                     ? $splits[] = static::stringDelete(
-                        static::stringCut($value, 0, mb_strpos($value, $delimiter) + static::stringLength($delimiter)),
+                        static::stringCut($value, 0, $delimiterPos + static::stringLength($delimiter)),
                         -static::stringLength($delimiter)
                     )
                     : $splits[] = static::stringCut($value, 0);
@@ -218,7 +225,7 @@ trait HelperStringTrait
                     asort($delimiterIndexed);
                     $delimiter = array_key_first($delimiterIndexed);
                     $delimiterPos = $delimiterIndexed[$delimiter];
-                    $delimiter = static::stringSplit($delimiter, '.', 0);
+                    $delimiter = explode('.', $delimiter)[0];
                 } else {
                     $delimiter = '';
                 }
@@ -260,6 +267,45 @@ trait HelperStringTrait
 
         for ($index = $indexFrom; $index <= $indexTo; $index++) {
             $result .= (($index > $indexFrom) ? $splits[$index]['delimiter'] : '') . $splits[$index]['value'];
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * Возвращает массив индексов частей между $delimiters, в которых найдены строки $searches
+     * @see ../../tests/HelperStringTrait/HelperStringSplitSearchTest.php
+     *
+     * @param int|float|string|null $value
+     * @param int|float|string|array|null $delimiters
+     * @param mixed ...$searches
+     * @param mixed 
+     * @return array
+     */
+    public static function stringSplitSearch(
+        int|float|string|null $value,
+        int|float|string|array|null $delimiters,
+        mixed ...$searches,
+    ): array {
+        $value = (string)$value;
+        $delimiters = static::transformToArray($delimiters);
+        $delimiters = array_values(static::arrayDot($delimiters));
+        $splits = static::stringSplit($value, $delimiters);
+        $result = [];
+
+        foreach ($searches as $search) {
+            if (is_array($search) || is_object($search)) {
+                !$search ?: $result = [
+                    ...$result,
+                    ...static::stringSplitSearch($value, ...static::transformToArray($search)),
+                ];
+            } else {
+                for ($splitIndex = 0; $splitIndex < count($splits); $splitIndex++) {
+                    !static::stringSearchAny($splits[$splitIndex], $search)
+                        ?: $result[$search][] = $splitIndex;
+                }
+            }
         }
 
         return $result;

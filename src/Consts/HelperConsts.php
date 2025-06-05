@@ -722,4 +722,25 @@ class HelperConsts
         'ISNULL',
         'IF',
     ];
+
+    public const SQL_OPERATORS = [
+        '=',
+        '!=',
+        '<>',
+        '>=',
+        '<=',
+        '>',
+        '<',
+        '<',
+        ',',
+        ';',
+        '(',
+        ')',
+        '[',
+        ']',
+        '`',
+        'IN',
+        'NOT',
+        'BETWEEN',
+    ];
 }

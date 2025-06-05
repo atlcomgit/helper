@@ -40,7 +40,7 @@ final class HelperSqlExtractNamesTest extends TestCase
                     'database1' => [
                         'tables' => [
                             'table_a' => [
-                                'fields' => ['*', 'error_id', 'id'],
+                                'fields' => ['*', 'data', 'error_id', 'id'],
                             ],
                             'table_b' => [
                                 'fields' => ['active', 'id', 'status', 'user_id'],
@@ -49,7 +49,7 @@ final class HelperSqlExtractNamesTest extends TestCase
                                 'fields' => ['id', 'name', 'phone'],
                             ],
                             'table_e' => [
-                                'fields' => ['*', 'data', 'id'],
+                                'fields' => ['*', 'id'],
                             ],
                         ],
                     ],
@@ -103,7 +103,7 @@ final class HelperSqlExtractNamesTest extends TestCase
             'databases' => [
                 '' => [
                     'tables' => [
-                        'table_a' => ['fields' => ['id', 'deleted_at', 'level', 'message']],
+                        'table_a' => ['fields' => ['deleted_at', 'id', 'level', 'message']],
                     ],
                 ],
                 'database2' => [
@@ -138,7 +138,7 @@ final class HelperSqlExtractNamesTest extends TestCase
             'databases' => [
                 '' => [
                     'tables' => [
-                        'users' => ['fields' => ['*', 'id', 'active']],
+                        'users' => ['fields' => ['*', 'active', 'id']],
                     ],
                 ],
             ],
@@ -149,7 +149,7 @@ final class HelperSqlExtractNamesTest extends TestCase
             'databases' => [
                 '' => [
                     'tables' => [
-                        'users' => ['fields' => ['*', 'id', 'active']],
+                        'users' => ['fields' => ['*', 'id', 'active', 'status']],
                     ],
                 ],
             ],

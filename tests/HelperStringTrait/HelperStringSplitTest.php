@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atlcom\Tests\HelperStringTrait;
 
+use Atlcom\Consts\HelperConsts;
 use Atlcom\Helper;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -52,6 +53,27 @@ final class HelperStringSplitTest extends TestCase
 
         $string = Helper::stringSplit('abc', '');
         $this->assertTrue($string === ['abc']);
+
+        $string = Helper::stringSplit(
+            "UPDATE table_a SET level=1, message = 'text' WHERE id IN NOT NULL OR deleted_at IS NULL;",
+            [...HelperConsts::SQL_RESERVED_WORDS, ...HelperConsts::SQL_OPERATORS],
+        );
+        $this->assertSame([
+            '',
+            ' table_a ',
+            ' level',
+            '1',
+            ' message ',
+            " 'text' ",
+            ' id ',
+            ' ',
+            ' ',
+            ' ',
+            ' deleted_at ',
+            ' ',
+            '',
+            '',
+        ], $string);
 
         $string = Helper::stringSplit(null, ' ');
         $this->assertTrue($string === []);
