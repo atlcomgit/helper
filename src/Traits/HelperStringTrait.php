@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Consts\HelperConsts;
 use Atlcom\Enums\HelperStringBreakTypeEnum;
 use Atlcom\Enums\HelperStringEncodingEnum;
 use Atlcom\Internal\HelperInternal;
@@ -162,13 +163,15 @@ trait HelperStringTrait
         $splits = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
             $splits = [];
             $delimiter = '';
+            $dotDelimiter = static::$dotDelimiter;
+            static::$dotDelimiter = HelperConsts::STRING_SPLIT_DOT_DELIMITER;
 
             while ($value || $delimiter) {
                 if ($delimiterIndexed = static::arrayDot(static::stringPosAll($value, $delimiters))) {
                     asort($delimiterIndexed);
                     $delimiter = array_key_first($delimiterIndexed);
                     $delimiterPos = $delimiterIndexed[$delimiter];
-                    $delimiter = explode('.', $delimiter)[0];
+                    $delimiter = explode(static::$dotDelimiter, $delimiter)[0];
                 } else {
                     $delimiter = '';
                 }
@@ -180,6 +183,8 @@ trait HelperStringTrait
                     )
                     : $splits[] = static::stringCut($value, 0);
             }
+
+            static::$dotDelimiter = $dotDelimiter;
 
             return $splits;
         }, $cacheEnabled);
@@ -217,6 +222,8 @@ trait HelperStringTrait
         $splits = static::cacheRuntime($cacheKey, static function () use (&$value, &$delimiters) {
             $splits = [];
             $delimiter = '';
+            $dotDelimiter = static::$dotDelimiter;
+            static::$dotDelimiter = HelperConsts::STRING_SPLIT_DOT_DELIMITER;
 
             while ($value || $delimiter) {
                 $lastDelimiter = $delimiter;
@@ -225,7 +232,7 @@ trait HelperStringTrait
                     asort($delimiterIndexed);
                     $delimiter = array_key_first($delimiterIndexed);
                     $delimiterPos = $delimiterIndexed[$delimiter];
-                    $delimiter = explode('.', $delimiter)[0];
+                    $delimiter = explode(static::$dotDelimiter, $delimiter)[0];
                 } else {
                     $delimiter = '';
                 }
@@ -243,6 +250,8 @@ trait HelperStringTrait
                         'value' => static::stringCut($value, 0),
                     ];
             }
+
+            static::$dotDelimiter = $dotDelimiter;
 
             return $splits;
         }, $cacheEnabled);

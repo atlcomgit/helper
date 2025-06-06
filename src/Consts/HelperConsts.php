@@ -6,6 +6,8 @@ namespace Atlcom\Consts;
 
 class HelperConsts
 {
+    public const STRING_SPLIT_DOT_DELIMITER = '[STRING_SPLIT_DOT_DELIMITER]';
+
     public const NUMBER_NAMES = [
         ['нол', 'нулев'],
         ['од', 'перв'],

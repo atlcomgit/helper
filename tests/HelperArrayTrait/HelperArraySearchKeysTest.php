@@ -17,6 +17,9 @@ final class HelperArraySearchKeysTest extends TestCase
     #[Test]
     public function arraySearchKeys(): void
     {
+        $array = Helper::arraySearchKeys(['a' => ['b' => []]], '*.b');
+        $this->assertEquals(['a.b' => []], $array);
+
         $array = Helper::arraySearchKeys(['a', 'b'], 0);
         $this->assertEquals(['a'], $array);
 

@@ -10,6 +10,7 @@ namespace Atlcom\Traits;
  */
 trait HelperArrayTrait
 {
+    public static string $dotDelimiter = '.';
     public static array $ignoreFiles = ['/vendor/'];
     public static array $ignoreClasses = ['Illuminate'];
 
@@ -121,11 +122,11 @@ trait HelperArrayTrait
         $searches = static::transformToArray($searches);
 
         foreach ($value as $key => $v) {
-            if (is_array($v) || is_object($v)) {
-
+            $key = (string)$key;
+            if ($v && (is_array($v) || is_object($v)) && static::transformToArray($v)) {
                 $subValue = [];
                 foreach ($v as $key2 => $v2) {
-                    $subValue["{$key}.{$key2}"] = $v2;
+                    $subValue["{$key}" . static::$dotDelimiter . "{$key2}"] = $v2;
                 }
 
                 $result = [...$result, ...static::arraySearchKeys($subValue, ...$searches)];
@@ -171,7 +172,8 @@ trait HelperArrayTrait
         $searches = static::transformToArray($searches);
 
         foreach ($value as $key => $v) {
-            if (is_array($v) || is_object($v)) {
+            $key = (string)$key;
+            if ($v && (is_array($v) || is_object($v)) && static::transformToArray($v)) {
                 $subResult = static::arraySearchValues($v, ...$searches);
                 !$subResult ?: $result[$key] = $subResult;
 
@@ -241,8 +243,8 @@ trait HelperArrayTrait
 
         $value = static::transformToArray($value);
 
-        if (!isset($value[$key]) && mb_strpos((string)$key, '.') !== false) {
-            foreach (explode('.', $key) as $partKey) {
+        if (!isset($value[$key]) && mb_strpos((string)$key, static::$dotDelimiter) !== false) {
+            foreach (explode(static::$dotDelimiter, $key) as $partKey) {
                 $value = is_array($value)
                     ? (array_key_exists($partKey, $value) ? $value[$partKey] : $default)
                     : $default;
@@ -311,8 +313,8 @@ trait HelperArrayTrait
         $result = [];
 
         foreach ($value ?? [] as $key => $v) {
-            if (is_string($key) && mb_strpos($key, '.') !== false) {
-                $keys = static::stringSplit($key, '.');
+            if (is_string($key) && mb_strpos($key, static::$dotDelimiter) !== false) {
+                $keys = static::stringSplit($key, static::$dotDelimiter);
                 $current = &$result;
 
                 foreach (array_slice($keys, 0, -1) as $subKey) {

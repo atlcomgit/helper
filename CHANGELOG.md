@@ -1,16 +1,19 @@
 # Changelog
 
 ## _Версия 1.20_
+- Добавлен метод Helper::sqlBindings
+- Добавлен метод Helper::sqlExtractNames
+- Добавлен метод Helper::sqlFields
 - Добавлен метод Helper::sqlHasWrite
 - Добавлен метод Helper::sqlTables
-- Добавлен метод Helper::sqlBindings
-- Добавлен метод Helper::sqlFields
-- Добавлен метод Helper::sqlExtractNames
 - Добавлен метод Helper::bracketSearch
-- Добавлен метод Helper::arrayTrim
+- Добавлен метод Helper::arrayTrimValues
 - Добавлен метод Helper::stringSplitSearch
 
+- Обновлен метод Helper::arraySearchKeys
+- Обновлен метод Helper::arraySearchValues
 - Обновлен метод Helper::stringSplit
+- Обновлен метод Helper::stringSplitRange
 
 ## _Версия 1.19_
 - Добавлен метод Helper::stringSplitRange

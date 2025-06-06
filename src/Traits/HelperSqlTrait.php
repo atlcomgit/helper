@@ -54,64 +54,6 @@ trait HelperSqlTrait
 
 
     /**
-     * Возвращает массив используемых таблиц в запросе
-     * @see ../../tests/HelperSqlTrait/HelperSqlTablesTest.php
-     *
-     * @param string|null $value
-     * @return array<string>
-     */
-    public static function sqlTables(?string $value): array
-    {
-        if (empty($value) || !is_string($value)) {
-            return [];
-        }
-
-        // Заменяем экранированные \n на ; для корректной разбивки
-        $sql = str_replace('\\n', ';', $value);
-
-        // Удаляем многострочные и однострочные комментарии
-        $sql = preg_replace(['~/\*.*?\*/~s', '/--.*$/m'], ['', ';'], $sql);
-        $sql = strtolower($sql);
-        $sql = trim($sql);
-
-        // Разбиваем на отдельные запросы по ; и \n
-        $queries = preg_split('/[;\n]+/', $sql);
-        $tables = [];
-        // Массив паттернов: [регулярка, номер группы]
-        $patterns = [
-            // skip drop database
-            ['/^drop\s+database\b/', null],
-            ['/^drop\s+table\s+(?:if\s+exists\s+)?([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-            ['/^alter\s+table\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-            ['/^truncate\s+table\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-            ['/^insert\s+into\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-            ['/^update\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-            ['/^delete\s+from\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-            // SELECT ... FROM (ищем from в любом месте строки, не только в начале)
-            ['/from\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-        ];
-        foreach ($queries as $query) {
-            $query = trim($query);
-            if ($query === '') continue;
-            foreach ($patterns as [$pattern, $group]) {
-                if ($group === null) {
-                    if (preg_match($pattern, $query)) {
-                        // drop database — пропускаем
-                        continue 2;
-                    }
-                } elseif (preg_match($pattern, $query, $m)) {
-                    $table = trim($m[$group], '`"[] ');
-                    if ($table !== '') $tables[] = $table;
-                    break;
-                }
-            }
-        }
-
-        return array_values(array_unique($tables));
-    }
-
-
-    /**
      * Подставляет значения из массива $bindings вместо плейсхолдеров ? в запросе
      * @see ../../tests/HelperSqlTrait/HelperSqlBindingsTest.php
      *
@@ -161,7 +103,6 @@ trait HelperSqlTrait
     }
 
 
-    //?!? 
     /**
      * Возвращает массив используемых названий полей в запросе
      * @see ../../tests/HelperSqlTrait/HelperSqlFieldsTest.php
@@ -171,20 +112,55 @@ trait HelperSqlTrait
      */
     public static function sqlFields(?string $value): array
     {
-        // проанализируй тесты HelperSqlFieldsTest
-        // напиши метод sqlFields который собирает все названия полей из массива результата метода sqlExtractNames
-        // используй static ::arrayDot()
-        // согласно примерам в тестах HelperSqlFieldsTest
-        // учитывай алиасы названий по типу AS
-        // сортируй ключи названий согласно их порядку в запросе
-        // убирай комментарии из запроса
-        // и выполни сам полное тестирование
-        return [];
+        if (empty($value) || !is_string($value)) {
+            return [];
+        }
+
+        $result = [];
+        $sqlExtractNames = static::sqlExtractNames($value);
+        $fields = static::arraySearchKeys($sqlExtractNames, 'databases.*.tables.*.fields.*');
+
+        foreach ($fields as $key => $v) {
+            $keys = explode('.', $key);
+            $db = $keys[1] ?? '';
+            $table = $keys[3] ?? '';
+            !$table ?: $result[] = static::stringConcat('.', $db, $table, $v);
+        }
+
+        return $result;
     }
 
 
     /**
-     * Возвращает массив разобранного запроса на используемые названий баз данных, таблиц, полей
+     * Возвращает массив используемых таблиц в запросе
+     * @see ../../tests/HelperSqlTrait/HelperSqlTablesTest.php
+     *
+     * @param string|null $value
+     * @return array<string>
+     */
+    public static function sqlTables(?string $value): array
+    {
+        if (empty($value) || !is_string($value)) {
+            return [];
+        }
+
+        $result = [];
+        $sqlExtractNames = static::sqlExtractNames($value);
+        $tables = static::arraySearchKeys($sqlExtractNames, 'databases.*.tables.*');
+
+        foreach (array_keys($tables) as $key) {
+            $keys = explode('.', $key);
+            $db = $keys[1] ?? '';
+            $table = $keys[3] ?? '';
+            !$table ?: $result[] = static::stringConcat('.', $db, $table);
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * Возвращает массив разобранного запроса на используемые названия баз данных, таблиц, полей
      * @see ../../tests/HelperSqlTrait/HelperSqlExtractNamesTest.php
      *
      * @param string|null $value
@@ -237,6 +213,60 @@ trait HelperSqlTrait
                     'alias' => $alias,
                 ];
         }
+
+        // Разбиваем на отдельные запросы по ; и \n
+        $queries = preg_split('/[;\n]+/', $sql);
+        // Массив паттернов: [регулярка, номер группы]
+        $patterns = [
+            // группа базы данных
+            ['/^drop\s+database\b/i', null],
+
+            // группа таблиц
+            ['/^drop\s+table\s+(?:if\s+exists\s+)?([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
+            ['/^alter\s+table\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
+            ['/^truncate\s+table\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
+            ['/^insert\s+into\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
+            ['/^update\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
+            ['/^delete\s+from\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
+            ['/from\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1], // SELECT ... FROM (ищем from не только в начале)
+        ];
+        foreach ($queries as $query) {
+            $query = trim($query);
+            if ($query === '') {
+                continue;
+            }
+
+            foreach ($patterns as [$pattern, $group]) {
+                if ($group === null) {
+                    if (preg_match($pattern, $query)) {
+                        // drop database — пропускаем
+                        continue 2;
+                    }
+
+                } else if (preg_match($pattern, $query, $m)) {
+                    $database = null;
+                    $table = trim($m[$group], '`"[] ');
+                    if (count($tableSplit = static::stringSplit($table, '.')) > 1) {
+                        $database = $tableSplit[0];
+                        $table = $tableSplit[1];
+                    }
+
+                    (
+                        in_array($database, $reserved)
+                        || in_array($table, $reserved)
+                        || in_array($table, array_values(static::arraySearchKeys($elements, '*.name')))
+                    )
+                        ?: $elements[] = [
+                            'type' => 'table',
+                            'database' => $database,
+                            'name' => $table,
+                            'alias' => $table,
+                        ];
+                    break;
+                }
+            }
+        }
+
 
         // Строим структуру результата
         $result = ['databases' => []];

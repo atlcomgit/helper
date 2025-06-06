@@ -57,6 +57,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::arraySearchKeys()
  * @method @see static::arraySearchKeysAndValues()
  * @method @see static::arraySearchValues()
+ * @method @see static::arrayTrimValues()
  * @method @see static::arrayUnDot()
  * 
  * @group bracket - Работа со скобками/тегами
@@ -65,6 +66,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::bracketCount()
  * @method @see static::bracketDelete()
  * @method @see static::bracketReplace()
+ * @method @see static::bracketSearch()
  * 
  * @group cache - Работа с кешем
  * @method @see static::cacheRuntime()
@@ -228,12 +230,16 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::stringSegment()
  * @method @see static::stringSplit()
  * @method @see static::stringSplitRange()
+ * @method @see static::stringSplitSearch()
  * @method @see static::stringStarts()
  * @method @see static::stringUpper()
  * @method @see static::stringUpperFirst()
  * @method @see static::stringUpperFirstAll()
  * 
  * @group sql - Работа с sql запросами
+ * @method @see static::sqlBindings()
+ * @method @see static::sqlExtractNames()
+ * @method @see static::sqlFields()
  * @method @see static::sqlHasWrite()
  * @method @see static::sqlTables()
  * 
