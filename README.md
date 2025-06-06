@@ -102,6 +102,12 @@ $array = Helper::arraySearchValues(['a', 'b'], 'a'); // $array = ['a']
 $array = Helper::arraySearchValues(['abc', 'def'], ['a*', '*f']); // $array = ['abc', 'def']
 ```
 ---
+##### [arrayTrimValues(\$value, \$trims): array](./tests/HelperArrayTrait/HelperArrayTrimValuesTest.php)
+Возвращает массив с применением trim для каждого значения
+```php
+$array = Helper::arrayTrimValues([' a ', ',b.,:;']); // $array = ['a', 'b']
+```
+---
 ##### [arrayUnDot(\$value): array](./tests/HelperArrayTrait/HelperArrayUnDotTest.php)
 Возвращает многомерный массив из одномерного
 ```php
@@ -141,6 +147,12 @@ $string = Helper::bracketDelete('(a)(b)', '(', ')', 0); // $string = '(b)'
 Возвращает строку с заменой блока скобок под индексом index на строку replace
 ```php
 $string = Helper::bracketReplace('(a)(b)', '(', ')', 0, '(c)'); // $string = '(c)(b)'
+```
+---
+##### [bracketSearch(\$value, \$left, \$right, \$index, ...\$searches): array](./tests/HelperBracketTrait/HelperBracketSearchTest.php)
+Возвращает массив найденных строк с индексами блоков скобок
+```php
+$array = Helper::bracketSearch('(a)(b)', '(', ')', 'a'); // $array = ['a' => [0]]
 ```
 ---
 
@@ -414,7 +426,7 @@ $array = MyEnum::enumValues(); // $array = ['value1']
 ##### [envDev(): bool](./tests/HelperEnvTrait/HelperEnvDevTest.php)
 Проверяет окружение приложения на разработку и возвращает true/false
 ```php
-$$boolean$ = Helper::envDev(); // $boolean = true/false
+$$boolean = Helper::envDev(); // $boolean = true/false
 ```
 ---
 ##### [envGet(\$value, \$file): mixed](./tests/HelperEnvTrait/HelperEnvGetTest.php)
@@ -819,6 +831,41 @@ $integer = Helper::sizeStringToBytes('1 Килобайт'); // $integer = 1000
 ```
 ---
 
+### Sql
+Работа с sql запросами
+
+---
+##### [sqlBindings(\$value, \$bindings): string](./tests/HelperSqlTrait/HelperSqlBindingsTest.php)
+Подставляет значения из массива $bindings вместо плейсхолдеров ? в запросе
+```php
+$string = Helper::sqlBindings('SELECT * FROM t WHERE a = ?', [1]); // $string = 'SELECT * FROM t WHERE a = 1'
+```
+---
+##### [sqlExtractNames(\$value): array](./tests/HelperSqlTrait/HelperSqlExtractNamesTest.php)
+Возвращает массив разобранного запроса на используемые названия баз данных, таблиц, полей
+```php
+$array = Helper::sqlExtractNames('SELECT name FROM users', [1]); // $array = ['databases' => ['' => ['tables' => ['users' => ['fields' => ['name']]]]]]
+```
+---
+##### [sqlFields(\$value): array](./tests/HelperSqlTrait/HelperSqlFieldsTest.php)
+Возвращает массив используемых названий полей в запросе
+```php
+$array = Helper::sqlFields('SELECT * FROM users WHERE id = 1 AND active = 0'); // $array = ['users.*', 'users.active', 'users.id']
+```
+---
+##### [sqlHasWrite(\$value): bool](./tests/HelperSqlTrait/HelperSqlHasWriteTest.php)
+Проверяет запрос на наличие операторов изменения INSERT, UPDATE, DELETE, TRUNCATE
+```php
+$boolean = Helper::sqlHasWrite('SELECT * FROM users'); // $boolean = false
+```
+---
+##### [sqlTables(\$value): array](./tests/HelperSqlTrait/HelperSqlTablesTest.php)
+Возвращает массив используемых таблиц в запросе
+```php
+$array = Helper::sqlTables('SELECT * FROM users;'); // $array = ['users']
+```
+---
+
 ### String
 Работа со строками
 
@@ -1008,6 +1055,12 @@ $array = Helper::stringSplit('abc,,def/xyz', [',', '/']); // $array = ['abc', ''
 Возвращает массив подстрок разбитых на части между разделителем в строке
 ```php
 $string = Helper::stringSplitRange('abc,def,xyz', ',', 1, 1); // $string = 'def'
+```
+---
+##### [stringSplitSearch(\$value, \$delimiters, ...\$searches): array](./tests/HelperStringTrait/HelperStringSplitRangeTest.php)
+Возвращает массив индексов частей между $delimiters, в которых найдены строки $searches
+```php
+$array = Helper::stringSplitSearch('abc,def', ',', 'a'); // $array = ['a' => [0]]
 ```
 ---
 ##### [stringStarts(\$value, ...\$searches): string](./tests/HelperStringTrait/HelperStringStartsTest.php)

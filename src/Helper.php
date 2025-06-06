@@ -201,6 +201,13 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::sizeBytesToString()
  * @method @see static::sizeStringToBytes()
  * 
+ * @group sql - Работа с sql запросами
+ * @method @see static::sqlBindings()
+ * @method @see static::sqlExtractNames()
+ * @method @see static::sqlFields()
+ * @method @see static::sqlHasWrite()
+ * @method @see static::sqlTables()
+ * 
  * @group string - Работа со строками
  * @method @see static::stringPadPrefix()
  * @method @see static::stringPadSuffix()
@@ -235,13 +242,6 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::stringUpper()
  * @method @see static::stringUpperFirst()
  * @method @see static::stringUpperFirstAll()
- * 
- * @group sql - Работа с sql запросами
- * @method @see static::sqlBindings()
- * @method @see static::sqlExtractNames()
- * @method @see static::sqlFields()
- * @method @see static::sqlHasWrite()
- * @method @see static::sqlTables()
  * 
  * @group telegram - Работа с сообщениями телеграм
  * @method @see static::telegramBreakMessage()

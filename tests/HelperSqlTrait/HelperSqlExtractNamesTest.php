@@ -185,7 +185,18 @@ final class HelperSqlExtractNamesTest extends TestCase
             'databases' => [
                 'core' => [
                     'tables' => [
-                        '' => ['fields' => []]
+                        '' => ['fields' => []],
+                    ],
+                ],
+            ],
+        ], $array);
+
+        $array = Helper::sqlExtractNames("SELECT name FROM users");
+        $this->assertEquals([
+            'databases' => [
+                '' => [
+                    'tables' => [
+                        'users' => ['fields' => ['name']],
                     ],
                 ],
             ],

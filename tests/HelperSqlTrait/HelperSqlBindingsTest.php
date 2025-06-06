@@ -39,6 +39,11 @@ final class HelperSqlBindingsTest extends TestCase
         );
 
         $this->assertSame(
+            'SELECT * FROM t WHERE a = 1 AND b=NULL',
+            Helper::sqlBindings('SELECT * FROM t WHERE a = ? AND b=?', [1]),
+        );
+
+        $this->assertSame(
             'SELECT NULL',
             Helper::sqlBindings('SELECT ?', []),
         );
