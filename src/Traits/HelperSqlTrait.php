@@ -81,9 +81,10 @@ trait HelperSqlTrait
         return static::stringReplace(
             vsprintf(
                 static::stringReplace($value, [
+                    '%' => '!PERCENT!',
                     '?' => '%s',
-                    '\\\"' => '%DOUBLE_QUOTE%',
-                    '\\\'' => '%SINGLE_QUOTE%',
+                    '\\\"' => '!DOUBLE_QUOTE!',
+                    '\\\'' => '!SINGLE_QUOTE!',
                     '"' => '',
                     "'" => "",
                 ]),
@@ -93,12 +94,18 @@ trait HelperSqlTrait
                         is_bool($binding) => $binding ? '1' : '0',
                         is_numeric($binding) => $binding,
                         is_string($binding) => "'" . addslashes($binding) . "'",
+                        is_array($binding), is_object($binding) => json_encode($binding, static::jsonFlags()),
+
                         default => $binding,
                     },
                     array: $bindingsFilled,
                 ),
             ),
-            ['%DOUBLE_QUOTE%' => '\\\"', "%SINGLE_QUOTE%" => '\\\''],
+            [
+                '!DOUBLE_QUOTE!' => '\\\"',
+                "!SINGLE_QUOTE!" => '\\\'',
+                '!PERCENT!' => '%',
+            ],
         );
     }
 
@@ -127,7 +134,7 @@ trait HelperSqlTrait
             !$table ?: $result[] = static::stringConcat('.', $db, $table, $v);
         }
 
-        return $result;
+        return array_filter(array_unique($result));
     }
 
 
@@ -155,7 +162,7 @@ trait HelperSqlTrait
             !$table ?: $result[] = static::stringConcat('.', $db, $table);
         }
 
-        return $result;
+        return array_filter(array_unique($result));
     }
 
 

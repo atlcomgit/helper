@@ -1,5 +1,12 @@
 # Changelog
 
+## _Версия 1.21_
+- Добавлен метод Helper::exceptionToArray
+
+- Обновлен метод Helper::sqlBindings
+- Обновлен метод Helper::sqlFields
+- Обновлен метод Helper::sqlTables
+
 ## _Версия 1.20_
 - Добавлен метод Helper::arrayTrimValues
 - Добавлен метод Helper::bracketSearch

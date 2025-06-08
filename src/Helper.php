@@ -39,7 +39,7 @@ use Atlcom\Traits\HelperVarTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.20
+ * @version 1.21
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -129,6 +129,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::envTesting()
  * 
  * @group exception - Работа с исключениями
+ * @method @see static::exceptionToArray()
  * @method @see static::exceptionToString()
  * 
  * @group fake - Работа с генерацией данных

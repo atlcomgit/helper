@@ -17,6 +17,9 @@ final class HelperSqlBindingsTest extends TestCase
     #[Test]
     public function sqlBindings(): void
     {
+        $string = Helper::sqlBindings("delete from cache where key::text like '%__helper__%'", []);
+        $this->assertSame('delete from cache where key::text like %__helper__%', $string);
+
         $string = Helper::sqlBindings('SELECT * FROM users WHERE id = ? AND active = ?', [42, true]);
         $this->assertSame('SELECT * FROM users WHERE id = 42 AND active = 1', $string);
 
