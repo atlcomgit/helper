@@ -216,17 +216,17 @@ trait HelperTimeTrait
 
         $value = filter_var($value, FILTER_VALIDATE_FLOAT) ?: 0;
 
-        if ($value < 0) {
+        if ($value * 1.0 < 0.0) {
             return 'Отрицательное число';
         }
 
-        if ($withMilliseconds && $value < 1) {
+        if ($withMilliseconds && $value * 1.0 < 1.0) {
             $value = (int)($value * 1000);
 
             return static::stringPlural($value, static::$pluralMilliseconds);
         }
 
-        if ($value < 5) {
+        if ($value * 1.0 < 5.0) {
             $milliseconds = (int)(($value - (int)$value) * 1000);
 
             return $withMilliseconds
@@ -236,9 +236,13 @@ trait HelperTimeTrait
                     : ($milliseconds ? ' ' . static::stringPlural($milliseconds, static::$pluralMilliseconds) : '')
                 )
                 : (
-                    str_pad((string)static::stringSplit($value, '.', 1), 2, '0') >= '10'
-                    ? round($value, 1) . ' ' . static::stringPlural(2, static::$pluralSeconds, false)
-                    : static::stringPlural(round($value, 1), static::$pluralSeconds)
+                    (substr(str_pad((string)static::stringSplit($value, '.', 1), 2, '0'), 0, 2) >= '10')
+                    ? (
+                        $value > 0.0
+                        ? round($value, 1) . ' ' . static::stringPlural(2, static::$pluralSeconds, false)
+                        : round($value, 1) . ' ' . static::stringPlural(0, static::$pluralSeconds, false)
+                    )
+                    : (static::stringPlural(round($value, 1), static::$pluralSeconds))
                 );
         }
 

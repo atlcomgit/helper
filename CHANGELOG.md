@@ -6,6 +6,8 @@
 - Обновлен метод Helper::sqlBindings
 - Обновлен метод Helper::sqlFields
 - Обновлен метод Helper::sqlTables
+- Обновлен метод Helper::stringPlural
+- Обновлен метод Helper::timeSecondsToString
 
 ## _Версия 1.20_
 - Добавлен метод Helper::arrayTrimValues

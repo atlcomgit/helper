@@ -504,14 +504,20 @@ trait HelperStringTrait
 
         return is_null($value)
             ? ''
-            : (($includeValue ? "{$value} " : "")
-                . match (true) {
-                    $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
-                    $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
-                    => (string)($plurals[2] ?? ''),
+            : (
+                ($includeValue ? "{$value} " : "")
+                . (
+                    (static::numberDecimalDigits($value) === 0)
+                    ? match (true) {
+                        $numberMod == 1 && $numberPart != 11 => (string)($plurals[1] ?? ''),
+                        $numberMod > 1 && $numberMod < 5 && !($numberPart > 11 && $numberPart < 15)
+                        => (string)($plurals[2] ?? ''),
 
-                    default => (string)($plurals[0] ?? ''),
-                }
+                        default => (string)($plurals[0] ?? ''),
+                    }
+                    : ($value > 0.0 ? (string)($plurals[2] ?? '') : (string)($plurals[0] ?? ''))
+                )
+
             );
     }
 

@@ -20,6 +20,42 @@ final class HelperTimeSecondsToStringTest extends TestCase
         $string = Helper::timeSecondsToString(0);
         $this->assertEquals('0 секунд', $string);
 
+        $string = Helper::timeSecondsToString(0.1);
+        $this->assertEquals('0.1 секунды', $string);
+
+        $string = Helper::timeSecondsToString(0.1, withMilliseconds: true);
+        $this->assertEquals('100 миллисекунд', $string);
+
+        $string = Helper::timeSecondsToString(0.01);
+        $this->assertEquals('0 секунд', $string);
+
+        $string = Helper::timeSecondsToString(0.01, withMilliseconds: true);
+        $this->assertEquals('10 миллисекунд', $string);
+
+        $string = Helper::timeSecondsToString(0.001);
+        $this->assertEquals('0 секунд', $string);
+
+        $string = Helper::timeSecondsToString(0.001, withMilliseconds: true);
+        $this->assertEquals('1 миллисекунда', $string);
+
+        $string = Helper::timeSecondsToString(0.22);
+        $this->assertEquals('0.2 секунды', $string);
+
+        $string = Helper::timeSecondsToString(0.22, withMilliseconds: true);
+        $this->assertEquals('220 миллисекунд', $string);
+
+        $string = Helper::timeSecondsToString(0.003544);
+        $this->assertEquals('0 секунд', $string);
+
+        $string = Helper::timeSecondsToString(0.003544, withMilliseconds: true);
+        $this->assertEquals('3 миллисекунды', $string);
+
+        $string = Helper::timeSecondsToString(0.0000003544, withMilliseconds: true);
+        $this->assertEquals('0 миллисекунд', $string);
+
+        $string = Helper::timeSecondsToString((int)0.1);
+        $this->assertEquals('0 секунд', $string);
+
         $string = Helper::timeSecondsToString(0, withMilliseconds: true);
         $this->assertEquals('0 миллисекунд', $string);
 
