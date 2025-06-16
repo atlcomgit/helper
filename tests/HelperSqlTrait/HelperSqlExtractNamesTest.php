@@ -17,6 +17,19 @@ final class HelperSqlExtractNamesTest extends TestCase
     #[Test]
     public function sqlExtractNames(): void
     {
+        $array = Helper::sqlExtractNames('insert into "tests" ("name", "updated_at", "created_at") values (?, ?, ?) returning "id"');
+        $this->assertSame([
+            'databases' => [
+                '' => [
+                    'tables' => [
+                        'tests' => [
+                            'fields' => ['created_at', 'name', 'updated_at'],
+                        ],
+                    ],
+                ],
+            ],
+        ], $array);
+
         $array = Helper::sqlExtractNames("
             SELECT ta.*, tb.id -- SELECT tc.*
             FROM `database1`.`table_a` as ta

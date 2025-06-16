@@ -17,6 +17,9 @@ final class HelperSqlTablesTest extends TestCase
     #[Test]
     public function sqlHasWrite(): void
     {
+        $array = Helper::sqlTables("insert into tests (name, created_at) values ('Абв', '') returning id");
+        $this->assertSame(['tests'], $array);
+
         $array = Helper::sqlTables('insert into users (name) values ("test");');
         $this->assertSame(['users'], $array);
 

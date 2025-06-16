@@ -207,7 +207,8 @@ trait HelperSqlTrait
                 ];
         }
 
-        preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
+        // preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
+        preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(?:"|`)?(\w+)(?:"|`)?\.)?(?:"|`)?(\w+)(?:"|`)?(?:\s+(?:AS\s+)?(?:"|`)?(\w+)(?:"|`)?)?/i', $sql, $tableMatches, PREG_SET_ORDER);
         foreach ($tableMatches as $match) {
             $database = $match[1] ?? null;
             $table = $match[2];
@@ -361,11 +362,17 @@ trait HelperSqlTrait
         preg_match_all('/\bINSERT\s+INTO\s+[^\(]+\(\s*([^)]+)\)/i', $sql, $simpleFields);
         foreach ($simpleFields[1] ?? [] as $fields) {
             foreach (explode(',', $fields) as $field) {
-                preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $simpleFields[0][$a] ?? '', $tableMatches, PREG_SET_ORDER);
+                // preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $simpleFields[0][$a] ?? '', $tableMatches, PREG_SET_ORDER);
+                preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(?:"|`)?(\w+)(?:"|`)?\.)?(?:"|`)?(\w+)(?:"|`)?(?:\s+(?:AS\s+)?(?:"|`)?(\w+)(?:"|`)?)?/i', $simpleFields[0][$a] ?? '', $tableMatches, PREG_SET_ORDER);
                 $db = $tableMatches[0][1] ?? '';
                 $table = $tableMatches[0][2] ?? '';
-                $field = trim($field);
-                (in_array($field, $reserved) || in_array($field, array_keys($tableAliases)))
+                $field = trim($field, " \r\n\t\"\'");
+                (
+                    in_array($db, $reserved)
+                    || in_array($table, $reserved)
+                    || in_array($field, $reserved)
+                    || in_array($field, array_keys($tableAliases))
+                )
                     ?: $elements[] = [
                         'type' => 'simple_field',
                         'database' => $db,

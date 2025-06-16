@@ -17,6 +17,9 @@ final class HelperSqlFieldsTest extends TestCase
     #[Test]
     public function sqlFields(): void
     {
+        $array = Helper::sqlFields("insert into tests (name) values ('Пример')");
+        $this->assertEquals(['tests.name'], $array);
+
         $array = Helper::sqlFields('SELECT * FROM users WHERE id = 1 AND active = 0');
         $this->assertEquals(['users.*', 'users.active', 'users.id'], $array);
 

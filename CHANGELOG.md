@@ -1,5 +1,8 @@
 # Changelog
 
+## _Версия 1.22_
+- Обновлен метод Helper::sqlExtractNames
+
 ## _Версия 1.21_
 - Добавлен метод Helper::exceptionToArray
 

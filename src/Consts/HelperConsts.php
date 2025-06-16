@@ -612,6 +612,7 @@ class HelperConsts
         'ORDER BY',
         'INSERT',
         'INSERT INTO',
+        'INTO',
         'UPDATE',
         'DELETE',
         'SET',

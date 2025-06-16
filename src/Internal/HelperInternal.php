@@ -10,6 +10,7 @@ use Atlcom\Enums\HelperNumberEnumerationEnum as Enumeration;
 use Atlcom\Enums\HelperNumberGenderEnum as Gender;
 use Atlcom\Helper;
 use Atlcom\Traits\HelperHashTrait;
+use Atlcom\Traits\HelperNumberTrait;
 use Atlcom\Traits\HelperStringTrait;
 use InvalidArgumentException;
 use ReflectionMethod;
@@ -24,6 +25,7 @@ class HelperInternal
 {
     use HelperHashTrait;
     use HelperStringTrait;
+    use HelperNumberTrait;
 
 
     /**
