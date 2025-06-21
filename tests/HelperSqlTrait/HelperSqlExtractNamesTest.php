@@ -17,6 +17,17 @@ final class HelperSqlExtractNamesTest extends TestCase
     #[Test]
     public function sqlExtractNames(): void
     {
+        $array = Helper::sqlExtractNames('select * from "tests" where "tests"."deleted_at" is null limit 1');
+        $this->assertEquals([
+            'databases' => [
+                '' => [
+                    'tables' => [
+                        'tests' => ['fields' => ['*', 'deleted_at']],
+                    ],
+                ],
+            ],
+        ], $array);
+
         $array = Helper::sqlExtractNames('insert into "tests" ("name", "updated_at", "created_at") values (?, ?, ?) returning "id"');
         $this->assertSame([
             'databases' => [

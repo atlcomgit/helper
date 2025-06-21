@@ -17,6 +17,9 @@ final class HelperSqlTablesTest extends TestCase
     #[Test]
     public function sqlHasWrite(): void
     {
+        $array = Helper::sqlTables("SELECT 1 FROM pg_database WHERE datname = 'testing'");
+        $this->assertSame(['pg_database'], $array);
+
         $array = Helper::sqlTables("insert into tests (name, created_at) values ('Абв', '') returning id");
         $this->assertSame(['tests'], $array);
 

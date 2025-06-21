@@ -75,6 +75,9 @@ final class HelperStringSplitTest extends TestCase
             '',
         ], $string);
 
+        $string = Helper::stringSplit('abc', null);
+        $this->assertSame(['abc'], $string);
+
         $string = Helper::stringSplit(null, ' ');
         $this->assertTrue($string === []);
     }

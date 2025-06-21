@@ -316,7 +316,7 @@ trait HelperSqlTrait
         }
 
         // Поля с указанием таблицы
-        preg_match_all('/(\w+)\.(\w+|\*)/', $sql, $fieldMatches, PREG_SET_ORDER);
+        preg_match_all('/(\w+)[\"\'\`]{0,1}\.[\"\'\`]{0,1}(\w+|\*)/', $sql, $fieldMatches, PREG_SET_ORDER);
         foreach ($fieldMatches as $match) {
             $db = explode('.', $match[0])[0];
             $tableAlias = $match[1];
@@ -505,8 +505,8 @@ trait HelperSqlTrait
                     !static::stringSearchAny($bracketSql, ['SELECT ', 'INSERT ', 'UPDATE ', 'DELETE '])
                         ?: $bracketSql = static::stringSplit(
                             $sql,
-                            static::stringSplitSearch($bracketSql, ';', $fieldSearch)[';'][0],
-                        )[0];
+                            static::stringSplitSearch($bracketSql, ';', $fieldSearch)[$fieldSearch][0] ?? 0,
+                        )[0] ?? '';
 
                     $table ??= preg_match(
                         '/(?:FROM|JOIN|INSERT\s+INTO|UPDATE)\s+(?:`?(\w+)`?\.)?`?(\w+)`?(?:\s+AS\s+(\w+))?/i',
