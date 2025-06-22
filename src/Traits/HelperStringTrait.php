@@ -261,21 +261,22 @@ trait HelperStringTrait
         $indexFrom = match (true) {
             is_null($indexFrom) => 0,
             $indexFrom < 0 => $splitCount + $indexFrom,
-            $indexFrom > $splitCount => $splitCount - 1,
+            // $indexFrom >= $splitCount => $splitCount - 1,
 
             default => $indexFrom,
         };
         $indexTo = match (true) {
             is_null($indexTo) => $splitCount - 1,
-            $indexTo < 0 => $splitCount + $indexTo - 1,
-            $indexTo > $splitCount => $splitCount - 1,
+            $indexTo < 0 => $splitCount + $indexTo,
+            $indexTo >= $splitCount => $splitCount - 1,
 
             default => $indexTo,
         };
         ($indexFrom < $indexTo) ?: $indexTo = $indexFrom; //static::varSwap($indexFrom, $indexTo);
 
         for ($index = $indexFrom; $index <= $indexTo; $index++) {
-            $result .= (($index > $indexFrom) ? $splits[$index]['delimiter'] : '') . $splits[$index]['value'];
+            $result .= (($index > $indexFrom) ? ($splits[$index]['delimiter'] ?? '') : '')
+                . ($splits[$index]['value'] ?? '');
         }
 
         return $result;

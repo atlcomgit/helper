@@ -17,6 +17,12 @@ final class HelperStringSplitRangeTest extends TestCase
     #[Test]
     public function stringSplitRange(): void
     {
+        $string = Helper::stringSplitRange("update abc set name = 'def'", [' where ', ' WHERE '], 1);
+        $this->assertSame('', $string);
+
+        $string = Helper::stringSplitRange("update abc set name = 'def' where def=1", [' where '], 1);
+        $this->assertSame('def=1', $string);
+
         $string = Helper::stringSplitRange('abc,def', ',');
         $this->assertSame('abc,def', $string);
 
@@ -27,7 +33,7 @@ final class HelperStringSplitRangeTest extends TestCase
         $this->assertSame('def', $string);
 
         $string = Helper::stringSplitRange(',abc,def,', ',', 1, -2);
-        $this->assertSame('abc', $string);
+        $this->assertSame('abc,def', $string);
 
         $string = Helper::stringSplitRange(',abc,def,xyz,', ',', -2, 3);
         $this->assertSame('xyz', $string);
@@ -35,7 +41,7 @@ final class HelperStringSplitRangeTest extends TestCase
         $string = Helper::stringSplitRange(',abc,def,xyz,', ',', 1, 3);
         $this->assertSame('abc,def,xyz', $string);
 
-        $string = Helper::stringSplitRange(',abc,def,xyz,', ',', 1, -2);
+        $string = Helper::stringSplitRange(',abc,def,xyz,', ',', 1, -3);
         $this->assertSame('abc,def', $string);
 
         $string = Helper::stringSplitRange('abc,def,xyz', ',', 1);
@@ -45,7 +51,13 @@ final class HelperStringSplitRangeTest extends TestCase
         $this->assertSame('xyz', $string);
 
         $string = Helper::stringSplitRange('abc,def,xyz', ',', 1, -1);
-        $this->assertSame('def', $string);
+        $this->assertSame('def,xyz', $string);
+
+        $string = Helper::stringSplitRange('abc', [','], 1, -1);
+        $this->assertSame('', $string);
+
+        $string = Helper::stringSplitRange('', ',', 1, -1);
+        $this->assertSame('', $string);
 
         $string = Helper::stringSplitRange(',abc,def,xyz,', ',', null, null);
         $this->assertSame(',abc,def,xyz,', $string);
