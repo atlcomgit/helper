@@ -267,7 +267,7 @@ trait HelperStringTrait
         };
         $indexTo = match (true) {
             is_null($indexTo) => $splitCount - 1,
-            $indexTo < 0 => $splitCount + $indexTo,
+            $indexTo < 0 => $splitCount + $indexTo - 1,
             $indexTo > $splitCount => $splitCount - 1,
 
             default => $indexTo,

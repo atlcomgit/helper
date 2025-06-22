@@ -20,11 +20,14 @@ final class HelperStringSplitRangeTest extends TestCase
         $string = Helper::stringSplitRange('abc,def', ',');
         $this->assertSame('abc,def', $string);
 
+        $string = Helper::stringSplitRange('abc,def,xyz', ',', 0, 0);
+        $this->assertSame('abc', $string);
+
         $string = Helper::stringSplitRange('abc,def,xyz', ',', 1, 1);
         $this->assertSame('def', $string);
 
         $string = Helper::stringSplitRange(',abc,def,', ',', 1, -2);
-        $this->assertSame('abc,def', $string);
+        $this->assertSame('abc', $string);
 
         $string = Helper::stringSplitRange(',abc,def,xyz,', ',', -2, 3);
         $this->assertSame('xyz', $string);
@@ -33,7 +36,16 @@ final class HelperStringSplitRangeTest extends TestCase
         $this->assertSame('abc,def,xyz', $string);
 
         $string = Helper::stringSplitRange(',abc,def,xyz,', ',', 1, -2);
-        $this->assertSame('abc,def,xyz', $string);
+        $this->assertSame('abc,def', $string);
+
+        $string = Helper::stringSplitRange('abc,def,xyz', ',', 1);
+        $this->assertSame('def,xyz', $string);
+
+        $string = Helper::stringSplitRange('abc,def,xyz', ',', -1);
+        $this->assertSame('xyz', $string);
+
+        $string = Helper::stringSplitRange('abc,def,xyz', ',', 1, -1);
+        $this->assertSame('def', $string);
 
         $string = Helper::stringSplitRange(',abc,def,xyz,', ',', null, null);
         $this->assertSame(',abc,def,xyz,', $string);
