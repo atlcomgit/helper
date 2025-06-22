@@ -26,6 +26,9 @@ final class HelperStringSplitSearchTest extends TestCase
         $array = Helper::stringSplitSearch('abc,def', ',', 'a*', '*e*');
         $this->assertSame(['a*' => [0], '*e*' => [1]], $array);
 
+        $array = Helper::stringSplitSearch('abc,def', ',', [1 => 'abc']);
+        $this->assertSame(['abc' => [0]], $array);
+
         $array = Helper::stringSplitSearch('abc,def,xyz', ',', []);
         $this->assertSame([], $array);
 

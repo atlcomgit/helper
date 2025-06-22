@@ -52,6 +52,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::arrayFirst()
  * @method @see static::arrayFlip()
  * @method @see static::arrayGet()
+ * @method @see static::arrayIsAssociative()
  * @method @see static::arrayLast()
  * @method @see static::arrayMappingKeys()
  * @method @see static::arraySearchKeys()

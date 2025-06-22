@@ -308,7 +308,7 @@ trait HelperStringTrait
             if (is_array($search) || is_object($search)) {
                 !$search ?: $result = [
                     ...$result,
-                    ...static::stringSplitSearch($value, ...static::transformToArray($search)),
+                    ...static::stringSplitSearch($value, $delimiters, ...static::transformToArray($search)),
                 ];
             } else {
                 for ($splitIndex = 0; $splitIndex < count($splits); $splitIndex++) {

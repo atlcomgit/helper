@@ -488,4 +488,18 @@ trait HelperArrayTrait
 
         return $value;
     }
+
+
+    /**
+     * Проверяет является ли массив ассоциативным
+     * @see ../../tests/HelperArrayTrait/HelperArrayIsAssociativeTest.php
+     *
+     * @param array|object|null $value
+     * @param array|string|null|null $trims
+     * @return bool
+     */
+    public static function arrayIsAssociative(array|object|null $value): bool
+    {
+        return !array_is_list(static::transformToArray($value));
+    }
 }

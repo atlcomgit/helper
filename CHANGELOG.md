@@ -1,6 +1,8 @@
 # Changelog
 
 ## _Версия 1.22_
+- Добавлен метод Helper::arrayIsAssociative
+
 - Обновлен метод Helper::sqlExtractNames
 - Обновлен метод Helper::stringSplitRange
 

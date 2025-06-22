@@ -69,6 +69,13 @@ $mixed = Helper::arrayGet(['a' => ['b' => 2, 'c' => 3], 'b' => 4], 'a.b'); // $m
 $mixed = Helper::arrayGet(['a.b' => 1, 'b' => 2], 'a.b'); // $mixed === 1
 ```
 ---
+##### [arrayIsAssociative(\$value): bool](./tests/HelperArrayTrait/HelperArrayIsAssociativeTest.php)
+Проверяет является ли массив ассоциативным
+```php
+$boolean = Helper::arrayIsAssociative(['a', 'b']); // $boolean === false
+$boolean = Helper::arrayIsAssociative(['a' => 1, 'b' => 2]); // $boolean === true
+```
+---
 ##### [arrayLast(\$value, \$key): mixed](./tests/HelperArrayTrait/HelperArrayLastTest.php)
 Возвращает значение последнего элемента массива
 ```php

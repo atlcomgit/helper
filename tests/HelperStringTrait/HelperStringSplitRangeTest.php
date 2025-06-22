@@ -53,6 +53,9 @@ final class HelperStringSplitRangeTest extends TestCase
         $string = Helper::stringSplitRange('abc,def,xyz', ',', 1, -1);
         $this->assertSame('def,xyz', $string);
 
+        $string = Helper::stringSplitRange('abc__def__xyz', '__', -2);
+        $this->assertSame('def__xyz', $string);
+
         $string = Helper::stringSplitRange('abc', [','], 1, -1);
         $this->assertSame('', $string);
 
