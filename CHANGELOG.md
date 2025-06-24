@@ -4,6 +4,8 @@
 - Добавлен метод Helper::arrayIsAssociative
 
 - Обновлен метод Helper::sqlExtractNames
+- Обновлен метод Helper::sqlFields
+- Обновлен метод Helper::sqlTables
 - Обновлен метод Helper::stringSplitRange
 
 ## _Версия 1.21_

@@ -134,7 +134,7 @@ trait HelperSqlTrait
             !$table ?: $result[] = static::stringConcat('.', $db, $table, $v);
         }
 
-        return array_filter(array_unique($result));
+        return array_values(array_filter(array_unique($result)));
     }
 
 
@@ -162,7 +162,7 @@ trait HelperSqlTrait
             !$table ?: $result[] = static::stringConcat('.', $db, $table);
         }
 
-        return array_filter(array_unique($result));
+        return array_values(array_filter(array_unique($result)));
     }
 
 
