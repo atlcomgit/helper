@@ -22,10 +22,10 @@ trait HelperSqlTrait
     public static function sqlHasWrite(?string $value): bool
     {
         // Удаляем многострочные комментарии /* ... */
-        $sql = preg_replace('~/\*.*?\*/~s', '', $value ?? '');
+        $sql = preg_replace('~/\*.*?\*/~s', '', $value ?? '') ?? '';
 
         // Удаляем однострочные комментарии --
-        $sql = preg_replace('/--.*$/m', '', $sql);
+        $sql = preg_replace('/--.*$/m', '', $sql) ?? '';
 
         // Разбиваем SQL по ;
         $queries = array_filter(array_map('trim', explode(';', strtolower($sql))));
@@ -66,9 +66,9 @@ trait HelperSqlTrait
         $bindings ??= [];
 
         // Удаляем многострочные комментарии /* ... */
-        $sql = preg_replace('~/\*.*?\*/~s', '', $value ?? '');
+        $sql = preg_replace('~/\*.*?\*/~s', '', $value ?? '') ?? '';
         // Удаляем однострочные комментарии --
-        $sql = preg_replace('/--.*$/m', '', $sql);
+        $sql = preg_replace('/--.*$/m', '', $sql) ?? '';
 
         // Считаем количество плейсхолдеров
         $placeholders = substr_count($value ?? '', '?');
@@ -176,10 +176,10 @@ trait HelperSqlTrait
     public static function sqlExtractNames(?string $value): array
     {
         // Удаляем комментарии и нормализуем SQL
-        $sql = preg_replace('/--.*$/m', '', $value ?? '');
-        $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
-        $sql = preg_replace('/\[(\w+)\]/', '$1', $sql);
-        $sql = preg_replace('/`(\w+)`/', '$1', $sql);
+        $sql = preg_replace('/--.*$/m', '', $value ?? '') ?? '';
+        $sql = preg_replace('/\/\*.*?\*\//s', '', $sql) ?? '';
+        $sql = preg_replace('/\[(\w+)\]/', '$1', $sql) ?? '';
+        $sql = preg_replace('/`(\w+)`/', '$1', $sql) ?? '';
 
         // 1. Собираем все элементы
         $elements = [];

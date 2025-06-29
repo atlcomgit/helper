@@ -555,15 +555,15 @@ trait HelperNumberTrait
         $precision = (int)($precision ?? 20);
 
         // Унарный минус перед скобками
-        $value = preg_replace('/(?<![\d\)])-\s*\(/', '-1*(', $value);
+        $value = preg_replace('/(?<![\d\)])-\s*\(/', '-1*(', $value) ?? '';
         // Неявное умножение: число перед скобкой
-        $value = preg_replace('/(\d)\s*\(/', '$1*(', $value);
+        $value = preg_replace('/(\d)\s*\(/', '$1*(', $value) ?? '';
         // Неявное умножение: скобка перед числом
-        $value = preg_replace('/\)\s*(\d)/', ')*$1', $value);
+        $value = preg_replace('/\)\s*(\d)/', ')*$1', $value) ?? '';
         // Неявное умножение: скобка перед скобкой
-        $value = preg_replace('/\)\s*\(/', ')*(', $value);
+        $value = preg_replace('/\)\s*\(/', ')*(', $value) ?? '';
         // Неявное умножение: число перед числом (опционально, если пробел между числами)
-        // $value = preg_replace('/(\d)\s+(\d)/', '$1*$2', $value);
+        // $value = preg_replace('/(\d)\s+(\d)/', '$1*$2', $value) ?? '';
         // Удаляем пробелы
         $value = trim(static::stringReplace($value, [' ' => '']));
         // Удаляем дубликаты операторов

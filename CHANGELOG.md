@@ -3,6 +3,7 @@
 ## _Версия 1.22_
 - Добавлен метод Helper::arrayIsAssociative
 
+- Обновлен метод Helper::exceptionToArray
 - Обновлен метод Helper::sqlExtractNames
 - Обновлен метод Helper::sqlFields
 - Обновлен метод Helper::sqlTables

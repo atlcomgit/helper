@@ -38,7 +38,11 @@ trait HelperCaseTrait
     public static function caseKebab(?string $value): string
     {
         return ltrim(
-            preg_replace('/(?<=\w)(?=[A-ZА-ЯЁ])/u', '-', static::stringReplace($value ?? '', [' ' => '-', '_' => '-'])),
+            preg_replace(
+                '/(?<=\w)(?=[A-ZА-ЯЁ])/u',
+                '-',
+                static::stringReplace($value ?? '', [' ' => '-', '_' => '-']),
+            ) ?? '',
             '-',
         );
         ;
@@ -73,7 +77,11 @@ trait HelperCaseTrait
     public static function caseSnake(?string $value): string
     {
         return static::stringReplace(
-            preg_replace('/(?<=\w)(?=[A-ZА-ЯЁ])/u', '-', static::stringReplace($value, [' ' => '-', '_' => '-'])),
+            preg_replace(
+                '/(?<=\w)(?=[A-ZА-ЯЁ])/u',
+                '-',
+                static::stringReplace($value, [' ' => '-', '_' => '-']),
+            ) ?? '',
             ['-' => '_'],
         );
     }

@@ -28,7 +28,7 @@ trait HelperPhoneTrait
         ?string $format = null,
     ): string {
         $value = (string)$value;
-        $value = preg_replace('/[^0-9]/', '', $value);
+        $value = preg_replace('/[^0-9]/', '', $value) ?? '';
         !(static::stringLength($value) + static::stringLength($countryNumber) == 11)
             ?: $value = "{$countryNumber}{$value}";
 
@@ -60,7 +60,7 @@ trait HelperPhoneTrait
     public static function phoneNumber(int|float|string|null $value, ?string $countryNumber = '7'): string
     {
         $value = (string)$value;
-        $value = preg_replace('/[^0-9]/', '', $value);
+        $value = preg_replace('/[^0-9]/', '', $value) ?? '';
         !(static::stringLength($value) + static::stringLength($countryNumber) == 11)
             ?: $value = "{$countryNumber}{$value}";
 

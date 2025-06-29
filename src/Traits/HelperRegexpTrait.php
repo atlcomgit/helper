@@ -49,7 +49,7 @@ trait HelperRegexpTrait
     {
         return (bool)(
             preg_match(HelperRegexpEnum::Phone->value, $value ?? '')
-            && static::stringLength(preg_replace('/[^0-9]/', '', $value ?? '')) >= 10
+            && static::stringLength(preg_replace('/[^0-9]/', '', $value ?? '') ?? '') >= 10
         );
     }
 

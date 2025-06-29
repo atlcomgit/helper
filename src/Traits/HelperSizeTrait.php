@@ -40,7 +40,7 @@ trait HelperSizeTrait
     public static function sizeStringToBytes(?string $value): int
     {
         $value = (string)$value;
-        $exp = match (static::stringUpper(preg_replace('/[^a-zа-яё]/ui', '', $value))) {
+        $exp = match (static::stringUpper(preg_replace('/[^a-zа-яё]/ui', '', $value) ?? '')) {
             'ПБ', 'PB', 'PIB', 'ПБАЙТ', 'ПЕТАБАЙТ' => pow(1000, 5),
             'ТБ', 'TB', 'TIB', 'ТБАЙТ', 'ТЕРАБАЙТ' => pow(1000, 4),
             'ГБ', 'GB', 'GIB', 'ГБАЙТ', 'ГИГАБАЙТ' => pow(1000, 3),
@@ -51,7 +51,7 @@ trait HelperSizeTrait
             default => 0,
         };
 
-        $size = (int)preg_replace('/[^0-9]/ui', '', $value);
+        $size = (int)(preg_replace('/[^0-9]/ui', '', $value) ?? '');
 
         return (int)($size * $exp);
     }

@@ -65,7 +65,18 @@ trait HelperExceptionTrait
             ),
             'trace' => static::arrayExcludeTraceVendor($value->getTrace()),
             ...($value::class === 'Illuminate\Database\QueryException'
-                ? ['sql' => static::stringDeleteMultiples(static::stringReplace($value->getRawSql(), ['"' => '']), ' ')]
+                ? [
+                    'sql' => static::stringDeleteMultiples(static::stringReplace(
+                        match (true) {
+                            method_exists($value, 'getRawSql') => $value->getRawSql(),
+                            method_exists($value, 'getSql') && method_exists($value, 'getBindings')
+                            => static::sqlBindings($value->getSql(), $value->getBindings()),
+
+                            default => '',
+                        },
+                        ['"' => ''],
+                    ), ' '),
+                ]
                 : []
             ),
         ];

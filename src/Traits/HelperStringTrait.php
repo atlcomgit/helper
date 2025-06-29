@@ -945,7 +945,7 @@ trait HelperStringTrait
         $pattern = stripslashes($pattern);
 
         // Удаляем ограничители и якоря, упрощаем анализ
-        // $pattern = preg_replace(['/^\^/', '/\$/', '/^\/|\/$/'], '', $pattern);
+        // $pattern = preg_replace(['/^\^/', '/\$/', '/^\/|\/$/'], '', $pattern) ?? '';
 
         // Разбиваем шаблон на токены
         preg_match_all('/(\\\[dws]|\[.*?\]|\\.|.)([*?+]|\{\d+,?\d*}|\{\d+})?/', $pattern, $matches, PREG_SET_ORDER);
@@ -1100,7 +1100,10 @@ trait HelperStringTrait
         foreach ($multiples as $multiple) {
             $value = (is_array($multiple) || is_object($multiple))
                 ? static::stringDeleteMultiples($value, ...static::transformToArray($multiple))
-                : preg_replace("/(" . preg_quote($multiple = (string)$multiple, '/') . "){2,}/", $multiple, $value);
+                : (
+                    preg_replace("/(" . preg_quote($multiple = (string)$multiple, '/') . "){2,}/", $multiple, $value)
+                    ?? ''
+                );
         }
 
         return $value;
