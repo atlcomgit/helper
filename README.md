@@ -914,6 +914,18 @@ $array = Helper::sqlExtractNames('SELECT name FROM users', [1]); // $array = ['d
 $array = Helper::sqlFields('SELECT * FROM users WHERE id = 1 AND active = 0'); // $array = ['users.*', 'users.active', 'users.id']
 ```
 ---
+##### [sqlFieldsInsert(\$value): array](./tests/HelperSqlTrait/HelperSqlFieldsInsertTest.php)
+Возвращает массив затрагиваемых полей при операции INSERT
+```php
+$array = Helper::sqlFieldsInsert('insert into tests (name, id) values (?, ?)'); // $array = ['name', 'id']
+```
+---
+##### [sqlFieldsUpdate(\$value): array](./tests/HelperSqlTrait/HelperSqlFieldsUpdateTest.php)
+Возвращает массив затрагиваемых полей при операции UPDATE
+```php
+$array = Helper::sqlFieldsInsert('update `tests` set `name`= ?, id= ?'); // $array = ['name', 'id']
+```
+---
 ##### [sqlHasWrite(\$value): bool](./tests/HelperSqlTrait/HelperSqlHasWriteTest.php)
 Проверяет запрос на наличие операторов изменения INSERT, UPDATE, DELETE, TRUNCATE
 ```php

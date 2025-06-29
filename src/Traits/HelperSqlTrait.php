@@ -591,4 +591,62 @@ trait HelperSqlTrait
 
         return $result;
     }
+
+
+    /**
+     * Возвращает массив затрагиваемых полей при операции INSERT
+     * @see ../../tests/HelperSqlTrait/HelperSqlFieldsInsertTest.php
+     *
+     * @param string|null $value
+     * @return string
+     */
+    public static function sqlFieldsInsert(?string $value): array
+    {
+        $value = (string)$value;
+
+        if (preg_match('/insert\s+into\s+\S+\s*\(([^)]+)\)/i', $value, $matches)) {
+            $fieldsStr = $matches[1];
+
+            // Разбить по запятым и очистить от кавычек и пробелов
+            $fields = array_map(fn ($field) => trim($field, " `\"'"), explode(',', $fieldsStr));
+
+            return $fields;
+        }
+
+        return [];
+    }
+
+
+    /**
+     * Возвращает массив затрагиваемых полей при операции UPDATE
+     * @see ../../tests/HelperSqlTrait/HelperSqlFieldsUpdateTest.php
+     *
+     * @param string|null $value
+     * @return string
+     */
+    public static function sqlFieldsUpdate(?string $value): array
+    {
+        $value = (string)$value;
+
+        if (
+            preg_match('/update\s+\S+\s+set\s+(.*?)\s+where\s+/is', $value, $matches)
+            || preg_match('/update\s+\S+\s+set\s+(.*)$/is', $value, $matches)
+        ) {
+
+            $setPart = $matches[1];
+
+            // Разделить по запятым, но только на верхнем уровне (внутри скобок может быть JSON и т.п.)
+            $assignments = preg_split('/,(?![^\(\)]*\))/', $setPart);
+
+            $fields = array_map(function ($assignment) {
+                // Разделить по "=" и взять левую часть (название поля)
+                $parts = explode('=', $assignment, 2);
+                return trim(trim($parts[0]), "`\"' ");
+            }, $assignments);
+
+            return array_filter($fields);
+        }
+
+        return [];
+    }
 }

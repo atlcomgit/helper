@@ -207,6 +207,8 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::sqlBindings()
  * @method @see static::sqlExtractNames()
  * @method @see static::sqlFields()
+ * @method @see static::sqlFieldsInsert()
+ * @method @see static::sqlFieldsUpdate()
  * @method @see static::sqlHasWrite()
  * @method @see static::sqlTables()
  * 
