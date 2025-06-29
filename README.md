@@ -902,13 +902,13 @@ $integer = Helper::sizeStringToBytes('1 Килобайт'); // $integer = 1000
 $string = Helper::sqlBindings('SELECT * FROM t WHERE a = ?', [1]); // $string = 'SELECT * FROM t WHERE a = 1'
 ```
 ---
-##### [sqlExtractNames(\$value): array](./tests/HelperSqlTrait/HelperSqlExtractNamesTest.php)
+##### [sqlExtractNames(\$value, \$sort): array](./tests/HelperSqlTrait/HelperSqlExtractNamesTest.php)
 Возвращает массив разобранного запроса на используемые названия баз данных, таблиц, полей
 ```php
 $array = Helper::sqlExtractNames('SELECT name FROM users', [1]); // $array = ['databases' => ['' => ['tables' => ['users' => ['fields' => ['name']]]]]]
 ```
 ---
-##### [sqlFields(\$value): array](./tests/HelperSqlTrait/HelperSqlFieldsTest.php)
+##### [sqlFields(\$value, \$sort): array](./tests/HelperSqlTrait/HelperSqlFieldsTest.php)
 Возвращает массив используемых названий полей в запросе
 ```php
 $array = Helper::sqlFields('SELECT * FROM users WHERE id = 1 AND active = 0'); // $array = ['users.*', 'users.active', 'users.id']

@@ -115,16 +115,17 @@ trait HelperSqlTrait
      * @see ../../tests/HelperSqlTrait/HelperSqlFieldsTest.php
      *
      * @param string|null $value
+     * @param bool $sort - сортирует массив полей
      * @return array
      */
-    public static function sqlFields(?string $value): array
+    public static function sqlFields(?string $value, bool $sort = true): array
     {
         if (empty($value) || !is_string($value)) {
             return [];
         }
 
         $result = [];
-        $sqlExtractNames = static::sqlExtractNames($value);
+        $sqlExtractNames = static::sqlExtractNames($value, $sort);
         $fields = static::arraySearchKeys($sqlExtractNames, 'databases.*.tables.*.fields.*');
 
         foreach ($fields as $key => $v) {
@@ -171,9 +172,10 @@ trait HelperSqlTrait
      * @see ../../tests/HelperSqlTrait/HelperSqlExtractNamesTest.php
      *
      * @param string|null $value
+     * @param bool $sort - сортирует массив полей
      * @return array
      */
-    public static function sqlExtractNames(?string $value): array
+    public static function sqlExtractNames(?string $value, bool $sort = true): array
     {
         // Удаляем комментарии и нормализуем SQL
         $sql = preg_replace('/--.*$/m', '', $value ?? '') ?? '';
@@ -583,7 +585,7 @@ trait HelperSqlTrait
         foreach ($result['databases'] as $db => &$dbData) {
             foreach ($dbData['tables'] as $table => &$tableData) {
                 $tableData['fields'] = array_values(array_unique($tableData['fields']));
-                sort($tableData['fields']);
+                !$sort ?: sort($tableData['fields']);
             }
         }
 

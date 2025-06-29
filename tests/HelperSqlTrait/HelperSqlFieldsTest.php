@@ -44,6 +44,15 @@ final class HelperSqlFieldsTest extends TestCase
             'posts.user_id',
         ], $array);
 
+        $array = Helper::sqlFields("insert into tests (name, id) values ('Пример', 1)", false);
+        $this->assertEquals(['tests.name', 'tests.id'], $array);
+
+        $array = Helper::sqlFields("update tests where name='abc' and id=1", false);
+        $this->assertEquals(['tests.name', 'tests.id'], $array);
+
+        $array = Helper::sqlFields("select * from tests where name='abc' and id=1", false);
+        $this->assertEquals(['tests.*', 'tests.name', 'tests.id'], $array);
+
         $array = Helper::sqlFields("TRUNCATE users");
         $this->assertEquals([], $array);
 
