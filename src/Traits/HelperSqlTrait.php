@@ -598,7 +598,7 @@ trait HelperSqlTrait
      * @see ../../tests/HelperSqlTrait/HelperSqlFieldsInsertTest.php
      *
      * @param string|null $value
-     * @return string
+     * @return array
      */
     public static function sqlFieldsInsert(?string $value): array
     {
@@ -622,7 +622,7 @@ trait HelperSqlTrait
      * @see ../../tests/HelperSqlTrait/HelperSqlFieldsUpdateTest.php
      *
      * @param string|null $value
-     * @return string
+     * @return array
      */
     public static function sqlFieldsUpdate(?string $value): array
     {
