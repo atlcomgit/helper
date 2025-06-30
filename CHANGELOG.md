@@ -1,5 +1,8 @@
 # Changelog
 
+## _Версия 1.23_
+- Добавлен метод Helper::try
+
 ## _Версия 1.22_
 - Добавлен метод Helper::arrayIsAssociative
 - Добавлен метод Helper::sqlFieldsInsert

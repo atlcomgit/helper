@@ -1258,6 +1258,19 @@ $string = Helper::translitToSlug('абв Где!.123'); // $string = 'abv_gde_12
 Работа с url адресом
 
 ---
+##### [try(\$callable): HelperTry](./tests/HelperTryTrait/HelperTryTest.php)
+Возвращает объект для работы с цепочкой try catch finally
+```php
+$result = Helper::try(static fn () => 1)->catch()->success()->finally(); // $result = 1
+```
+---
+
+&nbsp;
+&nbsp;
+### Url
+Работа с url адресом
+
+---
 ##### [urlCreate(\$scheme, \$host, \$path, \$query): array](./tests/HelperUrlTrait/HelperUrlCreateTest.php)
 Возвращает строку адреса url
 ```php
