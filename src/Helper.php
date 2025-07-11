@@ -40,7 +40,7 @@ use Atlcom\Traits\HelperVarTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.22
+ * @version 1.23
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
