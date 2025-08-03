@@ -115,7 +115,8 @@ trait HelperCastTrait
             is_string($value) && static::regexpValidateJson($value) => json_decode($value, true),
             is_string($value) && static::regexpValidateJson(trim($value, '" ')) => json_decode(trim($value, '" '), true),
             is_object($value) && is_callable($value) => static::castToArray($value()),
-            is_object($value) => match (true) {
+            is_object($value) =>
+                match (true) {
                     method_exists($value, 'toArray') => (array)$value->toArray(),
                     method_exists($value, 'all') => (array)$value->all(),
 

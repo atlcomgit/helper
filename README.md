@@ -708,6 +708,19 @@ $string = Helper::numberToString(123.456); // $string = 'сто двадцать
 
 &nbsp;
 &nbsp;
+### Object
+Работа с объектами
+
+---
+##### [objectToArrayRecursive(\$value): ?array](./tests/HelperObjectTrait/HelperObjectToArrayRecursiveTest.php)
+Возвращает преобразованный объект в массив рекурсивно или null
+```php
+$array = Helper::objectToArrayRecursive((object)['a' => 1, 'b' => (object)['c' => 2], 'd' => (object)[3]]); // $array = ['a' => 1, 'b' => ['c' => 2], 'd' => [3]]
+```
+---
+
+&nbsp;
+&nbsp;
 ### Path
 Работа с путями
 

@@ -22,6 +22,7 @@ use Atlcom\Traits\HelperIpTrait;
 use Atlcom\Traits\HelperJsonTrait;
 use Atlcom\Traits\HelperJwtTrait;
 use Atlcom\Traits\HelperNumberTrait;
+use Atlcom\Traits\HelperObjectTrait;
 use Atlcom\Traits\HelperPathTrait;
 use Atlcom\Traits\HelperPhoneTrait;
 use Atlcom\Traits\HelperReflectionTrait;
@@ -171,6 +172,9 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::numberFromString()
  * @method @see static::numberToString()
  * 
+ * @group object - Работа с путями
+ * @method @see static::objectToArrayRecursive()
+ * 
  * @group path - Работа с путями
  * @method @see static::pathClassName()
  * @method @see static::pathRoot()
@@ -299,6 +303,7 @@ abstract class Helper
     use HelperJsonTrait;
     use HelperJwtTrait;
     use HelperNumberTrait;
+    use HelperObjectTrait;
     use HelperPathTrait;
     use HelperPhoneTrait;
     use HelperReflectionTrait;
