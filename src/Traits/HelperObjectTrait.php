@@ -43,26 +43,30 @@ trait HelperObjectTrait
                     default => static::objectToArrayRecursive((array)$value)
                 },
 
-            is_array($value) => array_map(
-                fn (mixed &$item) => $item = match (true) {
-                        is_array($item) => static::objectToArrayRecursive($item),
-                        $item instanceof Closure => match (($res = $item()) || true) {
-                                method_exists($res, 'toArray') => static::objectToArrayRecursive($res->toArray()),
-                                method_exists($res, 'all') => static::objectToArrayRecursive($res->all()),
+            is_array($value) => (function (array $arr) {
+                    foreach ($arr as $key => $item) {
+                        $arr[$key] = match (true) {
+                            is_array($item) => static::objectToArrayRecursive($item),
+                            $item instanceof Closure => match (($res = $item()) || true) {
+                                    is_array($res) => static::objectToArrayRecursive($res),
+                                    is_object($res) => match (true) {
+                                            method_exists($res, 'toArray') => static::objectToArrayRecursive($res->toArray()),
+                                            method_exists($res, 'all') => static::objectToArrayRecursive($res->all()),
+                                            default => static::objectToArrayRecursive((array)$res),
+                                        },
+                                    default => $res,
+                                },
+                            is_object($item) => match (true) {
+                                    method_exists($item, 'toArray') => static::objectToArrayRecursive($item->toArray()),
+                                    method_exists($item, 'all') => static::objectToArrayRecursive($item->all()),
+                                    default => static::objectToArrayRecursive((array)$item),
+                                },
+                            default => $item,
+                        };
+                    }
 
-                                default => static::objectToArrayRecursive((array)$res)
-                            },
-                        is_object($item) => match (true) {
-                                method_exists($item, 'toArray') => static::objectToArrayRecursive($item->toArray()),
-                                method_exists($item, 'all') => static::objectToArrayRecursive($item->all()),
-
-                                default => static::objectToArrayRecursive((array)$item)
-                            },
-
-                        default => $item,
-                    },
-                $value,
-            ),
+                    return $arr;
+                })($value),
 
             default => $value,
         };
