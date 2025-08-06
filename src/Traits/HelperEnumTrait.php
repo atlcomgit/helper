@@ -96,9 +96,11 @@ trait HelperEnumTrait
      * @see ../../tests/HelperEnumTrait/HelperEnumRandomTest.php
      *
      * @param class-string|null $value
-     * @return BackedEnum|null
+     * @return static|BackedEnum|null
+     * @psalm-return static|null
+     * @phpstan-return static|null
      */
-    public static function enumRandom(?string $value = null): ?BackedEnum
+    public static function enumRandom(?string $value = null): static|BackedEnum|null
     {
         $enumClass = $value ?: (is_subclass_of(static::class, BackedEnum::class) ? static::class : null);
         $names = is_subclass_of($enumClass, BackedEnum::class) ? $enumClass::cases() : [];
@@ -111,10 +113,12 @@ trait HelperEnumTrait
      * Возвращает найденное перечисление по имени, по значению или по перечислению
      * @see ../../tests/HelperEnumTrait/HelperEnumFromTest.php
      *
-     * @param BackedEnum|string|null $value
-     * @return BackedEnum|null
+     * @param static|BackedEnum|string|null $value
+     * @return static|BackedEnum|null
+     * @psalm-return static|null
+     * @phpstan-return static|null
      */
-    public static function enumFrom(mixed $value): ?BackedEnum
+    public static function enumFrom(mixed $value): static|BackedEnum|null
     {
         return match (true) {
             $value instanceof BackedEnum => $value,
