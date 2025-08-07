@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Atlcom\Helper;
 use BackedEnum;
 
 /**
@@ -114,20 +115,31 @@ trait HelperEnumTrait
      * @see ../../tests/HelperEnumTrait/HelperEnumFromTest.php
      *
      * @param static|BackedEnum|string|null $value
+     * @param bool $caseInsensitive
      * @return static|BackedEnum|null
      * @psalm-return static|null
      * @phpstan-return static|null
      */
-    public static function enumFrom(mixed $value): static|BackedEnum|null
+    public static function enumFrom(mixed $value, bool $caseInsensitive = false): static|BackedEnum|null
     {
         return match (true) {
             $value instanceof BackedEnum => $value,
             is_string($value) && defined($enum = static::class . "::{$value}") => constant($enum),
             is_subclass_of(static::class, BackedEnum::class) => (
-                static function ($value) {
+                static function ($value) use ($caseInsensitive) {
+                        $valueInsensitive = $caseInsensitive ? Helper::stringLower($value) : $value;
+
                         foreach (static::cases() as $enum) {
                             if ($enum->name === $value || $enum->value === $value) {
                                 return $enum;
+                            } else if ($caseInsensitive) {
+                                if (
+                                Helper::stringLower($enum->name) === $valueInsensitive
+                                || Helper::stringLower($enum->value) === $valueInsensitive
+                                || Helper::stringLower($enum->label()) === $valueInsensitive
+                                ) {
+                                    return $enum;
+                                }
                             }
                         }
 
