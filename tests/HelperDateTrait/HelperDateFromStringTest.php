@@ -149,6 +149,9 @@ final class HelperDateFromStringTest extends TestCase
         $date = Helper::dateFromString('25 октября 2025');
         $this->assertEquals((clone $now)->year(2025)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
 
+        $date = Helper::dateFromString('25 октября 2000');
+        $this->assertEquals((clone $now)->year(2000)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
+
         $date = Helper::dateFromString('Октябрь, 25, 2025');
         $this->assertEquals((clone $now)->year(2025)->month(10)->day(25)->format('d.m.Y'), $date?->format('d.m.Y'));
 

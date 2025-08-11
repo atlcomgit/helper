@@ -55,7 +55,8 @@ trait HelperDateTrait
             $october = '/октябр(ь|я|е|ю)/ui',
             $november = '/ноябр(ь|я|е|ю)/ui',
             $december = '/декабр(ь|я|е|ю)/ui',
-            $year = '/[^-.\/]\d{4}[^-.\/]/u',
+            // Год: четыре цифры, ограниченные нецифровыми символами (используем добавленные пробелы по краям строки)
+            $year = '/(?<!\d)(\d{4})(?!\d)/u',
 
             $currentDay = "/это(т|й|м)\s*($monday|$tuesday|$wednesday|$thursday|$friday|$saturday|$sunday)/u",
             $prevDay = "/прошл(ой|ый|ую|ом|ое)\s*($monday|$tuesday|$wednesday|$thursday|$friday|$saturday|$sunday)/u",
@@ -166,7 +167,7 @@ trait HelperDateTrait
 
         if (in_array($year, $searched)) {
             preg_match($year, $value, $matches);
-            $changes['number_year'] = (int)($matches[1] ?? 0);
+            $changes['number_year'] = (int)($matches[1] ?? $matches[0] ?? 0);
         }
 
         !in_array($currentDay, $searched) ?: $changes['add_weeks'] = 0;
