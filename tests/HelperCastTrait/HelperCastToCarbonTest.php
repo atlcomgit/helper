@@ -36,6 +36,7 @@ final class HelperCastToCarbonTest extends TestCase
         $this->assertSame('2025-08-08 12:34:56', Helper::castToCarbon('08.08.2025 12:34:56')?->format('Y-m-d H:i:s'));
         $this->assertSame('2025-08-08 12:34:56', Helper::castToCarbon('2025/08/08 12:34:56')?->format('Y-m-d H:i:s'));
         $this->assertSame('2025-08-08 12:34:56', Helper::castToCarbon('08/08/2025 12:34:56')?->format('Y-m-d H:i:s'));
+        $this->assertSame('2025-10-11 00:00:00', Helper::castToCarbon('2025-10-11T00:00:00.000000Z')?->setTimezone('UTC')->format('Y-m-d H:i:s'));
     }
 
 

@@ -211,7 +211,12 @@ trait HelperCastTrait
             is_integer($value) => Carbon::createFromTimestamp($value),
             is_float($value) => Carbon::createFromTimestampMs($value),
             is_string($value) => (function (string $val) {
+                    // ISO 8601 с микросекундами и Z (UTC)
+                    if (preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$/', $val)) {
+                        return Carbon::createFromFormat('Y-m-d\TH:i:s.u', substr($val, 0, -1), 'UTC');
+                    }
                     $map = [
+
                     // Полные даты со временем
                     '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/' => 'Y-m-d H:i:s',
                     '/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}$/' => 'd-m-Y H:i:s',
