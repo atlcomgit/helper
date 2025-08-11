@@ -1,6 +1,7 @@
 # Changelog
 
 ## _Версия 1.23_
+- Добавлен метод Helper::castToCarbon
 - Добавлен метод Helper::objectToArrayRecursive
 - Добавлен метод Helper::try
 

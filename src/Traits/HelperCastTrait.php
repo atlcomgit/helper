@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Atlcom\Traits;
 
+use Carbon\Carbon;
+
 /**
  * Трейт для работы с типами
  * @mixin \Atlcom\Helper
@@ -190,6 +192,52 @@ trait HelperCastTrait
             ),
 
             default => (string)json_encode($value, static::jsonFlags()),
+        };
+    }
+
+
+    /**
+     * Возвращает преобразование значения к типу Carbon или null
+     * @see ../../tests/HelperCastTrait/HelperCastToCarbonTest.php
+     *
+     * @param mixed $value
+     * @return Carbon|null
+     */
+    public static function castToCarbon(mixed $value): ?Carbon
+    {
+        return match (true) {
+            is_null($value) => null,
+            $value instanceof Carbon => $value,
+            is_integer($value) => Carbon::createFromTimestamp($value),
+            is_float($value) => Carbon::createFromTimestampMs($value),
+            is_string($value) => (function (string $val) {
+                    $map = [
+                    // Полные даты со временем
+                    '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/' => 'Y-m-d H:i:s',
+                    '/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}$/' => 'd-m-Y H:i:s',
+                    '/^\d{4}\.\d{2}\.\d{2} \d{2}:\d{2}:\d{2}$/' => 'Y.m.d H:i:s',
+                    '/^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}:\d{2}$/' => 'd.m.Y H:i:s',
+                    '/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/' => 'Y/m/d H:i:s',
+                    '/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/' => 'd/m/Y H:i:s',
+                    // Только даты
+                    '/^\d{4}-\d{2}-\d{2}$/' => 'Y-m-d',
+                    '/^\d{2}-\d{2}-\d{4}$/' => 'd-m-Y',
+                    '/^\d{4}\.\d{2}\.\d{2}$/' => 'Y.m.d',
+                    '/^\d{2}\.\d{2}\.\d{4}$/' => 'd.m.Y',
+                    '/^\d{4}\/\d{2}\/\d{2}$/' => 'Y/m/d',
+                    '/^\d{2}\/\d{2}\/\d{4}$/' => 'd/m/Y',
+                    ];
+                    foreach ($map as $regex => $format) {
+                        if (preg_match($regex, $val)) {
+                            return Carbon::createFromFormat($format, $val);
+                        }
+                    }
+
+                    return null;
+                })($value),
+            is_object($value) && is_callable($value) => static::castToCarbon($value()),
+
+            default => null,
         };
     }
 }

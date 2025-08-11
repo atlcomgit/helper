@@ -89,6 +89,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::castToArray()
  * @method @see static::castToBool()
  * @method @see static::castToCallable()
+ * @method @see static::castToCarbon()
  * @method @see static::castToFloat()
  * @method @see static::castToJson()
  * @method @see static::castToInt()

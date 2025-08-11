@@ -267,6 +267,13 @@ $boolean = Helper::castToBool(1); // $boolean = true
 $callable = Helper::castToCallable(1); // $callable() = 1
 ```
 ---
+##### [castToCarbon(\$value): ?Carbon](./tests/HelperCastTrait/HelperCastToCarbonTest.php)
+Возвращает преобразование значения к типу Carbon или null
+```php
+$date = Helper::castToCarbon('2025-08-08'); // $date->format('Y-m-d') = '2025-08-08'
+$date = Helper::castToCarbon(1733376000); // $date->format('Y-m-d') = '2024-12-05' (пример)
+```
+---
 ##### [castToFloat(\$value): ?float](./tests/HelperCastTrait/HelperCastToFloatTest.php)
 Возвращает преобразование значения к вещественному типу или null
 ```php
