@@ -396,6 +396,12 @@ $string = Helper::dateToString(Carbon::parse('01.02.2025')); // $string = 'пе�
 $boolean = MyEnum::enumExists('Name1'); // $boolean = true/false
 ```
 ---
+##### [enumFirst(): ?BackedEnum](./tests/HelperEnumTrait/HelperEnumFirstTest.php)
+Возвращает первое перечисление
+```php
+$enum = MyEnum::enumFirst(); // $enum = MyEnum::Name1
+```
+---
 ##### [enumFrom(\$value): ?BackedEnum](./tests/HelperEnumTrait/HelperEnumFromTest.php)
 Возвращает найденное перечисление по имени, по значению или по перечислению
 ```php
@@ -412,6 +418,12 @@ $string = MyEnum::enumLabel(MyEnum::Name1); // $string = 'Name1 (value1)'
 Возвращает список перечислений для ресурса
 ```php
 $array = MyEnum::enumLabels(); // $array = [['value' => 'value1', 'label' => 'Описание 1']]
+```
+---
+##### [enumLast(): ?BackedEnum](./tests/HelperEnumTrait/HelperEnumLastTest.php)
+Возвращает последнее перечисление
+```php
+$enum = MyEnum::enumLast(); // $enum = MyEnum::Name2
 ```
 ---
 ##### [enumName(\$value): ?string](./tests/HelperEnumTrait/HelperEnumNameTest.php)

@@ -111,6 +111,38 @@ trait HelperEnumTrait
 
 
     /**
+     * Возвращает первое перечисление
+     * @see ../../tests/HelperEnumTrait/HelperEnumFirstTest.php
+     *
+     * @return static|BackedEnum|null
+     */
+    public static function enumFirst(): static|BackedEnum|null
+    {
+        // Получаем список вариантов перечисления, если текущий класс поддерживает BackedEnum
+        $enums = is_subclass_of(static::class, BackedEnum::class) ? static::cases() : [];
+
+        // Возвращаем первый элемент или null
+        return $enums[0] ?? null;
+    }
+
+
+    /**
+     * Возвращает последнее перечисление
+     * @see ../../tests/HelperEnumTrait/HelperEnumLastTest.php
+     *
+     * @return static|BackedEnum|null
+     */
+    public static function enumLast(): static|BackedEnum|null
+    {
+        // Получаем список вариантов перечисления, если текущий класс поддерживает BackedEnum
+        $enums = is_subclass_of(static::class, BackedEnum::class) ? static::cases() : [];
+
+        // Возвращаем последний элемент или null
+        return $enums ? end($enums) : null;
+    }
+
+
+    /**
      * Возвращает найденное перечисление по имени, по значению или по перечислению
      * @see ../../tests/HelperEnumTrait/HelperEnumFromTest.php
      *

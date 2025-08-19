@@ -113,9 +113,11 @@ use Atlcom\Traits\HelperVarTrait;
  * 
  * @group enum - Работа с перечислениями
  * @method @see static::enumExists()
+ * @method @see static::enumFirst()
  * @method @see static::enumFrom()
  * @method @see static::enumLabel()
  * @method @see static::enumLabels()
+ * @method @see static::enumLast()
  * @method @see static::enumName()
  * @method @see static::enumNames()
  * @method @see static::enumRandom()

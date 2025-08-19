@@ -2,6 +2,8 @@
 
 ## _Версия 1.23_
 - Добавлен метод Helper::castToCarbon
+- Добавлен метод Helper::enumFirst
+- Добавлен метод Helper::enumLast
 - Добавлен метод Helper::objectToArrayRecursive
 - Добавлен метод Helper::try
 

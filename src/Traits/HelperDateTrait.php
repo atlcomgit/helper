@@ -25,6 +25,9 @@ trait HelperDateTrait
      */
     public static function dateFromString(?string $value): ?Carbon
     {
+        // Инициализируем массив изменений, чтобы избежать предупреждений и ошибок типов
+        $changes = [];
+
         $value = ' ' . static::stringReplace(static::stringLower($value), [',' => ' , ']) . ' ';
         $date = Carbon::today()->setTime(0, 0, 0, 0);
 
@@ -549,6 +552,11 @@ trait HelperDateTrait
             return '';
         }
 
-        return Consts::DATE_DAY_NAME[$value->dayOfWeek() - 1] ?? '';
+        // Маппинг: Carbon::dayOfWeek() -> 0..6 (вс..сб) в индекс 0..6 (пн..вс)
+        // воскресенье(0) -> 6, понедельник(1) -> 0, ... суббота(6) -> 5
+        $dow = (int)$value->dayOfWeek; // 0..6 (0 - вс)
+        $index = $dow === 0 ? 6 : $dow - 1;
+
+        return Consts::DATE_DAY_NAME[$index] ?? '';
     }
 }
