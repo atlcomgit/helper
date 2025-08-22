@@ -890,6 +890,12 @@ $boolean = Helper::regexpValidateUnicode('01 AZ az АЯ ая 😀'); // $boolean
 $boolean = Helper::regexpValidateUrl('http://abc.com/def?klm#xyz'); // $boolean = true
 ```
 ---
+##### [regexpValidateUuid(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php)
+Проверяет значение строки на формат идентификатора uuid v4/v7
+```php
+$boolean = Helper::regexpValidateUuid('04d19f50-2fab-417a-815d-306b6a6f67ec'); // $boolean = true
+```
+---
 ##### [regexpValidateUuid4(\$value): bool](./tests/HelperRegexpTrait/HelperRegexpValidateUuid4Test.php)
 Проверяет значение строки на формат идентификатора uuid v4
 ```php

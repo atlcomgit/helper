@@ -5,6 +5,7 @@
 - Добавлен метод Helper::enumFirst
 - Добавлен метод Helper::enumLast
 - Добавлен метод Helper::objectToArrayRecursive
+- Добавлен метод Helper::regexpValidateUuid
 - Добавлен метод Helper::try
 
 ## _Версия 1.22_

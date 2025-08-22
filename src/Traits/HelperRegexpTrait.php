@@ -81,6 +81,19 @@ trait HelperRegexpTrait
 
 
     /**
+     * Проверяет значение строки на формат идентификатора uuid v4/v7
+     * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateUuidTest.php
+     *
+     * @param string|null $value
+     * @return bool
+     */
+    public static function regexpValidateUuid(?string $value): bool
+    {
+        return static::regexpValidateUuid4($value) || static::regexpValidateUuid4($value);
+    }
+
+
+    /**
      * Проверяет значение строки на формат json
      * @see ../../tests/HelperRegexpTrait/HelperRegexpValidateJsonTest.php
      *

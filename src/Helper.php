@@ -204,6 +204,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::regexpValidatePhone()
  * @method @see static::regexpValidateUnicode()
  * @method @see static::regexpValidateUrl()
+ * @method @see static::regexpValidateUuid()
  * @method @see static::regexpValidateUuid4()
  * @method @see static::regexpValidateUuid7()
  * 
