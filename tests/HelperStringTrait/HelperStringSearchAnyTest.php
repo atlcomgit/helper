@@ -26,6 +26,10 @@ final class HelperStringSearchAnyTest extends TestCase
         $array = Helper::stringSearchAny('abcd', ['f', 'b', 'c']);
         $this->assertTrue($array === ['b']);
 
+        // Регулярка: добавлен модификатор 'u' для корректной работы регистронезависимого поиска по юникоду
+        $array = Helper::stringSearchAny('Указать данные', '/указать/iu');
+        $this->assertTrue($array === ['/указать/iu']);
+
         $array = Helper::stringSearchAny('Иванов Иван Иванович', ['name1' => 'Петр', 'name2' => 'Иван']);
         $this->assertTrue($array === ['Иван']);
 
