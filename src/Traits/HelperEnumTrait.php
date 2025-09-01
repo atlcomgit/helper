@@ -203,10 +203,8 @@ trait HelperEnumTrait
      * @param BackedEnum|null $value
      * @return string|null
      */
-    public static function enumLabel(?BackedEnum $value): ?string
+    public static function enumLabel(?BackedEnum $enum): ?string
     {
-        $enum = static::enumFrom($value);
-
         return $enum ? "{$enum->name} ({$enum->value})" : null;
     }
 
