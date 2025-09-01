@@ -390,6 +390,12 @@ $string = Helper::dateToString(Carbon::parse('01.02.2025')); // $string = 'пе�
 Работа с перечислениями
 
 ---
+##### [enumDefault(): mixed](./tests/HelperEnumTrait/HelperEnumDefaultTest.php)
+Возвращает вариант enum по умолчанию
+```php
+value = MyEnum::enumDefault(); // $value = null
+```
+---
 ##### [enumExists(\$value): bool](./tests/HelperEnumTrait/HelperEnumExistsTest.php)
 Проверяет на существование перечисления по значению и возвращает true/false
 ```php

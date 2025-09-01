@@ -112,6 +112,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::dateToString()
  * 
  * @group enum - Работа с перечислениями
+ * @method @see static::enumDefault()
  * @method @see static::enumExists()
  * @method @see static::enumFirst()
  * @method @see static::enumFrom()

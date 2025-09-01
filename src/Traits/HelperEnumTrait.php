@@ -255,4 +255,16 @@ trait HelperEnumTrait
     {
         return static::enumToArray($this);
     }
+
+
+    /**
+     * Возвращает вариант enum по умолчанию
+     * @see ../../tests/HelperEnumTrait/HelperEnumDefaultTest.php
+     *
+     * @return mixed
+     */
+    public static function enumDefault(): mixed
+    {
+        return null;
+    }
 }

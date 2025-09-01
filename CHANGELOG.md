@@ -4,6 +4,7 @@
 - Добавлен метод Helper::castToCarbon
 - Добавлен метод Helper::enumFirst
 - Добавлен метод Helper::enumLast
+- Добавлен метод Helper::enumDefault
 - Добавлен метод Helper::objectToArrayRecursive
 - Добавлен метод Helper::regexpValidateUuid
 - Добавлен метод Helper::try
