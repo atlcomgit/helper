@@ -29,6 +29,9 @@ final class HelperArrayDotTest extends TestCase
         $array = Helper::arrayDot(['a' => ['b' => ['c' => 3, 'd' => 4]]]);
         $this->assertEquals(['a.b.c' => 3, 'a.b.d' => 4], $array);
 
+        $array = Helper::arrayDot(['1', [2, 3, 4], 5]);
+        $this->assertEquals(['0' => '1', '1.0' => 2, '1.1' => 3, '1.2' => 4, '2' => 5], $array);
+
         $array = Helper::arrayDot([]);
         $this->assertEquals([], $array);
 

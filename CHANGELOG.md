@@ -2,12 +2,14 @@
 
 ## _Версия 1.23_
 - Добавлен метод Helper::castToCarbon
+- Добавлен метод Helper::enumDefault
 - Добавлен метод Helper::enumFirst
 - Добавлен метод Helper::enumLast
-- Добавлен метод Helper::enumDefault
 - Добавлен метод Helper::objectToArrayRecursive
 - Добавлен метод Helper::regexpValidateUuid
 - Добавлен метод Helper::try
+
+- Обновлен метод Helper::arraySearchKeys
 
 ## _Версия 1.22_
 - Добавлен метод Helper::arrayIsAssociative

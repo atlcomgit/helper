@@ -129,12 +129,21 @@ trait HelperArrayTrait
                     $subValue["{$key}" . static::$dotDelimiter . "{$key2}"] = $v2;
                 }
 
-                $result = [...$result, ...static::arraySearchKeys($subValue, ...$searches)];
+                // Используем присваивание через foreach вместо распаковки массива,
+                // чтобы избежать переиндексации числовых ключей (например, '2' => 5 -> [1 => 5])
+                $subResult = static::arraySearchKeys($subValue, ...$searches);
+                foreach ($subResult as $rk => $rv) {
+                    $result[$rk] = $rv;
+                }
 
             } else {
                 foreach ($searches as $search) {
                     if (is_array($search) || is_object($search)) {
-                        $result = [...$result, ...static::arraySearchKeys([$key => $v], ...$search)];
+                        // Аналогично — запрещаем переиндексацию числовых ключей при мердже результатов
+                        $subResult = static::arraySearchKeys([$key => $v], ...$search);
+                        foreach ($subResult as $rk => $rv) {
+                            $result[$rk] = $rv;
+                        }
 
                     } else if (
                         !is_null($search)
