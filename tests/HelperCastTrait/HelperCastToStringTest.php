@@ -5,8 +5,17 @@ declare(strict_types=1);
 namespace Atlcom\Tests\HelperCastTrait;
 
 use Atlcom\Helper;
+use Atlcom\Traits\HelperEnumTrait;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+
+enum HelperCastToStringEnum: string
+{
+    use HelperEnumTrait;
+
+    case Name1 = 'value1';
+    case Name2 = 'value2';
+}
 
 /**
  * Тест метода трейта
@@ -35,6 +44,8 @@ final class HelperCastToStringTest extends TestCase
         $this->assertSame('{}', Helper::castToString((object)[]));
 
         $this->assertSame('1', Helper::castToString(static fn () => 1));
+
+        $this->assertSame('value1', Helper::castToString(HelperCastToStringEnum::Name1));
 
         $this->assertSame(null, Helper::castToString(null));
     }
