@@ -228,6 +228,66 @@ final class HelperSqlExtractNamesTest extends TestCase
 
         $array = Helper::sqlExtractNames(null);
         $this->assertEquals(['databases' => []], $array);
+    }
 
+
+    #[Test]
+    public function sqlExtractNamesTables(): void
+    {
+        $array = Helper::sqlExtractNames('select "warehouses"."id", "warehouses"."group_id", "warehouses"."time_zone_id", "warehouses"."country_id", "warehouses"."city_id", "warehouses"."restriction_id", "warehouses"."name", "warehouses"."description", "warehouses"."address", "warehouses"."latitude", "warehouses"."longitude", "warehouses"."timetable", "warehouses"."type", "warehouses"."status", "warehouses"."opening_date_at", "warehouses"."address_en", "warehouses"."_min_price", (select count(*) from "slots" where "warehouses"."id" = "slots"."warehouse_id" and "moderation_status" = \'ACCEPTED\' and "status" in (\'FOR_RENT\', \'GUEST\') and (not exists (select * from "orders" where "slots"."id" = "orders"."product_id" and "orders"."product_type" = \'SLOTS\' and "status" in (\'CONFIRMATION\', \'STORED\', \'REVIEWED\', \'BLOCKED\', \'FORCED_OPENING\') and "orders"."deleted_at" is null) or exists (select * from "orders" where "slots"."id" = "orders"."product_id" and "status" = \'STORED\' and "type" = \'GUEST\' and "product_type" = \'SLOTS\' and "status" in (\'BOOKED\', \'PRESALE\', \'CONFIRMATION\', \'RESERVED\', \'STORED\', \'REVIEWED\', \'BLOCKED\', \'FORCED_OPENING\') and "orders"."deleted_at" is null)) and "slots"."deleted_at" is null) as "free_or_guest_slots_count" from "warehouses" where "warehouses"."type" in (\'STORAGE\', \'LUGGAGE_STORAGE\', \'LEAD_STORAGE\') and "warehouses"."active" = 1 and "warehouses"."moderation_status" = \'ACCEPTED\' and "warehouses"."status" in (\'CONSTRUCTION\', \'PRESALE\', \'ACTIVE\') and "warehouses"."deleted_at" is null order by free_or_guest_slots_count desc, "name" asc');
+        $this->assertEquals([
+            'databases' => [
+                '' => [
+                    'tables' => [
+                        'slots' => [
+                            'fields' => [
+                                '*',
+                                'warehouse_id',
+                                'moderation_status',
+                                'status',
+                                'id',
+                                'deleted_at',
+                                'free_or_guest_slots_count',
+                                'name',
+                            ],
+                        ],
+                        'warehouses' => [
+                            'fields' => [
+                                'id',
+                                'group_id',
+                                'time_zone_id',
+                                'country_id',
+                                'city_id',
+                                'restriction_id',
+                                'name',
+                                'description',
+                                'address',
+                                'latitude',
+                                'longitude',
+                                'timetable',
+                                'type',
+                                'status',
+                                'opening_date_at',
+                                'address_en',
+                                '_min_price',
+                                'moderation_status',
+                                'deleted_at',
+
+                            ],
+                        ],
+                        'orders' => [
+                            'fields' => [
+                                'product_id',
+                                'product_type',
+                                'deleted_at',
+                                'orders',
+                                'type',
+                                'status',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], $array);
     }
 }

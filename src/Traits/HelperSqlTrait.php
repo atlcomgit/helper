@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atlcom\Traits;
 
 use Atlcom\Consts\HelperConsts as Consts;
+use Atlcom\Internal\HelperSql;
 
 /**
  * Трейт для sql запросами
@@ -182,6 +183,10 @@ trait HelperSqlTrait
         $sql = preg_replace('/\/\*.*?\*\//s', '', $sql) ?? '';
         $sql = preg_replace('/\[(\w+)\]/', '$1', $sql) ?? '';
         $sql = preg_replace('/`(\w+)`/', '$1', $sql) ?? '';
+        $sql = preg_replace('/"(\w+)"/', '$1', $sql) ?? '';
+
+        $subqueries = HelperSql::sqlExtractSubqueriesInternal($sql, $sort);
+        $sql = $subqueries['sql'];
 
         // 1. Собираем все элементы
         $elements = [];
@@ -480,6 +485,7 @@ trait HelperSqlTrait
         }
 
         // Затем обрабатываем поля
+        $result['__aliases'] = $tableAliases;
         $sqlSearch = static::stringReplace($sql, ['*' => '%STAR%']);
         foreach ($elements as $element) {
             if ($element['type'] === 'field') {
@@ -581,13 +587,26 @@ trait HelperSqlTrait
             }
         }
 
+        $result = HelperSql::sqlMergeSubqueryResults($result, $subqueries['items'] ?? []);
+        $result = HelperSql::sqlApplySubqueryReferences($result, $subqueries['references'] ?? []);
+        $result = HelperSql::sqlApplyHeuristicAdjustments($result);
+        $result = HelperSql::sqlApplyExistsAdjustments($result);
+
         // 5. Удаляем дубликаты полей
         foreach ($result['databases'] as $db => &$dbData) {
             foreach ($dbData['tables'] as $table => &$tableData) {
                 $tableData['fields'] = array_values(array_unique($tableData['fields']));
-                !$sort ?: sort($tableData['fields']);
+                $skipSort = $result['__skip_sort'][$db][$table] ?? false;
+
+                if ($sort && !$skipSort) {
+                    sort($tableData['fields']);
+                }
             }
+            unset($tableData);
         }
+        unset($dbData);
+
+        unset($result['__skip_sort'], $result['__aliases']);
 
         return $result;
     }
