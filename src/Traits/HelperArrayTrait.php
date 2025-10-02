@@ -392,8 +392,16 @@ trait HelperArrayTrait
                         $searchString === '*'
                         || $key === $search
                         || $key === $searchString
-                        || (static::regexpValidatePattern($searchString) && preg_match($searchString, (string)$key))
-                        || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, (string)$key))
+                        || (
+                            is_scalar($key)
+                            && static::regexpValidatePattern($searchString)
+                            && preg_match($searchString, (string)$key)
+                        )
+                        || (
+                            is_scalar($key)
+                            && mb_strpos($searchString, '*') !== false
+                            && fnmatch($searchString, (string)$key)
+                        )
                     )
                 ) {
                     unset($value[$key]);
@@ -420,7 +428,7 @@ trait HelperArrayTrait
 
         foreach ($value as $key => $v) {
             if (is_array($v) || is_object($v)) {
-                $value[$key] = static::arrayDeleteValues($v, ...$searches) ?? [];
+                $value[$key] = $v = static::arrayDeleteValues($v, ...$searches) ?? [];
             }
 
             foreach ($searches as $search) {
@@ -440,8 +448,16 @@ trait HelperArrayTrait
                         $searchString === '*'
                         || $v === $search
                         || $v === $searchString
-                        || (static::regexpValidatePattern($searchString) && preg_match($searchString, (string)$v))
-                        || (mb_strpos($searchString, '*') !== false && fnmatch($searchString, (string)$v))
+                        || (
+                            is_scalar($v)
+                            && static::regexpValidatePattern($searchString)
+                            && preg_match($searchString, (string)$v)
+                        )
+                        || (
+                            is_scalar($v)
+                            && mb_strpos($searchString, '*') !== false
+                            && fnmatch($searchString, (string)$v)
+                        )
                     )
                 ) {
                     unset($value[$key]);

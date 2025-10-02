@@ -47,7 +47,41 @@ final class HelperArrayDeleteValuesTest extends TestCase
         $array = Helper::arrayDeleteValues(['a' => ['b' => 2, 'c' => 3]], ['/(2|3)/']);
         $this->assertEquals(['a' => []], $array);
 
+        $array = Helper::arrayDeleteValues(['a' => ['b' => '2', 'c' => '3']], ['/2/i']);
+        $this->assertEquals(['a' => ['c' => '3']], $array);
+
+        $array = Helper::arrayDeleteValues(['a' => ['2', '3']], ['/2/i']);
+        $this->assertEquals(['a' => [1 => '3']], $array);
+
+        $array = Helper::arrayDeleteValues(['a', 'b'], [['/a/i']]);
+        $this->assertEquals([1 => 'b'], $array);
+
         $array = Helper::arrayDeleteValues(null, null);
         $this->assertEquals([], $array);
+    }
+
+
+    #[Test]
+    public function arrayDeleteValuesForHeaders(): void
+    {
+        $array = [
+            'accept' => ["application/json, text/plain, */*"],
+            'content-type' => ["application/json"],
+            'user-agent' => ["axios/0.30.0"],
+            'host' => ["skladno.local:8000"],
+            'connection' => ["close"],
+            'device' => ['sdf123'],
+        ];
+        $delete = ['/Authorization/i', '/Device/i', '*123'];
+
+        $array = Helper::arrayDeleteValues($array, $delete ?? []);
+        $this->assertEquals([
+            'accept' => ['application/json, text/plain, */*'],
+            'content-type' => ['application/json'],
+            'user-agent' => ["axios/0.30.0"],
+            'host' => ["skladno.local:8000"],
+            'connection' => ["close"],
+            'device' => [],
+        ], $array);
     }
 }
