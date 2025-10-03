@@ -196,7 +196,7 @@ trait HelperSqlTrait
         ];
 
         // Таблицы и алиасы
-        preg_match_all('/(?:UPDATE|FROM|JOIN|TRUNCATE|DROP\s+DATABASE)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
+        preg_match_all('/(?<![a-z_])(?:UPDATE|FROM|JOIN|TRUNCATE|DROP\s+DATABASE)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
         foreach ($tableMatches as $match) {
             $database = $match[1] ?? null;
             $table = $match[2];
@@ -205,7 +205,12 @@ trait HelperSqlTrait
                 $database = $table;
                 $table = $alias = '';
             }
-            (in_array($database, $reserved) || in_array($table, $reserved))
+            (
+                in_array($database, $reserved)
+                || in_array($table, $reserved)
+                || in_array(mb_strtoupper($table), $reserved)
+                || in_array(mb_strtolower($table), $reserved)
+            )
                 ?: $elements[] = [
                     'type' => 'table',
                     'database' => $database,
@@ -215,12 +220,17 @@ trait HelperSqlTrait
         }
 
         // preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(\w+)\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/i', $sql, $tableMatches, PREG_SET_ORDER);
-        preg_match_all('/(?:INSERT\s+INTO|INSERT)\s+(?:(?:"|`)?(\w+)(?:"|`)?\.)?(?:"|`)?(\w+)(?:"|`)?(?:\s+(?:AS\s+)?(?:"|`)?(\w+)(?:"|`)?)?/i', $sql, $tableMatches, PREG_SET_ORDER);
+        preg_match_all('/(?<![a-z_])(?:INSERT\s+INTO|INSERT)\s+(?:(?:"|`)?(\w+)(?:"|`)?\.)?(?:"|`)?(\w+)(?:"|`)?(?:\s+(?:AS\s+)?(?:"|`)?(\w+)(?:"|`)?)?/i', $sql, $tableMatches, PREG_SET_ORDER);
         foreach ($tableMatches as $match) {
             $database = $match[1] ?? null;
             $table = $match[2];
             $alias = (!in_array($match[3] ?? '', $reserved) ? ($match[3] ?? '') : '') ?: $match[2];
-            (in_array($database, $reserved) || in_array($table, $reserved))
+            (
+                in_array($database, $reserved)
+                || in_array($table, $reserved)
+                || in_array(mb_strtoupper($table), $reserved)
+                || in_array(mb_strtolower($table), $reserved)
+            )
                 ?: $elements[] = [
                     'type' => 'table',
                     'database' => $database,
@@ -243,7 +253,7 @@ trait HelperSqlTrait
             ['/^insert\s+into\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
             ['/^update\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
             ['/^delete\s+from\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1],
-            ['/from\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1], // SELECT ... FROM (ищем from не только в начале)
+            ['/(?<![a-z_])from\s+([`"\[\]]?[\w.]+[`"\]\[]?)/i', 1], // SELECT ... FROM (ищем from как отдельное SQL-слово)
         ];
         foreach ($queries as $query) {
             $query = trim($query);
@@ -269,6 +279,8 @@ trait HelperSqlTrait
                     (
                         in_array($database, $reserved)
                         || in_array($table, $reserved)
+                        || in_array(mb_strtoupper($table), $reserved)
+                        || in_array(mb_strtolower($table), $reserved)
                         || in_array($table, array_values(static::arraySearchKeys($elements, '*.name')))
                     )
                         ?: $elements[] = [
@@ -342,18 +354,23 @@ trait HelperSqlTrait
         }
 
         // Поля без указания таблицы (в подзапросах)
-        // preg_match_all('/\b(?!' . implode('|', $reserved) . ')(\w+)\b(?!\.)/i', $sql, $simpleFields);
-        // Получаем все слова, не содержащие точку и не входящие в зарезервированные слова
-        // preg_match_all('/\b(?!' . implode('|', $reserved) . ')\w+\b(?!\s*\.)/i', $sql, $simpleFields);
+        // Извлекаем поля из разных частей запроса
         preg_match_all(
-            '/\b(?:SELECT|WHERE|GROUP BY|ORDER BY|HAVING|ON|AND|OR|IN)\s+([a-z0-9_\.][\w]*|[\*])/i',
-            static::stringReplace($sql, ['(' => ' ', ')' => ' ']),
+            '/\b(?:SELECT|WHERE|GROUP BY|ORDER BY|HAVING|ON|AND|OR|IN|BETWEEN|WHEN|CASE|DISTINCT|COUNT|SUM|AVG|MIN|MAX)\s+(?:\()?([a-z0-9_]+(?:\.[a-z0-9_*]+)?|[\*])/i',
+            static::stringReplace($sql, ['(' => ' ( ', ')' => ' ) ']),
             $simpleFields,
         );
         foreach ($simpleFields[1] as $field) {
+            // Пропускаем, если это составное поле (table.field)
+            if (strpos($field, '.') !== false) {
+                continue;
+            }
+
             (
                 !preg_match('/^([a-z\_\*]+)$/i', $field)
                 || in_array($field, $reserved)
+                || in_array(mb_strtoupper($field), $reserved)
+                || in_array(mb_strtolower($field), $reserved)
                 || in_array($field, array_keys($tableAliases))
             )
                 ?: $elements[] = [
@@ -517,15 +534,20 @@ trait HelperSqlTrait
                         )[0] ?? '';
 
                     $table ??= preg_match(
-                        '/(?:FROM|JOIN|INSERT\s+INTO|UPDATE)\s+(?:`?(\w+)`?\.)?`?(\w+)`?(?:\s+AS\s+(\w+))?/i',
+                        '/(?<![a-z_])(?:FROM|JOIN|INSERT\s+INTO|UPDATE)\s+(?:`?(\w+)`?\.)?`?(\w+)`?(?:\s+AS\s+(\w+))?/i',
                         $bracketSql,
                         $tableMatch,
                     )
                         ? ($tableMatch[2] ?: $mainTable) : $mainTable;
-                    $table = $tableAliases[$table]['table'] ?: $table;
+                    $table = $tableAliases[$table]['table'] ?? $table;
                     $db = $tableAliases[$table]['database'] ?? $mainDatabase;
 
-                    if ($table && !in_array($field, $result['databases'][$db]['tables'][$table]['fields'] ?? [])) {
+                    // Проверяем, что таблица не является зарезервированным словом
+                    $isReserved = in_array($table, $reserved)
+                        || in_array(mb_strtoupper($table), $reserved)
+                        || in_array(mb_strtolower($table), $reserved);
+
+                    if ($table && !$isReserved && !in_array($field, $result['databases'][$db]['tables'][$table]['fields'] ?? [])) {
                         $result['databases'][$db]['tables'][$table]['fields'] ??= [];
                         $result['databases'][$db]['tables'][$table]['fields'][] = $field;
                     }

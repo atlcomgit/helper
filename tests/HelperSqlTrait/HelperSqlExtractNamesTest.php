@@ -290,4 +290,38 @@ final class HelperSqlExtractNamesTest extends TestCase
             ],
         ], $array);
     }
+
+
+    #[Test]
+    public function sqlExtractNames2(): void
+    {
+        $array = Helper::sqlExtractNames('
+            select 
+                COUNT(DISTINCT CASE WHEN period_from BETWEEN \'2025-09-01 00:00:00\' AND \'2025-09-30 23:59:59\' THEN user_id END) AS ranged,
+                COUNT(DISTINCT CASE WHEN period_from <= \'2025-09-30 23:59:59\' THEN user_id END) AS cumulative
+            from "orders" where "type" = \'RENT\' and "is_test" = 0 and "status" in (\'CONFIRMATION\', \'STORED\', \'REVIEWED\', \'BLOCKED\', \'FORCED_OPENING\', \'COMPLETED\')
+                and "user_id" in (select "user_id" from "orders" where "is_test" = 0 and "status" in (\'CONFIRMATION\', \'STORED\', \'REVIEWED\', \'BLOCKED\', \'FORCED_OPENING\', \'COMPLETED\')
+            group by "user_id" having COUNT(DISTINCT id) > 1 and COUNT(DISTINCT department) > 1) and "orders"."deleted_at" is null limit 1
+        ');
+        $this->assertEquals([
+            'databases' => [
+                '' => [
+                    'tables' => [
+                        'orders' => [
+                            'fields' => [
+                                'deleted_at',
+                                'department',
+                                'id',
+                                'is_test',
+                                'period_from',
+                                'status',
+                                'type',
+                                'user_id',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], $array);
+    }
 }

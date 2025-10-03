@@ -10,6 +10,7 @@
 - Добавлен метод Helper::try
 
 - Обновлен метод Helper::arraySearchKeys
+- Обновлен метод Helper::sqlExtractNames
 
 ## _Версия 1.22_
 - Добавлен метод Helper::arrayIsAssociative
