@@ -324,4 +324,46 @@ final class HelperSqlExtractNamesTest extends TestCase
             ],
         ], $array);
     }
+
+
+    #[Test]
+    public function sqlExtractNames3(): void
+    {
+        $array = Helper::sqlExtractNames('
+            insert into media (
+                model_type, model_id, collection_name, name, file_name, mime_type, disk, size, properties, manipulations, custom_properties, responsive_images, uuid, conversions_disk, generated_conversions, content
+                ) values (
+                USER_PASSPORTS, 5093, user-passport-photo, fon-zory-26696.jpeg, e8617580-130d-4738-8f1c-2fbe5de6db7f.jpeg, image/jpeg, local, 62566, {path:user-passport-photo/2025-10-08/e8617580-130d-4738-8f1c-2fbe5de6db7f/,extension:jpg,hash:980f0df02163c7ec90fa61838816ce6b,model:App\\Domains\\UserPassport\\Models\\UserPassport}, [], [], [], e8617580-130d-4738-8f1c-2fbe5de6db7f, local, NULL, 
+                ' . Helper::stringRandom('/[A-Z]{20000}/') . '
+            )
+        ');
+        $this->assertEquals([
+            'databases' => [
+                '' => [
+                    'tables' => [
+                        'media' => [
+                            'fields' => [
+                                'collection_name',
+                                'content',
+                                'conversions_disk',
+                                'custom_properties',
+                                'disk',
+                                'file_name',
+                                'generated_conversions',
+                                'manipulations',
+                                'mime_type',
+                                'model_id',
+                                'model_type',
+                                'name',
+                                'properties',
+                                'responsive_images',
+                                'size',
+                                'uuid',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], $array);
+    }
 }

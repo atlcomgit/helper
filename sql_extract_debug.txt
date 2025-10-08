@@ -1,0 +1,2 @@
+select user_id from orders where is_test = 0 and status in ('CONFIRMATION', 'STORED', 'REVIEWED', 'BLOCKED', 'FORCED_OPENING', 'COMPLETED')
+            group by user_id having COUNT(DISTINCT id) > 1 and COUNT(DISTINCT department) > 1

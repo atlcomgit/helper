@@ -28,6 +28,7 @@ trait HelperCastTrait
             is_string($value) => (int)static::numberFromString($value),
             $value instanceof BackedEnum => (int)$value->value,
             is_object($value) && is_callable($value) => static::castToInt($value()),
+            is_object($value) => 1,
 
             default => (int)$value,
         };
@@ -49,6 +50,7 @@ trait HelperCastTrait
             is_string($value) => (float)static::numberFromString($value),
             $value instanceof BackedEnum => (float)$value->value,
             is_object($value) && is_callable($value) => static::castToFloat($value()),
+            is_object($value) => 1.0,
 
             default => (float)$value,
         };
@@ -70,6 +72,7 @@ trait HelperCastTrait
             is_string($value) => (bool)static::numberFromString($value),
             $value instanceof BackedEnum => (bool)$value->value,
             is_object($value) && is_callable($value) => static::castToBool($value()),
+            is_object($value) => true,
 
             default => (bool)$value,
         };

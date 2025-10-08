@@ -178,6 +178,14 @@ trait HelperSqlTrait
      */
     public static function sqlExtractNames(?string $value, bool $sort = true): array
     {
+        // Удаляем все символы ASCII меньше 7 и больше 127
+        $value = preg_replace('/[\x00-\x06\x7F-\xFF]/', '', $value ?? '') ?? '';
+
+        // Обрезаем слишком большой запрос
+        if (static::stringLength($value) > 10000) {
+            $value = static::stringDelete($value, 10000);
+        }
+
         // Удаляем комментарии и нормализуем SQL
         $sql = preg_replace('/--.*$/m', '', $value ?? '') ?? '';
         $sql = preg_replace('/\/\*.*?\*\//s', '', $sql) ?? '';

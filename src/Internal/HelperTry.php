@@ -17,6 +17,7 @@ class HelperTry
 {
     protected ?Closure $try = null;
     protected array $catches = [];
+    protected ?Closure $catch = null;
     protected ?Closure $success = null;
     protected ?Throwable $exception = null;
     protected ?HelperTryStatusEnum $status = null;
@@ -69,8 +70,9 @@ class HelperTry
                 || $this->exception instanceof $exceptionClass
             ) {
                 try {
+                    $catch = Closure::fromCallable($callable);
                     $this->result = $this->resultCatch = call_user_func(
-                        $this->catch = Closure::fromCallable($callable),
+                        $catch,
                         $this->exception,
                         $this,
                     );
