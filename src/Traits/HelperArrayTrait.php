@@ -527,4 +527,56 @@ trait HelperArrayTrait
     {
         return !array_is_list(static::transformToArray($value));
     }
+
+
+    /**
+     * Усекает длинные строки в массиве
+     * @see ../../tests/HelperArrayTrait/HelperArrayTruncateStringValuesTest.php
+     *
+     * @param array|object|null $value
+     * @param int|null $size
+     * @return array
+     */
+    public static function arrayTruncateStringValues(array|object|null $value, ?int $size = null): array
+    {
+        $value = static::transformToArray($value);
+
+        if (is_null($size)) {
+            return $value;
+        }
+
+        $size = max(0, $size);
+
+        foreach ($value as $key => $v) {
+            if (is_array($v)) {
+                // Рекурсивно обрабатываем вложенные массивы
+                $value[$key] = static::arrayTruncateStringValues($v, $size);
+
+                continue;
+            }
+
+            if (is_string($v)) {
+                if ($size === 0) {
+                    $value[$key] = '';
+
+                    continue;
+
+                } else if ($size === 1) {
+                    $value[$key] = '…';
+
+                    continue;
+
+                } else if (static::stringLength($v) > $size) {
+                    // Обрезаем строку до требуемой длины
+                    $value[$key] = static::stringCopy($v, 0, $size - 1) . '…';
+
+                    continue;
+                }
+            }
+
+            $value[$key] = $v;
+        }
+
+        return $value;
+    }
 }

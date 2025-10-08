@@ -117,6 +117,12 @@ $array = Helper::arraySearchValues(['abc', 'def'], ['a*', '*f']); // $array = ['
 $array = Helper::arrayTrimValues([' a ', ',b.,:;']); // $array = ['a', 'b']
 ```
 ---
+##### [arrayTruncateStringValues(\$value, \$size): array](./tests/HelperArrayTrait/HelperArrayTruncateStringValuesTest.php)
+Усекает длинные строки в массиве
+```php
+$array = Helper::arrayTruncateStringValues([' a ' => '123'], 2); // $array = ['a' => '12']
+```
+---
 ##### [arrayUnDot(\$value): array](./tests/HelperArrayTrait/HelperArrayUnDotTest.php)
 Возвращает многомерный массив из одномерного
 ```php

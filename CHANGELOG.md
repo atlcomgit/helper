@@ -1,6 +1,7 @@
 # Changelog
 
 ## _Версия 1.23_
+- Добавлен метод Helper::arrayTruncateStringValues
 - Добавлен метод Helper::castToCarbon
 - Добавлен метод Helper::enumDefault
 - Добавлен метод Helper::enumFirst

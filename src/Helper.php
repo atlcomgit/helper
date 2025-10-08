@@ -61,6 +61,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::arraySearchKeysAndValues()
  * @method @see static::arraySearchValues()
  * @method @see static::arrayTrimValues()
+ * @method @see static::arrayTruncateStringValues()
  * @method @see static::arrayUnDot()
  * 
  * @group bracket - Работа со скобками/тегами
