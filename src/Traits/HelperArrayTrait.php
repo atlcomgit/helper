@@ -556,7 +556,14 @@ trait HelperArrayTrait
             }
 
             if (is_string($v)) {
-                if ($size === 0) {
+                if (static::regexpValidateJson(trim($v))) {
+                    $value[$key] = static::castToJson(
+                        static::arrayTruncateStringValues([$key => static::castToArray(trim($v))], $size)[$key],
+                    );
+
+                    continue;
+
+                } else if ($size === 0) {
                     $value[$key] = '';
 
                     continue;

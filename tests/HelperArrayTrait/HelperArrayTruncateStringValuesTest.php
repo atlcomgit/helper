@@ -62,6 +62,12 @@ final class HelperArrayTruncateStringValuesTest extends TestCase
         $array = Helper::arrayTruncateStringValues(['mixed' => [['string', 'abcdef'], ['short', 'veryLong']]], 2);
         $this->assertSame(['mixed' => [['s…', 'a…'], ['s…', 'v…']]], $array);
 
+        $array = Helper::arrayTruncateStringValues(['a' => '{"b": "12345", "c": 12345, "d": true, "e": null}'], 3);
+        $this->assertSame(['a' => '{"b":"12…","c":12345,"d":true,"e":null}'], $array);
+
+        $array = Helper::arrayTruncateStringValues(['a' => '[{"b": "12345", "c": 12345, "d": true, "e": null}]'], 3);
+        $this->assertSame(['a' => '[{"b":"12…","c":12345,"d":true,"e":null}]'], $array);
+
         $array = Helper::arrayTruncateStringValues(null, 10);
         $this->assertSame([], $array);
 

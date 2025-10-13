@@ -23,8 +23,8 @@ final class HelperStringTruncateBetweenQuotesTest extends TestCase
     #[Test]
     public function stringTruncateBetweenQuotes(): void
     {
-        $string = Helper::stringTruncateBetweenQuotes('{"a": "12345", "b":"c2defXyz", "c": 12345}');
-        $this->assertEquals($string, '{"a": "12…", "b":"c2…", "c": 12345}');
+        $string = Helper::stringTruncateBetweenQuotes('{"a": "12345", "b":"c2defXyz", "c": 12345, "d": null, "e": false, "f": 1}');
+        $this->assertEquals($string, '{"a": "12…", "b":"c2…", "c": 12345, "d": null, "e": false, "f": 1}');
 
         $string = Helper::stringTruncateBetweenQuotes('{"a": "12"}');
         $this->assertEquals($string, '{"a": "12"}');
@@ -43,6 +43,12 @@ final class HelperStringTruncateBetweenQuotesTest extends TestCase
 
         $string = Helper::stringTruncateBetweenQuotes('{"text": "ab\"cd"}', 3);
         $this->assertEquals($string, '{"text": "ab…"}');
+
+        $string = Helper::stringTruncateBetweenQuotes('12345', 3);
+        $this->assertEquals($string, '12345');
+
+        $string = Helper::stringTruncateBetweenQuotes('"12345"', 3);
+        $this->assertEquals($string, '"12345"');
 
         $string = Helper::stringTruncateBetweenQuotes(null, null);
         $this->assertEquals($string, '');

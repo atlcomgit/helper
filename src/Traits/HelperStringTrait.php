@@ -1207,7 +1207,7 @@ trait HelperStringTrait
                     $stringValue = static::stringCopy($stringValue, 0, $size - 1) . '…';
                 }
 
-                return ':' . $matches[1] . '"' . $stringValue . '"';
+                return ":{$matches[1]}\"{$stringValue}\"";
             },
             $value,
         );
