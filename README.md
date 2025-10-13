@@ -1194,6 +1194,12 @@ $array = Helper::stringSplitSearch('abc,def', ',', 'a'); // $array = ['a' => [0]
 $string = Helper::stringStarts('abc', 'a'); // $string = 'a'
 ```
 ---
+##### [stringTruncateBetweenQuotes(\$value, ...\$size$): string](./tests/HelperStringTrait/HelperStringTruncateBetweenQuotesTest.php)
+Возвращает строку с усечением данных между кавычками
+```php
+$string = Helper::stringTruncateBetweenQuotes('{"a":"abcdef"}', 5); // $string = '{"a":"abcd…"}'
+```
+---
 ##### [stringUpper(\$value): string](./tests/HelperStringTrait/HelperStringUpperTest.php)
 Переводит строку в верхний регистр
 ```php

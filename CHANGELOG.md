@@ -8,6 +8,7 @@
 - Добавлен метод Helper::enumLast
 - Добавлен метод Helper::objectToArrayRecursive
 - Добавлен метод Helper::regexpValidateUuid
+- Добавлен метод Helper::stringTruncateBetweenQuotes
 - Добавлен метод Helper::try
 
 - Обновлен метод Helper::arraySearchKeys

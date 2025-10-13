@@ -254,6 +254,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::stringSplitRange()
  * @method @see static::stringSplitSearch()
  * @method @see static::stringStarts()
+ * @method @see static::stringTruncateBetweenQuotes()
  * @method @see static::stringUpper()
  * @method @see static::stringUpperFirst()
  * @method @see static::stringUpperFirstAll()

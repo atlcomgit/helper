@@ -1173,4 +1173,43 @@ trait HelperStringTrait
 
         return trim(static::stringDeleteMultiples($result, ' '));
     }
+
+
+    /**
+     * Возвращает строку с усечением данных между кавычками
+     * @see ../../tests/HelperStringTrait/HelperStringTruncateBetweenQuotesTest.php
+     *
+     * @param string|null $value
+     * @param int|null $size
+     * @return string
+     */
+    public static function stringTruncateBetweenQuotes(?string $value, ?int $size = null): string
+    {
+        $value = (string)$value;
+        if (!$value) {
+            return '';
+        }
+
+        $size ??= 3;
+        $size = max(0, $size);
+        $pattern = '/:(\s*)"((?:[^"\\\\]|\\\\.)*)"/u';
+
+        return (string)preg_replace_callback(
+            $pattern,
+            static function (array $matches) use ($size) {
+                $stringValue = $matches[2];
+
+                if ($size === 0) {
+                    $stringValue = '';
+                } elseif ($size === 1) {
+                    $stringValue = '…';
+                } elseif (static::stringLength($stringValue) > $size) {
+                    $stringValue = static::stringCopy($stringValue, 0, $size - 1) . '…';
+                }
+
+                return ':' . $matches[1] . '"' . $stringValue . '"';
+            },
+            $value,
+        );
+    }
 }
