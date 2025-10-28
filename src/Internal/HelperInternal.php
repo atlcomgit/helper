@@ -999,24 +999,49 @@ class HelperInternal
      */
     public static function internalNumberDivide(string $a, string $b, int $precision): string
     {
-        if (static::internalNumberIsZero($b)) return 'NaN';
+        if (static::internalNumberIsZero($b)) {
+            return 'NaN';
+        }
+
         $neg = ($a[0] === '-') ^ ($b[0] === '-');
         $a = ltrim($a, '+-');
         $b = ltrim($b, '+-');
-        // $aDec = Helper::numberDecimalDigits($a);
+
+        $aDec = Helper::numberDecimalDigits($a);
         $bDec = Helper::numberDecimalDigits($b);
-        $precision += $bDec;
-        $a = str_replace('.', '', $a) . str_repeat('0', $precision);
-        $b = str_replace('.', '', $b);
+
+        $aInt = str_replace('.', '', $a);
+        $bInt = str_replace('.', '', $b);
+
+        // Выравниваем масштаб чисел, чтобы дальше работать с целыми значениями
+        if ($aDec > $bDec) {
+            $bInt .= str_repeat('0', $aDec - $bDec);
+        } elseif ($bDec > $aDec) {
+            $aInt .= str_repeat('0', $bDec - $aDec);
+        }
+
+        $aInt = ltrim($aInt, '0');
+        $bInt = ltrim($bInt, '0');
+
+        if ($aInt === '') {
+            $aInt = '0';
+        }
+
+        if ($bInt === '') {
+            return 'NaN';
+        }
+
+        $precision = max($precision, 0);
+        $dividend = $aInt . str_repeat('0', $precision);
         $res = '';
         $rem = '';
 
-        for ($i = 0; $i < strlen($a); $i++) {
-            $rem .= $a[$i];
+        for ($i = 0; $i < strlen($dividend); $i++) {
+            $rem .= $dividend[$i];
             $q = '0';
 
-            while (static::internalNumberCompare($rem, $b) >= 0) {
-                $rem = static::internalNumberSubtract($rem, $b);
+            while (static::internalNumberCompare($rem, $bInt) >= 0) {
+                $rem = static::internalNumberSubtract($rem, $bInt);
                 $q++;
             }
 
@@ -1024,8 +1049,9 @@ class HelperInternal
         }
 
         $res = ltrim($res, '0') ?: '0';
+        $result = static::internalNumberInsertDecimal($res, $precision);
 
-        return ($neg ? '-' : '') . static::internalNumberInsertDecimal($res, $precision);
+        return $neg && $result !== '0' ? "-{$result}" : $result;
     }
 
 

@@ -317,7 +317,7 @@ $string = Helper::castToString(1); // $string = '1'
 Работа с цветами
 
 ---
-##### [colorHexToRgb(\$value): array](./tests/HelperColorTrait/HelperColorHexToRgbTest.php)
+##### [colorHexToRgb($value): array](./tests/HelperColorTrait/HelperColorHexToRgbTest.php)
 Возвращает массив с RGB цветом из цвета HEX строки
 ```php
 $array = Helper::colorHexToRgb('#000'); // $array = ['r' => 0, 'g' => 0, 'b' => 0, 'a' => null]
@@ -330,6 +330,18 @@ $array = Helper::colorHexToRgb('#00000000'); // $array = ['r' => 0, 'g' => 0, 'b
 ```php
 $string = Helper::colorRgbToHex(0, 0, 0); // $string = '#000000'
 $string = Helper::colorRgbToHex(0, 0, 0, 0); // $string = '#00000000'
+```
+---
+##### [colorRandomHex(): string](./tests/HelperColorTrait/HelperColorRandomHexTest.php)
+Возвращает случайный HEX цвет в формате #rrggbb
+```php
+$string = Helper::colorRandomHex(); // $string = '#1a2b3c'
+```
+---
+##### [colorRandomRgb(): array](./tests/HelperColorTrait/HelperColorRandomRgbTest.php)
+Возвращает случайный RGB цвет в формате массива
+```php
+$array = Helper::colorRandomRgb(); // $array = ['r' => 26, 'g' => 43, 'b' => 60, 'a' => null]
 ```
 ---
 

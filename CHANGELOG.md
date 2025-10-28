@@ -1,5 +1,11 @@
 # Changelog
 
+## _Версия 1.24_
+- Добавлен метод Helper::colorRandomHex
+- Добавлен метод Helper::colorRandomRgb
+
+- Обновлен метод Helper::numberCalculate
+
 ## _Версия 1.23_
 - Добавлен метод Helper::arrayTruncateStringValues
 - Добавлен метод Helper::castToCarbon

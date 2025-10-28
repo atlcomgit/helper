@@ -11,6 +11,39 @@ namespace Atlcom\Traits;
 trait HelperColorTrait
 {
     /**
+     * Возвращает случайный HEX цвет в формате #rrggbb
+     * @see ../../tests/HelperColorTrait/HelperColorRandomHexTest.php
+     *
+     * @return string
+     */
+    public static function colorRandomHex(): string
+    {
+        $value = random_int(0, 0xFFFFFF);
+
+        return sprintf('#%06x', $value);
+    }
+
+
+    /**
+     * Возвращает случайный RGB цвет в формате массива
+     * @see ../../tests/HelperColorTrait/HelperColorRandomRgbTest.php
+     *
+     * @return array
+     */
+    public static function colorRandomRgb(): array
+    {
+        $color = [
+            'r' => random_int(0, 255),
+            'g' => random_int(0, 255),
+            'b' => random_int(0, 255),
+            'a' => null,
+        ];
+
+        return $color;
+    }
+
+
+    /**
      * Возвращает массив с RGB цветом из цвета HEX строки
      * @see ../../tests/HelperColorTrait/HelperColorHexToRgbTest.php
      *

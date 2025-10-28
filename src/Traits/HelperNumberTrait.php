@@ -565,7 +565,7 @@ trait HelperNumberTrait
         // Неявное умножение: число перед числом (опционально, если пробел между числами)
         // $value = preg_replace('/(\d)\s+(\d)/', '$1*$2', $value) ?? '';
         // Удаляем пробелы
-        $value = trim(static::stringReplace($value, [' ' => '']));
+        $value = trim(static::stringReplace($value, [' ' => '', ',' => '.']));
         // Удаляем дубликаты операторов
         $value = static::stringDeleteMultiples($value, ['-', '+', '*', '/']);
 

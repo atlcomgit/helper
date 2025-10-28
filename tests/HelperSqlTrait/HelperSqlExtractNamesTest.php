@@ -366,4 +366,27 @@ final class HelperSqlExtractNamesTest extends TestCase
             ],
         ], $array);
     }
+
+
+    #[Test]
+    public function sqlExtractNames4(): void
+    {
+        $array = Helper::sqlExtractNames('
+            select "settings" from "users" where settings->\'calculate\'->\'debt\' IS NOT NULL and (settings->\'calculate\'->\'debt\'->>\'debt_sum\')::int > 0 and "users"."deleted_at" is null
+        ');
+        $this->assertEquals([
+            'databases' => [
+                '' => [
+                    'tables' => [
+                        'users' => [
+                            'fields' => [
+                                'deleted_at',
+                                'settings',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], $array);
+    }
 }

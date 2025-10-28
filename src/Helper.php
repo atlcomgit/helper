@@ -41,7 +41,7 @@ use Atlcom\Traits\HelperVarTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.23
+ * @version 1.24
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -100,6 +100,8 @@ use Atlcom\Traits\HelperVarTrait;
  * @group color - Работа с цветами
  * @method @see static::colorHexToRgb()
  * @method @see static::colorRgbToHex()
+ * @method @see static::colorRandomHex()
+ * @method @see static::colorRandomRgb()
  * 
  * @group crypt - Работа с шифрованием
  * @method @see static::cryptArrayDecode()

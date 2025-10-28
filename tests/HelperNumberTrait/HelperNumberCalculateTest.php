@@ -124,7 +124,7 @@ final class HelperNumberCalculateTest extends TestCase
         $this->assertSame('0.3333', Helper::numberCalculate('1 / 3', 4));
         $this->assertSame('0.66666', Helper::numberCalculate('2 / 3', 5));
         $this->assertSame('3', Helper::numberCalculate('10 / 3', 0));
-        $this->assertSame('4.8182', Helper::numberCalculate('10.6 / 2.2', 4));
+        $this->assertSame('4.8181', Helper::numberCalculate('10.6 / 2.2', 4));
         $this->assertSame('10.6', Helper::numberCalculate('4.8182 * 2.2', 4));
     }
 
@@ -145,5 +145,12 @@ final class HelperNumberCalculateTest extends TestCase
         $this->assertSame('2', Helper::numberCalculate(' - ( -2 ) '));
         $this->assertSame('-5', Helper::numberCalculate('-(2 + 3)'));
         $this->assertSame('6', Helper::numberCalculate('-( -3 * 2 )'));
+    }
+
+
+    public function testCourse()
+    {
+        $this->assertSame('0.3773', Helper::numberCalculate('1/2,65', 4));
+        $this->assertSame('2.65', Helper::numberCalculate('2,65/1', 4));
     }
 }
