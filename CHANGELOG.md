@@ -1,6 +1,8 @@
 # Changelog
 
 ## _Версия 1.24_
+- Добавлен метод Helper::cipherDecode
+- Добавлен метод Helper::cipherEncode
 - Добавлен метод Helper::colorRandomHex
 - Добавлен метод Helper::colorRandomRgb
 

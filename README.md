@@ -313,6 +313,25 @@ $string = Helper::castToString(1); // $string = '1'
 
 &nbsp;
 &nbsp;
+### Cipher
+Работа с безопасным шифрованием
+
+---
+##### [cipherDecode($value, $password): mixed](./tests/HelperCipherTrait/HelperCipherDecodeTest.php)
+Дешифрует base58 строку, зашифрованную новым алгоритмом с использованием пароля
+```php
+$mixed = Helper::cipherDecode('Ndm4LnGDc3We5yFWXG1U3P5Ws7Z3aFyL677WptDeoBXkAD', 'password'); // $mixed = 'abc'
+```
+---
+##### [cipherEncode($value, $password): string](./tests/HelperCipherTrait/HelperCipherEncodeTest.php)
+Шифрует значение в компактную base58 строку с использованием пароля
+```php
+$string = Helper::cipherEncode('abc', 'password'); // $string = 'Ndm4LnGDc3We5yFWXG1U3P5Ws7Z3aFyL677WptDeoBXkAD'
+```
+---
+
+&nbsp;
+&nbsp;
 ### Color
 Работа с цветами
 

@@ -10,6 +10,7 @@ use Atlcom\Traits\HelperCacheTrait;
 use Atlcom\Traits\HelperCaseTrait;
 use Atlcom\Traits\HelperCastTrait;
 use Atlcom\Traits\HelperColorTrait;
+use Atlcom\Traits\HelperCipherTrait;
 use Atlcom\Traits\HelperCryptTrait;
 use Atlcom\Traits\HelperDateTrait;
 use Atlcom\Traits\HelperEnumTrait;
@@ -96,6 +97,10 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::castToInt()
  * @method @see static::castToObject()
  * @method @see static::castToString()
+ * 
+ * @group cipher - Работа с безопасным шифрованием
+ * @method @see static::cipherDecode()
+ * @method @see static::cipherEncode()
  * 
  * @group color - Работа с цветами
  * @method @see static::colorHexToRgb()
@@ -300,6 +305,7 @@ abstract class Helper
     use HelperCaseTrait;
     use HelperCastTrait;
     use HelperColorTrait;
+    use HelperCipherTrait;
     use HelperCryptTrait;
     use HelperDateTrait;
     use HelperEnumTrait;
