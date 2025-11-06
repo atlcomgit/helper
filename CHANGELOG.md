@@ -5,6 +5,8 @@
 - Добавлен метод Helper::cipherEncode
 - Добавлен метод Helper::colorRandomHex
 - Добавлен метод Helper::colorRandomRgb
+- Добавлен метод Helper::hashIdDecode
+- Добавлен метод Helper::hashIdEncode
 
 - Обновлен метод Helper::numberCalculate
 

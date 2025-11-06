@@ -641,6 +641,20 @@ $string = Helper::fakeUuid7(); // $string = '019668c4-7b6c-7333-9563-d10b583c404
 Работа с хешами
 
 ---
+##### [hashIdDecode($token, $password): ?int](./tests/HelperHashTrait/HelperHashIdDecodeTest.php)
+Декодирует короткий токен обратно в идентификатор с учетом пароля
+```php
+$integer = Helper::hashIdDecode('3d7'); // $integer = 12345
+$integer = Helper::hashIdDecode('I0a', 'secret'); // $integer = 12345
+```
+---
+##### [hashIdEncode($value, $password): string](./tests/HelperHashTrait/HelperHashIdEncodeTest.php)
+Кодирует неотрицательный идентификатор в короткий токен по указанному паролю
+```php
+$string = Helper::hashIdEncode(12345); // $string = '3d7'
+$string = Helper::hashIdEncode(12345, 'secret'); // $string = 'I0a'
+```
+---
 ##### [hashXxh128(\$value): string](./tests/HelperHashTrait/HelperHashXxh128Test.php)
 Возвращает xxh128 хеш значения
 ```php

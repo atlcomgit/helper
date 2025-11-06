@@ -44,11 +44,6 @@ final class HelperCipher
             }
 
             $normalizedPassword = static::resolvePassword($password);
-
-            if ($normalizedPassword === '') {
-                return '';
-            }
-
             $stringValue = static::stringifyValue($value);
             [$payload, $flags] = static::maybeCompress($stringValue);
             $nonce = random_bytes(SODIUM_CRYPTO_AEAD_CHACHA20POLY1305_IETF_NPUBBYTES);

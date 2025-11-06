@@ -159,6 +159,8 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::fakeUuid7()
  * 
  * @group hash - Работа с хешами
+ * @method @see static::hashIdDecode()
+ * @method @see static::hashIdEncode()
  * @method @see static::hashXxh128()
  * 
  * @group interval - Работа с интервалами
