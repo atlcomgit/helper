@@ -642,19 +642,24 @@ $string = Helper::fakeUuid7(); // $string = '019668c4-7b6c-7333-9563-d10b583c404
 
 ---
 ##### [hashIdDecode($token, $password): ?int](./tests/HelperHashTrait/HelperHashIdDecodeTest.php)
-Декодирует короткий токен обратно в идентификатор с учетом пароля
+Декодирует короткий токен обратно в идентификатор с учетом пароля и встроенных метаданных токена (поддерживаются маски алфавита вида `0-9`, `a-z`, `A-Z`)
 ```php
-$integer = Helper::hashIdDecode('3d7'); // $integer = 12345
-$integer = Helper::hashIdDecode('I0a', 'secret'); // $integer = 12345
+$integer = Helper::hashIdDecode('FL6H'); // $integer = 12345
+$integer = Helper::hashIdDecode('PB3U', 'secret'); // $integer = 12345
+$integer = Helper::hashIdDecode('FL6Hlh'); // $integer = 12345
+$integer = Helper::hashIdDecode('12f1ba', 'secret', 0, '0123456789abcdef'); // $integer = 12345
+$integer = Helper::hashIdDecode('eb6', '', 3, '0-9'); // $integer = 123
 ```
 ---
-##### [hashIdEncode($value, $password): string](./tests/HelperHashTrait/HelperHashIdEncodeTest.php)
-Кодирует неотрицательный идентификатор в короткий токен по указанному паролю
+##### [hashIdEncode($value, $password, $minLength, $alphabet): string](./tests/HelperHashTrait/HelperHashIdEncodeTest.php)
+Кодирует неотрицательный идентификатор в короткий токен по указанному паролю с настройками длины и алфавита (поддерживаются маски алфавита вида `0-9`, `a-z`, `A-Z`)
 ```php
-$string = Helper::hashIdEncode(12345); // $string = '3d7'
-$string = Helper::hashIdEncode(12345, 'secret'); // $string = 'I0a'
+$string = Helper::hashIdEncode(12345); // $string = 'FL6H'
+$string = Helper::hashIdEncode(12345, 'secret'); // $string = 'PB3U'
+$string = Helper::hashIdEncode(12345, null, 6); // $string = 'FL6Hlh'
+$string = Helper::hashIdEncode(12345, 'secret', 0, '0123456789abcdef'); // $string = '12f1ba'
+$string = Helper::hashIdEncode(123, null, 3, '0-9'); // $string = 'eb6'
 ```
----
 ##### [hashXxh128(\$value): string](./tests/HelperHashTrait/HelperHashXxh128Test.php)
 Возвращает xxh128 хеш значения
 ```php

@@ -19,10 +19,16 @@ trait HelperHashTrait
      *
      * @param int|string|null $value
      * @param string|null $password
+     * @param int|null $minLength
+     * @param string|null $alphabet
      * @return string
      */
-    public static function hashIdEncode(int|string|null $value, ?string $password = null): string
-    {
+    public static function hashIdEncode(
+        int|string|null $value,
+        ?string $password = null,
+        ?int $minLength = null,
+        ?string $alphabet = null,
+    ): string {
         if (is_null($value)) {
             return '';
         }
@@ -41,7 +47,17 @@ trait HelperHashTrait
             throw new InvalidArgumentException('Идентификатор должен быть неотрицательным.');
         }
 
-        return HelperHash::makeIdToken($value, $password ?? '');
+        $minLength ??= 3;
+        if ($minLength < 0) {
+            throw new InvalidArgumentException('Минимальная длина не может быть отрицательной.');
+        }
+
+        $alphabet = $alphabet !== null ? trim($alphabet) : null;
+        if ($alphabet !== null && $alphabet === '') {
+            throw new InvalidArgumentException('Алфавит не может быть пустым.');
+        }
+
+        return HelperHash::makeIdToken($value, $password ?? '', $minLength, $alphabet);
     }
 
 
@@ -51,10 +67,16 @@ trait HelperHashTrait
      *
      * @param string|null $token
      * @param string|null $password
+     * @param int|null $minLength
+     * @param string|null $alphabet
      * @return int|null
      */
-    public static function hashIdDecode(?string $token, ?string $password = null): ?int
-    {
+    public static function hashIdDecode(
+        ?string $token,
+        ?string $password = null,
+        ?int $minLength = null,
+        ?string $alphabet = null,
+    ): ?int {
         if ($token === null) {
             return null;
         }
@@ -64,7 +86,17 @@ trait HelperHashTrait
             return null;
         }
 
-        return HelperHash::readIdToken($token, $password ?? '');
+        $minLength ??= 3;
+        if ($minLength < 0) {
+            throw new InvalidArgumentException('Минимальная длина не может быть отрицательной.');
+        }
+
+        $alphabet = $alphabet !== null ? trim($alphabet) : null;
+        if ($alphabet !== null && $alphabet === '') {
+            throw new InvalidArgumentException('Алфавит не может быть пустым.');
+        }
+
+        return HelperHash::readIdToken($token, $password ?? '', $minLength, $alphabet);
     }
 
 
