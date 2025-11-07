@@ -1,5 +1,13 @@
 # Changelog
 
+## _Версия 1.25_
+- Добавлен метод Helper::fileChangePath
+- Добавлен метод Helper::fileChangeExtension
+- Добавлен метод Helper::fileChangeName
+- Добавлен метод Helper::fileExtension
+- Добавлен метод Helper::fileName
+- Добавлен метод Helper::filePath
+
 ## _Версия 1.24_
 - Добавлен метод Helper::cipherDecode
 - Добавлен метод Helper::cipherEncode

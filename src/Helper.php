@@ -17,6 +17,7 @@ use Atlcom\Traits\HelperEnumTrait;
 use Atlcom\Traits\HelperEnvTrait;
 use Atlcom\Traits\HelperExceptionTrait;
 use Atlcom\Traits\HelperFakeTrait;
+use Atlcom\Traits\HelperFileTrait;
 use Atlcom\Traits\HelperHashTrait;
 use Atlcom\Traits\HelperIntervalTrait;
 use Atlcom\Traits\HelperIpTrait;
@@ -42,7 +43,7 @@ use Atlcom\Traits\HelperVarTrait;
 /**
  * Абстрактный класс Helper
  * @abstract
- * @version 1.24
+ * @version 1.25
  * 
  * @see ../README.md
  * @link https://github.com/atlcomgit/helper
@@ -157,6 +158,14 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::fakeUrl()
  * @method @see static::fakeUuid4()
  * @method @see static::fakeUuid7()
+ * 
+ * @group file - Работа с файлами
+ * @method @see static::fileChangePath()
+ * @method @see static::fileChangeExtension()
+ * @method @see static::fileChangeName()
+ * @method @see static::fileExtension()
+ * @method @see static::fileName()
+ * @method @see static::filePath()
  * 
  * @group hash - Работа с хешами
  * @method @see static::hashIdDecode()
@@ -314,6 +323,7 @@ abstract class Helper
     use HelperEnvTrait;
     use HelperExceptionTrait;
     use HelperFakeTrait;
+    use HelperFileTrait;
     use HelperHashTrait;
     use HelperIntervalTrait;
     use HelperIpTrait;

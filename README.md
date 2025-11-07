@@ -637,6 +637,65 @@ $string = Helper::fakeUuid7(); // $string = '019668c4-7b6c-7333-9563-d10b583c404
 
 &nbsp;
 &nbsp;
+### File
+Работа с файлами
+
+---
+##### [fileChangePath(\$value, \$newPath): string](./tests/HelperFileTrait/FileChangePathTest.php)
+Меняет путь к файлу
+```php
+$string = Helper::fileChangePath('/var/www/html/test.php', '/home/user'); // $string = '/home/user/test.php'
+$string = Helper::fileChangePath('test.php', '/var/www'); // $string = '/var/www/test.php'
+$string = Helper::fileChangePath('/var/www/html/test.php', ''); // $string = 'test.php'
+```
+---
+##### [fileChangeExtension(\$value, \$newExtension): string](./tests/HelperFileTrait/FileChangeExtensionTest.php)
+Меняет расширение файла без точки
+```php
+$string = Helper::fileChangeExtension('/var/www/html/test.php', 'txt'); // $string = '/var/www/html/test.txt'
+$string = Helper::fileChangeExtension('document.pdf', 'docx'); // $string = 'document.docx'
+$string = Helper::fileChangeExtension('/var/www/html/test.php', ''); // $string = '/var/www/html/test'
+$string = Helper::fileChangeExtension('/home/user/README', 'md'); // $string = '/home/user/README.md'
+```
+---
+##### [fileChangeName(\$value, \$newName): string](./tests/HelperFileTrait/FileChangeNameTest.php)
+Меняет имя файла с расширением
+```php
+$string = Helper::fileChangeName('/var/www/html/test.php', 'newfile.php'); // $string = '/var/www/html/newfile.php'
+$string = Helper::fileChangeName('test.php', 'renamed.txt'); // $string = 'renamed.txt'
+$string = Helper::fileChangeName('/var/www/html/test.php', ''); // $string = '/var/www/html/test.php'
+```
+---
+##### [fileExtension(\$value): string](./tests/HelperFileTrait/FileExtensionTest.php)
+Возвращает только расширение файла без точки
+```php
+$string = Helper::fileExtension('/var/www/html/test.php'); // $string = 'php'
+$string = Helper::fileExtension('document.PDF'); // $string = 'PDF'
+$string = Helper::fileExtension('/home/user/README'); // $string = ''
+$string = Helper::fileExtension('/path/to/file.name.tar.gz'); // $string = 'gz'
+```
+---
+##### [fileName(\$value): string](./tests/HelperFileTrait/FileNameTest.php)
+Возвращает имя файла с расширением
+```php
+$string = Helper::fileName('/var/www/html/test.php'); // $string = 'test.php'
+$string = Helper::fileName('folder/subfolder/file.txt'); // $string = 'file.txt'
+$string = Helper::fileName('document.pdf'); // $string = 'document.pdf'
+$string = Helper::fileName('/home/user/README'); // $string = 'README'
+```
+---
+##### [filePath(\$value): string](./tests/HelperFileTrait/FilePathTest.php)
+Возвращает путь из строки
+```php
+$string = Helper::filePath('/var/www/html/test.php'); // $string = '/var/www/html'
+$string = Helper::filePath('folder/subfolder/file.txt'); // $string = 'folder/subfolder'
+$string = Helper::filePath('file.txt'); // $string = ''
+$string = Helper::filePath('/etc/.bashrc'); // $string = '/etc'
+```
+---
+
+&nbsp;
+&nbsp;
 ### Hash
 Работа с хешами
 

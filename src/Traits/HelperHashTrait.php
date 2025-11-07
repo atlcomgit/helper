@@ -65,24 +65,24 @@ trait HelperHashTrait
      * Декодирует короткий токен в исходный идентификатор
      * @see ../../tests/HelperHashTrait/HelperHashIdDecodeTest.php
      *
-     * @param string|null $token
+     * @param string|null $value
      * @param string|null $password
      * @param int|null $minLength
      * @param string|null $alphabet
      * @return int|null
      */
     public static function hashIdDecode(
-        ?string $token,
+        ?string $value,
         ?string $password = null,
         ?int $minLength = null,
         ?string $alphabet = null,
     ): ?int {
-        if ($token === null) {
+        if ($value === null) {
             return null;
         }
 
-        $token = trim($token);
-        if ($token === '') {
+        $value = trim($value);
+        if ($value === '') {
             return null;
         }
 
@@ -96,7 +96,7 @@ trait HelperHashTrait
             throw new InvalidArgumentException('Алфавит не может быть пустым.');
         }
 
-        return HelperHash::readIdToken($token, $password ?? '', $minLength, $alphabet);
+        return HelperHash::readIdToken($value, $password ?? '', $minLength, $alphabet);
     }
 
 
