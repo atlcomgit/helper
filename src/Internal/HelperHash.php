@@ -86,7 +86,26 @@ final class HelperHash
             return null;
         }
 
-        return $numbers[0];
+        $decodedValue = $numbers[0];
+
+        // Проверка валидности токена через обратное кодирование.
+        // Это необходимо для защиты от подделок и искаженных токенов:
+        // - токен '289b6' валиден для значения 1
+        // - токен '289b600' содержит лишние символы и должен быть отклонен
+        // - токен '289' слишком короткий и должен быть отклонен
+        // - токен с неправильным паролем не пройдет проверку
+        $tokenLength = strlen($token);
+        $effectiveMinLength = max($minLength, $tokenLength);
+
+        // Кодируем декодированное значение обратно с той же длиной
+        $expectedToken = static::encodeNumbers([$decodedValue], $alphabet, $effectiveMinLength);
+
+        // Токен валиден только если он полностью совпадает с ожидаемым
+        if ($expectedToken !== $token) {
+            return null;
+        }
+
+        return $decodedValue;
     }
 
 

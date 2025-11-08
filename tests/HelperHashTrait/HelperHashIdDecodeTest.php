@@ -45,8 +45,8 @@ final class HelperHashIdDecodeTest extends TestCase
         $token = Helper::hashIdEncode(12345, 'secret');
         $decoded = Helper::hashIdDecode($token, 'wrong');
 
-        $this->assertNotSame(12345, $decoded);
-        $this->assertIsInt($decoded);
+        // С неправильным паролем токен невалиден и должен вернуться null
+        $this->assertNull($decoded);
     }
 
 
