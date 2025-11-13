@@ -698,4 +698,17 @@ trait HelperSqlTrait
 
         return [];
     }
+
+
+    /**
+     * Возвращает безопасное значения для sql запроса
+     * @see ../../tests/HelperSqlTrait/HelperSqlSafeValueTest.php
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    public static function sqlSafeValue(mixed $value): mixed
+    {
+        return HelperSql::sqlSafe($value);
+    }
 }

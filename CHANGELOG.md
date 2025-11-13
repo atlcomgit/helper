@@ -7,6 +7,7 @@
 - Добавлен метод Helper::fileExtension
 - Добавлен метод Helper::fileName
 - Добавлен метод Helper::filePath
+- Добавлен метод Helper::sqlSafeValue
 
 ## _Версия 1.24_
 - Добавлен метод Helper::cipherDecode

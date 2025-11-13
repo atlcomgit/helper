@@ -239,6 +239,7 @@ use Atlcom\Traits\HelperVarTrait;
  * @method @see static::sqlFieldsInsert()
  * @method @see static::sqlFieldsUpdate()
  * @method @see static::sqlHasWrite()
+ * @method @see static::sqlSafeValue()
  * @method @see static::sqlTables()
  * 
  * @group string - Работа со строками

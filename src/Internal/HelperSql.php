@@ -514,4 +514,56 @@ class HelperSql
 
         return $result;
     }
+
+
+    /**
+     * Возвращает безопасное значение для sql запроса
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    public static function sqlSafe(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            return array_map(static fn (mixed $item): mixed => static::sqlSafe($item), $value);
+        }
+
+        if ($value instanceof \Stringable) {
+            $value = (string)$value;
+        }
+
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        $clean = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value) ?? '';
+
+        // Удаляем комментарии и управляющие последовательности, мешающие корректному выполнению запроса
+        $clean = preg_replace('/(--|#)[^\r\n]*/u', '', $clean) ?? '';
+        $clean = preg_replace('/\/\*.*?\*\//su', '', $clean) ?? '';
+
+        $clean = preg_replace('/;\s*/u', ' ', $clean) ?? '';
+
+        $dangerousFragments = [
+            '/\bunion\s+(?:all\s+)?select\b[^\r\n]*/iu',
+            '/\b(?:drop|truncate|alter|create|delete|insert|update)\b\s+[^\r\n]*/iu',
+            '/\binto\s+outfile\b[^\r\n]*/iu',
+            '/\bload_file\s*\([^)]*\)/iu',
+            '/\bexec(?:ute)?\b[^\r\n]*/iu',
+            '/\b(?:or|and)\b\s+(?:\d+|\'[^\']*\'|"[^"]*"|\w+)\s*(?:=|like)\s*(?:\d+|\'[^\']*\'|"[^"]*"|\w+)/iu',
+        ];
+
+        foreach ($dangerousFragments as $pattern) {
+            $clean = preg_replace($pattern, '', $clean) ?? '';
+        }
+
+        $clean = preg_replace('/\s+/u', ' ', $clean) ?? '';
+        $clean = trim($clean);
+
+        if ($clean === '') {
+            return '';
+        }
+
+        return addslashes($clean);
+    }
 }

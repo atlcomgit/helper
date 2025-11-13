@@ -1091,6 +1091,12 @@ $array = Helper::sqlFieldsInsert('update `tests` set `name`= ?, id= ?'); // $arr
 $boolean = Helper::sqlHasWrite('SELECT * FROM users'); // $boolean = false
 ```
 ---
+##### [sqlSafeValue($value): mixed](./tests/HelperSqlTrait/HelperSqlSafeValueTest.php)
+Удаляет опасные конструкции из значения перед использованием в sql запросе
+```php
+$string = Helper::sqlSafeValue('John; DROP TABLE users;'); // $string = 'John'
+```
+---
 ##### [sqlTables(\$value): array](./tests/HelperSqlTrait/HelperSqlTablesTest.php)
 Возвращает массив используемых таблиц в запросе
 ```php
