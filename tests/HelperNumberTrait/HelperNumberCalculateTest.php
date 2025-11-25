@@ -152,5 +152,6 @@ final class HelperNumberCalculateTest extends TestCase
     {
         $this->assertSame('0.3773', Helper::numberCalculate('1/2,65', 4));
         $this->assertSame('2.65', Helper::numberCalculate('2,65/1', 4));
+        $this->assertSame('303.03', Helper::numberCalculate('1000 / 3.30 * 1', 2));
     }
 }

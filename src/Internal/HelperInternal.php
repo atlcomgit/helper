@@ -965,8 +965,8 @@ class HelperInternal
         $neg = ($a[0] === '-') ^ ($b[0] === '-');
         $a = ltrim($a, '+-');
         $b = ltrim($b, '+-');
-        $aDec = Helper::numberDecimalDigits($a);
-        $bDec = Helper::numberDecimalDigits($b);
+        $aDec = Helper::numberDecimalDigits($a, false);
+        $bDec = Helper::numberDecimalDigits($b, false);
         $a = str_replace('.', '', $a);
         $b = str_replace('.', '', $b);
         $res = array_fill(0, strlen($a) + strlen($b), 0);
@@ -1007,8 +1007,8 @@ class HelperInternal
         $a = ltrim($a, '+-');
         $b = ltrim($b, '+-');
 
-        $aDec = Helper::numberDecimalDigits($a);
-        $bDec = Helper::numberDecimalDigits($b);
+        $aDec = Helper::numberDecimalDigits($a, false);
+        $bDec = Helper::numberDecimalDigits($b, false);
 
         $aInt = str_replace('.', '', $a);
         $bInt = str_replace('.', '', $b);
@@ -1297,13 +1297,13 @@ class HelperInternal
                 }
 
                 $map = [
-                    'true' => true,
-                    '(true)' => true,
-                    'false' => false,
+                    'true'    => true,
+                    '(true)'  => true,
+                    'false'   => false,
                     '(false)' => false,
-                    'null' => null,
-                    '(null)' => null,
-                    'empty' => '',
+                    'null'    => null,
+                    '(null)'  => null,
+                    'empty'   => '',
                     '(empty)' => '',
                 ];
                 $v = strtolower($value);
@@ -1408,7 +1408,7 @@ class HelperInternal
                                 $description = trim($paramMatches[3] ?? '');
 
                                 $parsed['param'][$name] = [
-                                    'types' => preg_split('/\|/', $type),
+                                    'types'       => preg_split('/\|/', $type),
                                     'description' => $description,
                                 ];
                             }
@@ -1421,7 +1421,7 @@ class HelperInternal
                                 $description = trim($returnMatches[2] ?? '');
 
                                 $parsed['return'] = [
-                                    'types' => preg_split('/\|/', $type),
+                                    'types'       => preg_split('/\|/', $type),
                                     'description' => $description,
                                 ];
                             }

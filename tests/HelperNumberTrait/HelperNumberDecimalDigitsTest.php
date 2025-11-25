@@ -26,6 +26,9 @@ final class HelperNumberDecimalDigitsTest extends TestCase
         $integer = Helper::numberDecimalDigits('1.0');
         $this->assertSame($integer, 0);
 
+        $integer = Helper::numberDecimalDigits('3.30', false);
+        $this->assertSame($integer, 2);
+
         $integer = Helper::numberDecimalDigits(null);
         $this->assertTrue($integer === 0);
     }

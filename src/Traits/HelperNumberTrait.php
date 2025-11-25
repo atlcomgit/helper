@@ -131,8 +131,8 @@ trait HelperNumberTrait
 
         ($numOrder[0] === '') ?: $numOrder[0] = static::stringReplace($numOrder[0], [
             '+-' => 'плюс минус',
-            '-' => 'минус',
-            '+' => 'плюс',
+            '-'  => 'минус',
+            '+'  => 'плюс',
         ]);
 
         for ($aa = 10; $aa >= 0; $aa--) {
@@ -469,10 +469,10 @@ trait HelperNumberTrait
 
         if (in_array($value, ['true', 'True', 'TRUE', true, '1', 1], true)) {
             $result = 1;
-            
+
         } else if (in_array($value, ['false', 'False', 'FALSE', false, '0', 0, null], true)) {
             $result = 0;
-            
+
         } else if (
             is_numeric($number = static::stringReplace($value, [',' => '.', ' ' => '']))
             || ($number = static::stringReplace($number, '/[^0-9.+-]/', ''))
@@ -708,13 +708,27 @@ trait HelperNumberTrait
      * @see ../../tests/HelperNumberTrait/HelperNumberDecimalDigitsTest.php
      *
      * @param int|float|string|null $value
+     * @param bool $ignoreTrailingZeros
      * @return int
      */
-    public static function numberDecimalDigits(int|float|string|null $value): int
-    {
-        $parts = explode('.', (string)$value);
+    public static function numberDecimalDigits(
+        int|float|string|null $value,
+        bool $ignoreTrailingZeros = true,
+    ): int {
+        $valueString = (string)$value;
+        if ($valueString === '') {
+            return 0;
+        }
 
-        return isset($parts[1]) ? strlen(rtrim($parts[1], '0')) : 0;
+        $parts = explode('.', $valueString, 2);
+        if (!isset($parts[1])) {
+            return 0;
+        }
+
+        $fractionPart = $parts[1];
+        $fractionPart = $ignoreTrailingZeros ? rtrim($fractionPart, '0') : $fractionPart;
+
+        return $fractionPart === '' ? 0 : strlen($fractionPart);
     }
 
 
