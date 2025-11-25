@@ -66,7 +66,7 @@ class HelperSql
             }
 
             $items[] = [
-                'alias' => $alias,
+                'alias'     => $alias,
                 'databases' => $subResult,
             ];
 
@@ -77,8 +77,8 @@ class HelperSql
         }
 
         return [
-            'sql' => $sql,
-            'items' => $items,
+            'sql'        => $sql,
+            'items'      => $items,
             'references' => $references,
         ];
     }
@@ -150,9 +150,9 @@ class HelperSql
             }
 
             $aliases[] = [
-                'alias' => $item['alias'],
+                'alias'    => $item['alias'],
                 'database' => $database,
-                'table' => $table,
+                'table'    => $table,
             ];
         }
 
@@ -209,7 +209,7 @@ class HelperSql
             foreach ($dbData['tables'] as $table => $_tableData) {
                 return [
                     'database' => (string)$database,
-                    'table' => (string)$table,
+                    'table'    => (string)$table,
                 ];
             }
         }
@@ -536,10 +536,16 @@ class HelperSql
             return $value;
         }
 
+        $originalTrailingWhitespace = '';
+        if (preg_match('/(\s*)$/u', $value, $trailingMatches)) {
+            $originalTrailingWhitespace = $trailingMatches[1];
+        }
+
         $clean = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value) ?? '';
 
         // Удаляем комментарии и управляющие последовательности, мешающие корректному выполнению запроса
-        $clean = preg_replace('/(--|#)[^\r\n]*/u', '', $clean) ?? '';
+        $clean = preg_replace('/(?<!\S)--(?=\s)[^\r\n]*/u', '', $clean) ?? '';
+        $clean = preg_replace('/(?<!\S)#(?=\s)[^\r\n]*/u', '', $clean) ?? '';
         $clean = preg_replace('/\/\*.*?\*\//su', '', $clean) ?? '';
 
         $clean = preg_replace('/;\s*/u', ' ', $clean) ?? '';
@@ -557,12 +563,13 @@ class HelperSql
             $clean = preg_replace($pattern, '', $clean) ?? '';
         }
 
-        $clean = preg_replace('/\s+/u', ' ', $clean) ?? '';
-        $clean = trim($clean);
+        $clean = rtrim($clean);
 
         if ($clean === '') {
             return '';
         }
+
+        $clean .= $originalTrailingWhitespace;
 
         return addslashes($clean);
     }
