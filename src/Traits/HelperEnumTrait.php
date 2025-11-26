@@ -54,7 +54,7 @@ trait HelperEnumTrait
     {
         return match (true) {
             $value instanceof BackedEnum => [
-                'name' => $value->name,
+                'name'  => $value->name,
                 'value' => $value->value,
             ],
             is_string($value) => array_combine($value::enumNames(), $value::enumValues()),
@@ -159,19 +159,30 @@ trait HelperEnumTrait
             is_string($value) && defined($enum = static::class . "::{$value}") => constant($enum),
             is_subclass_of(static::class, BackedEnum::class) => (
                 static function ($value) use ($caseInsensitive) {
-                        $valueInsensitive = $caseInsensitive ? Helper::stringLower($value) : $value;
+                        $valueInsensitive = $caseInsensitive && is_string($value)
+                        ? Helper::stringLower($value)
+                        : null;
 
                         foreach (static::cases() as $enum) {
                             if ($enum->name === $value || $enum->value === $value) {
                                 return $enum;
-                            } else if ($caseInsensitive) {
-                                if (
-                                Helper::stringLower($enum->name) === $valueInsensitive
-                                || Helper::stringLower($enum->value) === $valueInsensitive
-                                || Helper::stringLower($enum->label()) === $valueInsensitive
-                                ) {
-                                    return $enum;
-                                }
+                            }
+
+                            $label = $enum->label();
+                            if (is_string($value) && is_string($label) && $label === $value) {
+                                return $enum;
+                            }
+
+                            if ($valueInsensitive === null) {
+                                continue;
+                            }
+
+                            if (
+                            Helper::stringLower($enum->name) === $valueInsensitive
+                            || Helper::stringLower((string)$enum->value) === $valueInsensitive
+                            || (is_string($label) && Helper::stringLower($label) === $valueInsensitive)
+                            ) {
+                                return $enum;
                             }
                         }
 

@@ -6,6 +6,7 @@ namespace Atlcom\Tests\HelperEnumTrait;
 
 use Atlcom\Helper;
 use Atlcom\Traits\HelperEnumTrait;
+use BackedEnum;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -15,6 +16,16 @@ enum HelperEnumFromEnum: string
 
     case Name1 = 'value1';
     case Name2 = 'value2';
+
+    public static function enumLabel(?BackedEnum $enum): ?string
+    {
+        return match ($enum) {
+            self::Name1 => 'Label for Name 1',
+            self::Name2 => 'Label for Name 2',
+
+            default => null,
+        };
+    }
 }
 
 /**
@@ -42,6 +53,9 @@ final class HelperEnumFromTest extends TestCase
         $this->assertTrue($enum === HelperEnumFromEnum::Name1);
 
         $enum = HelperEnumFromEnum::enumFrom('value1');
+        $this->assertTrue($enum === HelperEnumFromEnum::Name1);
+
+        $enum = HelperEnumFromEnum::enumFrom('Label for Name 1');
         $this->assertTrue($enum === HelperEnumFromEnum::Name1);
 
         $enum = HelperEnumFromEnum::enumFrom(null);
