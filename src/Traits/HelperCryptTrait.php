@@ -136,7 +136,7 @@ trait HelperCryptTrait
             'i' => (int)$result,
             'f' => (float)$result,
             's' => (string)$result,
-            'b' => (boolean)$result,
+            'b' => (bool)$result,
             'a' => json_decode($result, true),
             'o' => unserialize($result),
             '?' => $result,
